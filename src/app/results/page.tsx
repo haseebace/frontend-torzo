@@ -1,73 +1,182 @@
+import { cookies } from "next/headers";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ResultSort } from "@/components/result-sort";
 import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
-
-const results: TorrentResult[] = [
-  {
-    title: "Planet Earth Complete Collection 1080p BluRay x265",
-    type: "Series",
-    uploadedDate: "Apr 28, 2026",
-    provider: "provider",
-    size: "42.8 GB",
-    seeders: "2,418",
-    leechers: "184",
-  },
-  {
-    title: "Blade Runner 2049 2160p UHD HDR Atmos",
-    type: "Movie",
-    uploadedDate: "Apr 28, 2026",
-    provider: "provider",
-    size: "31.4 GB",
-    seeders: "1,092",
-    leechers: "73",
-  },
-  {
-    title: "Debian 13.0 amd64 netinst ISO verified",
-    type: "Software",
-    uploadedDate: "Apr 27, 2026",
-    provider: "provider",
-    size: "762 MB",
-    seeders: "684",
-    leechers: "21",
-  },
-  {
-    title: "Studio Discography FLAC 24-bit remaster pack",
-    type: "Audio",
-    uploadedDate: "Apr 26, 2026",
-    provider: "provider",
-    size: "18.9 GB",
-    seeders: "392",
-    leechers: "44",
-  },
-  {
-    title: "Open source design toolkit templates archive",
-    type: "Archive",
-    uploadedDate: "Apr 24, 2026",
-    provider: "provider",
-    size: "4.6 GB",
-    seeders: "211",
-    leechers: "12",
-  },
-];
 
 type ResultsPageProps = {
   searchParams: Promise<{
     q?: string;
     tmdbId?: string;
+    imdbId?: string;
+    category?: string;
+    sort?: string;
   }>;
 };
 
+const PROVIDERS_COOKIE_NAME = "torzo_selected_providers";
+
+async function getSelectedProviders() {
+  const cookieStore = await cookies();
+  const providersCookie = cookieStore.get(PROVIDERS_COOKIE_NAME);
+  
+  if (providersCookie) {
+    try {
+      const parsed = JSON.parse(providersCookie.value);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch {
+      // Fallback
+    }
+  }
+  return ["rargb"];
+}
+
+async function getMovieName(tmdbId: string) {
+  const bearerToken = process.env.APP_TMDB_READ_ACCESS_TOKEN || process.env.TMDB_ACCESS_TOKEN;
+  const baseUrl = (process.env.APP_TMDB_BASE_URL ?? "https://api.themoviedb.org/3").replace(/\/$/, "");
+  
+  if (!bearerToken) {
+    console.warn("TMDB Bearer token missing in environment variables.");
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${baseUrl}/movie/${tmdbId}`, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        Accept: "application/json",
+      },
+      next: { revalidate: 3600 }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      return data.title || data.name;
+    } else {
+      // Try TV if movie fails
+      const tvResponse = await fetch(`${baseUrl}/tv/${tmdbId}`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          Accept: "application/json",
+        },
+        next: { revalidate: 3600 }
+      });
+      if (tvResponse.ok) {
+        const data = await tvResponse.json();
+        return data.name || data.title;
+      }
+    }
+  } catch (e) {
+    console.error("Failed to fetch movie name:", e);
+  }
+  return null;
+}
+
 export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const params = await searchParams;
-  const query = params.q?.trim() || "planet earth";
+  const query = params.q?.trim();
   const tmdbId = params.tmdbId?.trim();
+  const imdbId = params.imdbId?.trim();
+  const category = params.category?.trim();
+  const sort = params.sort || "seeders";
+
+  const selectedProviders = await getSelectedProviders();
+  
+  // Filter out YTS from generic search as per API docs
+  const genericSources = selectedProviders
+    .filter(s => s !== "yts")
+    .map(s => (s === "the-pirate-bay" ? "thepiratebay" : s)) // Normalize for API
+    .join(",");
+
+  let allResults: TorrentResult[] = [];
+  let error: string | null = null;
+  let displayName = query || imdbId || tmdbId || "nothing";
+
+  // Fetch movie name if tmdbId is present
+  if (tmdbId) {
+    const movieName = await getMovieName(tmdbId);
+    if (movieName) {
+      displayName = movieName;
+    }
+  }
+
+  try {
+    const apiParams = new URLSearchParams();
+    if (query) apiParams.append("q", query);
+    if (tmdbId) {
+      apiParams.append("tmdb_id", tmdbId);
+      apiParams.append("media_type", "movie"); // Defaulting to movie for now
+    }
+    if (imdbId) apiParams.append("imdb_id", imdbId);
+    if (category) apiParams.append("category", category);
+    if (genericSources) apiParams.append("source", genericSources);
+    apiParams.append("sort", sort);
+
+    // Only call generic search if we have sources or a query/ID
+    if (genericSources && (query || tmdbId || imdbId)) {
+      const res = await fetch(`https://torzoapi.vercel.app/api/v1/search?${apiParams.toString()}`, {
+        cache: "no-store"
+      });
+      
+      if (res.ok) {
+        const json = await res.json();
+        allResults = [...allResults, ...json.data];
+      } else {
+        const errJson = await res.json();
+        error = errJson.error?.message || "Failed to fetch results from generic search.";
+      }
+    }
+
+    // Handle YTS separately if selected and we have an ID
+    if (selectedProviders.includes("yts") && (tmdbId || imdbId)) {
+      const ytsParams = new URLSearchParams();
+      if (tmdbId) ytsParams.append("tmdb_id", tmdbId);
+      if (imdbId) ytsParams.append("imdb_id", imdbId);
+      
+      const ytsRes = await fetch(`https://torzoapi.vercel.app/api/v1/yts/search?${ytsParams.toString()}`, {
+        cache: "no-store"
+      });
+      
+      if (ytsRes.ok) {
+        const ytsJson = await ytsRes.json();
+        if (ytsJson.data?.movies) {
+          // Normalize YTS movies to TorrentResult shape
+          const ytsResults: TorrentResult[] = ytsJson.data.movies.flatMap((movie: any) => 
+            movie.torrents.map((t: any) => ({
+              id: `yts-${movie.id}-${t.hash}`,
+              title: `${movie.title} (${movie.year}) [${t.quality}]`,
+              category: "movies",
+              uploaded_at: null,
+              size_bytes: t.size_bytes,
+              seeders: t.seeds,
+              leechers: t.peers,
+              sources: [{
+                provider: "yts",
+                source_url: String(movie.id)
+              }]
+            }))
+          );
+          allResults = [...allResults, ...ytsResults];
+        }
+      }
+    }
+
+    // Client-side sorting for combined results
+    if (sort === "seeders") {
+      allResults.sort((a, b) => b.seeders - a.seeders);
+    } else if (sort === "recent") {
+      allResults.sort((a, b) => {
+        const dateA = a.uploaded_at ? new Date(a.uploaded_at).getTime() : 0;
+        const dateB = b.uploaded_at ? new Date(b.uploaded_at).getTime() : 0;
+        return dateB - dateA;
+      });
+    }
+  } catch (e) {
+    console.error(e);
+    error = "A connection error occurred while searching.";
+  }
 
   return (
     <main className="min-h-dvh bg-white text-zinc-950">
@@ -80,46 +189,32 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
         <div className="flex flex-col-reverse gap-2 border-b border-zinc-200 pb-2 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center justify-end gap-2 md:order-2">
-            <Select defaultValue="all">
-              <SelectTrigger size="sm" className="w-[105px] text-xs">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All types</SelectItem>
-                <SelectItem value="series">Series</SelectItem>
-                <SelectItem value="movie">Movies</SelectItem>
-                <SelectItem value="software">Software</SelectItem>
-                <SelectItem value="audio">Audio</SelectItem>
-                <SelectItem value="archive">Archives</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select defaultValue="newest">
-              <SelectTrigger size="sm" className="w-[112px] text-xs">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">Newest</SelectItem>
-                <SelectItem value="seeders">Most seeders</SelectItem>
-                <SelectItem value="size">Size</SelectItem>
-                <SelectItem value="relevance">Relevance</SelectItem>
-              </SelectContent>
-            </Select>
+            <ResultSort defaultValue={sort} />
           </div>
           <p className="text-xs text-zinc-500 md:text-sm">
-            Showing 5 mock results for{" "}
-            <span className="font-medium text-zinc-800">{query}</span>
-            {tmdbId ? (
-              <span className="ml-2 rounded-md border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em] text-zinc-500">
-                TMDB {tmdbId}
-              </span>
-            ) : null}
+            {error ? (
+              <span className="text-red-600 font-medium">{error}</span>
+            ) : (
+              <>
+                Found {allResults.length} results for{" "}
+                <span className="font-medium text-zinc-800">{displayName}</span>
+              </>
+            )}
           </p>
         </div>
 
         <div className="flex flex-col gap-5">
-          {results.map((result) => (
-            <TorrentResultCard key={result.title} result={result} />
-          ))}
+          {allResults.length > 0 ? (
+            allResults.map((result) => (
+              <TorrentResultCard key={result.id} result={result} />
+            ))
+          ) : (
+            !error && (
+              <div className="py-20 text-center">
+                <p className="text-zinc-500">No results found. Try a different search term or check your provider settings.</p>
+              </div>
+            )
+          )}
         </div>
       </section>
     </main>

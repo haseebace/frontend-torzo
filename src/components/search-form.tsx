@@ -2,6 +2,7 @@
 
 import { ArrowRight, Film, Loader2, Search } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ function SearchSubmitButton() {
 }
 
 export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
+  const router = useRouter();
   const listboxId = useId();
   const [query, setQuery] = useState(defaultValue ?? "");
   const [selectedMovie, setSelectedMovie] = useState<TmdbSuggestion | null>(
@@ -117,6 +119,9 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
     setQuery(movie.title);
     setIsSuggestionsOpen(false);
     setSuggestions([]);
+    
+    // Automatically navigate using only tmdbId
+    router.push(`/results?tmdbId=${movie.id}`);
   };
 
   const showSuggestions =
@@ -141,12 +146,11 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
         <span className="pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-zinc-500 transition-colors group-focus-within:text-zinc-700">
           <Search className="size-5" />
         </span>
-        {selectedMovie ? (
-          <input type="hidden" name="tmdbId" value={selectedMovie.id} />
-        ) : null}
+        
+        {/* Only include q if no selectedMovie, to avoid query overlap */}
         <Input
           id={id}
-          name="q"
+          name={!selectedMovie ? "q" : undefined}
           type="text"
           role="combobox"
           aria-autocomplete="list"
@@ -181,6 +185,10 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
             clearBlurTimer();
           }}
         />
+
+        {selectedMovie ? (
+          <input type="hidden" name="tmdbId" value={selectedMovie.id} />
+        ) : null}
 
         {!selectedMovie && isLoading ? (
           <span className="pointer-events-none absolute inset-y-0 right-16 z-10 hidden items-center text-zinc-400 md:flex">

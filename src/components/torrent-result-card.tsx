@@ -7,21 +7,24 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes, formatDate } from "@/lib/utils";
 
 export interface TorrentResult {
+  id: string;
   title: string;
-  type: string;
-  uploadedDate: string;
-  provider: string;
-  size: string;
-  seeders: string;
-  leechers: string;
+  category: string;
+  uploaded_at: string | null;
+  size_bytes: number;
+  seeders: number;
+  leechers: number;
+  sources: {
+    provider: string;
+    source_url: string;
+  }[];
 }
 
 type TorrentResultCardProps = {
   result: TorrentResult;
-  href?: string;
   className?: string;
 };
 
@@ -45,12 +48,18 @@ function TorrentMetric({ icon: Icon, label, value }: TorrentMetricProps) {
 
 export function TorrentResultCard({
   result,
-  href = "/detail",
   className,
 }: TorrentResultCardProps) {
+  const primarySource = result.sources[0];
+  const provider = primarySource?.provider || "unknown";
+  const sourceUrl = primarySource?.source_url || "";
+  
+  // Navigate to detail with source and source_url
+  const detailHref = `/detail?source=${provider}&source_url=${encodeURIComponent(sourceUrl)}`;
+
   return (
     <Link
-      href={href}
+      href={detailHref}
       className={cn(
         "group block rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-zinc-400/20",
         className
@@ -61,10 +70,10 @@ export function TorrentResultCard({
           <div className="min-w-0">
             <div className="mb-1 flex items-center gap-1.5 pl-[5px] md:hidden">
               <span className="rounded-md border border-zinc-200 bg-zinc-50 px-1.5 py-px text-[10px] font-medium uppercase leading-4 tracking-[0.1em] text-zinc-600">
-                {result.type}
+                {result.category}
               </span>
               <span className="rounded-md border border-zinc-200 bg-zinc-50 px-1.5 py-px text-[10px] font-medium uppercase leading-4 tracking-[0.1em] text-zinc-600">
-                {result.provider}
+                {provider}
               </span>
             </div>
             <div className="flex min-w-0 items-center gap-2 pl-[5px] md:mb-3 md:pl-0">
@@ -74,23 +83,26 @@ export function TorrentResultCard({
             </div>
             <div className="hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-500 md:flex">
               <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-600">
-                {result.type}
+                {result.category}
+              </span>
+              <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-600">
+                {provider}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Calendar className="size-3" />
-                Uploaded {result.uploadedDate}
+                Uploaded {formatDate(result.uploaded_at)}
               </span>
             </div>
           </div>
 
           <div className="flex items-end justify-between gap-4 pl-[5px] pr-[5px] md:justify-end md:pl-0 md:pr-0">
             <div className="grid grid-cols-3 gap-3 text-left text-xs md:text-right">
-              <TorrentMetric icon={HardDrive} label="size" value={result.size} />
-              <TorrentMetric icon={ArrowUp} label="seed" value={result.seeders} />
-              <TorrentMetric icon={ArrowDown} label="leech" value={result.leechers} />
+              <TorrentMetric icon={HardDrive} label="size" value={formatBytes(result.size_bytes)} />
+              <TorrentMetric icon={ArrowUp} label="seed" value={result.seeders.toLocaleString()} />
+              <TorrentMetric icon={ArrowDown} label="leech" value={result.leechers.toLocaleString()} />
             </div>
             <span className="shrink-0 pb-0.5 text-right text-[10px] leading-4 text-zinc-500 md:hidden">
-              {result.uploadedDate}
+              {formatDate(result.uploaded_at)}
             </span>
           </div>
         </CardContent>

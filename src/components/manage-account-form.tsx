@@ -50,21 +50,34 @@ export function ManageAccountForm() {
 
     async function loadStatus() {
       try {
+        // Load provider settings from server
         const response = await fetch("/api/real-debrid/status");
-
-        if (!response.ok) {
-          return;
+        if (response.ok) {
+          const status = (await response.json()) as ManageStatus;
+          if (isMounted) setSelectedProviders(status.providers);
         }
 
-        const status = (await response.json()) as ManageStatus;
-
-        if (!isMounted) {
-          return;
+        // Load RD Key from localStorage
+        const localApiKey = localStorage.getItem("rd_api_key");
+        if (localApiKey) {
+          const userResponse = await fetch("https://api.real-debrid.com/rest/1.0/user", {
+            headers: { Authorization: `Bearer ${localApiKey}` }
+          });
+          
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+            if (isMounted) {
+              setIsConnected(true);
+              setUsername(userData.username);
+            }
+          } else {
+             if (isMounted) {
+                localStorage.removeItem("rd_api_key");
+                setIsConnected(false);
+                setUsername(null);
+             }
+          }
         }
-
-        setIsConnected(status.connected);
-        setUsername(status.username);
-        setSelectedProviders(status.providers);
       } catch {
         if (isMounted) {
           setError("Could not load saved settings.");
@@ -152,26 +165,24 @@ export function ManageAccountForm() {
     setIsConnecting(true);
 
     try {
-      const response = await fetch("/api/real-debrid/connect", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ apiKey }),
+      // Verify token with Real-Debrid directly from the browser
+      const userResponse = await fetch("https://api.real-debrid.com/rest/1.0/user", {
+        headers: { Authorization: `Bearer ${apiKey}` }
       });
-      const data = (await response.json()) as ManageStatus & {
-        error?: string;
-      };
 
-      if (!response.ok) {
-        throw new Error(data.error ?? "Could not connect Real-Debrid.");
+      if (!userResponse.ok) {
+         throw new Error("Invalid Real-Debrid API key.");
       }
 
-      setIsConnected(data.connected);
-      setUsername(data.username);
-      setSelectedProviders(data.providers);
+      const userData = await userResponse.json();
+      
+      // Save directly to localStorage
+      localStorage.setItem("rd_api_key", apiKey.trim());
+
+      setIsConnected(true);
+      setUsername(userData.username);
       setApiKey("");
-      setMessage("Real-Debrid connected.");
+      setMessage("Real-Debrid connected locally.");
     } catch (connectError) {
       setIsConnected(false);
       setError(
@@ -182,6 +193,13 @@ export function ManageAccountForm() {
     } finally {
       setIsConnecting(false);
     }
+  };
+
+  const handleDisconnect = () => {
+    localStorage.removeItem("rd_api_key");
+    setIsConnected(false);
+    setUsername(null);
+    setMessage("Real-Debrid disconnected.");
   };
 
   return (
@@ -220,21 +238,32 @@ export function ManageAccountForm() {
                   }}
                   placeholder="Paste your Real-Debrid API key"
                   className="h-12 rounded-xl px-4 text-sm leading-none md:text-sm"
+                  disabled={isConnected}
                 />
               </label>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-xs leading-5 text-zinc-500">
-                  Your key is verified with Real-Debrid, encrypted, then stored
-                  in Supabase.
+                  Your key is saved locally in your browser so you don't share it.
                 </p>
-                <Button
-                  type="submit"
-                  className="h-10 px-4"
-                  disabled={isConnecting}
-                >
-                  {isConnecting ? "Connecting" : "Connect"}
-                </Button>
+                {isConnected ? (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="h-10 px-4"
+                    onClick={handleDisconnect}
+                  >
+                    Disconnect
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="h-10 px-4"
+                    disabled={isConnecting}
+                  >
+                    {isConnecting ? "Connecting" : "Connect"}
+                  </Button>
+                )}
               </div>
               {error ? (
                 <p className="text-sm font-medium text-red-600">{error}</p>
@@ -258,12 +287,12 @@ export function ManageAccountForm() {
           <CardContent className="space-y-4 px-5">
             <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
               <p className="text-sm font-medium text-zinc-950">
-                {isConnected ? "Connected" : "Not connected"}
+                {isConnected ? "Connected locally" : "Not connected"}
               </p>
               <p className="mt-1 text-sm leading-6 text-zinc-500">
                 {isConnected
                   ? username
-                    ? `Connected as ${username}.`
+                    ? `Connected as ${username} (Browser only).`
                     : "Torzo is ready to use your Real-Debrid account."
                   : "Add your API key to enable Real-Debrid actions."}
               </p>
@@ -287,7 +316,7 @@ export function ManageAccountForm() {
               Provider configuration
             </CardTitle>
             <p className="text-xs text-zinc-500">
-              {isSavingProviders ? "Saving providers..." : "Saved to Supabase"}
+              {isSavingProviders ? "Saving..." : "Saved to your browser"}
             </p>
           </div>
         </CardHeader>

@@ -1,16 +1,28 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import {
-  getAppSettings,
-  parseProviders,
-  upsertAppSettings,
-} from "@/lib/server/app-settings";
+import { parseProviders } from "@/lib/server/app-settings";
+
+const PROVIDERS_COOKIE_NAME = "torzo_selected_providers";
 
 export async function GET() {
   try {
-    const settings = await getAppSettings();
+    const cookieStore = await cookies();
+    const providersCookie = cookieStore.get(PROVIDERS_COOKIE_NAME);
+    
+    let providers = ["rarbg"];
+    if (providersCookie) {
+      try {
+        const parsed = JSON.parse(providersCookie.value);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          providers = parsed;
+        }
+      } catch {
+        // Fallback to default
+      }
+    }
 
     return NextResponse.json({
-      providers: settings.providers,
+      providers,
     });
   } catch (error) {
     return NextResponse.json(
@@ -35,11 +47,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const settings = await upsertAppSettings({ providers });
+    const cookieStore = await cookies();
+    cookieStore.set(PROVIDERS_COOKIE_NAME, JSON.stringify(providers), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: "lax",
+    });
 
     return NextResponse.json({
-      providers: settings.providers,
-      updatedAt: settings.updated_at,
+      providers,
+      updatedAt: new Date().toISOString(),
     });
   } catch (error) {
     return NextResponse.json(
