@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export function SiteNavbar() {
   return (
@@ -10,17 +11,17 @@ export function SiteNavbar() {
           href="/"
           className="inline-flex items-center gap-3 text-sm font-semibold text-zinc-800 transition-colors hover:text-zinc-950"
         >
-          <span className="flex size-10 items-center justify-center rounded-xl border border-zinc-200 bg-white p-2">
+          <span className="flex size-11 items-center justify-center">
             <Image
               src="/icon.svg"
               alt=""
-              width={24}
-              height={24}
+              width={32}
+              height={32}
               className="size-full"
             />
           </span>
-          Torzo
         </Link>
+        <Button type="button">Manage</Button>
       </nav>
     </header>
   );

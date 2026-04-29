@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowRight, Search } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { ArrowRight, Film, Loader2, Search } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useId, useRef, useState } from "react";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useState, useLayoutEffect } from "react";
-import { motion } from "framer-motion";
 
 type SearchFormProps = {
   id: string;
@@ -13,17 +13,117 @@ type SearchFormProps = {
   className?: string;
 };
 
-export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
-  const [isFocused, setIsFocused] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+type TmdbSuggestion = {
+  id: number;
+  title: string;
+  releaseYear: string | null;
+  posterUrl: string | null;
+  overview: string;
+};
 
-  useLayoutEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
-    setIsDesktop(mediaQuery.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+function SearchSubmitButton() {
+  return (
+    <button
+      type="submit"
+      aria-label="Search"
+      className={cn(
+        buttonVariants({ variant: "torzoPill" }),
+        "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "md:inset-y-1/2 md:h-13 md:w-13 md:-translate-y-1/2 md:scale-90 md:opacity-0 md:pointer-events-none",
+        "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
+        "motion-reduce:transition-none md:motion-reduce:scale-100"
+      )}
+    >
+      <ArrowRight className="size-5" />
+    </button>
+  );
+}
+
+export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
+  const listboxId = useId();
+  const [query, setQuery] = useState(defaultValue ?? "");
+  const [selectedMovie, setSelectedMovie] = useState<TmdbSuggestion | null>(
+    null
+  );
+  const [suggestions, setSuggestions] = useState<TmdbSuggestion[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const hasUserTypedRef = useRef(false);
+  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!hasUserTypedRef.current) {
+      return;
+    }
+
+    if (selectedMovie && query === selectedMovie.title) {
+      return;
+    }
+
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      return;
+    }
+
+    const abortController = new AbortController();
+    const debounceTimer = setTimeout(async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await fetch(
+          `/api/tmdb/search?query=${encodeURIComponent(trimmedQuery)}`,
+          { signal: abortController.signal }
+        );
+
+        if (!response.ok) {
+          setSuggestions([]);
+          return;
+        }
+
+        const data = (await response.json()) as {
+          results?: TmdbSuggestion[];
+        };
+
+        setSuggestions(data.results ?? []);
+        setIsSuggestionsOpen(true);
+      } catch {
+        if (!abortController.signal.aborted) {
+          setSuggestions([]);
+        }
+      } finally {
+        if (!abortController.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    }, 250);
+
+    return () => {
+      abortController.abort();
+      clearTimeout(debounceTimer);
+    };
+  }, [query, selectedMovie]);
+
+  const clearBlurTimer = () => {
+    if (blurTimeoutRef.current) {
+      clearTimeout(blurTimeoutRef.current);
+      blurTimeoutRef.current = null;
+    }
+  };
+
+  const handleSuggestionSelect = (movie: TmdbSuggestion) => {
+    clearBlurTimer();
+    setSelectedMovie(movie);
+    setQuery(movie.title);
+    setIsSuggestionsOpen(false);
+    setSuggestions([]);
+  };
+
+  const showSuggestions =
+    isSuggestionsOpen &&
+    Boolean(query.trim()) &&
+    !selectedMovie &&
+    (isLoading || suggestions.length > 0);
 
   return (
     <form
@@ -41,40 +141,107 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
         <span className="pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-zinc-500 transition-colors group-focus-within:text-zinc-700">
           <Search className="size-5" />
         </span>
+        {selectedMovie ? (
+          <input type="hidden" name="tmdbId" value={selectedMovie.id} />
+        ) : null}
         <Input
           id={id}
           name="q"
           type="text"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-controls={listboxId}
+          aria-expanded={showSuggestions}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
-          defaultValue={defaultValue}
+          value={query}
           placeholder="Search movies, shows, games, software..."
-          className="h-16 pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-lg"
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          className="h-16 pl-12 pr-16 placeholder:text-[12px]"
+          onBlur={() => {
+            blurTimeoutRef.current = setTimeout(() => {
+              setIsSuggestionsOpen(false);
+            }, 120);
+          }}
+          onChange={(event) => {
+            const nextQuery = event.target.value;
+
+            hasUserTypedRef.current = true;
+            setQuery(nextQuery);
+            setSelectedMovie(null);
+
+            if (!nextQuery.trim()) {
+              setSuggestions([]);
+              setIsLoading(false);
+              setIsSuggestionsOpen(false);
+            }
+          }}
+          onFocus={() => {
+            clearBlurTimer();
+          }}
         />
 
-        <motion.button
-          type="submit"
-          aria-label="Search"
-          initial={isDesktop ? { scale: 0.9, opacity: 0 } : { scale: 1, opacity: 1 }}
-          animate={
-            isDesktop
-              ? isFocused
-                ? { scale: 1, opacity: 1, pointerEvents: "auto" as const }
-                : { scale: 0.9, opacity: 0, pointerEvents: "none" as const }
-              : { scale: 1, opacity: 1, pointerEvents: "auto" as const }
-          }
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className={cn(
-            buttonVariants({ variant: "torzoPill" }),
-            "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center md:inset-y-1/2 md:h-13 md:w-13 md:-translate-y-1/2"
-          )}
-        >
-          <ArrowRight className="size-5" />
-        </motion.button>
+        {!selectedMovie && isLoading ? (
+          <span className="pointer-events-none absolute inset-y-0 right-16 z-10 hidden items-center text-zinc-400 md:flex">
+            <Loader2 className="size-4 animate-spin" />
+          </span>
+        ) : null}
+
+        <SearchSubmitButton />
+
+        {showSuggestions ? (
+          <div
+            id={listboxId}
+            role="listbox"
+            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-zinc-200 bg-white py-1 shadow-[0_16px_48px_rgba(24,24,27,0.12)] md:max-h-72"
+          >
+            {isLoading && suggestions.length === 0 ? (
+              <div className="flex items-center gap-2 px-4 py-3 text-sm text-zinc-500">
+                <Loader2 className="size-4 animate-spin" />
+                Searching TMDB
+              </div>
+            ) : (
+              suggestions.map((movie) => (
+                <button
+                  key={movie.id}
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => handleSuggestionSelect(movie)}
+                  className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-none"
+                >
+                  <span className="flex h-14 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400">
+                    {movie.posterUrl ? (
+                      <Image
+                        src={movie.posterUrl}
+                        alt=""
+                        width={40}
+                        height={56}
+                        className="h-full w-full object-contain"
+                      />
+                    ) : (
+                      <Film className="size-4" />
+                    )}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex min-w-0 items-baseline gap-2">
+                      <span className="min-w-0 truncate text-sm font-medium text-zinc-900">
+                        {movie.title}
+                      </span>
+                      {movie.releaseYear ? (
+                        <span className="shrink-0 text-xs text-zinc-400">
+                          {movie.releaseYear}
+                        </span>
+                      ) : null}
+                    </span>
+                  </span>
+                </button>
+              ))
+            )}
+          </div>
+        ) : null}
       </div>
     </form>
   );

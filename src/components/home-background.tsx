@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import homeBackground from "@/app/homebg.jpg";
+import homeBackground from "@/app/homebg.svg";
 
 export function HomeBackground() {
   const shouldReduceMotion = useReducedMotion();

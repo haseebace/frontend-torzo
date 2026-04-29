@@ -1,20 +1,15 @@
 import Link from "next/link";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUp,
-  Calendar,
-  HardDrive,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { TorrentResultCard } from "@/components/torrent-result-card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 const previewResult = {
   title: "Planet Earth Complete Collection 1080p BluRay x265",
   type: "Series",
   uploadedDate: "Apr 28, 2026",
+  provider: "provider",
   size: "42.8 GB",
   seeders: "2,418",
   leechers: "184",
@@ -114,58 +109,7 @@ export default function EditShadcnPage() {
                 </p>
               </div>
 
-              <Link href="/detail" className="block">
-                <Card className="group grid gap-3 rounded-xl border border-transparent bg-[var(--result-card-background)] py-4 text-sm transition-all hover:border-zinc-200 hover:shadow-[0_4px_18px_rgba(24,24,27,0.04)] focus-visible:border-zinc-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-zinc-400/20 md:grid-cols-[1fr_auto]">
-                  <CardContent className="contents p-0">
-                    <div className="min-w-0 space-y-3">
-                      <h2 className="truncate text-base font-medium leading-6 text-zinc-700 transition-colors group-hover:text-zinc-950">
-                        {previewResult.title}
-                      </h2>
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-500">
-                        <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-600">
-                          {previewResult.type}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5">
-                          <Calendar className="size-3" />
-                          Uploaded {previewResult.uploadedDate}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between gap-4 md:justify-end">
-                      <div className="grid grid-cols-3 gap-3 text-right text-xs">
-                        <div className="w-16">
-                          <p className="font-semibold text-zinc-800">
-                            {previewResult.size}
-                          </p>
-                          <p className="inline-flex items-center justify-end gap-1 text-zinc-400">
-                            <HardDrive className="size-3" />
-                            size
-                          </p>
-                        </div>
-                        <div className="w-16">
-                          <p className="font-semibold text-zinc-800">
-                            {previewResult.seeders}
-                          </p>
-                          <p className="inline-flex items-center justify-end gap-1 text-zinc-400">
-                            <ArrowUp className="size-3" />
-                            seed
-                          </p>
-                        </div>
-                        <div className="w-16">
-                          <p className="font-semibold text-zinc-800">
-                            {previewResult.leechers}
-                          </p>
-                          <p className="inline-flex items-center justify-end gap-1 text-zinc-400">
-                            <ArrowDown className="size-3" />
-                            leech
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+              <TorrentResultCard result={previewResult} />
             </div>
           </div>
         </section>

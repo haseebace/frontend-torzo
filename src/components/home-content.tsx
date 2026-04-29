@@ -25,13 +25,13 @@ export function HomeContent() {
 
   return (
     <>
-      <div className="relative z-10 flex flex-1 items-center justify-center px-4 py-10 md:hidden">
+      <div className="relative z-10 flex flex-1 -translate-y-20 items-center justify-center px-4 py-10 md:hidden">
         <section className="flex w-full flex-col items-center text-center">
-          <div className="mb-12 space-y-3">
-            <h1 className="text-5xl font-semibold leading-[1.1] tracking-tight text-zinc-950 sm:text-6xl">
+          <div className="mb-8 space-y-3">
+            <h1 className="text-[100px] font-[900] leading-[1.1] tracking-[4px] text-zinc-950">
               Torzo
             </h1>
-            <p className="text-sm font-medium leading-6 text-zinc-500">
+            <p className="text-xs font-medium leading-6 text-zinc-500">
               Search movies, shows, games, and software — no noise.
             </p>
           </div>
@@ -40,16 +40,16 @@ export function HomeContent() {
         </section>
       </div>
 
-      <div className="relative z-10 hidden flex-1 items-center justify-center px-4 py-10 md:flex md:px-10 xl:px-[150px]">
+      <div className="relative z-10 hidden flex-1 -translate-y-32 items-center justify-center px-4 py-10 md:flex md:px-10 xl:px-[150px]">
         <section className="flex w-full flex-col items-center text-center">
           <motion.div
             variants={rise}
             initial={shouldReduceMotion ? "visible" : "hidden"}
             animate="visible"
             transition={transition}
-            className="mb-12 space-y-3"
+            className="mb-8 space-y-3"
           >
-            <h1 className="text-5xl font-semibold leading-[1.1] tracking-tight text-zinc-950 sm:text-6xl">
+            <h1 className="text-[125px] font-[900] leading-[1.1] tracking-[4px] text-zinc-950">
               Torzo
             </h1>
             <p className="text-sm font-medium leading-6 text-zinc-500">
