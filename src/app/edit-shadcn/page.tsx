@@ -6,13 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const previewResult = {
+  id: "preview-id",
   title: "Planet Earth Complete Collection 1080p BluRay x265",
-  type: "Series",
-  uploadedDate: "Apr 28, 2026",
-  provider: "provider",
-  size: "42.8 GB",
-  seeders: "2,418",
-  leechers: "184",
+  category: "Series",
+  uploaded_at: "2026-04-28T00:00:00Z",
+  size_bytes: 45957000000,
+  seeders: 2418,
+  leechers: 184,
+  sources: [
+    { provider: "rargb", source_url: "https://example.com" }
+  ]
 };
 
 const badgeVariants = [
