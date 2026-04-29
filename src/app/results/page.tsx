@@ -30,7 +30,7 @@ async function getSelectedProviders() {
       // Fallback
     }
   }
-  return ["rargb"];
+  return ["rarbg"];
 }
 
 async function getMovieName(tmdbId: string) {
@@ -84,10 +84,16 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
   const selectedProviders = await getSelectedProviders();
   
-  // Filter out YTS from generic search as per API docs
+  // Normalize IDs between frontend and API
+  // Frontend: rarbg, the-pirate-bay, yts
+  // API: rargb, thepiratebay, yts
   const genericSources = selectedProviders
     .filter(s => s !== "yts")
-    .map(s => (s === "the-pirate-bay" ? "thepiratebay" : s)) // Normalize for API
+    .map(s => {
+      if (s === "rarbg") return "rargb";
+      if (s === "the-pirate-bay") return "thepiratebay";
+      return s;
+    })
     .join(",");
 
   let allResults: TorrentResult[] = [];
