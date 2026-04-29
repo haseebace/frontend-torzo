@@ -179,15 +179,14 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           <div className="space-y-6">
             <section className="rounded-xl border border-zinc-200 bg-white p-5">
               <h2 className="mb-3 text-lg font-semibold tracking-tight text-zinc-950">
-                Description
+                Direct Download Ready
               </h2>
               <div className="space-y-3 text-sm leading-6 text-zinc-600">
                 <p>
-                  This torrent was fetched live from {torrent.source.provider.toUpperCase()}.
-                  Always verify the info hash and file list before starting your download.
+                  Skip the slow peers and sketchy ads. Convert this {torrent.source.provider.toUpperCase()} result into a high-speed direct link by hitting the Real-Debrid button above.
                 </p>
                 {torrent.uploader && (
-                   <p>Uploader: <span className="font-medium text-zinc-900">{torrent.uploader}</span></p>
+                   <p className="text-xs text-zinc-400">Source: <span className="font-medium text-zinc-500">{torrent.uploader}</span></p>
                 )}
               </div>
             </section>

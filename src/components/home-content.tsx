@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { SearchForm } from "@/components/search-form";
 
@@ -23,6 +22,8 @@ export function HomeContent() {
     ease: [0.16, 1, 0.3, 1],
   } as const;
 
+  const marketingCopy = "Torrenting without the trash. No ads, no popups—just direct high-speed downloads via Real-Debrid.";
+
   return (
     <>
       <div className="relative z-10 flex flex-1 -translate-y-20 items-center justify-center px-4 py-10 md:hidden">
@@ -32,7 +33,7 @@ export function HomeContent() {
               Torzo
             </h1>
             <p className="text-xs font-medium leading-6 text-zinc-500">
-              Search movies, shows, games, and software — no noise.
+              {marketingCopy}
             </p>
           </div>
 
@@ -53,7 +54,7 @@ export function HomeContent() {
               Torzo
             </h1>
             <p className="text-sm font-medium leading-6 text-zinc-500">
-              Search movies, shows, games, and software — no noise.
+              {marketingCopy}
             </p>
           </motion.div>
 
@@ -68,48 +69,6 @@ export function HomeContent() {
           </motion.div>
         </section>
       </div>
-
-      <footer className="relative z-10 w-full px-4 pb-[calc(2.5rem+env(safe-area-inset-bottom))] md:hidden">
-        <nav className="mx-auto flex w-full flex-wrap justify-center gap-x-5 gap-y-2 border-t border-zinc-200/70 pt-6 text-xs font-medium text-zinc-500">
-          <Link
-            className="transition-colors hover:text-zinc-950"
-            href="/results"
-          >
-            Results
-          </Link>
-          <Link
-            className="transition-colors hover:text-zinc-950"
-            href="/detail"
-          >
-            Detail
-          </Link>
-          <span className="text-zinc-300">Torzo alpha</span>
-        </nav>
-      </footer>
-
-      <motion.footer
-        variants={rise}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
-        animate="visible"
-        transition={{ ...transition, delay: shouldReduceMotion ? 0 : 0.1 }}
-        className="relative z-10 hidden w-full px-4 pb-10 md:block md:px-10 xl:px-[150px]"
-      >
-        <nav className="mx-auto flex w-full flex-wrap justify-center gap-x-5 gap-y-2 border-t border-zinc-200/70 pt-6 text-xs font-medium text-zinc-500">
-          <Link
-            className="transition-colors hover:text-zinc-950"
-            href="/results"
-          >
-            Results
-          </Link>
-          <Link
-            className="transition-colors hover:text-zinc-950"
-            href="/detail"
-          >
-            Detail
-          </Link>
-          <span className="text-zinc-300">Torzo alpha</span>
-        </nav>
-      </motion.footer>
     </>
   );
 }

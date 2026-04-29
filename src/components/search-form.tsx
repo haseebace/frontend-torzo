@@ -30,9 +30,9 @@ function SearchSubmitButton() {
       className={cn(
         buttonVariants({ variant: "torzoPill" }),
         "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        "md:inset-y-1/2 md:h-13 md:w-13 md:-translate-y-1/2 md:scale-90 md:opacity-0 md:pointer-events-none",
+        "md:inset-y-1.5 md:right-1.5 md:h-13 md:w-13 md:opacity-0 md:pointer-events-none md:scale-90",
         "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
-        "motion-reduce:transition-none md:motion-reduce:scale-100"
+        "active:translate-y-0 motion-reduce:transition-none md:motion-reduce:scale-100"
       )}
     >
       <ArrowRight className="size-5" />
@@ -162,7 +162,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
           spellCheck={false}
           value={query}
           placeholder="Search movies, shows, games, software..."
-          className="h-16 pl-12 pr-16 placeholder:text-[12px]"
+          className="h-16 pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[12px]"
           onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
               setIsSuggestionsOpen(false);

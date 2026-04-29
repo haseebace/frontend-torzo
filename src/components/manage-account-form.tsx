@@ -218,8 +218,7 @@ export function ManageAccountForm() {
           Manage
         </h1>
         <p className="max-w-2xl text-sm leading-6 text-zinc-500 md:text-base">
-          Connect Real-Debrid and choose which torrent providers Torzo should
-          use when searching.
+          Turbocharge your experience by connecting Real-Debrid and choosing your preferred search sources.
         </p>
       </div>
 
@@ -230,7 +229,7 @@ export function ManageAccountForm() {
               <KeyRound className="size-5" />
             </div>
             <CardTitle className="text-xl font-semibold text-zinc-950">
-              Real-Debrid account
+              Unlock High Speed
             </CardTitle>
           </CardHeader>
           <CardContent className="px-5">
@@ -253,7 +252,7 @@ export function ManageAccountForm() {
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-xs leading-5 text-zinc-500">
-                  Your key is saved locally in your browser so you don't share it.
+                  Your key stays in your browser. It's never sent to our servers, keeping your account 100% private.
                 </p>
                 {isConnected ? (
                   <Button
