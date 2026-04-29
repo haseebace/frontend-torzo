@@ -21,7 +21,9 @@ export function SiteNavbar() {
             />
           </span>
         </Link>
-        <Button type="button">Manage</Button>
+        <Button asChild>
+          <Link href="/manage">Manage</Link>
+        </Button>
       </nav>
     </header>
   );
