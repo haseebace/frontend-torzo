@@ -1,27 +1,6 @@
-"use client";
-
-import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { SearchForm } from "@/components/search-form";
 
-const rise: Variants = {
-  hidden: {
-    opacity: 0,
-    scale: 0.95,
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-  },
-};
-
 export function HomeContent() {
-  const shouldReduceMotion = useReducedMotion();
-
-  const transition = {
-    duration: shouldReduceMotion ? 0 : 0.5,
-    ease: [0.16, 1, 0.3, 1],
-  } as const;
-
   const marketingCopy = "Torrenting without the trash. No ads, no popups—just direct high-speed downloads via Real-Debrid.";
 
   return (
@@ -43,30 +22,18 @@ export function HomeContent() {
 
       <div className="relative z-10 hidden flex-1 -translate-y-32 items-center justify-center px-4 py-10 md:flex md:px-10 xl:px-[150px]">
         <section className="flex w-full flex-col items-center text-center">
-          <motion.div
-            variants={rise}
-            initial={shouldReduceMotion ? "visible" : "hidden"}
-            animate="visible"
-            transition={transition}
-            className="mb-8 space-y-3"
-          >
+          <div className="mb-8 space-y-3">
             <h1 className="text-[125px] font-[900] leading-[1.1] tracking-[4px] text-zinc-950">
               Torzo
             </h1>
             <p className="text-sm font-medium leading-6 text-zinc-500">
               {marketingCopy}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            variants={rise}
-            initial={shouldReduceMotion ? "visible" : "hidden"}
-            animate="visible"
-            transition={{ ...transition, delay: shouldReduceMotion ? 0 : 0.05 }}
-            className="w-full"
-          >
+          <div className="w-full">
             <SearchForm id="torrent-search" className="mx-auto" />
-          </motion.div>
+          </div>
         </section>
       </div>
     </>
