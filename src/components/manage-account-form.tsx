@@ -60,8 +60,13 @@ export function ManageAccountForm() {
         // Load RD Key from localStorage
         const localApiKey = localStorage.getItem("rd_api_key");
         if (localApiKey) {
-          const userResponse = await fetch("https://api.real-debrid.com/rest/1.0/user", {
-            headers: { Authorization: `Bearer ${localApiKey}` }
+          const userResponse = await fetch("/api/real-debrid/proxy", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-rd-api-key": localApiKey,
+            },
+            body: JSON.stringify({ endpoint: "/user" }),
           });
           
           if (userResponse.ok) {
@@ -165,9 +170,14 @@ export function ManageAccountForm() {
     setIsConnecting(true);
 
     try {
-      // Verify token with Real-Debrid directly from the browser
-      const userResponse = await fetch("https://api.real-debrid.com/rest/1.0/user", {
-        headers: { Authorization: `Bearer ${apiKey}` }
+      // Verify token via our proxy
+      const userResponse = await fetch("/api/real-debrid/proxy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-rd-api-key": apiKey.trim(),
+        },
+        body: JSON.stringify({ endpoint: "/user" }),
       });
 
       if (!userResponse.ok) {
@@ -176,7 +186,6 @@ export function ManageAccountForm() {
 
       const userData = await userResponse.json();
       
-      // Save directly to localStorage
       localStorage.setItem("rd_api_key", apiKey.trim());
 
       setIsConnected(true);
