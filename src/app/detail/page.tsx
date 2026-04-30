@@ -447,23 +447,18 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                         className="min-w-0 rounded-lg px-2 py-3 text-sm"
                       >
                         <div className="min-w-0">
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:border md:border-zinc-200 md:bg-zinc-50 md:px-2 md:py-1 md:text-[11px] md:tracking-[0.14em]">
+                          <div className="flex min-w-0 items-center gap-2">
+                            <Link
+                              href={item.source_url}
+                              target="_blank"
+                              className="min-w-0 flex-1 truncate text-xs text-zinc-500 underline-offset-4 hover:text-zinc-950 hover:underline md:text-sm"
+                            >
+                              {item.source_url}
+                            </Link>
+                            <span className="shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:border md:border-zinc-200 md:bg-zinc-50 md:px-2 md:py-1 md:text-[11px] md:tracking-[0.14em]">
                               {formatProvider(item.provider)}
                             </span>
-                            {item.verified && (
-                              <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-emerald-700">
-                                Verified
-                              </span>
-                            )}
                           </div>
-                          <Link
-                            href={item.source_url}
-                            target="_blank"
-                            className="mt-2 block truncate text-xs text-zinc-500 underline-offset-4 hover:text-zinc-950 hover:underline md:text-sm"
-                          >
-                            {item.source_url}
-                          </Link>
                         </div>
                       </div>
                     ))}
