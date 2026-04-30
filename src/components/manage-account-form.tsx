@@ -217,7 +217,7 @@ export function ManageAccountForm() {
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 md:text-4xl">
           Manage
         </h1>
-        <p className="max-w-2xl text-sm leading-6 text-zinc-500 md:text-base">
+        <p className="max-w-2xl text-xs leading-5 text-zinc-500">
           Turbocharge your experience by connecting Real-Debrid and choosing your preferred search sources.
         </p>
       </div>
@@ -297,7 +297,7 @@ export function ManageAccountForm() {
               <p className="text-sm font-medium text-zinc-950">
                 {isConnected ? "Connected locally" : "Not connected"}
               </p>
-              <p className="mt-1 text-sm leading-6 text-zinc-500">
+              <p className="mt-1 text-xs leading-5 text-zinc-500">
                 {isConnected
                   ? username
                     ? `Connected as ${username} (Browser only).`
@@ -354,7 +354,7 @@ export function ManageAccountForm() {
                       </span>
                     ) : null}
                   </span>
-                  <span className="mt-1 block text-sm leading-6 text-zinc-500">
+                  <span className="mt-1 block text-xs leading-5 text-zinc-500">
                     {provider.description}
                   </span>
                 </span>
