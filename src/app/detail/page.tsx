@@ -360,20 +360,20 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
       <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
         <div className="min-w-0 space-y-5 border-b border-zinc-200 pb-7">
           <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-zinc-500">
-            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 uppercase tracking-[0.14em] text-zinc-600">
+            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
               {torrent.category}
             </span>
-            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 uppercase tracking-[0.14em] text-zinc-600">
+            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
               {formatProvider(torrent.source.provider)}
             </span>
             {torrent.verified && (
-              <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 uppercase tracking-[0.14em] text-emerald-700">
-                <CheckCircle2 className="size-3" />
+              <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
+                <CheckCircle2 className="size-2.5 md:size-3" />
                 Verified
               </span>
             )}
             {torrent.meta.fetched_live && (
-              <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-1 uppercase tracking-[0.14em] text-blue-700">
+              <span className="rounded-md bg-[#80ed99]/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-[#80ed99] md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
                 Live
               </span>
             )}
