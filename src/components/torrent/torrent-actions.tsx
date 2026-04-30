@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Cloud, Download, Magnet, Loader2 } from "lucide-react";
+import { Cloud, Download, Magnet, Loader2, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TorrentActionsProps {
@@ -116,9 +116,32 @@ export function TorrentActions({
 
   const isLoading = ["adding", "selecting", "downloading", "unrestricting"].includes(status);
 
+  const handleWatchNow = () => {
+    if (!directLink) return;
+
+    const encodedLink = encodeURIComponent(directLink);
+    const userAgent = navigator.userAgent;
+    const isIOS =
+      /iPad|iPhone|iPod/.test(userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isMacOS = /Macintosh|Mac OS X/.test(userAgent);
+
+    if (isIOS) {
+      window.location.href = `infuse://x-callback-url/play?url=${encodedLink}`;
+      return;
+    }
+
+    if (isMacOS) {
+      window.location.href = `iina://weblink?url=${encodedLink}`;
+      return;
+    }
+
+    window.open(directLink, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="flex flex-col gap-3">
-      <div className={`grid w-full gap-2 sm:flex sm:flex-wrap sm:gap-3 ${directLink ? "grid-cols-4" : "grid-cols-3"}`}>
+      <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
         {magnetLink && (
           <Button asChild variant="default" size="lg" className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm">
             <a href={magnetLink}>
@@ -166,6 +189,20 @@ export function TorrentActions({
               <span className="sm:hidden">Direct</span>
               <span className="hidden sm:inline">Direct Download</span>
             </a>
+          </Button>
+        )}
+
+        {directLink && (
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm"
+            onClick={handleWatchNow}
+          >
+            <Play className="size-3.5 sm:size-4" />
+            <span className="sm:hidden">Watch</span>
+            <span className="hidden sm:inline">Watch Now</span>
           </Button>
         )}
       </div>
