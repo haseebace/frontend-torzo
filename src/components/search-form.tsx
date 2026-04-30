@@ -22,11 +22,12 @@ type TmdbSuggestion = {
   overview: string;
 };
 
-function SearchSubmitButton() {
+function SearchSubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
   return (
     <button
       type="submit"
-      aria-label="Search"
+      aria-label={isSubmitting ? "Searching" : "Search"}
+      aria-busy={isSubmitting}
       className={cn(
         buttonVariants({ variant: "torzoPill" }),
         "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -35,7 +36,11 @@ function SearchSubmitButton() {
         "active:translate-y-0 motion-reduce:transition-none md:motion-reduce:scale-100"
       )}
     >
-      <ArrowRight className="size-5" />
+      {isSubmitting ? (
+        <Loader2 className="size-5 animate-spin" />
+      ) : (
+        <ArrowRight className="size-5" />
+      )}
     </button>
   );
 }
@@ -49,6 +54,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
   );
   const [suggestions, setSuggestions] = useState<TmdbSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const hasUserTypedRef = useRef(false);
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -115,6 +121,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
 
   const handleSuggestionSelect = (movie: TmdbSuggestion) => {
     clearBlurTimer();
+    setIsSubmitting(true);
     setSelectedMovie(movie);
     setQuery(movie.title);
     setIsSuggestionsOpen(false);
@@ -134,6 +141,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
     <form
       action="/results"
       autoComplete="off"
+      onSubmit={() => setIsSubmitting(true)}
       className={cn(
         "group w-full max-w-3xl md:transition-[max-width] md:duration-300 md:ease-[cubic-bezier(0.16,1,0.3,1)] md:focus-within:max-w-[52rem]",
         className
@@ -162,7 +170,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
           spellCheck={false}
           value={query}
           placeholder="Search movies, shows, games, software..."
-          className="h-16 pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[12px]"
+          className="h-16 pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px]"
           onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
               setIsSuggestionsOpen(false);
@@ -172,6 +180,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
             const nextQuery = event.target.value;
 
             hasUserTypedRef.current = true;
+            setIsSubmitting(false);
             setQuery(nextQuery);
             setSelectedMovie(null);
 
@@ -196,7 +205,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
           </span>
         ) : null}
 
-        <SearchSubmitButton />
+        <SearchSubmitButton isSubmitting={isSubmitting} />
 
         {showSuggestions ? (
           <div
