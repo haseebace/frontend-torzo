@@ -118,7 +118,7 @@ export function TorrentActions({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+      <div className={`grid w-full gap-2 sm:flex sm:flex-wrap sm:gap-3 ${directLink ? "grid-cols-4" : "grid-cols-3"}`}>
         {magnetLink && (
           <Button asChild variant="default" size="lg" className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm">
             <a href={magnetLink}>
@@ -160,10 +160,11 @@ export function TorrentActions({
         </Button>
 
         {directLink && (
-          <Button asChild variant="default" size="lg" className="w-full bg-emerald-600 text-white hover:bg-emerald-700 sm:w-auto">
+          <Button asChild variant="secondary" size="lg" className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm">
             <a href={directLink} target="_blank" rel="noreferrer">
-              <Download className="size-4" />
-              Direct Download
+              <Download className="size-3.5 sm:size-4" />
+              <span className="sm:hidden">Direct</span>
+              <span className="hidden sm:inline">Direct Download</span>
             </a>
           </Button>
         )}

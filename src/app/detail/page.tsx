@@ -405,7 +405,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               {renderTorrentInfo()}
             </div>
 
-            <Collapsible defaultOpen>
+            <Collapsible>
               <CollapsibleTrigger>
                 <div className="flex min-w-0 items-center gap-4">
                   <div>
@@ -420,11 +420,15 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 <div className="min-w-0 divide-y divide-zinc-200/70">
                   {hasFiles ? torrent.files.map((file, i) => {
                     const FileIcon = getFileIcon(file.extension || "");
+                    const fileSize =
+                      file.size && file.size !== "0 bytes"
+                        ? file.size
+                        : "Unknown size";
 
                     return (
                       <div
                         key={`${file.name}-${i}`}
-                        className="grid min-w-0 gap-2 rounded-lg px-2 py-3 text-xs transition-colors hover:bg-zinc-50 md:grid-cols-[minmax(0,1fr)_auto] md:gap-3 md:text-sm"
+                        className="rounded-lg px-2 py-3 text-xs transition-colors hover:bg-zinc-50 md:text-sm"
                       >
                         <div className="flex min-w-0 items-center gap-3">
                           <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500 md:size-8">
@@ -434,12 +438,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                             {file.name}
                           </p>
                           <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
-                            {file.extension || "file"}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-end gap-3 text-xs text-zinc-500">
-                          <span className="w-24 text-right font-medium text-zinc-700">
-                            {file.size}
+                            {fileSize}
                           </span>
                         </div>
                       </div>
@@ -471,8 +470,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                         className="min-w-0 rounded-lg px-2 py-3 text-sm"
                       >
                         <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-600">
+                          <div className="flex items-center justify-end gap-2">
+                            <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:border md:border-zinc-200 md:bg-zinc-50 md:px-2 md:py-1 md:text-[11px] md:tracking-[0.14em]">
                               {formatProvider(item.provider)}
                             </span>
                             {item.verified && (
@@ -484,7 +483,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                           <Link
                             href={item.source_url}
                             target="_blank"
-                            className="mt-2 block truncate text-zinc-500 underline-offset-4 hover:text-zinc-950 hover:underline"
+                            className="mt-2 block truncate text-xs text-zinc-500 underline-offset-4 hover:text-zinc-950 hover:underline md:text-sm"
                           >
                             {item.source_url}
                           </Link>
@@ -507,10 +506,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       key={`${image.url}-${index}`}
                       href={image.page_url ?? image.url}
                       target="_blank"
-                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100"
+                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-100 md:px-3 md:py-2 md:text-sm"
                     >
                       Screenshot {index + 1}
-                      <span className="ml-2 text-xs uppercase tracking-[0.12em] text-zinc-400">
+                      <span className="ml-1.5 text-[10px] uppercase tracking-[0.1em] text-zinc-400 md:ml-2 md:text-xs md:tracking-[0.12em]">
                         {image.kind}
                       </span>
                     </Link>
