@@ -17,7 +17,6 @@ export function TorrentActions({
 }: TorrentActionsProps) {
   const [directLink, setDirectLink] = useState<string | null>(null);
   const [rdAccountStatus, setRdAccountStatus] = useState<string | null>(null);
-  const [isInstantAvailable, setIsInstantAvailable] = useState(false);
   const [status, setStatus] = useState<
     | "idle"
     | "checking"
@@ -83,65 +82,40 @@ export function TorrentActions({
 
     if (!normalizedHash || !apiKey) return false;
 
-    if (!options.silent) setStatus("checking");
-    setErrorMessage(null);
+    try {
+      if (!options.silent) setStatus("checking");
+      setErrorMessage(null);
 
-    const torrents = await rdFetch("/torrents?limit=5000");
-    const match = Array.isArray(torrents)
-      ? torrents.find((torrent) => torrent?.hash?.toLowerCase() === normalizedHash)
-      : null;
+      const torrents = await rdFetch("/torrents?limit=5000");
+      const match = Array.isArray(torrents)
+        ? torrents.find((torrent) => torrent?.hash?.toLowerCase() === normalizedHash)
+        : null;
 
-    if (!match) {
-      if (!options.silent) setStatus("idle");
-      setRdAccountStatus(null);
-      return false;
-    }
+      if (!match) {
+        if (!options.silent) setStatus("idle");
+        setRdAccountStatus(null);
+        return false;
+      }
 
-    if (match.status === "downloaded" && match.links?.length) {
-      setRdAccountStatus("Ready in Real-Debrid");
-      await unrestrictFirstLink(match.links);
+      if (match.status === "downloaded" && match.links?.length) {
+        setRdAccountStatus("Ready in Real-Debrid");
+        await unrestrictFirstLink(match.links);
+        return true;
+      }
+
+      setDirectLink(null);
+      setStatus("idle");
+      setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
       return true;
+    } catch (err: any) {
+      if (err.code === 37) {
+        // Torrent API disabled, just skip silently
+        if (!options.silent) setStatus("idle");
+        return false;
+      }
+      throw err;
     }
-
-    setDirectLink(null);
-    setStatus("idle");
-    setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
-    return true;
   }, [infoHash, rdFetch, unrestrictFirstLink]);
-
-  useEffect(() => {
-    let isCurrent = true;
-
-    const checkRealDebrid = async () => {
-      const normalizedHash = infoHash?.trim().toLowerCase();
-      const apiKey = localStorage.getItem("rd_api_key");
-
-      if (!normalizedHash || !apiKey) return;
-
-      try {
-        await lookupExistingTorrent({ silent: false });
-      } catch {
-        if (isCurrent) setStatus("idle");
-      }
-
-      try {
-        const availability = await rdFetch(`/torrents/instantAvailability/${normalizedHash}`);
-        if (!isCurrent || !availability || typeof availability !== "object") return;
-
-        const hashEntry = availability[normalizedHash] ?? availability[normalizedHash.toUpperCase()];
-        const rdEntry = hashEntry?.rd;
-        setIsInstantAvailable(Array.isArray(rdEntry) && rdEntry.length > 0);
-      } catch {
-        if (isCurrent) setIsInstantAvailable(false);
-      }
-    };
-
-    checkRealDebrid();
-
-    return () => {
-      isCurrent = false;
-    };
-  }, [infoHash, lookupExistingTorrent, rdFetch]);
 
   const handleAddToRD = async () => {
     try {
@@ -303,18 +277,11 @@ export function TorrentActions({
           </Button>
         )}
       </div>
-      {(rdAccountStatus || isInstantAvailable) && (
+      {rdAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
-          {rdAccountStatus && (
-            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 sm:text-xs">
-              {rdAccountStatus}
-            </span>
-          )}
-          {isInstantAvailable && !directLink && (
-            <span className="rounded-md bg-[#80ed99]/15 px-1.5 py-0.5 text-[10px] font-medium text-[#1f9f4b] sm:text-xs">
-              Instant on RD
-            </span>
-          )}
+          <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 sm:text-xs">
+            {rdAccountStatus}
+          </span>
         </div>
       )}
       {errorMessage && <p className="text-sm font-medium text-red-600">{errorMessage}</p>}

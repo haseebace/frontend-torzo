@@ -1,3 +1,7 @@
+"use client";
+
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowDown,
@@ -50,12 +54,17 @@ export function TorrentResultCard({
   result,
   className,
 }: TorrentResultCardProps) {
+  const router = useRouter();
+
   const primarySource = result.sources[0];
   const provider = primarySource?.provider || "unknown";
   const sourceUrl = primarySource?.source_url || "";
   
-  // Navigate to detail with source and source_url
   const detailHref = `/detail?source=${provider}&source_url=${encodeURIComponent(sourceUrl)}`;
+
+  const handleMouseEnter = useCallback(() => {
+    router.prefetch(detailHref);
+  }, [router, detailHref]);
 
   return (
     <Link
@@ -64,6 +73,7 @@ export function TorrentResultCard({
         "group block rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-zinc-400/20",
         className
       )}
+      onMouseEnter={handleMouseEnter}
     >
       <Card className="grid gap-3 rounded-xl border border-transparent bg-[var(--result-card-background)] pb-4 pt-1 text-sm transition-all group-hover:border-zinc-200 group-hover:shadow-[0_4px_18px_rgba(24,24,27,0.04)] group-focus-visible:border-zinc-300 md:grid-cols-[1fr_auto] md:py-4">
         <CardContent className="contents p-0">
