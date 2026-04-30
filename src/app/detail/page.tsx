@@ -325,6 +325,33 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     { label: "Seeders", value: formatNumber(torrent.seeders), icon: Magnet },
     { label: "Leechers", value: formatNumber(torrent.leechers), icon: Download },
   ];
+  const renderTorrentInfo = () => (
+    <section className="rounded-xl border border-zinc-200 bg-white p-5">
+      <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
+        Torrent info
+      </h2>
+      <div className="grid grid-cols-2 gap-3">
+        {detailStats.map((stat) => {
+          const Icon = stat.icon;
+
+          return (
+            <div
+              key={stat.label}
+              className="rounded-lg border border-zinc-200 bg-zinc-50 p-3"
+            >
+              <p className="flex items-center gap-1.5 text-xs text-zinc-500">
+                <Icon className="size-3.5" />
+                {stat.label}
+              </p>
+              <p className="mt-2 text-lg font-semibold text-zinc-950">
+                {stat.value}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
 
   return (
     <main className="min-h-dvh overflow-x-hidden bg-white text-zinc-950">
@@ -356,11 +383,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">
               {title}
             </h1>
-            <div className="flex w-full min-w-0 flex-col gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto sm:flex-row sm:items-baseline sm:gap-2">
+            <div className="flex w-full min-w-0 items-baseline gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto">
               <span className="shrink-0 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-400">
                 Info hash:
               </span>
-              <p className="min-w-0 break-all font-mono text-xs leading-5 text-zinc-600 md:text-sm">
+              <p className="min-w-0 truncate font-mono text-xs leading-5 text-zinc-600 md:text-sm">
                 {torrent.infoHash ?? "Unknown"}
               </p>
             </div>
@@ -374,6 +401,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
         <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 space-y-6">
+            <div className="lg:hidden">
+              {renderTorrentInfo()}
+            </div>
+
             <Collapsible defaultOpen>
               <CollapsibleTrigger>
                 <div className="flex min-w-0 items-center gap-4">
@@ -393,20 +424,20 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                     return (
                       <div
                         key={`${file.name}-${i}`}
-                        className="grid min-w-0 gap-3 rounded-lg px-2 py-3 text-sm transition-colors hover:bg-zinc-50 md:grid-cols-[minmax(0,1fr)_auto]"
+                        className="grid min-w-0 gap-2 rounded-lg px-2 py-3 text-xs transition-colors hover:bg-zinc-50 md:grid-cols-[minmax(0,1fr)_auto] md:gap-3 md:text-sm"
                       >
                         <div className="flex min-w-0 items-center gap-3">
-                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500">
-                            <FileIcon className="size-4" />
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500 md:size-8">
+                            <FileIcon className="size-3.5 md:size-4" />
                           </span>
                           <p className="min-w-0 truncate font-medium text-zinc-700">
                             {file.name}
                           </p>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-zinc-500 md:justify-end">
-                          <span className="rounded-md bg-zinc-100 px-2 py-1 font-medium uppercase tracking-[0.12em] text-zinc-600">
+                          <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
                             {file.extension || "file"}
                           </span>
+                        </div>
+                        <div className="flex items-center justify-end gap-3 text-xs text-zinc-500">
                           <span className="w-24 text-right font-medium text-zinc-700">
                             {file.size}
                           </span>
@@ -490,31 +521,9 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           </div>
 
           <aside className="min-w-0 space-y-4">
-            <section className="rounded-xl border border-zinc-200 bg-white p-5">
-              <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
-                Torrent info
-              </h2>
-              <div className="grid grid-cols-2 gap-3">
-                {detailStats.map((stat) => {
-                  const Icon = stat.icon;
-
-                  return (
-                    <div
-                      key={stat.label}
-                      className="rounded-lg border border-zinc-200 bg-zinc-50 p-3"
-                    >
-                      <p className="flex items-center gap-1.5 text-xs text-zinc-500">
-                        <Icon className="size-3.5" />
-                        {stat.label}
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-zinc-950">
-                        {stat.value}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
+            <div className="hidden lg:block">
+              {renderTorrentInfo()}
+            </div>
 
             <section className="rounded-xl border border-zinc-200 bg-white p-5">
               <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">

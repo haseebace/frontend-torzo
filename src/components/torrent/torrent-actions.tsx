@@ -118,20 +118,22 @@ export function TorrentActions({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid w-full grid-cols-1 gap-3 sm:flex sm:flex-wrap">
+      <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
         {magnetLink && (
-          <Button asChild variant="default" size="lg" className="w-full sm:w-auto">
+          <Button asChild variant="default" size="lg" className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm">
             <a href={magnetLink}>
-              <Magnet className="size-4" />
-              Magnet link
+              <Magnet className="size-3.5 sm:size-4" />
+              <span className="sm:hidden">Magnet</span>
+              <span className="hidden sm:inline">Magnet link</span>
             </a>
           </Button>
         )}
         {torrentFileUrl && (
-          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+          <Button asChild variant="outline" size="lg" className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm">
             <a href={torrentFileUrl}>
-              <Download className="size-4" />
-              Download torrent
+              <Download className="size-3.5 sm:size-4" />
+              <span className="sm:hidden">Torrent</span>
+              <span className="hidden sm:inline">Download torrent</span>
             </a>
           </Button>
         )}
@@ -139,17 +141,22 @@ export function TorrentActions({
           type="button"
           variant="secondary"
           size="lg"
-          className="w-full sm:w-auto"
+          className="w-full px-1 text-xs sm:w-auto sm:px-2.5 sm:text-sm"
           onClick={handleAddToRD}
           disabled={isLoading || !magnetLink}
         >
-          {isLoading ? <Loader2 className="size-4 animate-spin" /> : <Cloud className="size-4" />}
-          {status === "adding" && "Adding..."}
-          {status === "selecting" && "Selecting files..."}
-          {status === "downloading" && "Downloading..."}
-          {status === "unrestricting" && "Unrestricting..."}
-          {status === "ready" && "Added to RD"}
-          {(status === "idle" || status === "error") && "Add to Real Debrid"}
+          {isLoading ? <Loader2 className="size-3.5 animate-spin sm:size-4" /> : <Cloud className="size-3.5 sm:size-4" />}
+          <span className="sm:hidden">
+            {status === "ready" ? "Added" : isLoading ? "Adding" : "Debrid"}
+          </span>
+          <span className="hidden sm:inline">
+            {status === "adding" && "Adding..."}
+            {status === "selecting" && "Selecting files..."}
+            {status === "downloading" && "Downloading..."}
+            {status === "unrestricting" && "Unrestricting..."}
+            {status === "ready" && "Added to RD"}
+            {(status === "idle" || status === "error") && "Add to Real Debrid"}
+          </span>
         </Button>
 
         {directLink && (
