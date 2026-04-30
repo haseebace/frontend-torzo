@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   ChevronDown,
+  CheckCircle2,
   Download,
   File,
   FileText,
@@ -22,12 +23,188 @@ type DetailPageProps = {
   }>;
 };
 
+type TorrentFile = {
+  name: string;
+  size: string;
+  extension: string;
+};
+
+type TorrentImage = {
+  url: string;
+  page_url: string | null;
+  kind: string;
+};
+
+type TorrentSource = {
+  provider: string;
+  source_url: string;
+  seeders: number | null;
+  leechers: number | null;
+  downloaded: number | null;
+  last_seen_at: string | null;
+  verified: boolean | null;
+};
+
+type TorrentDetailData = {
+  id: string;
+  title: string;
+  magnet_link: string | null;
+  torrent_file_url: string | null;
+  info_hash: string | null;
+  size_bytes: number | null;
+  uploaded_at: string | null;
+  category: string | null;
+  language: string | null;
+  uploader: string | null;
+  verified: boolean | null;
+  seeders: number | null;
+  leechers: number | null;
+  downloaded: number | null;
+  file_count: number | null;
+  primary_file_name: string | null;
+  primary_file_extension: string | null;
+  files: TorrentFile[];
+  images: TorrentImage[];
+  trusted_score: number | null;
+  health_score: number | null;
+  source_count: number | null;
+  last_seen_at: string | null;
+  sources: TorrentSource[];
+};
+
+type TorrentDetailMeta = {
+  fetched_live?: boolean;
+  lookup_source?: string;
+  provider?: string;
+  source_url?: string;
+};
+
+type TorrentDetailResponse = {
+  data: TorrentDetailData;
+  meta?: TorrentDetailMeta;
+};
+
+type YtsTorrent = {
+  hash?: string;
+  magnet_link?: string;
+  url?: string;
+  size?: string;
+  size_bytes?: number;
+  seeds?: number;
+  peers?: number;
+};
+
+type YtsMovie = {
+  title?: string;
+  title_long?: string;
+  url?: string;
+  language?: string;
+  date_uploaded?: string;
+  torrents?: YtsTorrent[];
+};
+
+type YtsDetailResponse = {
+  data?: {
+    movie?: YtsMovie;
+  };
+  error?: {
+    message?: string;
+  };
+};
+
+type TorrentDetail = {
+  title: string;
+  magnetLink: string | null;
+  torrentFileUrl: string | null;
+  infoHash: string | null;
+  sizeBytes: number;
+  uploadedAt: string | null;
+  category: string;
+  language: string | null;
+  uploader: string | null;
+  verified: boolean;
+  seeders: number;
+  leechers: number;
+  downloaded: number | null;
+  fileCount: number;
+  primaryFileName: string | null;
+  primaryFileExtension: string | null;
+  files: TorrentFile[];
+  images: TorrentImage[];
+  trustedScore: number | null;
+  healthScore: number | null;
+  sourceCount: number;
+  lastSeenAt: string | null;
+  sources: TorrentSource[];
+  source: {
+    provider: string;
+    url: string;
+  };
+  meta: TorrentDetailMeta;
+};
+
 function cleanTitle(title: string) {
   return title
     .replace(/^Download\s+/i, "")
     .replaceAll(".", " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function formatNumber(value: number | null | undefined) {
+  return typeof value === "number" ? value.toLocaleString() : "Unknown";
+}
+
+function formatPercent(value: number | null | undefined) {
+  if (typeof value !== "number") return "Unknown";
+
+  return `${Math.round(value * 100)}%`;
+}
+
+function formatProvider(value: string | null | undefined) {
+  if (!value) return "Unknown";
+
+  return value.replaceAll("-", " ").toUpperCase();
+}
+
+function normalizeDetailResponse(
+  response: TorrentDetailResponse,
+  fallbackSource: string,
+  fallbackSourceUrl: string
+): TorrentDetail {
+  const { data, meta = {} } = response;
+  const primarySource = data.sources?.[0];
+
+  return {
+    title: data.title,
+    magnetLink: data.magnet_link,
+    torrentFileUrl: data.torrent_file_url,
+    infoHash: data.info_hash,
+    sizeBytes: data.size_bytes ?? 0,
+    uploadedAt: data.uploaded_at,
+    category: data.category ?? "unknown",
+    language: data.language,
+    uploader: data.uploader,
+    verified: Boolean(data.verified ?? primarySource?.verified),
+    seeders: data.seeders ?? primarySource?.seeders ?? 0,
+    leechers: data.leechers ?? primarySource?.leechers ?? 0,
+    downloaded: data.downloaded ?? primarySource?.downloaded ?? null,
+    fileCount: data.file_count ?? data.files?.length ?? 0,
+    primaryFileName: data.primary_file_name,
+    primaryFileExtension: data.primary_file_extension,
+    files: data.files ?? [],
+    images: data.images ?? [],
+    trustedScore: data.trusted_score,
+    healthScore: data.health_score,
+    sourceCount: data.source_count ?? data.sources?.length ?? 0,
+    lastSeenAt: data.last_seen_at ?? primarySource?.last_seen_at ?? null,
+    sources: data.sources ?? [],
+    source: {
+      provider: primarySource?.provider ?? meta.provider ?? fallbackSource,
+      url: primarySource?.source_url ?? meta.source_url ?? fallbackSourceUrl,
+    },
+    meta,
+  };
 }
 
 function getFileIcon(extension: string) {
@@ -55,7 +232,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     );
   }
 
-  let torrent: any = null;
+  let torrent: TorrentDetail | null = null;
   let error: string | null = null;
 
   try {
@@ -65,27 +242,37 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         cache: "no-store"
       });
       if (res.ok) {
-        const json = await res.json();
-        const movie = json.data.movie;
+        const json = (await res.json()) as YtsDetailResponse;
+        const movie = json.data?.movie;
         if (!movie) throw new Error("YTS Movie not found");
         
-        const bestTorrent = movie.torrents[0];
+        const bestTorrent = movie.torrents?.[0];
         torrent = {
-          title: movie.title_long || movie.title,
-          magnetLink: bestTorrent.magnet_link,
-          torrentFileUrl: bestTorrent.url,
-          infoHash: bestTorrent.hash,
-          sizeBytes: bestTorrent.size_bytes,
-          uploadedAt: movie.date_uploaded,
+          title: movie.title_long || movie.title || "YTS torrent",
+          magnetLink: bestTorrent?.magnet_link ?? null,
+          torrentFileUrl: bestTorrent?.url ?? null,
+          infoHash: bestTorrent?.hash ?? null,
+          sizeBytes: bestTorrent?.size_bytes ?? 0,
+          uploadedAt: movie.date_uploaded ?? null,
           category: "movies",
           uploader: "YTS",
-          seeders: bestTorrent.seeds,
-          leechers: bestTorrent.peers,
+          seeders: bestTorrent?.seeds ?? 0,
+          leechers: bestTorrent?.peers ?? 0,
           fileCount: 1,
-          files: [{ name: movie.title, size: bestTorrent.size, extension: ".mp4" }],
-          source: { provider: "yts", url: movie.url },
+          files: [{ name: movie.title || "Movie file", size: bestTorrent?.size ?? "Unknown", extension: ".mp4" }],
+          source: { provider: "yts", url: movie.url ?? sourceUrl },
+          sources: [],
+          images: [],
+          language: movie.language ?? null,
+          primaryFileName: movie.title ?? null,
+          primaryFileExtension: ".mp4",
+          sourceCount: 1,
+          lastSeenAt: movie.date_uploaded ?? null,
+          meta: { provider: "yts", source_url: movie.url ?? sourceUrl },
           trustedScore: 1.0,
           healthScore: 1.0,
+          downloaded: null,
+          verified: true,
         };
       } else {
         const errJson = await res.json().catch(() => ({}));
@@ -98,24 +285,17 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         { cache: "no-store" }
       );
       if (res.ok) {
-        const json = await res.json();
-        torrent = {
-           ...json.data,
-           magnetLink: json.data.magnet_link,
-           torrentFileUrl: json.data.torrent_file_url,
-           infoHash: json.data.info_hash,
-           sizeBytes: json.data.size_bytes,
-           uploadedAt: json.data.uploaded_at,
-           source: { provider: source, url: sourceUrl }
-        };
+        const json = (await res.json()) as TorrentDetailResponse;
+        torrent = normalizeDetailResponse(json, source, sourceUrl);
       } else {
         const errJson = await res.json().catch(() => ({}));
         error = errJson.error?.message || `API error: ${res.status}`;
       }
     }
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
-    error = e.message || "Could not connect to the Torzo API.";
+    error =
+      e instanceof Error ? e.message : "Could not connect to the Torzo API.";
   }
 
   if (error || !torrent) {
@@ -136,11 +316,14 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   }
 
   const title = cleanTitle(torrent.title);
+  const hasFiles = torrent.files.length > 0;
+  const sourceCountLabel =
+    torrent.sourceCount === 1 ? "1 source" : `${torrent.sourceCount} sources`;
   const detailStats = [
     { label: "Size", value: formatBytes(torrent.sizeBytes || 0), icon: HardDrive },
     { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString(), icon: Files },
-    { label: "Seeders", value: (torrent.seeders || 0).toString(), icon: Magnet },
-    { label: "Leechers", value: (torrent.leechers || 0).toString(), icon: Download },
+    { label: "Seeders", value: formatNumber(torrent.seeders), icon: Magnet },
+    { label: "Leechers", value: formatNumber(torrent.leechers), icon: Download },
   ];
 
   return (
@@ -153,6 +336,20 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 uppercase tracking-[0.14em] text-zinc-600">
               {torrent.category}
             </span>
+            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 uppercase tracking-[0.14em] text-zinc-600">
+              {formatProvider(torrent.source.provider)}
+            </span>
+            {torrent.verified && (
+              <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 uppercase tracking-[0.14em] text-emerald-700">
+                <CheckCircle2 className="size-3" />
+                Verified
+              </span>
+            )}
+            {torrent.meta.fetched_live && (
+              <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-1 uppercase tracking-[0.14em] text-blue-700">
+                Live
+              </span>
+            )}
           </div>
 
           <div className="space-y-3">
@@ -164,7 +361,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 Info hash:
               </span>
               <p className="min-w-0 break-all font-mono text-xs leading-5 text-zinc-600 md:text-sm">
-                {torrent.infoHash}
+                {torrent.infoHash ?? "Unknown"}
               </p>
             </div>
           </div>
@@ -179,15 +376,29 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           <div className="space-y-6">
             <section className="rounded-xl border border-zinc-200 bg-white p-5">
               <h2 className="mb-3 text-lg font-semibold tracking-tight text-zinc-950">
-                Direct Download Ready
+                Torrent details
               </h2>
-              <div className="space-y-3 text-sm leading-6 text-zinc-600">
-                <p>
-                  Skip the slow peers and sketchy ads. Convert this {torrent.source.provider.toUpperCase()} result into a high-speed direct link by hitting the Real-Debrid button above.
-                </p>
-                {torrent.uploader && (
-                   <p className="text-xs text-zinc-400">Source: <span className="font-medium text-zinc-500">{torrent.uploader}</span></p>
-                )}
+              <div className="grid gap-3 text-sm text-zinc-600 sm:grid-cols-2">
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Primary file</p>
+                  <p className="mt-1 break-words font-medium text-zinc-800">
+                    {torrent.primaryFileName ?? torrent.files[0]?.name ?? "Unknown"}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Uploader</p>
+                  <p className="mt-1 font-medium text-zinc-800">{torrent.uploader ?? "Unknown"}</p>
+                </div>
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Language</p>
+                  <p className="mt-1 font-medium uppercase text-zinc-800">{torrent.language ?? "Unknown"}</p>
+                </div>
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Extension</p>
+                  <p className="mt-1 font-medium text-zinc-800">
+                    {torrent.primaryFileExtension ?? torrent.files[0]?.extension ?? "Unknown"}
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -204,7 +415,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="divide-y divide-zinc-200/70 pr-2">
-                  {torrent.files?.map((file: any, i: number) => {
+                  {hasFiles ? torrent.files.map((file, i) => {
                     const FileIcon = getFileIcon(file.extension || "");
 
                     return (
@@ -222,7 +433,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                         </div>
                         <div className="flex items-center gap-3 text-xs text-zinc-500 md:justify-end">
                           <span className="rounded-md bg-zinc-100 px-2 py-1 font-medium uppercase tracking-[0.12em] text-zinc-600">
-                            {file.extension}
+                            {file.extension || "file"}
                           </span>
                           <span className="w-24 text-right font-medium text-zinc-700">
                             {file.size}
@@ -230,10 +441,85 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                         </div>
                       </div>
                     );
-                  })}
+                  }) : (
+                    <p className="px-2 py-3 text-sm text-zinc-500">
+                      No file list returned for this torrent yet.
+                    </p>
+                  )}
                 </div>
               </CollapsibleContent>
             </Collapsible>
+
+            {torrent.sources.length > 0 && (
+              <Collapsible>
+                <CollapsibleTrigger>
+                  <div className="flex min-w-0 items-center gap-4">
+                    <h2 className="text-lg font-semibold tracking-tight text-zinc-950">
+                      Sources
+                    </h2>
+                  </div>
+                  <ChevronDown className="size-4 shrink-0 text-zinc-500 transition-transform duration-200" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="divide-y divide-zinc-200/70 pr-2">
+                    {torrent.sources.map((item, i) => (
+                      <div
+                        key={`${item.provider}-${item.source_url}-${i}`}
+                        className="grid gap-3 rounded-lg px-2 py-3 text-sm md:grid-cols-[1fr_auto]"
+                      >
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-600">
+                              {formatProvider(item.provider)}
+                            </span>
+                            {item.verified && (
+                              <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-emerald-700">
+                                Verified
+                              </span>
+                            )}
+                          </div>
+                          <Link
+                            href={item.source_url}
+                            target="_blank"
+                            className="mt-2 block truncate text-zinc-500 underline-offset-4 hover:text-zinc-950 hover:underline"
+                          >
+                            {item.source_url}
+                          </Link>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 text-xs text-zinc-500 md:text-right">
+                          <span><b className="block text-sm text-zinc-900">{formatNumber(item.seeders)}</b>seed</span>
+                          <span><b className="block text-sm text-zinc-900">{formatNumber(item.leechers)}</b>leech</span>
+                          <span><b className="block text-sm text-zinc-900">{formatNumber(item.downloaded)}</b>downloads</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            )}
+
+            {torrent.images.length > 0 && (
+              <section className="rounded-xl border border-zinc-200 bg-white p-5">
+                <h2 className="mb-3 text-lg font-semibold tracking-tight text-zinc-950">
+                  Screenshots
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {torrent.images.map((image, index) => (
+                    <Link
+                      key={`${image.url}-${index}`}
+                      href={image.page_url ?? image.url}
+                      target="_blank"
+                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100"
+                    >
+                      Screenshot {index + 1}
+                      <span className="ml-2 text-xs uppercase tracking-[0.12em] text-zinc-400">
+                        {image.kind}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
           <aside className="space-y-4">
@@ -284,10 +570,28 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                   <div className="flex items-center justify-between gap-4 py-3">
                     <span className="text-zinc-500">Downloads</span>
                     <span className="font-semibold text-zinc-950">
-                      {torrent.downloaded}
+                      {formatNumber(torrent.downloaded)}
                     </span>
                   </div>
                 )}
+                <div className="flex items-center justify-between gap-4 py-3">
+                  <span className="text-zinc-500">Health score</span>
+                  <span className="font-semibold text-zinc-950">
+                    {formatPercent(torrent.healthScore)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-4 py-3">
+                  <span className="text-zinc-500">Trusted score</span>
+                  <span className="font-semibold text-zinc-950">
+                    {formatPercent(torrent.trustedScore)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-4 py-3 last:pb-0">
+                  <span className="text-zinc-500">Last seen</span>
+                  <span className="font-semibold text-zinc-950">
+                    {formatDate(torrent.lastSeenAt)}
+                  </span>
+                </div>
               </div>
             </section>
 
@@ -299,9 +603,21 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 <div className="flex items-center justify-between gap-4 py-3 first:pt-0">
                   <span className="text-zinc-500">Provider</span>
                   <span className="font-semibold uppercase tracking-[0.12em] text-zinc-950">
-                    {torrent.source.provider}
+                    {formatProvider(torrent.source.provider)}
                   </span>
                 </div>
+                <div className="flex items-center justify-between gap-4 py-3">
+                  <span className="text-zinc-500">Source count</span>
+                  <span className="font-semibold text-zinc-950">{sourceCountLabel}</span>
+                </div>
+                {torrent.meta.lookup_source && (
+                  <div className="flex items-center justify-between gap-4 py-3">
+                    <span className="text-zinc-500">Lookup</span>
+                    <span className="font-semibold text-zinc-950">
+                      {torrent.meta.lookup_source.replaceAll("_", " ")}
+                    </span>
+                  </div>
+                )}
                 <div className="py-3 last:pb-0">
                   <Link
                     href={torrent.source.url}

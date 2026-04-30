@@ -5,8 +5,8 @@ import { Cloud, Download, Magnet, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TorrentActionsProps {
-  magnetLink: string;
-  torrentFileUrl: string;
+  magnetLink?: string | null;
+  torrentFileUrl?: string | null;
 }
 
 export function TorrentActions({
@@ -25,7 +25,7 @@ export function TorrentActions({
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const rdFetch = async (endpoint: string, options: { method?: string; body?: any } = {}) => {
+  const rdFetch = async (endpoint: string, options: { method?: string; body?: unknown } = {}) => {
     const apiKey = localStorage.getItem("rd_api_key");
     if (!apiKey) throw new Error("No API key found");
 
@@ -50,6 +50,8 @@ export function TorrentActions({
 
   const handleAddToRD = async () => {
     try {
+      if (!magnetLink) throw new Error("No magnet link found");
+
       setStatus("adding");
       setErrorMessage(null);
       setDirectLink(null);
@@ -105,9 +107,9 @@ export function TorrentActions({
 
       setDirectLink(unrestrictData.download);
       setStatus("ready");
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setErrorMessage(err.message || "An unknown error occurred");
+      setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred");
       setStatus("error");
     }
   };
@@ -117,24 +119,28 @@ export function TorrentActions({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap gap-3">
-        <Button asChild variant="default" size="lg">
-          <a href={magnetLink}>
-            <Magnet className="size-4" />
-            Magnet link
-          </a>
-        </Button>
-        <Button asChild variant="outline" size="lg">
-          <a href={torrentFileUrl}>
-            <Download className="size-4" />
-            Download torrent
-          </a>
-        </Button>
+        {magnetLink && (
+          <Button asChild variant="default" size="lg">
+            <a href={magnetLink}>
+              <Magnet className="size-4" />
+              Magnet link
+            </a>
+          </Button>
+        )}
+        {torrentFileUrl && (
+          <Button asChild variant="outline" size="lg">
+            <a href={torrentFileUrl}>
+              <Download className="size-4" />
+              Download torrent
+            </a>
+          </Button>
+        )}
         <Button
           type="button"
           variant="secondary"
           size="lg"
           onClick={handleAddToRD}
-          disabled={isLoading}
+          disabled={isLoading || !magnetLink}
         >
           {isLoading ? <Loader2 className="size-4 animate-spin" /> : <Cloud className="size-4" />}
           {status === "adding" && "Adding..."}
