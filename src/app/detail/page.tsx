@@ -327,11 +327,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   ];
 
   return (
-    <main className="min-h-dvh bg-white text-zinc-950">
+    <main className="min-h-dvh overflow-x-hidden bg-white text-zinc-950">
       <SiteNavbar />
 
-      <section className="flex w-full flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
-        <div className="space-y-5 border-b border-zinc-200 pb-7">
+      <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
+        <div className="min-w-0 space-y-5 border-b border-zinc-200 pb-7">
           <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-zinc-500">
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 uppercase tracking-[0.14em] text-zinc-600">
               {torrent.category}
@@ -353,10 +353,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           </div>
 
           <div className="space-y-3">
-            <h1 className="text-balance break-words text-3xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">
+            <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">
               {title}
             </h1>
-            <div className="inline-flex max-w-full items-baseline gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2">
+            <div className="flex w-full min-w-0 flex-col gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto sm:flex-row sm:items-baseline sm:gap-2">
               <span className="shrink-0 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-400">
                 Info hash:
               </span>
@@ -372,36 +372,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-          <div className="space-y-6">
-            <section className="rounded-xl border border-zinc-200 bg-white p-5">
-              <h2 className="mb-3 text-lg font-semibold tracking-tight text-zinc-950">
-                Torrent details
-              </h2>
-              <div className="grid gap-3 text-sm text-zinc-600 sm:grid-cols-2">
-                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Primary file</p>
-                  <p className="mt-1 break-words font-medium text-zinc-800">
-                    {torrent.primaryFileName ?? torrent.files[0]?.name ?? "Unknown"}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Uploader</p>
-                  <p className="mt-1 font-medium text-zinc-800">{torrent.uploader ?? "Unknown"}</p>
-                </div>
-                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Language</p>
-                  <p className="mt-1 font-medium uppercase text-zinc-800">{torrent.language ?? "Unknown"}</p>
-                </div>
-                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Extension</p>
-                  <p className="mt-1 font-medium text-zinc-800">
-                    {torrent.primaryFileExtension ?? torrent.files[0]?.extension ?? "Unknown"}
-                  </p>
-                </div>
-              </div>
-            </section>
-
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+          <div className="min-w-0 space-y-6">
             <Collapsible defaultOpen>
               <CollapsibleTrigger>
                 <div className="flex min-w-0 items-center gap-4">
@@ -414,14 +386,14 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 <ChevronDown className="size-4 shrink-0 text-zinc-500 transition-transform duration-200" />
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="divide-y divide-zinc-200/70 pr-2">
+                <div className="min-w-0 divide-y divide-zinc-200/70">
                   {hasFiles ? torrent.files.map((file, i) => {
                     const FileIcon = getFileIcon(file.extension || "");
 
                     return (
                       <div
                         key={`${file.name}-${i}`}
-                        className="grid gap-3 rounded-lg px-2 py-3 text-sm transition-colors hover:bg-zinc-50 md:grid-cols-[1fr_auto]"
+                        className="grid min-w-0 gap-3 rounded-lg px-2 py-3 text-sm transition-colors hover:bg-zinc-50 md:grid-cols-[minmax(0,1fr)_auto]"
                       >
                         <div className="flex min-w-0 items-center gap-3">
                           <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500">
@@ -461,11 +433,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                   <ChevronDown className="size-4 shrink-0 text-zinc-500 transition-transform duration-200" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="divide-y divide-zinc-200/70 pr-2">
+                <div className="min-w-0 divide-y divide-zinc-200/70">
                     {torrent.sources.map((item, i) => (
                       <div
                         key={`${item.provider}-${item.source_url}-${i}`}
-                        className="grid gap-3 rounded-lg px-2 py-3 text-sm md:grid-cols-[1fr_auto]"
+                        className="min-w-0 rounded-lg px-2 py-3 text-sm"
                       >
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
@@ -485,11 +457,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                           >
                             {item.source_url}
                           </Link>
-                        </div>
-                        <div className="grid grid-cols-3 gap-3 text-xs text-zinc-500 md:text-right">
-                          <span><b className="block text-sm text-zinc-900">{formatNumber(item.seeders)}</b>seed</span>
-                          <span><b className="block text-sm text-zinc-900">{formatNumber(item.leechers)}</b>leech</span>
-                          <span><b className="block text-sm text-zinc-900">{formatNumber(item.downloaded)}</b>downloads</span>
                         </div>
                       </div>
                     ))}
@@ -522,7 +489,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             )}
           </div>
 
-          <aside className="space-y-4">
+          <aside className="min-w-0 space-y-4">
             <section className="rounded-xl border border-zinc-200 bg-white p-5">
               <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
                 Torrent info

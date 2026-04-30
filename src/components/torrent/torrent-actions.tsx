@@ -118,9 +118,9 @@ export function TorrentActions({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap gap-3">
+      <div className="grid w-full grid-cols-1 gap-3 sm:flex sm:flex-wrap">
         {magnetLink && (
-          <Button asChild variant="default" size="lg">
+          <Button asChild variant="default" size="lg" className="w-full sm:w-auto">
             <a href={magnetLink}>
               <Magnet className="size-4" />
               Magnet link
@@ -128,7 +128,7 @@ export function TorrentActions({
           </Button>
         )}
         {torrentFileUrl && (
-          <Button asChild variant="outline" size="lg">
+          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
             <a href={torrentFileUrl}>
               <Download className="size-4" />
               Download torrent
@@ -139,6 +139,7 @@ export function TorrentActions({
           type="button"
           variant="secondary"
           size="lg"
+          className="w-full sm:w-auto"
           onClick={handleAddToRD}
           disabled={isLoading || !magnetLink}
         >
@@ -152,7 +153,7 @@ export function TorrentActions({
         </Button>
 
         {directLink && (
-          <Button asChild variant="default" size="lg" className="bg-emerald-600 text-white hover:bg-emerald-700">
+          <Button asChild variant="default" size="lg" className="w-full bg-emerald-600 text-white hover:bg-emerald-700 sm:w-auto">
             <a href={directLink} target="_blank" rel="noreferrer">
               <Download className="size-4" />
               Direct Download
