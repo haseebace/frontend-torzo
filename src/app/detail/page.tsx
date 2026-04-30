@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   ChevronDown,
-  CheckCircle2,
   Download,
   File,
   FileText,
@@ -317,8 +316,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   const title = cleanTitle(torrent.title);
   const hasFiles = torrent.files.length > 0;
-  const sourceCountLabel =
-    torrent.sourceCount === 1 ? "1 source" : `${torrent.sourceCount} sources`;
   const detailStats = [
     { label: "Size", value: formatBytes(torrent.sizeBytes || 0), icon: HardDrive },
     { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString(), icon: Files },
@@ -359,32 +356,12 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
       <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
         <div className="min-w-0 space-y-5 border-b border-zinc-200 pb-7">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-zinc-500">
-            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
-              {torrent.category}
-            </span>
-            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
-              {formatProvider(torrent.source.provider)}
-            </span>
-            {torrent.verified && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
-                <CheckCircle2 className="size-2.5 md:size-3" />
-                Verified
-              </span>
-            )}
-            {torrent.meta.fetched_live && (
-              <span className="rounded-md bg-[#80ed99]/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-[#80ed99] md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
-                Live
-              </span>
-            )}
-          </div>
-
           <div className="space-y-3">
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">
               {title}
             </h1>
             <div className="flex w-full min-w-0 items-baseline gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto">
-              <span className="shrink-0 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-400">
+              <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">
                 Info hash:
               </span>
               <p className="min-w-0 truncate font-mono text-xs leading-5 text-zinc-600 md:text-sm">
@@ -566,41 +543,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                   <span className="font-semibold text-zinc-950">
                     {formatDate(torrent.lastSeenAt)}
                   </span>
-                </div>
-              </div>
-            </section>
-
-            <section className="rounded-xl border border-zinc-200 bg-white p-5">
-              <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
-                Source
-              </h2>
-              <div className="divide-y divide-zinc-200/70 text-sm">
-                <div className="flex items-center justify-between gap-4 py-3 first:pt-0">
-                  <span className="text-zinc-500">Provider</span>
-                  <span className="font-semibold uppercase tracking-[0.12em] text-zinc-950">
-                    {formatProvider(torrent.source.provider)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-zinc-500">Source count</span>
-                  <span className="font-semibold text-zinc-950">{sourceCountLabel}</span>
-                </div>
-                {torrent.meta.lookup_source && (
-                  <div className="flex items-center justify-between gap-4 py-3">
-                    <span className="text-zinc-500">Lookup</span>
-                    <span className="font-semibold text-zinc-950">
-                      {torrent.meta.lookup_source.replaceAll("_", " ")}
-                    </span>
-                  </div>
-                )}
-                <div className="py-3 last:pb-0">
-                  <Link
-                    href={torrent.source.url}
-                    target="_blank"
-                    className="inline-flex text-sm font-medium text-zinc-700 underline-offset-4 hover:text-zinc-950 hover:underline"
-                  >
-                    View original source
-                  </Link>
                 </div>
               </div>
             </section>

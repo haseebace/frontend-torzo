@@ -21,7 +21,7 @@ export function ResultSort({ defaultValue }: { defaultValue: string }) {
 
   return (
     <Select defaultValue={defaultValue} onValueChange={handleSortChange}>
-      <SelectTrigger size="sm" className="w-[112px] text-xs">
+      <SelectTrigger size="sm" className="w-[96px] text-xs md:w-[112px]">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
       <SelectContent>

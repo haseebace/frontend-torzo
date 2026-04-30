@@ -193,11 +193,8 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           <SearchForm id="results-search" defaultValue={query} />
         </div>
 
-        <div className="flex flex-col-reverse gap-2 border-b border-zinc-200 pb-2 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap items-center justify-end gap-2 md:order-2">
-            <ResultSort defaultValue={sort} />
-          </div>
-          <p className="text-xs text-zinc-500 md:text-sm">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-zinc-200 pb-2">
+          <p className="min-w-0 truncate text-xs text-zinc-500">
             {error ? (
               <span className="text-red-600 font-medium">{error}</span>
             ) : (
@@ -207,6 +204,9 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               </>
             )}
           </p>
+          <div className="flex min-w-0 items-center justify-end">
+            <ResultSort defaultValue={sort} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-5">
