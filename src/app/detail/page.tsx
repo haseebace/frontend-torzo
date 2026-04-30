@@ -373,6 +373,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           <TorrentActions 
             magnetLink={torrent.magnetLink} 
             torrentFileUrl={torrent.torrentFileUrl} 
+            infoHash={torrent.infoHash}
           />
         </div>
 

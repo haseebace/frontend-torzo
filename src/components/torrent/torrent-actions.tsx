@@ -1,21 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Cloud, Download, Magnet, Loader2, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TorrentActionsProps {
   magnetLink?: string | null;
   torrentFileUrl?: string | null;
+  infoHash?: string | null;
 }
 
 export function TorrentActions({
   magnetLink,
   torrentFileUrl,
+  infoHash,
 }: TorrentActionsProps) {
   const [directLink, setDirectLink] = useState<string | null>(null);
+  const [rdAccountStatus, setRdAccountStatus] = useState<string | null>(null);
+  const [isInstantAvailable, setIsInstantAvailable] = useState(false);
   const [status, setStatus] = useState<
     | "idle"
+    | "checking"
     | "adding"
     | "selecting"
     | "downloading"
@@ -25,7 +30,7 @@ export function TorrentActions({
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const rdFetch = async (endpoint: string, options: { method?: string; body?: unknown } = {}) => {
+  const rdFetch = useCallback(async (endpoint: string, options: { method?: string; body?: unknown } = {}) => {
     const apiKey = localStorage.getItem("rd_api_key");
     if (!apiKey) throw new Error("No API key found");
 
@@ -44,9 +49,99 @@ export function TorrentActions({
 
     if (res.status === 204) return null;
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Real-Debrid error");
+    if (!res.ok) {
+      const error = new Error(data.error || "Real-Debrid error") as Error & {
+        code?: number;
+        status?: number;
+      };
+      error.code = data.error_code;
+      error.status = res.status;
+      throw error;
+    }
     return data;
-  };
+  }, []);
+
+  const unrestrictFirstLink = useCallback(async (links?: string[] | null) => {
+    if (!links || links.length === 0) throw new Error("No download links found");
+
+    const unrestrictData = await rdFetch("/unrestrict/link", {
+      method: "POST",
+      body: { link: links[0] },
+    });
+
+    if (!unrestrictData?.download) {
+      throw new Error("No direct download link found");
+    }
+
+    setDirectLink(unrestrictData.download);
+    setStatus("ready");
+  }, [rdFetch]);
+
+  const lookupExistingTorrent = useCallback(async (options: { silent?: boolean } = {}) => {
+    const normalizedHash = infoHash?.trim().toLowerCase();
+    const apiKey = localStorage.getItem("rd_api_key");
+
+    if (!normalizedHash || !apiKey) return false;
+
+    if (!options.silent) setStatus("checking");
+    setErrorMessage(null);
+
+    const torrents = await rdFetch("/torrents?limit=5000");
+    const match = Array.isArray(torrents)
+      ? torrents.find((torrent) => torrent?.hash?.toLowerCase() === normalizedHash)
+      : null;
+
+    if (!match) {
+      if (!options.silent) setStatus("idle");
+      setRdAccountStatus(null);
+      return false;
+    }
+
+    if (match.status === "downloaded" && match.links?.length) {
+      setRdAccountStatus("Ready in Real-Debrid");
+      await unrestrictFirstLink(match.links);
+      return true;
+    }
+
+    setDirectLink(null);
+    setStatus("idle");
+    setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
+    return true;
+  }, [infoHash, rdFetch, unrestrictFirstLink]);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    const checkRealDebrid = async () => {
+      const normalizedHash = infoHash?.trim().toLowerCase();
+      const apiKey = localStorage.getItem("rd_api_key");
+
+      if (!normalizedHash || !apiKey) return;
+
+      try {
+        await lookupExistingTorrent({ silent: false });
+      } catch {
+        if (isCurrent) setStatus("idle");
+      }
+
+      try {
+        const availability = await rdFetch(`/torrents/instantAvailability/${normalizedHash}`);
+        if (!isCurrent || !availability || typeof availability !== "object") return;
+
+        const hashEntry = availability[normalizedHash] ?? availability[normalizedHash.toUpperCase()];
+        const rdEntry = hashEntry?.rd;
+        setIsInstantAvailable(Array.isArray(rdEntry) && rdEntry.length > 0);
+      } catch {
+        if (isCurrent) setIsInstantAvailable(false);
+      }
+    };
+
+    checkRealDebrid();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [infoHash, lookupExistingTorrent, rdFetch]);
 
   const handleAddToRD = async () => {
     try {
@@ -55,6 +150,7 @@ export function TorrentActions({
       setStatus("adding");
       setErrorMessage(null);
       setDirectLink(null);
+      setRdAccountStatus(null);
 
       // 1. Add Magnet
       const addData = await rdFetch("/torrents/addMagnet", {
@@ -96,25 +192,25 @@ export function TorrentActions({
 
       // 5. Unrestrict link
       setStatus("unrestricting");
-      if (!info.links || info.links.length === 0) {
-        throw new Error("No download links found");
-      }
-
-      const unrestrictData = await rdFetch("/unrestrict/link", {
-        method: "POST",
-        body: { link: info.links[0] },
-      });
-
-      setDirectLink(unrestrictData.download);
-      setStatus("ready");
+      await unrestrictFirstLink(info.links);
     } catch (err) {
       console.error(err);
+      const rdError = err as Error & { code?: number };
+      if (rdError.code === 33 || rdError.message.toLowerCase().includes("already active")) {
+        try {
+          const foundExisting = await lookupExistingTorrent({ silent: true });
+          if (foundExisting) return;
+        } catch (lookupError) {
+          console.error(lookupError);
+        }
+      }
+
       setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred");
       setStatus("error");
     }
   };
 
-  const isLoading = ["adding", "selecting", "downloading", "unrestricting"].includes(status);
+  const isLoading = ["checking", "adding", "selecting", "downloading", "unrestricting"].includes(status);
 
   const handleWatchNow = () => {
     if (!directLink) return;
@@ -170,9 +266,10 @@ export function TorrentActions({
         >
           {isLoading ? <Loader2 className="size-3.5 animate-spin sm:size-4" /> : <Cloud className="size-3.5 sm:size-4" />}
           <span className="sm:hidden">
-            {status === "ready" ? "Added" : isLoading ? "Adding" : "Debrid"}
+            {status === "ready" ? "Added" : status === "checking" ? "Check" : isLoading ? "Adding" : "Debrid"}
           </span>
           <span className="hidden sm:inline">
+            {status === "checking" && "Checking Real-Debrid..."}
             {status === "adding" && "Adding..."}
             {status === "selecting" && "Selecting files..."}
             {status === "downloading" && "Downloading..."}
@@ -206,6 +303,20 @@ export function TorrentActions({
           </Button>
         )}
       </div>
+      {(rdAccountStatus || isInstantAvailable) && (
+        <div className="flex flex-wrap items-center gap-2">
+          {rdAccountStatus && (
+            <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 sm:text-xs">
+              {rdAccountStatus}
+            </span>
+          )}
+          {isInstantAvailable && !directLink && (
+            <span className="rounded-md bg-[#80ed99]/15 px-1.5 py-0.5 text-[10px] font-medium text-[#1f9f4b] sm:text-xs">
+              Instant on RD
+            </span>
+          )}
+        </div>
+      )}
       {errorMessage && <p className="text-sm font-medium text-red-600">{errorMessage}</p>}
     </div>
   );
