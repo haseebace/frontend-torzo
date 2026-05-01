@@ -253,19 +253,19 @@
       "norm_label": "formatpercent()"
     },
     {
-      "label": "formatProvider()",
+      "label": "formatProviderLinkLabel()",
       "file_type": "code",
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L163",
-      "id": "detail_page_formatprovider",
+      "id": "detail_page_formatproviderlinklabel",
       "community": 5,
-      "norm_label": "formatprovider()"
+      "norm_label": "formatproviderlinklabel()"
     },
     {
       "label": "normalizeDetailResponse()",
       "file_type": "code",
       "source_file": "src/app/detail/page.tsx",
-      "source_location": "L169",
+      "source_location": "L179",
       "id": "detail_page_normalizedetailresponse",
       "community": 5,
       "norm_label": "normalizedetailresponse()"
@@ -274,7 +274,7 @@
       "label": "getFileIcon()",
       "file_type": "code",
       "source_file": "src/app/detail/page.tsx",
-      "source_location": "L209",
+      "source_location": "L219",
       "id": "detail_page_getfileicon",
       "community": 5,
       "norm_label": "getfileicon()"
@@ -283,7 +283,7 @@
       "label": "renderTorrentInfo()",
       "file_type": "code",
       "source_file": "src/app/detail/page.tsx",
-      "source_location": "L325",
+      "source_location": "L339",
       "id": "detail_page_rendertorrentinfo",
       "community": 5,
       "norm_label": "rendertorrentinfo()"
@@ -1922,16 +1922,16 @@
       "source_location": "L163",
       "weight": 1.0,
       "_src": "src_app_detail_page_tsx",
-      "_tgt": "detail_page_formatprovider",
+      "_tgt": "detail_page_formatproviderlinklabel",
       "source": "src_app_detail_page_tsx",
-      "target": "detail_page_formatprovider",
+      "target": "detail_page_formatproviderlinklabel",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/detail/page.tsx",
-      "source_location": "L169",
+      "source_location": "L179",
       "weight": 1.0,
       "_src": "src_app_detail_page_tsx",
       "_tgt": "detail_page_normalizedetailresponse",
@@ -1943,7 +1943,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/detail/page.tsx",
-      "source_location": "L209",
+      "source_location": "L219",
       "weight": 1.0,
       "_src": "src_app_detail_page_tsx",
       "_tgt": "detail_page_getfileicon",
@@ -1955,7 +1955,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/detail/page.tsx",
-      "source_location": "L325",
+      "source_location": "L339",
       "weight": 1.0,
       "_src": "src_app_detail_page_tsx",
       "_tgt": "detail_page_rendertorrentinfo",

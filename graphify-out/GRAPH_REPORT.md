@@ -1,7 +1,7 @@
-# Graph Report - frontend-torzo  (2026-04-30)
+# Graph Report - frontend-torzo  (2026-05-01)
 
 ## Corpus Check
-- 34 files · ~447,610 words
+- 34 files · ~447,603 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

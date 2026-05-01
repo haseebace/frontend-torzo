@@ -160,10 +160,20 @@ function formatPercent(value: number | null | undefined) {
   return `${Math.round(value * 100)}%`;
 }
 
-function formatProvider(value: string | null | undefined) {
+function formatProviderLinkLabel(value: string | null | undefined) {
   if (!value) return "Unknown";
+  const normalized = value.toLowerCase();
 
-  return value.replaceAll("-", " ").toUpperCase();
+  if (normalized === "rargb" || normalized === "rarbg") return "RARBG";
+  if (normalized === "yts") return "YTS";
+  if (normalized === "thepiratebay" || normalized === "the-pirate-bay") {
+    return "The Pirate Bay";
+  }
+
+  return normalized
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 function normalizeDetailResponse(
@@ -322,6 +332,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     { label: "Seeders", value: formatNumber(torrent.seeders), icon: Magnet },
     { label: "Leechers", value: formatNumber(torrent.leechers), icon: Download },
   ];
+  const sourceLink = torrent.sources[0] ?? {
+    provider: torrent.source.provider,
+    source_url: torrent.source.url,
+  };
   const renderTorrentInfo = () => (
     <section className="rounded-xl border border-zinc-200 bg-white p-5">
       <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
@@ -430,44 +444,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               </CollapsibleContent>
             </Collapsible>
 
-            {torrent.sources.length > 0 && (
-              <Collapsible>
-                <CollapsibleTrigger>
-                  <div className="flex min-w-0 items-center gap-4">
-                    <h2 className="text-lg font-semibold tracking-tight text-zinc-950">
-                      Sources
-                    </h2>
-                  </div>
-                  <ChevronDown className="size-4 shrink-0 text-zinc-500 transition-transform duration-200" />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                <div className="min-w-0 divide-y divide-zinc-200/70">
-                    {torrent.sources.map((item, i) => (
-                      <div
-                        key={`${item.provider}-${item.source_url}-${i}`}
-                        className="min-w-0 rounded-lg px-2 py-3 text-sm"
-                      >
-                        <div className="min-w-0">
-                          <div className="flex min-w-0 items-center gap-2">
-                            <Link
-                              href={item.source_url}
-                              target="_blank"
-                              className="min-w-0 flex-1 truncate text-xs text-zinc-500 underline-offset-4 hover:text-zinc-950 hover:underline md:text-sm"
-                            >
-                              {item.source_url}
-                            </Link>
-                            <span className="shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:border md:border-zinc-200 md:bg-zinc-50 md:px-2 md:py-1 md:text-[11px] md:tracking-[0.14em]">
-                              {formatProvider(item.provider)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            )}
-
             {torrent.images.length > 0 && (
               <section className="rounded-xl border border-zinc-200 bg-white p-5">
                 <h2 className="mb-3 text-lg font-semibold tracking-tight text-zinc-950">
@@ -502,6 +478,19 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 Health & Dates
               </h2>
               <div className="divide-y divide-zinc-200/70 text-sm">
+                {sourceLink.source_url ? (
+                  <div className="flex min-w-0 items-center justify-between gap-4 py-3 first:pt-0">
+                    <span className="shrink-0 text-zinc-500">Source</span>
+                    <Link
+                      href={sourceLink.source_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="min-w-0 truncate border-b border-zinc-300 pb-0.5 text-right text-xs font-medium text-zinc-600 hover:border-zinc-950 hover:text-zinc-950 md:text-sm"
+                    >
+                      {formatProviderLinkLabel(sourceLink.provider)}
+                    </Link>
+                  </div>
+                ) : null}
                 <div className="flex items-center justify-between gap-4 py-3 first:pt-0">
                   <span className="text-zinc-500">Uploaded date</span>
                   <span className="font-semibold text-zinc-950">
