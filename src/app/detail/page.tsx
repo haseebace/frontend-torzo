@@ -1,13 +1,9 @@
 import Link from "next/link";
 import {
   ChevronDown,
-  Download,
   File,
   FileText,
-  Files,
-  HardDrive,
   Image,
-  Magnet,
   Video,
 } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
@@ -327,10 +323,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   const title = cleanTitle(torrent.title);
   const hasFiles = torrent.files.length > 0;
   const detailStats = [
-    { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString(), icon: Files },
-    { label: "Size", value: formatBytes(torrent.sizeBytes || 0), icon: HardDrive },
-    { label: "Seeders", value: formatNumber(torrent.seeders), icon: Magnet },
-    { label: "Leechers", value: formatNumber(torrent.leechers), icon: Download },
+    { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString() },
+    { label: "Size", value: formatBytes(torrent.sizeBytes || 0) },
+    { label: "Seeders", value: formatNumber(torrent.seeders) },
+    { label: "Leechers", value: formatNumber(torrent.leechers) },
   ];
   const sourceLink = torrent.sources[0] ?? {
     provider: torrent.source.provider,
@@ -367,19 +363,12 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 space-y-6">
             <div className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 border-b border-zinc-200 pb-4 text-[12px] md:gap-x-6 md:gap-y-3 md:pb-5 md:text-sm">
-              {detailStats.map((stat) => {
-                const Icon = stat.icon;
-
-                return (
-                  <div key={stat.label} className="flex items-center gap-2">
-                    <span className="flex items-center gap-1.5 text-zinc-500">
-                      <Icon className="size-3.5" />
-                      {stat.label}
-                    </span>
-                    <span className="font-semibold text-zinc-950">{stat.value}</span>
-                  </div>
-                );
-              })}
+              {detailStats.map((stat) => (
+                <div key={stat.label} className="flex items-baseline gap-2">
+                  <span className="text-zinc-500">{stat.label}</span>
+                  <span className="font-semibold text-zinc-950">{stat.value}</span>
+                </div>
+              ))}
             </div>
 
             <Collapsible>
