@@ -327,8 +327,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   const title = cleanTitle(torrent.title);
   const hasFiles = torrent.files.length > 0;
   const detailStats = [
-    { label: "Size", value: formatBytes(torrent.sizeBytes || 0), icon: HardDrive },
     { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString(), icon: Files },
+    { label: "Size", value: formatBytes(torrent.sizeBytes || 0), icon: HardDrive },
     { label: "Seeders", value: formatNumber(torrent.seeders), icon: Magnet },
     { label: "Leechers", value: formatNumber(torrent.leechers), icon: Download },
   ];
@@ -336,33 +336,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     provider: torrent.source.provider,
     source_url: torrent.source.url,
   };
-  const renderTorrentInfo = () => (
-    <section className="rounded-xl border border-zinc-200 bg-white p-5">
-      <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
-        Torrent info
-      </h2>
-      <div className="grid grid-cols-2 gap-3">
-        {detailStats.map((stat) => {
-          const Icon = stat.icon;
-
-          return (
-            <div
-              key={stat.label}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-3"
-            >
-              <p className="flex items-center gap-1.5 text-xs text-zinc-500">
-                <Icon className="size-3.5" />
-                {stat.label}
-              </p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950">
-                {stat.value}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
 
   return (
     <main className="min-h-dvh overflow-x-hidden bg-white text-zinc-950">
@@ -391,10 +364,22 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           />
         </div>
 
-        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 space-y-6">
-            <div className="lg:hidden">
-              {renderTorrentInfo()}
+            <div className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 border-b border-zinc-200 pb-4 text-[12px] md:gap-x-6 md:gap-y-3 md:pb-5 md:text-sm">
+              {detailStats.map((stat) => {
+                const Icon = stat.icon;
+
+                return (
+                  <div key={stat.label} className="flex items-center gap-2">
+                    <span className="flex items-center gap-1.5 text-zinc-500">
+                      <Icon className="size-3.5" />
+                      {stat.label}
+                    </span>
+                    <span className="font-semibold text-zinc-950">{stat.value}</span>
+                  </div>
+                );
+              })}
             </div>
 
             <Collapsible>
@@ -458,7 +443,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       className="rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-100 md:px-3 md:py-2 md:text-sm"
                     >
                       Screenshot {index + 1}
-                      <span className="ml-1.5 text-[10px] uppercase tracking-[0.1em] text-zinc-400 md:ml-2 md:text-xs md:tracking-[0.12em]">
+                      <span className="ml-1.5 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:ml-2 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
                         {image.kind}
                       </span>
                     </Link>
@@ -469,10 +454,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           </div>
 
           <aside className="min-w-0 space-y-4">
-            <div className="hidden lg:block">
-              {renderTorrentInfo()}
-            </div>
-
             <section className="rounded-xl border border-zinc-200 bg-white p-5">
               <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
                 Health & Dates

@@ -1,12 +1,12 @@
 # Graph Report - frontend-torzo  (2026-05-01)
 
 ## Corpus Check
-- 34 files · ~447,603 words
+- 34 files · ~447,588 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 163 nodes · 157 edges · 16 communities detected
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.74)
+- 162 nodes · 156 edges · 16 communities detected
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -16,7 +16,7 @@
 - [[_COMMUNITY_Community 3|Community 3]]
 - [[_COMMUNITY_Community 6|Community 6]]
 - [[_COMMUNITY_Community 7|Community 7]]
-- [[_COMMUNITY_Community 10|Community 10]]
+- [[_COMMUNITY_Community 9|Community 9]]
 - [[_COMMUNITY_Community 30|Community 30]]
 - [[_COMMUNITY_Community 31|Community 31]]
 - [[_COMMUNITY_Community 32|Community 32]]
@@ -85,7 +85,7 @@ Nodes (4): GET(), getTmdbAuth(), normalizeSearchText(), scoreMovie()
 Cohesion: 0.5
 Nodes (2): clearBlurTimer(), handleSuggestionSelect()
 
-### Community 10 - "Community 10"
+### Community 9 - "Community 9"
 Cohesion: 0.83
 Nodes (3): decryptSecret(), encryptSecret(), getEncryptionKey()
 
@@ -155,7 +155,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `Real-Debrid API Documentation` connect `Community 2` to `Community 0`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **Why does `POST /unrestrict/link endpoint` connect `Community 0` to `Community 2`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Are the 6 inferred relationships involving `Torzo - ad-free torrent search engine` (e.g. with `rargb provider (RARBG)` and `thepiratebay provider (The Pirate Bay)`) actually correct?**
   _`Torzo - ad-free torrent search engine` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `GET /api/v1/sources endpoint`, `API error code reference`, `Project README` to the rest of the system?**
