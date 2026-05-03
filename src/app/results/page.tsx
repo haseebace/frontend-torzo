@@ -1,8 +1,30 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
 import { ResultSort } from "@/components/result-sort";
 import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
+
+type Props = {
+  searchParams: Promise<{
+    q?: string;
+    tmdbId?: string;
+    imdbId?: string;
+    category?: string;
+    sort?: string;
+  }>;
+};
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const params = await searchParams;
+  const query = params.q?.trim();
+  const displayName = query || params.imdbId || params.tmdbId || "media";
+  
+  return {
+    title: `Search: ${displayName}`,
+    description: `Find ${displayName} with high-speed downloads via Real-Debrid. Compare sources, check seeders, and download instantly.`,
+  };
+}
 
 type ResultsPageProps = {
   searchParams: Promise<{

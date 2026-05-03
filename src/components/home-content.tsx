@@ -1,7 +1,7 @@
 import { SearchForm } from "@/components/search-form";
 
 export function HomeContent() {
-  const marketingCopy = "Torrenting without the trash. No ads, no popups—just direct high-speed downloads via Real-Debrid.";
+  const marketingCopy = "Media search without the trash. No ads, no popups—just direct high-speed downloads via Real-Debrid.";
 
   return (
     <>
