@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ChevronDown,
@@ -138,6 +139,27 @@ type TorrentDetail = {
   meta: TorrentDetailMeta;
 };
 
+export async function generateMetadata({ searchParams }: DetailPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const sourceUrl = params.source_url;
+  
+  if (!sourceUrl) {
+    return {
+      title: "Details Not Found",
+      description: "No media source provided.",
+    };
+  }
+  
+  return {
+    title: "Media Details",
+    description: `View details, sources, and download information. Compare seeders, file sizes, and more.`,
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
 function cleanTitle(title: string) {
   return title
     .replace(/^Download\s+/i, "")
@@ -152,7 +174,6 @@ function formatNumber(value: number | null | undefined) {
 
 function formatPercent(value: number | null | undefined) {
   if (typeof value !== "number") return "Unknown";
-
   return `${Math.round(value * 100)}%`;
 }
 
@@ -220,6 +241,17 @@ function getFileIcon(extension: string) {
   return File;
 }
 
+function formatFileSize(size: string): string {
+  if (!size || size === "0 bytes" || size === "Unknown") return "Unknown size";
+  
+  // Remove square brackets if present and parse as number
+  const cleanedSize = size.replace(/[\[\]]/g, "").trim();
+  const bytes = parseInt(cleanedSize, 10);
+  
+  if (isNaN(bytes)) return size; // Return original if not a number
+  return formatBytes(bytes);
+}
+
 export default async function DetailPage({ searchParams }: DetailPageProps) {
   const params = await searchParams;
   const source = params.source || "rargb";
@@ -230,7 +262,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
       <main className="min-h-dvh bg-white text-zinc-950">
         <SiteNavbar />
         <section className="px-4 py-20 text-center">
-          <p className="text-zinc-500">No torrent source provided.</p>
+          <p className="text-zinc-500">No media source provided.</p>
           <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">Go back home</Link>
         </section>
       </main>
@@ -242,7 +274,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   try {
     if (source === "yts") {
-      // YTS Detail call
       const res = await fetch(`https://torzoapi.vercel.app/api/v1/yts/movies/${sourceUrl}`, {
         cache: "no-store"
       });
@@ -253,7 +284,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         
         const bestTorrent = movie.torrents?.[0];
         torrent = {
-          title: movie.title_long || movie.title || "YTS torrent",
+          title: movie.title_long || movie.title || "YTS media",
           magnetLink: bestTorrent?.magnet_link ?? null,
           torrentFileUrl: bestTorrent?.url ?? null,
           infoHash: bestTorrent?.hash ?? null,
@@ -264,7 +295,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           seeders: bestTorrent?.seeds ?? 0,
           leechers: bestTorrent?.peers ?? 0,
           fileCount: 1,
-          files: [{ name: movie.title || "Movie file", size: bestTorrent?.size ?? "Unknown", extension: ".mp4" }],
+          files: [{ name: movie.title || "Media file", size: bestTorrent?.size ?? "Unknown", extension: ".mp4" }],
           source: { provider: "yts", url: movie.url ?? sourceUrl },
           sources: [],
           images: [],
@@ -284,7 +315,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         error = errJson.error?.message || `YTS API error: ${res.status}`;
       }
     } else {
-      // Generic Detail call
       const res = await fetch(
         `https://torzoapi.vercel.app/api/v1/torrents/detail?source=${source}&source_url=${encodeURIComponent(sourceUrl)}`,
         { cache: "no-store" }
@@ -310,7 +340,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         <section className="px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
             <h1 className="text-2xl font-bold text-zinc-900">Oops!</h1>
-            <p className="text-red-600 font-medium">{error || "Torrent details not found."}</p>
+            <p className="text-red-600 font-medium">{error || "Media details not found."}</p>
             <p className="text-sm text-zinc-500">Source: {source}</p>
             <p className="text-xs text-zinc-400 break-all">URL: {sourceUrl}</p>
             <Link href="/" className="text-blue-600 hover:underline mt-6 inline-block">Go back home</Link>
@@ -354,10 +384,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           </div>
 
           <TorrentActions 
-            magnetLink={torrent.magnetLink} 
-            torrentFileUrl={torrent.torrentFileUrl} 
-            infoHash={torrent.infoHash}
-          />
+             magnetLink={torrent.magnetLink} 
+             torrentFileUrl={torrent.torrentFileUrl} 
+             infoHash={torrent.infoHash}
+             className="sm:w-full"
+           />
         </div>
 
         <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -387,9 +418,9 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                   {hasFiles ? torrent.files.map((file, i) => {
                     const FileIcon = getFileIcon(file.extension || "");
                     const fileSize =
-                      file.size && file.size !== "0 bytes"
-                        ? file.size
-                        : "Unknown size";
+                       file.size && file.size !== "0 bytes"
+                         ? formatFileSize(file.size)
+                         : "Unknown size";
 
                     return (
                       <div
@@ -400,10 +431,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                           <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500 md:size-8">
                             <FileIcon className="size-3.5 md:size-4" />
                           </span>
-                          <p className="min-w-0 truncate font-medium text-zinc-700">
-                            {file.name}
-                          </p>
-                          <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
+                           <p className="min-w-0 flex-1 truncate font-medium text-zinc-700">
+                             {file.name}
+                           </p>
+                           <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
                             {fileSize}
                           </span>
                         </div>
@@ -411,7 +442,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                     );
                   }) : (
                     <p className="px-2 py-3 text-sm text-zinc-500">
-                      No file list returned for this torrent yet.
+                      No file list returned for this media yet.
                     </p>
                   )}
                 </div>

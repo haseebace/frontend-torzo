@@ -13,15 +13,16 @@ export function SiteNavbar() {
         >
           <span className="flex size-11 items-center justify-center">
             <Image
-              src="/icon.svg"
-              alt=""
-              width={32}
-              height={32}
-              className="size-full"
-            />
+               src="/icon.svg"
+               alt=""
+               width={32}
+               height={32}
+               loading="eager"
+               className="size-full"
+             />
           </span>
         </Link>
-        <Button asChild>
+        <Button asChild className="h-[45px] w-[100px] rounded-[50px] font-black">
           <Link href="/manage">Manage</Link>
         </Button>
       </nav>
