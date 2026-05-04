@@ -79,7 +79,7 @@ export function TorrentActions({
     setStatus("ready");
   }, [rdFetch]);
 
-  const lookupExistingTorrent = useCallback(async (options: { silent?: boolean } = {}) => {
+  const lookupExistingTorrent = useCallback(async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
     const normalizedHash = infoHash?.trim().toLowerCase();
     const apiKey = localStorage.getItem("rd_api_key");
 
@@ -90,25 +90,48 @@ export function TorrentActions({
       setErrorMessage(null);
 
       const torrents = await rdFetch("/torrents?limit=5000");
+
       const match = Array.isArray(torrents)
         ? torrents.find((torrent) => torrent?.hash?.toLowerCase() === normalizedHash)
         : null;
 
       if (!match) {
         if (!options.silent) setStatus("idle");
-        setRdAccountStatus(null);
+        if (!options.hideBadge) setRdAccountStatus(null);
         return false;
       }
 
-      if (match.status === "downloaded" && match.links?.length) {
-        setRdAccountStatus("Ready in Real-Debrid");
-        await unrestrictFirstLink(match.links);
-        return true;
+      if (match.status === "downloaded") {
+        if (!options.hideBadge) setRdAccountStatus("Ready in Real-Debrid");
+        
+        // If links not in list response, fetch torrent info to get them
+        let links = match.links;
+        if (!links || links.length === 0) {
+          try {
+            const info = await rdFetch(`/torrents/info/${match.id}`);
+            links = info?.links || [];
+          } catch (err) {
+            // Failed to fetch torrent info
+          }
+        }
+        
+        if (links && links.length > 0) {
+          // Check if the link is already a Real-Debrid download link
+          const firstLink = links[0];
+          if (firstLink?.includes("real-debrid.com/d/") || firstLink?.includes("rdb.rdtorrent.link")) {
+            // Already an RD link, use it directly
+            setDirectLink(firstLink);
+            setStatus("ready");
+          } else {
+            await unrestrictFirstLink(links);
+          }
+          return true;
+        }
       }
 
       setDirectLink(null);
       setStatus("idle");
-      setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
+      if (!options.hideBadge) setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
       return true;
     } catch (err: any) {
       if (err.code === 37) {
@@ -211,6 +234,21 @@ export function TorrentActions({
 
     window.open(directLink, "_blank", "noopener,noreferrer");
   };
+
+  useEffect(() => {
+    const checkInBackground = async () => {
+      const apiKey = localStorage.getItem("rd_api_key");
+      if (!apiKey || !infoHash) return;
+
+      try {
+        await lookupExistingTorrent({ silent: true, hideBadge: true });
+      } catch {
+        // Silently fail — user still sees "Add to Real-Debrid" button
+      }
+    };
+
+    checkInBackground();
+  }, [infoHash, lookupExistingTorrent]);
 
   return (
     <div className="flex flex-col gap-3">
