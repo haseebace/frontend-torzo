@@ -63,22 +63,6 @@ export function TorrentActions({
     return data;
   }, []);
 
-  const unrestrictFirstLink = useCallback(async (links?: string[] | null) => {
-    if (!links || links.length === 0) throw new Error("No download links found");
-
-    const unrestrictData = await rdFetch("/unrestrict/link", {
-      method: "POST",
-      body: { link: links[0] },
-    });
-
-    if (!unrestrictData?.download) {
-      throw new Error("No direct download link found");
-    }
-
-    setDirectLink(unrestrictData.download);
-    setStatus("ready");
-  }, [rdFetch]);
-
   const lookupExistingTorrent = useCallback(async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
     const normalizedHash = infoHash?.trim().toLowerCase();
     const apiKey = localStorage.getItem("rd_api_key");
@@ -104,28 +88,40 @@ export function TorrentActions({
       if (match.status === "downloaded") {
         if (!options.hideBadge) setRdAccountStatus("Ready in Real-Debrid");
         
-        // If links not in list response, fetch torrent info to get them
-        let links = match.links;
-        if (!links || links.length === 0) {
-          try {
-            const info = await rdFetch(`/torrents/info/${match.id}`);
-            links = info?.links || [];
-          } catch (err) {
-            // Failed to fetch torrent info
+        // Always fetch torrent info to get proper links
+        try {
+          const info = await rdFetch(`/torrents/info/${match.id}`);
+          const links = info?.links || [];
+          
+          if (links.length > 0) {
+            // Unrestrict the first link to get the download ID
+            const unrestrictData = await rdFetch("/unrestrict/link", {
+              method: "POST",
+              body: { link: links[0] },
+            });
+            
+            if (unrestrictData?.download) {
+              // Set direct download link
+              setDirectLink(unrestrictData.download);
+              setStatus("ready");
+              
+              // Now use the download ID for streaming links
+              if (unrestrictData.id) {
+                try {
+                  const streamingData = await rdFetch(`/streaming/transcode/${unrestrictData.id}`);
+                  if (streamingData) {
+                    console.log("[RD Lookup] Streaming links:", streamingData);
+                    // TODO: Store streaming links for Watch Now
+                  }
+                } catch {
+                  console.log("[RD Lookup] No streaming links available");
+                }
+              }
+              return true;
+            }
           }
-        }
-        
-        if (links && links.length > 0) {
-          // Check if the link is already a Real-Debrid download link
-          const firstLink = links[0];
-          if (firstLink?.includes("real-debrid.com/d/") || firstLink?.includes("rdb.rdtorrent.link")) {
-            // Already an RD link, use it directly
-            setDirectLink(firstLink);
-            setStatus("ready");
-          } else {
-            await unrestrictFirstLink(links);
-          }
-          return true;
+        } catch (err) {
+          console.error("[RD Lookup] Failed:", err);
         }
       }
 
@@ -133,15 +129,16 @@ export function TorrentActions({
       setStatus("idle");
       if (!options.hideBadge) setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
       return true;
-    } catch (err: any) {
-      if (err.code === 37) {
+    } catch (err: unknown) {
+      const rdError = err as Error & { code?: number };
+      if (rdError.code === 37) {
         // Torrent API disabled, just skip silently
         if (!options.silent) setStatus("idle");
         return false;
       }
       throw err;
     }
-  }, [infoHash, rdFetch, unrestrictFirstLink]);
+  }, [infoHash, rdFetch]);
 
   const handleAddToRD = async () => {
     try {
@@ -192,7 +189,28 @@ export function TorrentActions({
 
       // 5. Unrestrict link
       setStatus("unrestricting");
-      await unrestrictFirstLink(info.links);
+      const unrestrictData = await rdFetch("/unrestrict/link", {
+        method: "POST",
+        body: { link: info.links[0] },
+      });
+      
+      if (unrestrictData?.download) {
+        setDirectLink(unrestrictData.download);
+        setStatus("ready");
+        
+        // Get streaming links using the download ID
+        if (unrestrictData.id) {
+          try {
+            const streamingData = await rdFetch(`/streaming/transcode/${unrestrictData.id}`);
+            if (streamingData) {
+              console.log("[RD Add] Streaming links:", streamingData);
+              // TODO: Store streaming links for Watch Now
+            }
+            } catch {
+              console.log("[RD Add] No streaming links available");
+            }
+        }
+      }
     } catch (err) {
       console.error(err);
       const rdError = err as Error & { code?: number };
@@ -212,10 +230,22 @@ export function TorrentActions({
 
   const isLoading = ["checking", "adding", "selecting", "downloading", "unrestricting"].includes(status);
 
+  // Normalize URL to prevent double-encoding
+  const normalizeUrl = (url: string): string => {
+    try {
+      // Decode if already encoded, then encode once
+      const decoded = url.includes("%") ? decodeURIComponent(url) : url;
+      return decoded;
+    } catch {
+      return url;
+    }
+  };
+
   const handleWatchNow = () => {
     if (!directLink) return;
 
-    const encodedLink = encodeURIComponent(directLink);
+    // Normalize URL to prevent double-encoding
+    const linkToPlay = normalizeUrl(directLink);
     const userAgent = navigator.userAgent;
     const isIOS =
       /iPad|iPhone|iPod/.test(userAgent) ||
@@ -223,12 +253,24 @@ export function TorrentActions({
     const isMacOS = /Macintosh|Mac OS X/.test(userAgent);
 
     if (isIOS) {
-      window.location.href = `infuse://x-callback-url/play?url=${encodedLink}`;
+      // Infuse expects a properly encoded URL
+      const infuseUrl = `infuse://x-callback-url/play?url=${encodeURIComponent(linkToPlay)}`;
+      window.location.href = infuseUrl;
       return;
     }
 
     if (isMacOS) {
-      window.location.href = `iina://weblink?url=${encodedLink}`;
+      // IINA expects the raw URL (not double-encoded)
+      const iinaUrl = `iina://weblink?url=${linkToPlay}`;
+      window.location.href = iinaUrl;
+      
+      // Fallback: If IINA isn't installed, show a notification after a delay
+      setTimeout(() => {
+        if (document.hasFocus()) {
+          alert("INA player not found. The video link has been copied to your clipboard.");
+          navigator.clipboard.writeText(linkToPlay).catch(() => {});
+        }
+      }, 2000);
       return;
     }
 
