@@ -294,7 +294,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     return (
       <main className="min-h-dvh bg-white text-zinc-950">
         <SiteNavbar />
-        <section className="px-4 py-20 text-center">
+        <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <p className="text-zinc-500">No media source provided.</p>
           <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">Go back home</Link>
         </section>
@@ -371,7 +371,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     return (
       <main className="min-h-dvh bg-white text-zinc-950">
         <SiteNavbar />
-        <section className="px-4 py-20 text-center">
+        <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
             <h1 className="text-2xl font-bold text-zinc-900">Oops!</h1>
             <p className="text-red-600 font-medium">{error || "Media details not found."}</p>
@@ -401,7 +401,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     <main className="min-h-dvh overflow-x-hidden bg-white text-zinc-950">
       <SiteNavbar />
 
-      <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
+      <section className="flex w-full min-w-0 origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
         <div className="min-w-0 space-y-5 border-b border-zinc-200 pb-7">
           <div className="space-y-3">
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">

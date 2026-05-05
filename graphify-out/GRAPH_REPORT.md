@@ -1,31 +1,32 @@
-# Graph Report - frontend-torzo  (2026-05-01)
+# Graph Report - frontend-torzo  (2026-05-05)
 
 ## Corpus Check
-- 34 files · ~447,561 words
+- 43 files · ~26,064 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 162 nodes · 156 edges · 16 communities detected
-- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.74)
+- 195 nodes · 182 edges · 17 communities detected
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
 - [[_COMMUNITY_Community 1|Community 1]]
 - [[_COMMUNITY_Community 2|Community 2]]
-- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 4|Community 4]]
 - [[_COMMUNITY_Community 6|Community 6]]
-- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 8|Community 8]]
 - [[_COMMUNITY_Community 9|Community 9]]
-- [[_COMMUNITY_Community 30|Community 30]]
-- [[_COMMUNITY_Community 31|Community 31]]
-- [[_COMMUNITY_Community 32|Community 32]]
-- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 13|Community 13]]
+- [[_COMMUNITY_Community 37|Community 37]]
+- [[_COMMUNITY_Community 38|Community 38]]
 - [[_COMMUNITY_Community 39|Community 39]]
 - [[_COMMUNITY_Community 40|Community 40]]
-- [[_COMMUNITY_Community 41|Community 41]]
-- [[_COMMUNITY_Community 42|Community 42]]
-- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 48|Community 48]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `TorrentSearch Design System` - 17 edges
@@ -73,89 +74,93 @@ Nodes (18): Accessibility standards (WCAG AA), Button component spec (primary/se
 Cohesion: 0.23
 Nodes (12): Real-Debrid Bearer token authentication, Real-Debrid API base URL, Real-Debrid API rate limit (250 req/min), POST /torrents/addMagnet endpoint, GET /disable_access_token endpoint, POST /torrents/selectFiles/{id} endpoint, GET /torrents endpoint, GET /torrents/info/{id} endpoint (+4 more)
 
-### Community 3 - "Community 3"
+### Community 4 - "Community 4"
 Cohesion: 0.31
 Nodes (7): POST(), POST(), getAppSettings(), getHeaders(), getSupabaseConfig(), parseProviders(), upsertAppSettings()
 
 ### Community 6 - "Community 6"
+Cohesion: 0.24
+Nodes (3): formatBytesFromBytes(), getFileSizeDisplay(), normalizeDetailResponse()
+
+### Community 8 - "Community 8"
 Cohesion: 0.6
 Nodes (4): GET(), getTmdbAuth(), normalizeSearchText(), scoreMovie()
 
-### Community 7 - "Community 7"
+### Community 9 - "Community 9"
 Cohesion: 0.5
 Nodes (2): clearBlurTimer(), handleSuggestionSelect()
 
-### Community 9 - "Community 9"
+### Community 13 - "Community 13"
 Cohesion: 0.83
 Nodes (3): decryptSecret(), encryptSecret(), getEncryptionKey()
 
-### Community 30 - "Community 30"
+### Community 37 - "Community 37"
 Cohesion: 1.0
 Nodes (2): Next.js agent rules, Claude configuration
 
-### Community 31 - "Community 31"
+### Community 38 - "Community 38"
 Cohesion: 1.0
 Nodes (2): Next.js Logo, Vercel Logo
 
-### Community 32 - "Community 32"
+### Community 39 - "Community 39"
 Cohesion: 1.0
 Nodes (2): Home Background JPG, Home Background SVG
 
-### Community 33 - "Community 33"
+### Community 40 - "Community 40"
 Cohesion: 1.0
 Nodes (2): App Favicon, T Logo (Torrent/Torzo)
 
-### Community 39 - "Community 39"
+### Community 48 - "Community 48"
 Cohesion: 1.0
 Nodes (1): File Icon
 
-### Community 40 - "Community 40"
+### Community 49 - "Community 49"
 Cohesion: 1.0
 Nodes (1): Globe Icon
 
-### Community 41 - "Community 41"
+### Community 50 - "Community 50"
 Cohesion: 1.0
 Nodes (1): Window Icon
 
-### Community 42 - "Community 42"
+### Community 51 - "Community 51"
 Cohesion: 1.0
 Nodes (1): Instagram Social Image
 
-### Community 43 - "Community 43"
+### Community 52 - "Community 52"
 Cohesion: 1.0
 Nodes (1): White Background Image
 
 ## Knowledge Gaps
 - **27 isolated node(s):** `GET /api/v1/sources endpoint`, `API error code reference`, `Project README`, `Typography system (Plus Jakarta Sans, type scale)`, `8px spacing rhythm` (+22 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 7`** (5 nodes): `clearBlurTimer()`, `handleSuggestionSelect()`, `SearchSubmitButton()`, `selectedMovie()`, `search-form.tsx`
+- **Thin community `Community 9`** (5 nodes): `clearBlurTimer()`, `handleSuggestionSelect()`, `SearchSubmitButton()`, `selectedMovie()`, `search-form.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (2 nodes): `Next.js agent rules`, `Claude configuration`
+- **Thin community `Community 37`** (2 nodes): `Next.js agent rules`, `Claude configuration`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (2 nodes): `Next.js Logo`, `Vercel Logo`
+- **Thin community `Community 38`** (2 nodes): `Next.js Logo`, `Vercel Logo`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (2 nodes): `Home Background JPG`, `Home Background SVG`
+- **Thin community `Community 39`** (2 nodes): `Home Background JPG`, `Home Background SVG`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (2 nodes): `App Favicon`, `T Logo (Torrent/Torzo)`
+- **Thin community `Community 40`** (2 nodes): `App Favicon`, `T Logo (Torrent/Torzo)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 39`** (1 nodes): `File Icon`
+- **Thin community `Community 48`** (1 nodes): `File Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 40`** (1 nodes): `Globe Icon`
+- **Thin community `Community 49`** (1 nodes): `Globe Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (1 nodes): `Window Icon`
+- **Thin community `Community 50`** (1 nodes): `Window Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (1 nodes): `Instagram Social Image`
+- **Thin community `Community 51`** (1 nodes): `Instagram Social Image`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (1 nodes): `White Background Image`
+- **Thin community `Community 52`** (1 nodes): `White Background Image`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Real-Debrid API Documentation` connect `Community 2` to `Community 0`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **Why does `POST /unrestrict/link endpoint` connect `Community 0` to `Community 2`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Are the 6 inferred relationships involving `Torzo - ad-free torrent search engine` (e.g. with `rargb provider (RARBG)` and `thepiratebay provider (The Pirate Bay)`) actually correct?**
   _`Torzo - ad-free torrent search engine` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `GET /api/v1/sources endpoint`, `API error code reference`, `Project README` to the rest of the system?**

@@ -4,6 +4,15 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
 import { ResultSort } from "@/components/result-sort";
 import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 function formatBytesFromBytes(bytes: number) {
   if (bytes === 0) return "0 B";
@@ -26,6 +35,8 @@ type Props = {
     imdbId?: string;
     category?: string;
     sort?: string;
+    page?: string;
+    total?: string;
   }>;
 };
 
@@ -47,6 +58,8 @@ type ResultsPageProps = {
     imdbId?: string;
     category?: string;
     sort?: string;
+    page?: string;
+    total?: string;
   }>;
 };
 
@@ -67,6 +80,36 @@ type YtsMovie = {
 };
 
 const PROVIDERS_COOKIE_NAME = "torzo_selected_providers";
+const RESULTS_PAGE_SIZE = 20;
+
+type SearchMeta = {
+  total: number;
+  total_pages: number;
+  has_next_page: boolean;
+  page: number;
+  page_size: number;
+};
+
+function parsePageParam(page?: string) {
+  const parsed = Number.parseInt(page || "1", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
+function parseTotalParam(total?: string) {
+  const parsed = Number.parseInt(total || "", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
+
+function getFrontendTotalPages(total: number, pageSize: number) {
+  if (total <= 0) return 0;
+  return Math.ceil(total / pageSize);
+}
+
+function getVisiblePageResults(results: TorrentResult[], page: number, pageSize: number, total: number) {
+  const remainingResults = total - (page - 1) * pageSize;
+  const resultsForPage = Math.min(pageSize, Math.max(remainingResults, 0));
+  return results.slice(0, resultsForPage);
+}
 
 async function getSelectedProviders() {
   const cookieStore = await cookies();
@@ -126,6 +169,18 @@ async function getMovieName(tmdbId: string) {
   return null;
 }
 
+function buildPageUrl(params: { query?: string; tmdbId?: string; imdbId?: string; category?: string; sort?: string; page: number; total?: number }) {
+  const searchParams = new URLSearchParams();
+  if (params.query) searchParams.append("q", params.query);
+  if (params.tmdbId) searchParams.append("tmdbId", params.tmdbId);
+  if (params.imdbId) searchParams.append("imdbId", params.imdbId);
+  if (params.category) searchParams.append("category", params.category);
+  if (params.sort && params.sort !== "seeders") searchParams.append("sort", params.sort);
+  searchParams.append("page", params.page.toString());
+  if (params.total && params.total > 0) searchParams.append("total", params.total.toString());
+  return `/results?${searchParams.toString()}`;
+}
+
 export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const params = await searchParams;
   const query = params.q?.trim();
@@ -133,6 +188,9 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const imdbId = params.imdbId?.trim();
   const category = params.category?.trim();
   const sort = params.sort || "seeders";
+  const currentPage = parsePageParam(params.page);
+  const preservedTotal = parseTotalParam(params.total);
+  const pageSize = RESULTS_PAGE_SIZE;
 
   const selectedProviders = await getSelectedProviders();
   
@@ -150,6 +208,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
   let allResults: TorrentResult[] = [];
   let error: string | null = null;
+  let paginationMeta: SearchMeta | null = null;
   let displayName = query || imdbId || tmdbId || "nothing";
 
   try {
@@ -163,16 +222,19 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     if (category) apiParams.append("category", category);
     if (genericSources) apiParams.append("source", genericSources);
     apiParams.append("sort", sort);
+    apiParams.append("page", currentPage.toString());
+    apiParams.append("page_size", pageSize.toString());
 
     const movieNamePromise = tmdbId ? getMovieName(tmdbId) : Promise.resolve(null);
 
     const genericResultsPromise = (async (): Promise<{
       results: TorrentResult[];
+      meta: SearchMeta | null;
       error: string | null;
     }> => {
       // Only call generic search if we have sources and a query/ID
       if (!genericSources || !(query || tmdbId || imdbId)) {
-        return { results: [], error: null };
+        return { results: [], meta: null, error: null };
       }
 
       const res = await fetch(`https://torzoapi.vercel.app/api/v1/search?${apiParams.toString()}`, {
@@ -181,12 +243,17 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       
       if (res.ok) {
         const json = await res.json();
-        return { results: json.data, error: null };
+        return { 
+          results: json.data, 
+          meta: json.meta || null,
+          error: null 
+        };
       }
 
       const errJson = await res.json();
       return {
         results: [],
+        meta: null,
         error: errJson.error?.message || "Failed to fetch results from generic search.",
       };
     })();
@@ -243,6 +310,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
     allResults = [...genericResults.results, ...ytsResults];
     error = genericResults.error;
+    paginationMeta = genericResults.meta;
 
     // Client-side sorting for combined results
     if (sort === "seeders") {
@@ -260,12 +328,15 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   }
 
   const searchFormValue = displayName === "nothing" ? "" : displayName;
+  const totalResults = preservedTotal ?? paginationMeta?.total ?? allResults.length;
+  const totalPages = getFrontendTotalPages(totalResults, pageSize);
+  const visibleResults = getVisiblePageResults(allResults, currentPage, pageSize, totalResults);
 
   return (
     <main className="min-h-dvh bg-white text-zinc-950">
       <SiteNavbar />
 
-      <section className="flex w-full flex-col gap-6 px-4 py-8 md:px-10 xl:px-[150px]">
+      <section className="flex w-full origin-center animate-homepage-enter flex-col gap-6 px-4 py-8 md:px-10 xl:px-[150px]">
         <div className="mx-auto flex w-full flex-col items-center gap-3">
           <SearchForm
             key={searchFormValue}
@@ -280,7 +351,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               <span className="text-red-600 font-medium">{error}</span>
             ) : (
               <>
-                Found {allResults.length} results for{" "}
+                Found {totalResults} results for{" "}
                 <span className="font-medium text-zinc-800">{displayName}</span>
               </>
             )}
@@ -291,8 +362,8 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         </div>
 
         <div className="flex flex-col gap-5">
-          {allResults.length > 0 ? (
-            allResults.map((result) => (
+          {visibleResults.length > 0 ? (
+            visibleResults.map((result) => (
               <TorrentResultCard key={result.id} result={result} />
             ))
           ) : (
@@ -303,6 +374,57 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
             )
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="pt-6">
+            <Pagination>
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage - 1, total: totalResults })} />
+                  </PaginationItem>
+                )}
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((pageNum) => {
+                    if (totalPages <= 7) return true;
+                    if (pageNum === 1) return true;
+                    if (pageNum === totalPages) return true;
+                    if (Math.abs(pageNum - currentPage) <= 1) return true;
+                    return false;
+                  })
+                  .map((pageNum, idx, arr) => {
+                    const prevPage = arr[idx - 1];
+                    const showEllipsis = prevPage && pageNum - prevPage > 1;
+
+                    return (
+                      <span key={pageNum} className="flex items-center">
+                        {showEllipsis && (
+                          <PaginationItem>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                        )}
+                        <PaginationItem>
+                          <PaginationLink
+                            href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: pageNum, total: totalResults })}
+                            isActive={pageNum === currentPage}
+                          >
+                            {pageNum}
+                          </PaginationLink>
+                        </PaginationItem>
+                      </span>
+                    );
+                  })}
+
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage + 1, total: totalResults })} />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
       </section>
     </main>
   );

@@ -5,7 +5,7 @@ export default function TermsPage() {
   return (
     <main className="min-h-dvh bg-white text-zinc-950">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-zinc-950">
           Terms of Service
         </h1>
@@ -65,7 +65,7 @@ export default function TermsPage() {
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-zinc-900">6. Disclaimer of Warranties</h2>
             <p>
-              Torzo is provided "as is" and "as available" without warranties of any kind. We 
+              Torzo is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind. We 
               do not guarantee that our service will be uninterrupted, error-free, or secure. 
               Search results and metadata are provided by third parties and may be inaccurate.
             </p>

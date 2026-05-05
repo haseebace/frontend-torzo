@@ -5,7 +5,7 @@ export default function PrivacyPage() {
   return (
     <main className="min-h-dvh bg-white text-zinc-950">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-zinc-950">
           Privacy Policy
         </h1>

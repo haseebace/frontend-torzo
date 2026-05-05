@@ -6,7 +6,7 @@ export default function ManagePage() {
     <main className="min-h-dvh bg-white text-zinc-950">
       <SiteNavbar />
 
-      <section className="w-full px-4 py-8 md:px-10 xl:px-[150px]">
+      <section className="w-full animate-page-fade-in px-4 py-8 md:px-10 xl:px-[150px]">
         <ManageAccountForm />
       </section>
     </main>
