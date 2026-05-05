@@ -265,7 +265,7 @@ export function TorrentActions({
           </Button>
         )}
         {torrentFileUrl && (
-          <Button asChild variant="outline" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="secondary" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={torrentFileUrl}>
               <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Torrent</span>
@@ -297,16 +297,6 @@ export function TorrentActions({
         </Button>
 
         {directLink && (
-          <Button asChild variant="secondary" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
-            <a href={directLink} target="_blank" rel="noreferrer">
-              <Download className="size-3.5 sm:size-4" />
-              <span className="sm:hidden">Direct</span>
-              <span className="hidden sm:inline">Direct Download</span>
-            </a>
-          </Button>
-        )}
-
-        {directLink && (
           <Button
             type="button"
             variant="secondary"
@@ -317,6 +307,16 @@ export function TorrentActions({
             <Play className="size-3.5 sm:size-4" />
             <span className="sm:hidden">Watch</span>
             <span className="hidden sm:inline">Watch Now</span>
+          </Button>
+        )}
+
+        {directLink && (
+          <Button asChild variant="ghost" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+            <a href={directLink} target="_blank" rel="noreferrer">
+              <Download className="size-3.5 sm:size-4" />
+              <span className="sm:hidden">Direct</span>
+              <span className="hidden sm:inline">Direct Download</span>
+            </a>
           </Button>
         )}
       </div>
