@@ -10,7 +10,7 @@ import {
 import { SiteNavbar } from "@/components/site-navbar";
 import { TorrentActions } from "@/components/torrent/torrent-actions";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { cn, formatBytes, formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 type DetailPageProps = {
   searchParams: Promise<{
@@ -22,6 +22,8 @@ type DetailPageProps = {
 type TorrentFile = {
   name: string;
   size: string;
+  size_bytes?: number;
+  size_human?: string;
   extension: string;
 };
 
@@ -48,6 +50,7 @@ type TorrentDetailData = {
   torrent_file_url: string | null;
   info_hash: string | null;
   size_bytes: number | null;
+  size_human: string | null;
   uploaded_at: string | null;
   category: string | null;
   language: string | null;
@@ -86,6 +89,7 @@ type YtsTorrent = {
   url?: string;
   size?: string;
   size_bytes?: number;
+  size_human?: string;
   seeds?: number;
   peers?: number;
 };
@@ -114,6 +118,7 @@ type TorrentDetail = {
   torrentFileUrl: string | null;
   infoHash: string | null;
   sizeBytes: number;
+  sizeHuman: string;
   uploadedAt: string | null;
   category: string;
   language: string | null;
@@ -177,6 +182,20 @@ function formatPercent(value: number | null | undefined) {
   return `${Math.round(value * 100)}%`;
 }
 
+function formatBytesFromBytes(bytes: number) {
+  if (bytes === 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let size = bytes;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+}
+
 function formatProviderLinkLabel(value: string | null | undefined) {
   if (!value) return "Unknown";
   const normalized = value.toLowerCase();
@@ -207,6 +226,7 @@ function normalizeDetailResponse(
     torrentFileUrl: data.torrent_file_url,
     infoHash: data.info_hash,
     sizeBytes: data.size_bytes ?? 0,
+    sizeHuman: data.size_human || formatBytesFromBytes(data.size_bytes ?? 0),
     uploadedAt: data.uploaded_at,
     category: data.category ?? "unknown",
     language: data.language,
@@ -233,23 +253,36 @@ function normalizeDetailResponse(
   };
 }
 
+function getFileSizeDisplay(file: TorrentFile): string {
+  if (file.size_human) return file.size_human;
+  
+  if (file.size && file.size !== "0 bytes") {
+    const cleaned = file.size.replace(/[\[\]]/g, "").trim();
+    const isHumanReadable = /(\d+(\.\d+)?)\s*(GB|MB|KB|TB|PB)/i.test(cleaned);
+    
+    if (isHumanReadable) {
+      return cleaned;
+    }
+    
+    const bytes = parseInt(cleaned, 10);
+    if (!isNaN(bytes) && bytes > 0) {
+      return formatBytesFromBytes(bytes);
+    }
+  }
+  
+  if (file.size_bytes && file.size_bytes > 0) {
+    return formatBytesFromBytes(file.size_bytes);
+  }
+  
+  return "Unknown";
+}
+
 function getFileIcon(extension: string) {
   const ext = extension.toLowerCase();
   if ([".mkv", ".mp4", ".avi", ".mov", ".webm"].includes(ext)) return Video;
   if ([".png", ".jpg", ".jpeg", ".webp", ".gif"].includes(ext)) return Image;
   if ([".nfo", ".txt", ".srt", ".md"].includes(ext)) return FileText;
   return File;
-}
-
-function formatFileSize(size: string): string {
-  if (!size || size === "0 bytes" || size === "Unknown") return "Unknown size";
-  
-  // Remove square brackets if present and parse as number
-  const cleanedSize = size.replace(/[\[\]]/g, "").trim();
-  const bytes = parseInt(cleanedSize, 10);
-  
-  if (isNaN(bytes)) return size; // Return original if not a number
-  return formatBytes(bytes);
 }
 
 export default async function DetailPage({ searchParams }: DetailPageProps) {
@@ -289,13 +322,14 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           torrentFileUrl: bestTorrent?.url ?? null,
           infoHash: bestTorrent?.hash ?? null,
           sizeBytes: bestTorrent?.size_bytes ?? 0,
+          sizeHuman: bestTorrent?.size || formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
           uploadedAt: movie.date_uploaded ?? null,
           category: "movies",
           uploader: "YTS",
           seeders: bestTorrent?.seeds ?? 0,
           leechers: bestTorrent?.peers ?? 0,
           fileCount: 1,
-          files: [{ name: movie.title || "Media file", size: bestTorrent?.size ?? "Unknown", extension: ".mp4" }],
+          files: [{ name: movie.title || "Media file", size: bestTorrent?.size || formatBytesFromBytes(bestTorrent?.size_bytes ?? 0), size_bytes: bestTorrent?.size_bytes ?? 0, size_human: bestTorrent?.size || formatBytesFromBytes(bestTorrent?.size_bytes ?? 0), extension: ".mp4" }],
           source: { provider: "yts", url: movie.url ?? sourceUrl },
           sources: [],
           images: [],
@@ -354,7 +388,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   const hasFiles = torrent.files.length > 0;
   const detailStats = [
     { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString() },
-    { label: "Size", value: formatBytes(torrent.sizeBytes || 0) },
+    { label: "Size", value: torrent.sizeHuman || "Unknown" },
     { label: "Seeders", value: formatNumber(torrent.seeders) },
     { label: "Leechers", value: formatNumber(torrent.leechers) },
   ];
@@ -417,10 +451,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 <div className="min-w-0 divide-y divide-zinc-200/70">
                   {hasFiles ? torrent.files.map((file, i) => {
                     const FileIcon = getFileIcon(file.extension || "");
-                    const fileSize =
-                       file.size && file.size !== "0 bytes"
-                         ? formatFileSize(file.size)
-                         : "Unknown size";
+                    const fileSize = getFileSizeDisplay(file);
 
                     return (
                       <div

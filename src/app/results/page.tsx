@@ -5,6 +5,20 @@ import { SearchForm } from "@/components/search-form";
 import { ResultSort } from "@/components/result-sort";
 import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
 
+function formatBytesFromBytes(bytes: number) {
+  if (bytes === 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let size = bytes;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+}
+
 type Props = {
   searchParams: Promise<{
     q?: string;
@@ -40,6 +54,7 @@ type YtsTorrent = {
   hash: string;
   quality: string;
   size_bytes: number;
+  size_human?: string;
   seeds: number;
   peers: number;
 };
@@ -201,6 +216,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               category: "movies",
               uploaded_at: null,
               size_bytes: t.size_bytes,
+              size_human: t.size_human || formatBytesFromBytes(t.size_bytes),
               seeders: t.seeds,
               leechers: t.peers,
               sources: [{

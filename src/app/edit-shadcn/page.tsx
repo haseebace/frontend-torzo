@@ -11,6 +11,7 @@ const previewResult = {
   category: "Series",
   uploaded_at: "2026-04-28T00:00:00Z",
   size_bytes: 45957000000,
+  size_human: "42.8 GB",
   seeders: 2418,
   leechers: 184,
   sources: [

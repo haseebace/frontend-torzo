@@ -11,7 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn, formatBytes, formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 export interface TorrentResult {
   id: string;
@@ -19,6 +19,7 @@ export interface TorrentResult {
   category: string;
   uploaded_at: string | null;
   size_bytes: number;
+  size_human: string;
   seeders: number;
   leechers: number;
   sources: {
@@ -110,7 +111,7 @@ export function TorrentResultCard({
               <TorrentMetric
                 icon={HardDrive}
                 label="size"
-                value={formatBytes(result.size_bytes)}
+                value={result.size_human}
               />
               <TorrentMetric
                 icon={ArrowUp}

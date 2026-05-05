@@ -256,7 +256,7 @@ export function TorrentActions({
     <div className="flex flex-col gap-3">
       <div className={cn("flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3", className)}>
         {magnetLink && (
-          <Button asChild variant="default" size="lg" className="h-[45px] min-w-0 flex-1 rounded-[50px] px-1 text-xs sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="default" size="lg" className="h-[35px] min-w-0 flex-1 rounded-[50px] px-0 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={magnetLink}>
               <Magnet className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Magnet</span>
@@ -265,7 +265,7 @@ export function TorrentActions({
           </Button>
         )}
         {torrentFileUrl && (
-          <Button asChild variant="outline" size="lg" className="h-[45px] min-w-0 flex-1 rounded-[50px] px-1 text-xs sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="outline" size="lg" className="h-[35px] min-w-0 flex-1 rounded-[50px] px-0 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={torrentFileUrl}>
               <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Torrent</span>
@@ -277,7 +277,7 @@ export function TorrentActions({
           type="button"
           variant="outline"
           size="lg"
-          className="h-[45px] min-w-0 flex-1 rounded-[50px] px-1 text-xs sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
+          className="h-[35px] min-w-0 flex-1 rounded-[50px] px-0 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
           onClick={handleAddToRD}
           disabled={isLoading || !magnetLink}
         >
@@ -297,7 +297,7 @@ export function TorrentActions({
         </Button>
 
         {directLink && (
-          <Button asChild variant="secondary" size="lg" className="h-[45px] min-w-0 flex-1 rounded-[50px] px-1 text-xs sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="secondary" size="lg" className="h-[35px] min-w-0 flex-1 rounded-[50px] px-0 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={directLink} target="_blank" rel="noreferrer">
               <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Direct</span>
@@ -311,7 +311,7 @@ export function TorrentActions({
             type="button"
             variant="secondary"
             size="lg"
-            className="h-[45px] min-w-0 flex-1 rounded-[50px] px-1 text-xs sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-[35px] min-w-0 flex-1 rounded-[50px] px-0 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
             onClick={handleWatchNow}
           >
             <Play className="size-3.5 sm:size-4" />
