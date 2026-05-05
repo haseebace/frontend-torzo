@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { cookies } from "next/headers";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
@@ -36,7 +37,6 @@ type Props = {
     category?: string;
     sort?: string;
     page?: string;
-    total?: string;
   }>;
 };
 
@@ -59,7 +59,6 @@ type ResultsPageProps = {
     category?: string;
     sort?: string;
     page?: string;
-    total?: string;
   }>;
 };
 
@@ -80,7 +79,7 @@ type YtsMovie = {
 };
 
 const PROVIDERS_COOKIE_NAME = "torzo_selected_providers";
-const RESULTS_PAGE_SIZE = 20;
+const RESULTS_PAGE_SIZE = 10;
 
 type SearchMeta = {
   total: number;
@@ -88,27 +87,18 @@ type SearchMeta = {
   has_next_page: boolean;
   page: number;
   page_size: number;
+  results_on_page: number;
+};
+
+type YtsSearchMeta = {
+  total: number;
+  total_pages: number;
+  has_next_page: boolean;
 };
 
 function parsePageParam(page?: string) {
   const parsed = Number.parseInt(page || "1", 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-}
-
-function parseTotalParam(total?: string) {
-  const parsed = Number.parseInt(total || "", 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
-}
-
-function getFrontendTotalPages(total: number, pageSize: number) {
-  if (total <= 0) return 0;
-  return Math.ceil(total / pageSize);
-}
-
-function getVisiblePageResults(results: TorrentResult[], page: number, pageSize: number, total: number) {
-  const remainingResults = total - (page - 1) * pageSize;
-  const resultsForPage = Math.min(pageSize, Math.max(remainingResults, 0));
-  return results.slice(0, resultsForPage);
 }
 
 async function getSelectedProviders() {
@@ -169,7 +159,7 @@ async function getMovieName(tmdbId: string) {
   return null;
 }
 
-function buildPageUrl(params: { query?: string; tmdbId?: string; imdbId?: string; category?: string; sort?: string; page: number; total?: number }) {
+function buildPageUrl(params: { query?: string; tmdbId?: string; imdbId?: string; category?: string; sort?: string; page: number }) {
   const searchParams = new URLSearchParams();
   if (params.query) searchParams.append("q", params.query);
   if (params.tmdbId) searchParams.append("tmdbId", params.tmdbId);
@@ -177,7 +167,6 @@ function buildPageUrl(params: { query?: string; tmdbId?: string; imdbId?: string
   if (params.category) searchParams.append("category", params.category);
   if (params.sort && params.sort !== "seeders") searchParams.append("sort", params.sort);
   searchParams.append("page", params.page.toString());
-  if (params.total && params.total > 0) searchParams.append("total", params.total.toString());
   return `/results?${searchParams.toString()}`;
 }
 
@@ -189,7 +178,6 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const category = params.category?.trim();
   const sort = params.sort || "seeders";
   const currentPage = parsePageParam(params.page);
-  const preservedTotal = parseTotalParam(params.total);
   const pageSize = RESULTS_PAGE_SIZE;
 
   const selectedProviders = await getSelectedProviders();
@@ -209,6 +197,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   let allResults: TorrentResult[] = [];
   let error: string | null = null;
   let paginationMeta: SearchMeta | null = null;
+  let ytsPaginationMeta: YtsSearchMeta | null = null;
   let displayName = query || imdbId || tmdbId || "nothing";
 
   try {
@@ -258,15 +247,20 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       };
     })();
 
-    const ytsResultsPromise = (async (): Promise<TorrentResult[]> => {
+    const ytsResultsPromise = (async (): Promise<{
+      results: TorrentResult[];
+      meta: YtsSearchMeta | null;
+    }> => {
       // Handle YTS separately if selected and we have an ID
       if (!selectedProviders.includes("yts") || !(tmdbId || imdbId)) {
-        return [];
+        return { results: [], meta: null };
       }
 
       const ytsParams = new URLSearchParams();
       if (tmdbId) ytsParams.append("tmdb_id", tmdbId);
       if (imdbId) ytsParams.append("imdb_id", imdbId);
+      ytsParams.append("page", currentPage.toString());
+      ytsParams.append("limit", pageSize.toString());
       
       const ytsRes = await fetch(`https://torzoapi.vercel.app/api/v1/yts/search?${ytsParams.toString()}`, {
         cache: "no-store"
@@ -274,28 +268,43 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       
       if (ytsRes.ok) {
         const ytsJson = await ytsRes.json();
+        const movieCount = Number(ytsJson.data?.movie_count ?? 0);
+        const limit = Number(ytsJson.data?.limit ?? pageSize);
+        const pageNumber = Number(ytsJson.data?.page_number ?? currentPage);
+        const totalPages = movieCount > 0 ? Math.ceil(movieCount / limit) : 0;
+        const meta = {
+          total: movieCount,
+          total_pages: totalPages,
+          has_next_page: pageNumber < totalPages,
+        };
+
         if (ytsJson.data?.movies) {
           // Normalize YTS movies to TorrentResult shape
-          return (ytsJson.data.movies as YtsMovie[]).flatMap((movie) =>
-            movie.torrents.map((t) => ({
-              id: `yts-${movie.id}-${t.hash}`,
-              title: `${movie.title} (${movie.year}) [${t.quality}]`,
-              category: "movies",
-              uploaded_at: null,
-              size_bytes: t.size_bytes,
-              size_human: t.size_human || formatBytesFromBytes(t.size_bytes),
-              seeders: t.seeds,
-              leechers: t.peers,
-              sources: [{
-                provider: "yts",
-                source_url: String(movie.id)
-              }]
-            }))
-          );
+          return {
+            results: (ytsJson.data.movies as YtsMovie[]).flatMap((movie) =>
+              movie.torrents.map((t) => ({
+                id: `yts-${movie.id}-${t.hash}`,
+                title: `${movie.title} (${movie.year}) [${t.quality}]`,
+                category: "movies",
+                uploaded_at: null,
+                size_bytes: t.size_bytes,
+                size_human: t.size_human || formatBytesFromBytes(t.size_bytes),
+                seeders: t.seeds,
+                leechers: t.peers,
+                sources: [{
+                  provider: "yts",
+                  source_url: String(movie.id)
+                }]
+              }))
+            ),
+            meta,
+          };
         }
+
+        return { results: [], meta };
       }
 
-      return [];
+      return { results: [], meta: null };
     })();
 
     const [movieName, genericResults, ytsResults] = await Promise.all([
@@ -308,9 +317,10 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       displayName = movieName;
     }
 
-    allResults = [...genericResults.results, ...ytsResults];
+    allResults = [...genericResults.results, ...ytsResults.results];
     error = genericResults.error;
     paginationMeta = genericResults.meta;
+    ytsPaginationMeta = ytsResults.meta;
 
     // Client-side sorting for combined results
     if (sort === "seeders") {
@@ -328,9 +338,11 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   }
 
   const searchFormValue = displayName === "nothing" ? "" : displayName;
-  const totalResults = preservedTotal ?? paginationMeta?.total ?? allResults.length;
-  const totalPages = getFrontendTotalPages(totalResults, pageSize);
-  const visibleResults = getVisiblePageResults(allResults, currentPage, pageSize, totalResults);
+  const hasGenericSearch = Boolean(genericSources && (query || tmdbId || imdbId));
+  const activePaginationMeta = hasGenericSearch ? paginationMeta : ytsPaginationMeta;
+  const totalResults = activePaginationMeta?.total ?? allResults.length;
+  const totalPages = activePaginationMeta?.total_pages ?? (allResults.length > 0 ? 1 : 0);
+  const hasNextPage = activePaginationMeta?.has_next_page ?? false;
 
   return (
     <main className="min-h-dvh bg-white text-zinc-950">
@@ -362,8 +374,8 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         </div>
 
         <div className="flex flex-col gap-5">
-          {visibleResults.length > 0 ? (
-            visibleResults.map((result) => (
+          {allResults.length > 0 ? (
+            allResults.map((result) => (
               <TorrentResultCard key={result.id} result={result} />
             ))
           ) : (
@@ -381,7 +393,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               <PaginationContent>
                 {currentPage > 1 && (
                   <PaginationItem>
-                    <PaginationPrevious href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage - 1, total: totalResults })} />
+                    <PaginationPrevious href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage - 1 })} />
                   </PaginationItem>
                 )}
 
@@ -398,7 +410,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
                     const showEllipsis = prevPage && pageNum - prevPage > 1;
 
                     return (
-                      <span key={pageNum} className="flex items-center">
+                      <Fragment key={pageNum}>
                         {showEllipsis && (
                           <PaginationItem>
                             <PaginationEllipsis />
@@ -406,19 +418,19 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
                         )}
                         <PaginationItem>
                           <PaginationLink
-                            href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: pageNum, total: totalResults })}
+                            href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: pageNum })}
                             isActive={pageNum === currentPage}
                           >
                             {pageNum}
                           </PaginationLink>
                         </PaginationItem>
-                      </span>
+                      </Fragment>
                     );
                   })}
 
-                {currentPage < totalPages && (
+                {hasNextPage && (
                   <PaginationItem>
-                    <PaginationNext href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage + 1, total: totalResults })} />
+                    <PaginationNext href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage + 1 })} />
                   </PaginationItem>
                 )}
               </PaginationContent>

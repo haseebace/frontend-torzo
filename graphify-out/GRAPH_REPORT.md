@@ -1,11 +1,11 @@
 # Graph Report - frontend-torzo  (2026-05-05)
 
 ## Corpus Check
-- 43 files · ~26,064 words
+- 43 files · ~26,092 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 195 nodes · 182 edges · 17 communities detected
+- 192 nodes · 179 edges · 17 communities detected
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
@@ -13,8 +13,8 @@
 - [[_COMMUNITY_Community 0|Community 0]]
 - [[_COMMUNITY_Community 1|Community 1]]
 - [[_COMMUNITY_Community 2|Community 2]]
-- [[_COMMUNITY_Community 4|Community 4]]
-- [[_COMMUNITY_Community 6|Community 6]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 5|Community 5]]
 - [[_COMMUNITY_Community 8|Community 8]]
 - [[_COMMUNITY_Community 9|Community 9]]
 - [[_COMMUNITY_Community 13|Community 13]]
@@ -74,11 +74,11 @@ Nodes (18): Accessibility standards (WCAG AA), Button component spec (primary/se
 Cohesion: 0.23
 Nodes (12): Real-Debrid Bearer token authentication, Real-Debrid API base URL, Real-Debrid API rate limit (250 req/min), POST /torrents/addMagnet endpoint, GET /disable_access_token endpoint, POST /torrents/selectFiles/{id} endpoint, GET /torrents endpoint, GET /torrents/info/{id} endpoint (+4 more)
 
-### Community 4 - "Community 4"
+### Community 3 - "Community 3"
 Cohesion: 0.31
 Nodes (7): POST(), POST(), getAppSettings(), getHeaders(), getSupabaseConfig(), parseProviders(), upsertAppSettings()
 
-### Community 6 - "Community 6"
+### Community 5 - "Community 5"
 Cohesion: 0.24
 Nodes (3): formatBytesFromBytes(), getFileSizeDisplay(), normalizeDetailResponse()
 
@@ -158,9 +158,9 @@ Nodes (1): White Background Image
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Real-Debrid API Documentation` connect `Community 2` to `Community 0`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Why does `POST /unrestrict/link endpoint` connect `Community 0` to `Community 2`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Are the 6 inferred relationships involving `Torzo - ad-free torrent search engine` (e.g. with `rargb provider (RARBG)` and `thepiratebay provider (The Pirate Bay)`) actually correct?**
   _`Torzo - ad-free torrent search engine` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `GET /api/v1/sources endpoint`, `API error code reference`, `Project README` to the rest of the system?**
