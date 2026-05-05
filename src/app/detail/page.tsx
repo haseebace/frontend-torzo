@@ -407,7 +407,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">
               {title}
             </h1>
-            <div className="flex w-full min-w-0 items-baseline gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto">
+            <div className="flex w-full min-w-0 items-baseline gap-2 rounded-lg bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto">
               <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-[0.08em] text-zinc-400">
                 Info hash:
               </span>
