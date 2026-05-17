@@ -77,7 +77,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://image.tmdb.org" />
         <link rel="dns-prefetch" href="https://torzoapi.vercel.app" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-dvh flex-col">
         {children}
         <SiteFooter />
         <Analytics />
