@@ -202,7 +202,7 @@ export function ManageAccountForm() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8">
+    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8">
       <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">
         <Card className="min-h-[300px] justify-between px-0 py-0 shadow-none">
           <CardContent className="flex h-full flex-col justify-between gap-6 p-6 md:p-8">
