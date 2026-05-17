@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { realDebridFetch } from "@/lib/real-debrid-client";
 
 const providers = [
   {
@@ -32,10 +31,6 @@ type ManageStatus = {
   connected: boolean;
   username: string | null;
   providers: ProviderId[];
-};
-
-type RealDebridUser = {
-  username?: string;
 };
 
 export function ManageAccountForm() {
@@ -65,22 +60,27 @@ export function ManageAccountForm() {
         // Load RD Key from localStorage
         const localApiKey = localStorage.getItem("rd_api_key");
         if (localApiKey) {
-          try {
-            const userData = await realDebridFetch<RealDebridUser>(
-              localApiKey,
-              "/user"
-            );
-
+          const userResponse = await fetch("/api/real-debrid/proxy", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-rd-api-key": localApiKey,
+            },
+            body: JSON.stringify({ endpoint: "/user" }),
+          });
+          
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
             if (isMounted) {
               setIsConnected(true);
-              setUsername(userData?.username ?? null);
+              setUsername(userData.username);
             }
-          } catch {
-            if (isMounted) {
-              localStorage.removeItem("rd_api_key");
-              setIsConnected(false);
-              setUsername(null);
-            }
+          } else {
+             if (isMounted) {
+                localStorage.removeItem("rd_api_key");
+                setIsConnected(false);
+                setUsername(null);
+             }
           }
         }
       } catch {
@@ -170,15 +170,26 @@ export function ManageAccountForm() {
     setIsConnecting(true);
 
     try {
-      const userData = await realDebridFetch<RealDebridUser>(
-        apiKey.trim(),
-        "/user"
-      );
+      // Verify token via our proxy
+      const userResponse = await fetch("/api/real-debrid/proxy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-rd-api-key": apiKey.trim(),
+        },
+        body: JSON.stringify({ endpoint: "/user" }),
+      });
+
+      if (!userResponse.ok) {
+         throw new Error("Invalid Real-Debrid API key.");
+      }
+
+      const userData = await userResponse.json();
       
       localStorage.setItem("rd_api_key", apiKey.trim());
 
       setIsConnected(true);
-      setUsername(userData?.username ?? null);
+      setUsername(userData.username);
       setApiKey("");
       setMessage("Real-Debrid connected locally.");
     } catch (connectError) {
