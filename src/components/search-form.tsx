@@ -30,7 +30,7 @@ function SearchSubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
       aria-busy={isSubmitting}
       className={cn(
         buttonVariants({ variant: "torzoPill" }),
-        "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[var(--ui-ease-enter)]",
         "md:inset-y-1.5 md:right-1.5 md:h-13 md:w-13 md:opacity-0 md:pointer-events-none md:scale-90",
         "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
         "active:translate-y-0 motion-reduce:transition-none md:motion-reduce:scale-100"
@@ -143,7 +143,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
       autoComplete="off"
       onSubmit={() => setIsSubmitting(true)}
       className={cn(
-        "group w-full max-w-3xl md:transition-[max-width] md:duration-300 md:ease-[cubic-bezier(0.16,1,0.3,1)] md:focus-within:max-w-[52rem]",
+        "group w-full max-w-3xl md:transition-[max-width] md:duration-300 md:ease-[var(--ui-ease-enter)] md:focus-within:max-w-[52rem]",
         className
       )}
     >
@@ -151,7 +151,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
         Search torrents
       </label>
       <div className="relative h-16">
-        <span className="pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-zinc-500 transition-colors group-focus-within:text-zinc-700">
+        <span className="pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-muted-foreground transition-colors group-focus-within:text-foreground-strong">
           <Search className="size-5" />
         </span>
         
@@ -200,7 +200,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
         ) : null}
 
         {!selectedMovie && isLoading ? (
-          <span className="pointer-events-none absolute inset-y-0 right-16 z-10 hidden items-center text-zinc-400 md:flex">
+          <span className="pointer-events-none absolute inset-y-0 right-16 z-10 hidden items-center text-text-soft md:flex">
             <Loader2 className="size-4 animate-spin" />
           </span>
         ) : null}
@@ -211,10 +211,10 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
           <div
             id={listboxId}
             role="listbox"
-            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-zinc-200 bg-white py-1 shadow-[0_16px_48px_rgba(24,24,27,0.12)] md:max-h-72"
+            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface py-1 shadow-ui-popover md:max-h-72"
           >
             {isLoading && suggestions.length === 0 ? (
-              <div className="flex items-center gap-2 px-4 py-3 text-sm text-zinc-500">
+              <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
                 <Loader2 className="size-4 animate-spin" />
                 Searching TMDB
               </div>
@@ -227,9 +227,9 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
                   aria-selected="false"
                   onMouseDown={(event) => event.preventDefault()}
                   onClick={() => handleSuggestionSelect(movie)}
-                  className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-none"
+                  className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-surface-subtle focus-visible:bg-surface-subtle focus-visible:outline-none"
                 >
-                  <span className="flex h-14 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400">
+                  <span className="flex h-14 w-10 shrink-0 items-center justify-center overflow-hidden rounded-control border border-border bg-surface-subtle text-text-soft">
                     {movie.posterUrl ? (
                       <Image
                         src={movie.posterUrl}
@@ -244,11 +244,11 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex min-w-0 items-baseline gap-2">
-                      <span className="min-w-0 truncate text-sm font-medium text-zinc-900">
+                      <span className="min-w-0 truncate text-sm font-medium text-foreground">
                         {movie.title}
                       </span>
                       {movie.releaseYear ? (
-                        <span className="shrink-0 text-xs text-zinc-400">
+                        <span className="shrink-0 text-xs text-text-soft">
                           {movie.releaseYear}
                         </span>
                       ) : null}

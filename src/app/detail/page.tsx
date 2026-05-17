@@ -292,11 +292,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   if (!sourceUrl) {
     return (
-      <main className="min-h-dvh bg-white text-zinc-950">
+      <main className="min-h-dvh bg-surface text-foreground">
         <SiteNavbar />
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
-          <p className="text-zinc-500">No media source provided.</p>
-          <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">Go back home</Link>
+          <p className="text-muted-foreground">No media source provided.</p>
+          <Link href="/" className="text-link hover:underline mt-4 inline-block">Go back home</Link>
         </section>
       </main>
     );
@@ -369,15 +369,15 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   if (error || !torrent) {
     return (
-      <main className="min-h-dvh bg-white text-zinc-950">
+      <main className="min-h-dvh bg-surface text-foreground">
         <SiteNavbar />
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
-            <h1 className="text-2xl font-bold text-zinc-900">Oops!</h1>
-            <p className="text-red-600 font-medium">{error || "Media details not found."}</p>
-            <p className="text-sm text-zinc-500">Source: {source}</p>
-            <p className="text-xs text-zinc-400 break-all">URL: {sourceUrl}</p>
-            <Link href="/" className="text-blue-600 hover:underline mt-6 inline-block">Go back home</Link>
+            <h1 className="text-2xl font-bold text-foreground">Oops!</h1>
+            <p className="text-destructive font-medium">{error || "Media details not found."}</p>
+            <p className="text-sm text-muted-foreground">Source: {source}</p>
+            <p className="text-xs text-text-soft break-all">URL: {sourceUrl}</p>
+            <Link href="/" className="text-link hover:underline mt-6 inline-block">Go back home</Link>
           </div>
         </section>
       </main>
@@ -398,20 +398,20 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   };
 
   return (
-    <main className="min-h-dvh overflow-x-hidden bg-white text-zinc-950">
+    <main className="min-h-dvh overflow-x-hidden bg-surface text-foreground">
       <SiteNavbar />
 
-      <section className="flex w-full min-w-0 origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-[150px]">
-        <div className="min-w-0 space-y-5 border-b border-zinc-200 pb-7">
+      <section className="flex w-full min-w-0 origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-page">
+        <div className="min-w-0 space-y-5 border-b border-border pb-7">
           <div className="space-y-3">
-            <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl">
+            <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl">
               {title}
             </h1>
-            <div className="flex w-full min-w-0 items-baseline gap-2 rounded-lg bg-zinc-50 px-3 py-2 sm:inline-flex sm:w-auto">
-              <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-[0.08em] text-zinc-400">
+            <div className="flex w-full min-w-0 items-baseline gap-2 rounded-control bg-surface-subtle px-3 py-2 sm:inline-flex sm:w-auto">
+              <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-[0.08em] text-text-soft">
                 Info hash:
               </span>
-              <p className="min-w-0 truncate font-mono text-xs leading-5 text-zinc-600 md:text-sm">
+              <p className="min-w-0 truncate font-mono text-xs leading-5 text-text-subtle md:text-sm">
                 {torrent.infoHash ?? "Unknown"}
               </p>
             </div>
@@ -427,11 +427,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
         <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 space-y-6">
-            <div className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 border-b border-zinc-200 pb-4 text-[12px] md:gap-x-6 md:gap-y-3 md:pb-5 md:text-sm">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 border-b border-border pb-4 text-[12px] md:gap-x-6 md:gap-y-3 md:pb-5 md:text-sm">
               {detailStats.map((stat) => (
                 <div key={stat.label} className="flex items-baseline gap-2">
-                  <span className="text-zinc-500">{stat.label}</span>
-                  <span className="font-semibold text-zinc-950">{stat.value}</span>
+                  <span className="text-muted-foreground">{stat.label}</span>
+                  <span className="font-semibold text-foreground">{stat.value}</span>
                 </div>
               ))}
             </div>
@@ -440,15 +440,15 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               <CollapsibleTrigger>
                 <div className="flex min-w-0 items-center gap-4">
                   <div>
-                    <h2 className="text-lg font-semibold tracking-tight text-zinc-950">
+                    <h2 className="text-lg font-semibold tracking-tight text-foreground">
                       Files
                     </h2>
                   </div>
                 </div>
-                <ChevronDown className="size-4 shrink-0 text-zinc-500 transition-transform duration-200" />
+                <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform duration-200" />
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="min-w-0 divide-y divide-zinc-200/70">
+                <div className="min-w-0 divide-y divide-border/70">
                   {hasFiles ? torrent.files.map((file, i) => {
                     const FileIcon = getFileIcon(file.extension || "");
                     const fileSize = getFileSizeDisplay(file);
@@ -456,23 +456,23 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                     return (
                       <div
                         key={`${file.name}-${i}`}
-                        className="rounded-lg px-2 py-3 text-xs transition-colors hover:bg-zinc-50 md:text-sm"
+                        className="rounded-control px-2 py-3 text-xs transition-colors hover:bg-surface-subtle md:text-sm"
                       >
                         <div className="flex min-w-0 items-center gap-3">
-                          <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500 md:size-8">
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded-control border border-border bg-surface-subtle text-muted-foreground md:size-8">
                             <FileIcon className="size-3.5 md:size-4" />
                           </span>
-                           <p className="min-w-0 flex-1 truncate font-medium text-zinc-700">
+                           <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
                              {file.name}
                            </p>
-                           <span className="ml-auto shrink-0 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
+                           <span className="ml-auto shrink-0 rounded-md bg-surface-badge px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-text-subtle md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
                             {fileSize}
                           </span>
                         </div>
                       </div>
                     );
                   }) : (
-                    <p className="px-2 py-3 text-sm text-zinc-500">
+                    <p className="px-2 py-3 text-sm text-muted-foreground">
                       No file list returned for this media yet.
                     </p>
                   )}
@@ -481,8 +481,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             </Collapsible>
 
             {torrent.images.length > 0 && (
-              <section className="rounded-xl border border-zinc-200 bg-white p-5">
-                <h2 className="mb-3 text-lg font-semibold tracking-tight text-zinc-950">
+              <section className="rounded-card border border-border bg-surface p-5">
+                <h2 className="mb-3 text-lg font-semibold tracking-tight text-foreground">
                   Screenshots
                 </h2>
                 <div className="flex flex-wrap gap-2">
@@ -491,10 +491,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       key={`${image.url}-${index}`}
                       href={image.page_url ?? image.url}
                       target="_blank"
-                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-100 md:px-3 md:py-2 md:text-sm"
+                      className="rounded-control border border-border bg-surface-subtle px-2.5 py-1.5 text-xs font-medium text-foreground-strong hover:bg-surface-badge md:px-3 md:py-2 md:text-sm"
                     >
                       Screenshot {index + 1}
-                      <span className="ml-1.5 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-600 md:ml-2 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
+                      <span className="ml-1.5 rounded-md bg-surface-badge px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-text-subtle md:ml-2 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
                         {image.kind}
                       </span>
                     </Link>
@@ -505,59 +505,59 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           </div>
 
           <aside className="min-w-0 space-y-4">
-            <section className="rounded-xl border border-zinc-200 bg-white p-5">
-              <h2 className="mb-4 text-lg font-semibold tracking-tight text-zinc-950">
+            <section className="rounded-card border border-border bg-surface p-5">
+              <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
                 Health & Dates
               </h2>
-              <div className="divide-y divide-zinc-200/70 text-sm">
+              <div className="divide-y divide-border/70 text-sm">
                 {sourceLink.source_url ? (
                   <div className="flex min-w-0 items-center justify-between gap-4 py-3 first:pt-0">
-                    <span className="shrink-0 text-zinc-500">Source</span>
+                    <span className="shrink-0 text-muted-foreground">Source</span>
                     <Link
                       href={sourceLink.source_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="min-w-0 truncate border-b border-zinc-300 pb-0.5 text-right text-xs font-medium text-zinc-600 hover:border-zinc-950 hover:text-zinc-950 md:text-sm"
+                      className="min-w-0 truncate border-b border-input pb-0.5 text-right text-xs font-medium text-text-subtle hover:border-primary hover:text-foreground md:text-sm"
                     >
                       {formatProviderLinkLabel(sourceLink.provider)}
                     </Link>
                   </div>
                 ) : null}
                 <div className="flex items-center justify-between gap-4 py-3 first:pt-0">
-                  <span className="text-zinc-500">Uploaded date</span>
-                  <span className="font-semibold text-zinc-950">
+                  <span className="text-muted-foreground">Uploaded date</span>
+                  <span className="font-semibold text-foreground">
                     {formatDate(torrent.uploadedAt)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-zinc-500">Verified</span>
-                  <span className={cn("font-semibold", torrent.verified ? "text-emerald-600" : "text-zinc-950")}>
+                  <span className="text-muted-foreground">Verified</span>
+                  <span className={cn("font-semibold", torrent.verified ? "text-success" : "text-foreground")}>
                     {torrent.verified ? "Yes" : "No"}
                   </span>
                 </div>
                 {torrent.downloaded !== undefined && torrent.downloaded !== null && (
                   <div className="flex items-center justify-between gap-4 py-3">
-                    <span className="text-zinc-500">Downloads</span>
-                    <span className="font-semibold text-zinc-950">
+                    <span className="text-muted-foreground">Downloads</span>
+                    <span className="font-semibold text-foreground">
                       {formatNumber(torrent.downloaded)}
                     </span>
                   </div>
                 )}
                 <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-zinc-500">Health score</span>
-                  <span className="font-semibold text-zinc-950">
+                  <span className="text-muted-foreground">Health score</span>
+                  <span className="font-semibold text-foreground">
                     {formatPercent(torrent.healthScore)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-zinc-500">Trusted score</span>
-                  <span className="font-semibold text-zinc-950">
+                  <span className="text-muted-foreground">Trusted score</span>
+                  <span className="font-semibold text-foreground">
                     {formatPercent(torrent.trustedScore)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-4 py-3 last:pb-0">
-                  <span className="text-zinc-500">Last seen</span>
-                  <span className="font-semibold text-zinc-950">
+                  <span className="text-muted-foreground">Last seen</span>
+                  <span className="font-semibold text-foreground">
                     {formatDate(torrent.lastSeenAt)}
                   </span>
                 </div>

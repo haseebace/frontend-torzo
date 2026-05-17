@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Checkbox as CheckboxPrimitive } from "radix-ui";
-import { CheckIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function Checkbox({
@@ -13,7 +12,7 @@ function Checkbox({
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer flex size-5 shrink-0 items-center justify-center rounded-md border border-zinc-300 bg-white text-zinc-950 outline-none transition-colors focus-visible:ring-4 focus-visible:ring-zinc-400/20 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-zinc-950 data-[state=checked]:bg-zinc-950 data-[state=checked]:text-white",
+        "peer flex size-[22px] shrink-0 items-center justify-center rounded-pill border border-input bg-surface text-foreground outline-none transition-colors focus-visible:ring-4 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
         className
       )}
       {...props}
@@ -22,7 +21,7 @@ function Checkbox({
         data-slot="checkbox-indicator"
         className="flex items-center justify-center"
       >
-        <CheckIcon className="size-3.5" />
+        <span className="size-2 rounded-pill bg-current" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

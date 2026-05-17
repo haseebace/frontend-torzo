@@ -256,7 +256,7 @@ export function TorrentActions({
     <div className="flex flex-col gap-3">
       <div className={cn("flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3", className)}>
         {magnetLink && (
-          <Button asChild variant="default" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="default" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={magnetLink}>
               <Magnet className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Magnet</span>
@@ -265,7 +265,7 @@ export function TorrentActions({
           </Button>
         )}
         {torrentFileUrl && (
-          <Button asChild variant="secondary" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="secondary" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={torrentFileUrl}>
               <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Torrent</span>
@@ -277,7 +277,7 @@ export function TorrentActions({
           type="button"
           variant="outline"
           size="lg"
-          className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
+          className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
           onClick={handleAddToRD}
           disabled={isLoading || !magnetLink}
         >
@@ -299,9 +299,9 @@ export function TorrentActions({
         {directLink && (
           <Button
             type="button"
-            variant="secondary"
+            variant="outline"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
             onClick={handleWatchNow}
           >
             <Play className="size-3.5 sm:size-4" />
@@ -311,7 +311,7 @@ export function TorrentActions({
         )}
 
         {directLink && (
-          <Button asChild variant="ghost" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-[50px] px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button asChild variant="outline" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={directLink} target="_blank" rel="noreferrer">
               <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Direct</span>
@@ -322,12 +322,12 @@ export function TorrentActions({
       </div>
       {rdAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 sm:text-xs">
+          <span className="rounded-md bg-surface-badge px-1.5 py-0.5 text-[10px] font-medium text-text-subtle sm:text-xs">
             {rdAccountStatus}
           </span>
         </div>
       )}
-      {errorMessage && <p className="text-sm font-medium text-red-600">{errorMessage}</p>}
+      {errorMessage && <p className="text-sm font-medium text-destructive">{errorMessage}</p>}
     </div>
   );
 }

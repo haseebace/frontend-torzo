@@ -2,20 +2,20 @@ import { SiteNavbar } from "@/components/site-navbar";
 
 export default function DMCAPage() {
   return (
-    <main className="min-h-dvh bg-white text-zinc-950">
+    <main className="min-h-dvh bg-surface text-foreground">
       <SiteNavbar />
       <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
-        <h1 className="mb-6 text-3xl font-bold tracking-tight text-zinc-950">
+        <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground">
           DMCA Policy
         </h1>
         
-        <div className="space-y-6 text-sm leading-relaxed text-zinc-600">
+        <div className="space-y-6 text-sm leading-relaxed text-text-subtle">
           <p>
-            <strong className="text-zinc-900">Last updated:</strong> May 3, 2026
+            <strong className="text-foreground">Last updated:</strong> May 3, 2026
           </p>
           
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">1. Notice & Takedown</h2>
+            <h2 className="text-lg font-semibold text-foreground">1. Notice & Takedown</h2>
             <p>
               Torzo respects the intellectual property rights of others and complies with the Digital 
               Millennium Copyright Act (DMCA). As a search engine that indexes metadata from third-party 
@@ -24,7 +24,7 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">2. Filing a DMCA Notice</h2>
+            <h2 className="text-lg font-semibold text-foreground">2. Filing a DMCA Notice</h2>
             <p>
               If you believe that content indexed by Torzo infringes your copyright, you may submit a 
               DMCA takedown notice. Your notice must include:
@@ -40,7 +40,7 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">3. Counter-Notification</h2>
+            <h2 className="text-lg font-semibold text-foreground">3. Counter-Notification</h2>
             <p>
               If you believe content was mistakenly removed, you may submit a counter-notification 
               including:
@@ -54,35 +54,35 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">4. Submission</h2>
+            <h2 className="text-lg font-semibold text-foreground">4. Submission</h2>
             <p>
               DMCA notices should be sent to our designated agent at:
             </p>
-            <div className="rounded-lg bg-zinc-50 p-4 text-zinc-700">
+            <div className="rounded-control bg-surface-subtle p-4 text-foreground-strong">
               <p>Email: dmca@torzo.app</p>
               <p>Subject Line: DMCA Takedown Request</p>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-muted-foreground">
               Note: Torzo indexes metadata only. For content hosted on third-party platforms, 
               you may also need to contact those platforms directly.
             </p>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">5. Repeat Infringers</h2>
+            <h2 className="text-lg font-semibold text-foreground">5. Repeat Infringers</h2>
             <p>
               Torzo reserves the right to terminate access for users who are repeat infringers in 
               appropriate circumstances.
             </p>
           </div>
 
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-muted-foreground">
             For more information about the DMCA, visit the{" "}
             <a 
               href="https://www.copyright.gov/dmca/" 
               target="_blank" 
               rel="noreferrer"
-              className="text-blue-600 hover:underline"
+              className="text-link hover:underline"
             >
               U.S. Copyright Office website
             </a>.

@@ -1,28 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { Check, KeyRound, ShieldCheck } from "lucide-react";
+import { Gauge, LockKeyhole, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 const providers = [
-  {
-    id: "rarbg",
-    label: "RARBG",
-    description: "Default tracker for broad movie and show coverage.",
-  },
-  {
-    id: "the-pirate-bay",
-    label: "The Pirate Bay",
-    description: "Wider index coverage for mixed categories.",
-  },
-  {
-    id: "yts",
-    label: "YTS",
-    description: "Lightweight movie-focused results.",
-  },
+  { id: "rarbg", label: "RARBG" },
+  { id: "the-pirate-bay", label: "Pirate Bay" },
+  { id: "yts", label: "YTS" },
 ] as const;
 
 type ProviderId = (typeof providers)[number]["id"];
@@ -105,6 +94,8 @@ export function ManageAccountForm() {
         .join(", "),
     [selectedProviders]
   );
+  const activeProviderCount = selectedProviders.length;
+  const connectionStatus = isConnected ? "Connected" : "Not connected";
 
   const handleProviderChange = async (
     providerId: ProviderId,
@@ -145,7 +136,6 @@ export function ManageAccountForm() {
       }
 
       setSelectedProviders(data.providers);
-      setMessage("Provider settings saved.");
     } catch (providerError) {
       setError(
         providerError instanceof Error
@@ -212,104 +202,66 @@ export function ManageAccountForm() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 md:text-4xl">
-          Manage
-        </h1>
-        <p className="max-w-2xl text-xs leading-5 text-zinc-500">
-          Turbocharge your experience by connecting Real-Debrid and choosing your preferred search sources.
-        </p>
-      </div>
-
-      <div className="grid gap-5 md:grid-cols-[1fr_0.9fr]">
-        <Card className="rounded-xl border border-zinc-200 bg-white px-0 py-5">
-          <CardHeader className="gap-2 px-5">
-            <div className="flex size-10 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-700">
-              <KeyRound className="size-5" />
-            </div>
-            <CardTitle className="text-xl font-semibold text-zinc-950">
-              Unlock High Speed
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-5">
-            <form className="flex flex-col gap-4" onSubmit={handleConnect}>
-              <label className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-zinc-700">
-                  API key
-                </span>
-                <Input
-                  type="password"
-                  value={apiKey}
-                  onChange={(event) => {
-                    setApiKey(event.target.value);
-                  }}
-                  placeholder="Paste your Real-Debrid API key"
-                  className="h-12 rounded-xl px-4 text-sm leading-none md:text-sm"
-                  disabled={isConnected}
-                />
-              </label>
-
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-xs leading-5 text-zinc-500">
-                  Your key stays in your browser. It&apos;s never sent to our servers, keeping your account 100% private.
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8">
+      <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="min-h-[300px] justify-between px-0 py-0 shadow-none">
+          <CardContent className="flex h-full flex-col justify-between gap-6 p-6 md:p-8">
+            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+              <div className="max-w-2xl space-y-3">
+                <p className="font-heading text-xs font-extrabold uppercase tracking-[0.16em] text-primary">
+                  Manage sources
                 </p>
-                {isConnected ? (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    className="h-10 px-4"
-                    onClick={handleDisconnect}
-                  >
-                    Disconnect
-                  </Button>
-                ) : (
-                  <Button
-                    type="submit"
-                    className="h-10 px-4"
-                    disabled={isConnecting}
-                  >
-                    {isConnecting ? "Connecting" : "Connect"}
-                  </Button>
-                )}
+                <h1 className="font-heading text-3xl font-extrabold leading-[1.08] text-foreground md:text-[38px]">
+                  Connect Real-Debrid and control where Torzo searches.
+                </h1>
+                <p className="max-w-xl text-base leading-7 text-foreground-muted">
+                  Keep the setup focused: one key, visible connection state, and
+                  provider choices that save locally.
+                </p>
               </div>
-              {error ? (
-                <p className="text-sm font-medium text-red-600">{error}</p>
-              ) : null}
-              {message ? (
-                <p className="text-sm font-medium text-zinc-700">{message}</p>
-              ) : null}
-            </form>
+              <span className="inline-flex w-fit min-w-[92px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-pill bg-brand-surface px-4 py-2.5 text-xs font-bold text-primary">
+                <span className="size-2 rounded-pill bg-primary" />
+                Local only
+              </span>
+            </div>
+            <div>
+              <Button
+                type="button"
+                size="lg"
+                className="h-[50px] w-full px-6 font-heading md:w-[180px]"
+                onClick={() => {
+                  document.getElementById("real-debrid-api-key")?.focus();
+                }}
+              >
+                Connect key
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="rounded-xl border border-zinc-200 bg-white px-0 py-5">
-          <CardHeader className="gap-2 px-5">
-            <div className="flex size-10 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-700">
-              <ShieldCheck className="size-5" />
-            </div>
-            <CardTitle className="text-xl font-semibold text-zinc-950">
-              Connection status
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 px-5">
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
-              <p className="text-sm font-medium text-zinc-950">
-                {isConnected ? "Connected locally" : "Not connected"}
+        <Card className="bg-brand-surface px-0 py-0 text-brand-foreground shadow-none">
+          <CardContent className="flex h-full flex-col gap-5 p-6">
+            <div className="space-y-1.5">
+              <p className="text-sm font-bold text-brand-foreground">
+                Connection status
               </p>
-              <p className="mt-1 text-xs leading-5 text-zinc-500">
-                {isConnected
-                  ? username
-                    ? `Connected as ${username} (Browser only).`
-                    : "Torzo is ready to use your Real-Debrid account."
-                  : "Add your API key to enable Real-Debrid actions."}
+              <p className="font-heading text-2xl font-extrabold text-brand-foreground">
+                {connectionStatus}
               </p>
             </div>
-            <div className="rounded-xl border border-zinc-200 bg-white p-4">
-              <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">
+            <p className="text-sm leading-6 text-brand-foreground">
+              {isConnected
+                ? username
+                  ? `Connected as ${username}. The key remains in this browser.`
+                  : "Torzo is ready to use your Real-Debrid account from this browser."
+                : "Add an API key to unlock Debrid actions. The key stays in this browser and is never uploaded to Torzo."}
+            </p>
+            <div className="h-px w-full bg-brand-border" />
+            <div className="space-y-2">
+              <p className="font-heading text-[11px] font-extrabold uppercase tracking-[0.16em] text-brand-foreground">
                 Selected providers
               </p>
-              <p className="mt-2 text-sm font-medium text-zinc-800">
+              <p className="font-heading text-base font-extrabold text-foreground">
                 {selectedProviderLabels}
               </p>
             </div>
@@ -317,52 +269,177 @@ export function ManageAccountForm() {
         </Card>
       </div>
 
-      <Card className="rounded-xl border border-zinc-200 bg-white px-0 py-5">
-        <CardHeader className="px-5">
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-xl font-semibold text-zinc-950">
-              Provider configuration
-            </CardTitle>
-            <p className="text-xs text-zinc-500">
-              {isSavingProviders ? "Saving..." : "Saved to your browser"}
-            </p>
-          </div>
-        </CardHeader>
-        <CardContent className="grid gap-3 px-5">
-          {providers.map((provider) => {
-            const isChecked = selectedProviders.includes(provider.id);
+      <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="flex flex-col gap-7">
+          <Card className="px-0 py-0 shadow-none">
+            <CardHeader className="px-7 pt-7">
+              <div className="min-w-0 space-y-1">
+                <CardTitle className="font-heading text-2xl font-extrabold text-foreground">
+                  Real-Debrid API key
+                </CardTitle>
+                <p className="text-sm leading-6 text-foreground-muted">
+                  Paste once, then manage sources without exposing the key
+                  outside your browser.
+                </p>
+              </div>
+            </CardHeader>
+            <CardContent className="px-7 pb-7 pt-6">
+              <form className="flex flex-col gap-4" onSubmit={handleConnect}>
+                <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+                  <label className="sr-only" htmlFor="real-debrid-api-key">
+                    Real-Debrid API key
+                  </label>
+                  <div className="relative min-w-0 flex-1">
+                    <LockKeyhole className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-text-subtle" />
+                    <Input
+                      id="real-debrid-api-key"
+                      type="password"
+                      value={apiKey}
+                      onChange={(event) => {
+                        setApiKey(event.target.value);
+                      }}
+                      placeholder="Paste your Real-Debrid API key"
+                      className="pl-12 text-sm md:text-sm"
+                      disabled={isConnected}
+                    />
+                  </div>
+                  {isConnected ? (
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="lg"
+                      className="h-14 px-6 font-heading xl:w-[148px]"
+                      onClick={handleDisconnect}
+                    >
+                      Disconnect
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="h-14 px-6 font-heading xl:w-[148px]"
+                      disabled={isConnecting}
+                    >
+                      {isConnecting ? "Connecting" : "Connect"}
+                    </Button>
+                  )}
+                </div>
+                {error ? (
+                  <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive">
+                    {error}
+                  </p>
+                ) : null}
+                {message ? (
+                  <p className="rounded-control border border-border bg-surface-subtle px-4 py-3 text-sm font-medium text-foreground-strong">
+                    {message}
+                  </p>
+                ) : null}
+              </form>
+            </CardContent>
+          </Card>
 
-            return (
-              <label
-                key={provider.id}
-                className="flex cursor-pointer items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 transition-colors hover:bg-zinc-50"
-              >
-                <Checkbox
-                  checked={isChecked}
-                  onCheckedChange={(checked) =>
-                    handleProviderChange(provider.id, checked === true)
-                  }
-                  aria-label={`Use ${provider.label}`}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
-                    {provider.label}
-                    {isChecked ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-zinc-950 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em] text-white">
-                        <Check className="size-3" />
-                        Active
-                      </span>
-                    ) : null}
-                  </span>
-                  <span className="mt-1 block text-xs leading-5 text-zinc-500">
-                    {provider.description}
-                  </span>
+          <Card className="px-0 py-0 shadow-none">
+            <CardHeader className="px-7 pt-7">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <CardTitle className="font-heading text-2xl font-extrabold text-foreground">
+                  Provider configuration
+                </CardTitle>
+                <span className="inline-flex w-fit items-center gap-2 rounded-pill bg-brand-surface px-3 py-2 text-xs font-bold text-primary">
+                  <span className="size-2 rounded-pill bg-primary" />
+                  {isSavingProviders ? "Saving" : "Saved"}
                 </span>
-              </label>
-            );
-          })}
-        </CardContent>
-      </Card>
+              </div>
+            </CardHeader>
+            <CardContent className="flex flex-row gap-3.5 px-7 pb-7 pt-6">
+              {providers.map((provider) => {
+                const isChecked = selectedProviders.includes(provider.id);
+
+                return (
+                  <label
+                    key={provider.id}
+                    className={cn(
+                      "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-all hover:bg-brand-surface hover:border-primary",
+                      isChecked
+                        ? "border-primary"
+                        : "border-border"
+                    )}
+                  >
+                    <Checkbox
+                      checked={isChecked}
+                      onCheckedChange={(checked) =>
+                        handleProviderChange(provider.id, checked === true)
+                      }
+                      aria-label={`Use ${provider.label}`}
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="flex min-w-0 items-center justify-between gap-2">
+                        <span className="font-heading text-sm font-extrabold text-foreground">
+                          {provider.label}
+                        </span>
+                        {isChecked ? (
+                          <span className="inline-flex shrink-0 items-center gap-1 rounded-pill bg-brand-surface px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.12em] text-primary">
+                            <span className="size-1 rounded-pill bg-primary" />
+                            Active
+                          </span>
+                        ) : null}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </CardContent>
+          </Card>
+        </div>
+
+        <aside className="grid gap-6 self-start">
+          <Card className="px-0 py-0 shadow-none">
+            <CardContent className="space-y-2.5 p-[18px]">
+              <p className="text-sm font-bold text-muted-foreground">
+                Setup health
+              </p>
+              <p className="font-heading text-[34px] font-bold leading-none text-foreground">
+                {activeProviderCount}/{providers.length}
+              </p>
+              <p className="text-sm font-semibold text-primary">
+                Providers active
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="px-0 py-0 shadow-none">
+            <CardContent className="space-y-2.5 p-[18px]">
+              <p className="text-sm font-bold text-muted-foreground">
+                Key status
+              </p>
+              <p className="font-heading text-[34px] font-bold leading-none text-primary">
+                {isConnected ? "Ready" : "Missing"}
+              </p>
+              <p className="text-sm font-semibold text-primary">
+                {isConnected ? "Debrid actions unlocked" : "Paste API key to unlock"}
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="px-0 py-0 shadow-none">
+            <CardContent className="flex items-start gap-3 p-[18px]">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-brand-surface text-primary">
+                {isConnected ? (
+                  <ShieldCheck className="size-5" />
+                ) : (
+                  <Gauge className="size-5" />
+                )}
+              </div>
+              <div className="space-y-1">
+                <p className="font-heading text-sm font-extrabold text-foreground">
+                  Browser-only setup
+                </p>
+                <p className="text-xs leading-5 text-muted-foreground">
+                  Your key is stored locally and provider choices are saved to
+                  your browser session.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </aside>
+      </div>
     </div>
   );
 }

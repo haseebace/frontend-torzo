@@ -30,31 +30,31 @@ const badgeVariants = [
 
 export default function EditShadcnPage() {
   return (
-    <main className="min-h-dvh bg-zinc-50 px-4 py-10 text-zinc-950 md:px-10 xl:px-[150px]">
+    <main className="min-h-dvh bg-surface-subtle px-4 py-10 text-foreground md:px-10 xl:px-page">
       <div className="mx-auto flex min-h-[calc(100dvh-5rem)] w-full max-w-5xl flex-col">
-        <header className="flex items-center justify-between border-b border-zinc-200 pb-6">
+        <header className="flex items-center justify-between border-b border-border pb-6">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
               Components
             </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950">
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
               Edit shadcn
             </h1>
           </div>
 
           <Link
             href="/"
-            className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-950 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-zinc-400/20"
+            className="inline-flex h-10 items-center justify-center rounded-pill border border-border bg-surface px-4 text-sm font-medium text-foreground-strong transition-colors hover:border-input hover:bg-surface-badge hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus"
           >
             Home
           </Link>
         </header>
 
         <section className="flex flex-1 items-center justify-center py-12">
-          <div className="w-full max-w-4xl space-y-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-[0_8px_30px_rgba(24,24,27,0.06)]">
+          <div className="w-full max-w-4xl space-y-6 rounded-2xl border border-border bg-surface p-6 shadow-ui-sm">
             <div>
-              <p className="text-sm font-medium text-zinc-950">Root input</p>
-              <p className="mt-1 text-sm leading-6 text-zinc-500">
+              <p className="text-sm font-medium text-foreground">Root input</p>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
                 Root shadcn input using the same pill styling as the homepage
                 search bar.
               </p>
@@ -69,12 +69,12 @@ export default function EditShadcnPage() {
               spellCheck={false}
             />
 
-            <div className="border-t border-zinc-200 pt-6">
+            <div className="border-t border-border pt-6">
               <div className="mb-4">
-                <p className="text-sm font-medium text-zinc-950">
+                <p className="text-sm font-medium text-foreground">
                   Torzo pill button
                 </p>
-                <p className="mt-1 text-sm leading-6 text-zinc-500">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   Circular shadcn button variant copied from the homepage search
                   submit action.
                 </p>
@@ -85,10 +85,10 @@ export default function EditShadcnPage() {
               </Button>
             </div>
 
-            <div className="border-t border-zinc-200 pt-6">
+            <div className="border-t border-border pt-6">
               <div className="mb-4">
-                <p className="text-sm font-medium text-zinc-950">Badge</p>
-                <p className="mt-1 text-sm leading-6 text-zinc-500">
+                <p className="text-sm font-medium text-foreground">Badge</p>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   All shadcn badge variants using the current theme tokens.
                 </p>
               </div>
@@ -102,12 +102,12 @@ export default function EditShadcnPage() {
               </div>
             </div>
 
-            <div className="border-t border-zinc-200 pt-6">
+            <div className="border-t border-border pt-6">
               <div className="mb-4">
-                <p className="text-sm font-medium text-zinc-950">
+                <p className="text-sm font-medium text-foreground">
                   Result card
                 </p>
-                <p className="mt-1 text-sm leading-6 text-zinc-500">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   Shadcn card primitive styled to match the current results
                   page row.
                 </p>

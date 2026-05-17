@@ -3,20 +3,20 @@ import { SiteNavbar } from "@/components/site-navbar";
 
 export default function TermsPage() {
   return (
-    <main className="min-h-dvh bg-white text-zinc-950">
+    <main className="min-h-dvh bg-surface text-foreground">
       <SiteNavbar />
       <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
-        <h1 className="mb-6 text-3xl font-bold tracking-tight text-zinc-950">
+        <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground">
           Terms of Service
         </h1>
         
-        <div className="space-y-6 text-sm leading-relaxed text-zinc-600">
+        <div className="space-y-6 text-sm leading-relaxed text-text-subtle">
           <p>
-            <strong className="text-zinc-900">Last updated:</strong> May 3, 2026
+            <strong className="text-foreground">Last updated:</strong> May 3, 2026
           </p>
           
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">1. Acceptance of Terms</h2>
+            <h2 className="text-lg font-semibold text-foreground">1. Acceptance of Terms</h2>
             <p>
               By accessing or using Torzo, you agree to be bound by these Terms of Service. 
               If you do not agree, do not use our service.
@@ -24,7 +24,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">2. Description of Service</h2>
+            <h2 className="text-lg font-semibold text-foreground">2. Description of Service</h2>
             <p>
               Torzo is a search engine that indexes and provides access to publicly available 
               metadata from third-party sources. We do not host, store, or distribute any content. 
@@ -33,7 +33,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">3. User Responsibilities</h2>
+            <h2 className="text-lg font-semibold text-foreground">3. User Responsibilities</h2>
             <p>You agree to:</p>
             <ul className="ml-6 list-disc space-y-2">
               <li>Use Torzo in compliance with all applicable laws and regulations</li>
@@ -44,7 +44,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">4. Third-Party Services</h2>
+            <h2 className="text-lg font-semibold text-foreground">4. Third-Party Services</h2>
             <p>
               Torzo integrates with third-party services including Real-Debrid, TMDB, and various 
               content providers. Your use of these services is subject to their respective terms 
@@ -54,7 +54,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">5. Intellectual Property</h2>
+            <h2 className="text-lg font-semibold text-foreground">5. Intellectual Property</h2>
             <p>
               Torzo and its original content, features, and functionality are owned by us and 
               protected by international copyright, trademark, and other intellectual property laws. 
@@ -63,7 +63,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">6. Disclaimer of Warranties</h2>
+            <h2 className="text-lg font-semibold text-foreground">6. Disclaimer of Warranties</h2>
             <p>
               Torzo is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind. We 
               do not guarantee that our service will be uninterrupted, error-free, or secure. 
@@ -72,7 +72,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">7. Limitation of Liability</h2>
+            <h2 className="text-lg font-semibold text-foreground">7. Limitation of Liability</h2>
             <p>
               To the maximum extent permitted by law, Torzo shall not be liable for any indirect, 
               incidental, special, consequential, or punitive damages arising from your use of our 
@@ -81,7 +81,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">8. Indemnification</h2>
+            <h2 className="text-lg font-semibold text-foreground">8. Indemnification</h2>
             <p>
               You agree to indemnify and hold harmless Torzo from any claims, damages, or 
               expenses arising from your use of our service or violation of these terms.
@@ -89,7 +89,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">9. Termination</h2>
+            <h2 className="text-lg font-semibold text-foreground">9. Termination</h2>
             <p>
               We reserve the right to terminate or suspend access to our service at any time, 
               without notice, for conduct that we believe violates these Terms or is harmful to 
@@ -98,7 +98,7 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">10. Changes to Terms</h2>
+            <h2 className="text-lg font-semibold text-foreground">10. Changes to Terms</h2>
             <p>
               We may modify these terms at any time. Continued use of Torzo after changes 
               constitutes acceptance of the new terms.
@@ -106,19 +106,19 @@ export default function TermsPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-900">11. Contact</h2>
+            <h2 className="text-lg font-semibold text-foreground">11. Contact</h2>
             <p>
               For questions about these Terms, contact us at legal@torzo.app.
             </p>
           </div>
 
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-muted-foreground">
             Also see our{" "}
-            <Link href="/privacy" className="text-blue-600 hover:underline">
+            <Link href="/privacy" className="text-link hover:underline">
               Privacy Policy
             </Link>{" "}
             and{" "}
-            <Link href="/disclaimer" className="text-blue-600 hover:underline">
+            <Link href="/disclaimer" className="text-link hover:underline">
               Disclaimer
             </Link>.
           </p>

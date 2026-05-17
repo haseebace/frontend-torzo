@@ -3,7 +3,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 
 export default function Home() {
   return (
-    <main className="relative flex flex-1 flex-col overflow-x-hidden bg-white text-zinc-950">
+    <main className="relative flex flex-1 flex-col overflow-x-hidden bg-surface text-foreground">
       <SiteNavbar />
       <HomeContent />
     </main>

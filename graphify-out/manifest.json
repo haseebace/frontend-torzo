@@ -1,0 +1,262 @@
+{
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/postcss.config.mjs": {
+    "mtime": 1777819895.724778,
+    "hash": "239f3ebf717465dc636818a1a619398d"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/next-env.d.ts": {
+    "mtime": 1779054502.2109656,
+    "hash": "2a74d3909800ca5467fa83b0ab4a4890"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/eslint.config.mjs": {
+    "mtime": 1777819895.717917,
+    "hash": "dfa1f5f6a7037bf39dc510f30b180002"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/next.config.ts": {
+    "mtime": 1778021100.1221938,
+    "hash": "9414a20bd84e6d1cf6b86b41c0bde572"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/remotion.config.ts": {
+    "mtime": 1778543665.9330919,
+    "hash": "989f1d8038590cb5a802522f7589ba3e"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/eslint.config.mjs": {
+    "mtime": 1771420082.0,
+    "hash": "e20d59bb6b64567da14d80c3da2c6b15"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/src/Composition.tsx": {
+    "mtime": 1778544421.9264963,
+    "hash": "11ca6cf4df3fed4795ed02bf4c25d25a"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/src/Root.tsx": {
+    "mtime": 1778544243.1013637,
+    "hash": "79aec8359c65e2645ccbd79eb3faaaec"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/src/index.ts": {
+    "mtime": 1771420082.0,
+    "hash": "d92d9dee1ab16aa44a75ae7fbfb843ca"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/supabase/migrations/20260429211846_create_app_settings.sql": {
+    "mtime": 1777819895.7403598,
+    "hash": "594c3ad9dfb06b8534cc161b4c726402"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/robots.ts": {
+    "mtime": 1779040408.6224365,
+    "hash": "248eadb0f09b29a36e944a6ffc7f74fc"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/sitemap.ts": {
+    "mtime": 1779040408.6214576,
+    "hash": "5fd75569a3d129eae86c0b48ab24df79"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/layout.tsx": {
+    "mtime": 1779056022.8146687,
+    "hash": "525e99f51a9a1a4ccb7d263c5441afed"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/page.tsx": {
+    "mtime": 1779054216.811427,
+    "hash": "252e0a65e3cb270701d6c41b67567abe"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/not-found.tsx": {
+    "mtime": 1779054216.8111303,
+    "hash": "36a596b589324e9cfe432588110be216"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/privacy/page.tsx": {
+    "mtime": 1779054216.8119168,
+    "hash": "c78563c69fead414cde65377de9711a2"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/disclaimer/page.tsx": {
+    "mtime": 1779054216.8065236,
+    "hash": "b0e30f5f3efaef77c6f4bee63fdec02a"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/terms/page.tsx": {
+    "mtime": 1779054216.8145614,
+    "hash": "89866fac25a261344701273b8f607763"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/results/loading.tsx": {
+    "mtime": 1779054390.5722194,
+    "hash": "c07edf211a0834ac00921b7c809e13ac"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/results/page.tsx": {
+    "mtime": 1779054216.8134615,
+    "hash": "57376e11bcd3efb06b5adbd550f9282d"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/detail/loading.tsx": {
+    "mtime": 1779054216.8046556,
+    "hash": "e567f8dff2ea67c701de5eac7969c43c"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/detail/page.tsx": {
+    "mtime": 1779054441.5271208,
+    "hash": "9c1a2c0a13398e3958b648af753147f7"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/api/settings/providers/route.ts": {
+    "mtime": 1779040408.626952,
+    "hash": "fc44dbe367a795743a8e08a2f8d50fac"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/api/real-debrid/proxy/route.ts": {
+    "mtime": 1779040408.6246495,
+    "hash": "18dd226e957c3b55b3a22bee67b385ff"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/api/real-debrid/status/route.ts": {
+    "mtime": 1779040408.6205838,
+    "hash": "74d2065949d38ef93be86d9e4830aca2"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/api/real-debrid/connect/route.ts": {
+    "mtime": 1779040408.619901,
+    "hash": "e210afe030aac39c37953fbae1f9ac85"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/api/tmdb/search/route.ts": {
+    "mtime": 1779040408.6187675,
+    "hash": "785368b28ecef344f285ea98fa57039c"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/edit-shadcn/page.tsx": {
+    "mtime": 1779054374.8964496,
+    "hash": "32a5e7fd85bc08b5eb641df344bde19b"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/manage/page.tsx": {
+    "mtime": 1779056207.1937518,
+    "hash": "eff17b20b6a11817dc351a262395bd39"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/dmca/page.tsx": {
+    "mtime": 1779054216.806982,
+    "hash": "dcd68cdabe1a651ba7c57d590cc07093"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/search-form.tsx": {
+    "mtime": 1779054216.8191655,
+    "hash": "a03373060380e3a2ec1adceaf58dbda9"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/manage-account-form.tsx": {
+    "mtime": 1779056822.6242664,
+    "hash": "0ce74035ea354aabf4f88d3669184f4a"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/site-footer.tsx": {
+    "mtime": 1779054793.6063468,
+    "hash": "6b3edda6a91c529e488513ecd18e5ce5"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/torrent-result-card.tsx": {
+    "mtime": 1779054390.5719361,
+    "hash": "82da9dbe3346424fabdc2a2a239c5ba1"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/result-sort.tsx": {
+    "mtime": 1779040467.7847517,
+    "hash": "e2e0b12f5c7bd62b651f78281e87c786"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/home-content.tsx": {
+    "mtime": 1779054216.8151102,
+    "hash": "b7da0089d88aaa58b3d3ec08bbf7be6a"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/site-navbar.tsx": {
+    "mtime": 1779054216.8211842,
+    "hash": "925978532f7fe59c3a39eb3d759930e9"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/pagination.tsx": {
+    "mtime": 1779040408.6157773,
+    "hash": "27545e936f6d225a1dfab57fa98fab98"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/card.tsx": {
+    "mtime": 1779056541.1615674,
+    "hash": "16502eff93d1c1cd6af75fe428d39b6f"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/badge.tsx": {
+    "mtime": 1779040408.6148813,
+    "hash": "633c33997e6137921ae433dd2dd0cb31"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/button.tsx": {
+    "mtime": 1779056046.620477,
+    "hash": "76ed3af1a542c0e2d7ec254bfab57f9b"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/checkbox.tsx": {
+    "mtime": 1779056831.6686583,
+    "hash": "ac81f732fd49be245bfdb9cf5e43b53e"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/collapsible.tsx": {
+    "mtime": 1779054216.8277454,
+    "hash": "a91c2a65fb3aba6a7b3575b5893a87e3"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/select.tsx": {
+    "mtime": 1779056089.0447052,
+    "hash": "d39f046110582554a376ca35a2e7b103"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/input.tsx": {
+    "mtime": 1779056056.922379,
+    "hash": "19e0bb64c0063386c8f00f9aeb9d1883"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/ui/skeleton.tsx": {
+    "mtime": 1779054216.8295307,
+    "hash": "cb4c20124aecc161693e867b175ae913"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/components/torrent/torrent-actions.tsx": {
+    "mtime": 1779054216.8217895,
+    "hash": "63c2a19ffcac6c867cfd3b4b1f477ca9"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/lib/utils.ts": {
+    "mtime": 1779040408.6082366,
+    "hash": "ccd92b88f0b12929fc11aa2e6b881e57"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/lib/server/app-settings.ts": {
+    "mtime": 1779040408.6073363,
+    "hash": "99626acc487d670b309cefed69774c7d"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/lib/server/crypto.ts": {
+    "mtime": 1779040408.6067455,
+    "hash": "7003be9329bfec960470b4d375f3ff1a"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/09-detailed-api-guide.md": {
+    "mtime": 1777819895.7160726,
+    "hash": "4b1b5045d489cca61d6fead375119924"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/AGENTS.md": {
+    "mtime": 1777819895.7161872,
+    "hash": "c7466351eea275fa42e2b36bd7070b9f"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/realdebridapi.md": {
+    "mtime": 1777819895.7249892,
+    "hash": "bb022de547dbab4f1f2c9ff671f71b62"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/README.md": {
+    "mtime": 1778543665.9329238,
+    "hash": "5cd430e1ceb471d6bd0b1d7525010046"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/screencapture-localhost-3000-manage-2026-05-17-19_05_16.png": {
+    "mtime": 1779041124.7433596,
+    "hash": "f35e9483d77b54586a6b61e2dd3e0659"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/renders/final.png": {
+    "mtime": 1778544448.3367968,
+    "hash": "7181fd8687a2cf430838a070a126a739"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/renders/results.png": {
+    "mtime": 1778544442.9418187,
+    "hash": "5ec1b9bee786d1873c1cf2463449a34c"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/renders/search.png": {
+    "mtime": 1778544436.260337,
+    "hash": "bfd5240122b44f41537a6bf5e6d3cbdd"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/public/file.svg": {
+    "mtime": 1777826794.9579473,
+    "hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/public/vercel.svg": {
+    "mtime": 1777826794.959414,
+    "hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/public/next.svg": {
+    "mtime": 1777826794.9588225,
+    "hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/public/globe.svg": {
+    "mtime": 1777826794.9581914,
+    "hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/public/window.svg": {
+    "mtime": 1777826794.9596035,
+    "hash": "a2760511c65806022ad20adf74370ff3"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/src/app/icon.svg": {
+    "mtime": 1779040408.6209462,
+    "hash": "835dbcd62746c731ed4771436bd36277"
+  },
+  "/Users/haseebace/Desktop/Projects/torrentscraper/frontend-torzo/video/torzo-demo/renders/torzo-demo.mp4": {
+    "mtime": 1778544586.9358828,
+    "hash": "79999578c4b6b8d89dcf30a32b2c97b2"
+  }
+}
