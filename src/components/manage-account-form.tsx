@@ -202,7 +202,7 @@ export function ManageAccountForm() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8">
+    <div className="flex w-full flex-col gap-8">
       <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">
         <Card className="min-h-[300px] justify-between px-0 py-0 shadow-none">
           <CardContent className="flex h-full flex-col justify-between gap-6 p-6 md:p-8">
@@ -416,26 +416,6 @@ export function ManageAccountForm() {
               <p className="text-sm font-semibold text-primary">
                 {isConnected ? "Debrid actions unlocked" : "Paste API key to unlock"}
               </p>
-            </CardContent>
-          </Card>
-          <Card className="px-0 py-0 shadow-none">
-            <CardContent className="flex items-start gap-3 p-[18px]">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-brand-surface text-primary">
-                {isConnected ? (
-                  <ShieldCheck className="size-5" />
-                ) : (
-                  <Gauge className="size-5" />
-                )}
-              </div>
-              <div className="space-y-1">
-                <p className="font-heading text-sm font-extrabold text-foreground">
-                  Browser-only setup
-                </p>
-                <p className="text-xs leading-5 text-muted-foreground">
-                  Your key is stored locally and provider choices are saved to
-                  your browser session.
-                </p>
-              </div>
             </CardContent>
           </Card>
         </aside>
