@@ -22,13 +22,28 @@ export function ResultSort({ defaultValue }: { defaultValue: string }) {
 
   return (
     <Select defaultValue={defaultValue} onValueChange={handleSortChange}>
-      <SelectTrigger size="sm" className="w-[130px] rounded-pill text-xs">
+      <SelectTrigger size="sm" className="w-[145px] rounded-pill text-sm font-bold">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="seeders">Most seeders</SelectItem>
-        <SelectItem value="recent">Recent</SelectItem>
-        <SelectItem value="relevance">Relevance</SelectItem>
+      <SelectContent className="rounded-[24px] p-2">
+        <SelectItem 
+          value="seeders" 
+          className="font-heading font-extrabold data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+        >
+          Most seeders
+        </SelectItem>
+        <SelectItem 
+          value="recent" 
+          className="font-heading font-extrabold data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+        >
+          Recent
+        </SelectItem>
+        <SelectItem 
+          value="relevance" 
+          className="font-heading font-extrabold data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+        >
+          Relevance
+        </SelectItem>
       </SelectContent>
     </Select>
   );
