@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Cloud, Download, Magnet, Loader2, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { realDebridFetch, type RealDebridError } from "@/lib/real-debrid-client";
 
 interface TorrentActionsProps {
   magnetLink?: string | null;
@@ -11,6 +12,25 @@ interface TorrentActionsProps {
   infoHash?: string | null;
   className?: string;
 }
+
+type RealDebridTorrentSummary = {
+  hash?: string;
+  id?: string;
+  status?: string;
+};
+
+type RealDebridTorrentInfo = {
+  status?: string;
+  links?: string[];
+};
+
+type RealDebridAddMagnetResponse = {
+  id: string;
+};
+
+type RealDebridUnrestrictResponse = {
+  download?: string;
+};
 
 export function TorrentActions({
   magnetLink,
@@ -32,39 +52,14 @@ export function TorrentActions({
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const rdFetch = useCallback(async (endpoint: string, options: { method?: string; body?: unknown } = {}) => {
+  const rdFetch = useCallback(async <T,>(endpoint: string, options: { method?: string; body?: Record<string, string> } = {}) => {
     const apiKey = localStorage.getItem("rd_api_key");
-    if (!apiKey) throw new Error("No API key found");
 
-    const res = await fetch("/api/real-debrid/proxy", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-rd-api-key": apiKey,
-      },
-      body: JSON.stringify({
-        endpoint,
-        method: options.method || "GET",
-        body: options.body,
-      }),
-    });
-
-    if (res.status === 204) return null;
-    const data = await res.json();
-    if (!res.ok) {
-      const error = new Error(data.error || "Real-Debrid error") as Error & {
-        code?: number;
-        status?: number;
-      };
-      error.code = data.error_code;
-      error.status = res.status;
-      throw error;
-    }
-    return data;
+    return realDebridFetch<T>(apiKey ?? "", endpoint, options);
   }, []);
 
   const unrestrictLink = useCallback(async (link: string) => {
-    const data = await rdFetch("/unrestrict/link", {
+    const data = await rdFetch<RealDebridUnrestrictResponse>("/unrestrict/link", {
       method: "POST",
       body: { link },
     });
@@ -84,7 +79,7 @@ export function TorrentActions({
       if (!options.silent) setStatus("checking");
       setErrorMessage(null);
 
-      const torrents = await rdFetch("/torrents?limit=5000");
+      const torrents = await rdFetch<RealDebridTorrentSummary[]>("/torrents?limit=5000");
 
       const match = Array.isArray(torrents)
         ? torrents.find((torrent) => torrent?.hash?.toLowerCase() === normalizedHash)
@@ -101,7 +96,7 @@ export function TorrentActions({
 
         // Fetch torrent info to get the hoster link
         try {
-          const info = await rdFetch(`/torrents/info/${match.id}`);
+          const info = await rdFetch<RealDebridTorrentInfo>(`/torrents/info/${match.id}`);
           const links = info?.links || [];
 
           if (links.length > 0) {
@@ -121,7 +116,7 @@ export function TorrentActions({
       if (!options.hideBadge) setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
       return true;
     } catch (err: unknown) {
-      const rdError = err as Error & { code?: number };
+      const rdError = err as RealDebridError;
       if (rdError.code === 37) {
         // Torrent API disabled, just skip silently
         if (!options.silent) setStatus("idle");
@@ -141,27 +136,31 @@ export function TorrentActions({
       setRdAccountStatus(null);
 
       // 1. Add Magnet
-      const addData = await rdFetch("/torrents/addMagnet", {
+      const addData = await rdFetch<RealDebridAddMagnetResponse>("/torrents/addMagnet", {
         method: "POST",
         body: { magnet: magnetLink },
       });
+      if (!addData?.id) {
+        throw new Error("Real-Debrid did not return a torrent id.");
+      }
       const id = addData.id;
 
       // 2. Poll for info
-      let info;
+      let info: RealDebridTorrentInfo | null;
       while (true) {
-        info = await rdFetch(`/torrents/info/${id}`);
-        if (info.status === "waiting_files_selection" || info.status === "downloaded") break;
-        if (["magnet_error", "error", "dead"].includes(info.status)) {
-          throw new Error(`Torrent error: ${info.status}`);
+        info = await rdFetch<RealDebridTorrentInfo>(`/torrents/info/${id}`);
+        const torrentStatus = info?.status;
+        if (torrentStatus === "waiting_files_selection" || torrentStatus === "downloaded") break;
+        if (torrentStatus && ["magnet_error", "error", "dead"].includes(torrentStatus)) {
+          throw new Error(`Torrent error: ${torrentStatus}`);
         }
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
       // 3. Select all files
-      if (info.status === "waiting_files_selection") {
+      if (info?.status === "waiting_files_selection") {
         setStatus("selecting");
-        await rdFetch(`/torrents/selectFiles/${id}`, {
+        await rdFetch<null>(`/torrents/selectFiles/${id}`, {
           method: "POST",
           body: { files: "all" },
         });
@@ -170,24 +169,25 @@ export function TorrentActions({
       // 4. Wait for download
       setStatus("downloading");
       while (true) {
-        info = await rdFetch(`/torrents/info/${id}`);
-        if (info.status === "downloaded") break;
-        if (["error", "dead", "virus"].includes(info.status)) {
-          throw new Error(`Torrent error: ${info.status}`);
+        info = await rdFetch<RealDebridTorrentInfo>(`/torrents/info/${id}`);
+        const torrentStatus = info?.status;
+        if (torrentStatus === "downloaded") break;
+        if (torrentStatus && ["error", "dead", "virus"].includes(torrentStatus)) {
+          throw new Error(`Torrent error: ${torrentStatus}`);
         }
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
       // 5. Unrestrict link to get direct download URL
       setStatus("unrestricting");
-      if (info.links?.[0]) {
+      if (info?.links?.[0]) {
         const downloadLink = await unrestrictLink(info.links[0]);
         setDirectLink(downloadLink);
         setStatus("ready");
       }
     } catch (err) {
       console.error(err);
-      const rdError = err as Error & { code?: number };
+      const rdError = err as RealDebridError;
       if (rdError.code === 33 || rdError.message.toLowerCase().includes("already active")) {
         try {
           const foundExisting = await lookupExistingTorrent({ silent: true });
