@@ -3,7 +3,7 @@ import Link from "next/link";
 export function SiteFooter() {
   return (
     <footer className="border-t border-zinc-200 bg-white px-4 py-8 md:px-10 xl:px-[150px]">
-      <div className="flex flex-col items-center gap-6 text-sm text-zinc-500">
+      <div className="flex flex-col items-center gap-6 text-xs text-zinc-500 md:text-sm">
         <nav className="flex flex-wrap items-center justify-center gap-6">
           <Link 
             href="/disclaimer" 
