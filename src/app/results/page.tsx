@@ -346,10 +346,12 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
   return (
     <main className="min-h-dvh bg-surface text-foreground">
-      <SiteNavbar />
+      <div className="sticky top-0 z-50">
+        <SiteNavbar />
+      </div>
 
-      <section className="flex w-full origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-page">
-        <div className="flex w-full flex-col gap-8 rounded-[32px] bg-surface-elevated px-8 py-6 md:px-12 md:py-8">
+      <section className="flex w-full origin-center animate-homepage-enter flex-col gap-6 px-4 py-6 md:gap-8 md:px-10 md:py-8 xl:px-page">
+        <div className="flex w-full flex-col gap-8 rounded-[32px] bg-surface-elevated px-4 py-6 md:px-12 md:py-8">
           <SearchForm
             key={searchFormValue}
             id="results-search"
@@ -359,9 +361,9 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           />
         </div>
 
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-2 border-b border-border pb-4">
+        <div className="flex flex-col items-start gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between md:gap-2">
           <div className="flex flex-col gap-1">
-            <h2 className="font-heading text-[22px] font-extrabold text-foreground-strong">
+            <h2 className="font-heading text-lg font-extrabold text-foreground-strong md:text-[22px]">
               {error ? (
                 <span className="text-destructive">{error}</span>
               ) : (
@@ -371,12 +373,12 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               )}
             </h2>
           </div>
-          <div className="flex min-w-0 items-center justify-end">
+          <div className="flex w-full min-w-0 items-center justify-end md:w-auto">
             <ResultSort defaultValue={sort} />
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3 md:gap-4">
           {allResults.length > 0 ? (
             allResults.map((result) => (
               <TorrentResultCard key={result.id} result={result} />
@@ -384,7 +386,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           ) : (
             !error && (
               <div className="py-20 text-center">
-                <p className="text-muted-foreground">No results found. Try a different search term or check your provider settings.</p>
+                <p className="text-muted-foreground text-sm md:text-base">No results found. Try a different search term or check your provider settings.</p>
               </div>
             )
           )}

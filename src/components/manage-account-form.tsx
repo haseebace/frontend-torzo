@@ -202,11 +202,11 @@ export function ManageAccountForm() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-8">
-      <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">
+    <div className="flex w-full flex-col gap-6 md:gap-8">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-7">
         <Card className="min-h-[300px] justify-between px-0 py-0 shadow-none">
           <CardContent className="flex h-full flex-col justify-between gap-6 p-6 md:p-8">
-            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-2xl space-y-3">
                 <p className="font-heading text-xs font-extrabold uppercase tracking-[0.16em] text-primary">
                   Manage sources
@@ -269,12 +269,12 @@ export function ManageAccountForm() {
         </Card>
       </div>
 
-      <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="flex flex-col gap-7">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-7">
+        <div className="flex flex-col gap-6 md:gap-7">
           <Card className="px-0 py-0 shadow-none">
-            <CardHeader className="px-7 pt-7">
+            <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
               <div className="min-w-0 space-y-1">
-                <CardTitle className="font-heading text-2xl font-extrabold text-foreground">
+                <CardTitle className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
                   Real-Debrid API key
                 </CardTitle>
                 <p className="text-sm leading-6 text-foreground-muted">
@@ -283,7 +283,7 @@ export function ManageAccountForm() {
                 </p>
               </div>
             </CardHeader>
-            <CardContent className="px-7 pb-7 pt-6">
+            <CardContent className="px-5 pb-6 pt-5 md:px-7 md:pb-7 md:pt-6">
               <form className="flex flex-col gap-4" onSubmit={handleConnect}>
                 <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
                   <label className="sr-only" htmlFor="real-debrid-api-key">
@@ -299,7 +299,7 @@ export function ManageAccountForm() {
                         setApiKey(event.target.value);
                       }}
                       placeholder="Paste your Real-Debrid API key"
-                      className="pl-12 text-sm md:text-sm"
+                      className="pl-12 text-sm"
                       disabled={isConnected}
                     />
                   </div>
@@ -339,9 +339,9 @@ export function ManageAccountForm() {
           </Card>
 
           <Card className="px-0 py-0 shadow-none">
-            <CardHeader className="px-7 pt-7">
+            <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <CardTitle className="font-heading text-2xl font-extrabold text-foreground">
+                <CardTitle className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
                   Provider configuration
                 </CardTitle>
                 <span className="inline-flex w-fit items-center gap-2 rounded-pill bg-brand-surface px-3 py-2 text-xs font-bold text-primary">
@@ -350,7 +350,7 @@ export function ManageAccountForm() {
                 </span>
               </div>
             </CardHeader>
-            <CardContent className="flex flex-row gap-3.5 px-7 pb-7 pt-6">
+            <CardContent className="flex flex-col gap-3 px-5 pb-6 pt-5 md:flex-row md:gap-3.5 md:px-7 md:pb-7 md:pt-6">
               {providers.map((provider) => {
                 const isChecked = selectedProviders.includes(provider.id);
 
@@ -391,13 +391,13 @@ export function ManageAccountForm() {
           </Card>
         </div>
 
-        <aside className="grid gap-6 self-start">
+        <aside className="grid grid-cols-1 gap-6 self-start sm:grid-cols-2 lg:grid-cols-1">
           <Card className="px-0 py-0 shadow-none">
-            <CardContent className="space-y-2.5 p-[18px]">
+            <CardContent className="space-y-2.5 p-5 md:p-[18px]">
               <p className="text-sm font-bold text-muted-foreground">
                 Setup health
               </p>
-              <p className="font-heading text-[34px] font-bold leading-none text-foreground">
+              <p className="font-heading text-[28px] font-bold leading-none text-foreground md:text-[34px]">
                 {activeProviderCount}/{providers.length}
               </p>
               <p className="text-sm font-semibold text-primary">
@@ -406,11 +406,11 @@ export function ManageAccountForm() {
             </CardContent>
           </Card>
           <Card className="px-0 py-0 shadow-none">
-            <CardContent className="space-y-2.5 p-[18px]">
+            <CardContent className="space-y-2.5 p-5 md:p-[18px]">
               <p className="text-sm font-bold text-muted-foreground">
                 Key status
               </p>
-              <p className="font-heading text-[34px] font-bold leading-none text-primary">
+              <p className="font-heading text-[28px] font-bold leading-none text-primary md:text-[34px]">
                 {isConnected ? "Ready" : "Missing"}
               </p>
               <p className="text-sm font-semibold text-primary">
