@@ -12,6 +12,7 @@ type SearchFormProps = {
   id: string;
   defaultValue?: string;
   className?: string;
+  variant?: "default" | "hero";
 };
 
 type TmdbSuggestion = {
@@ -22,7 +23,7 @@ type TmdbSuggestion = {
   overview: string;
 };
 
-function SearchSubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
+function SearchSubmitButton({ isSubmitting, variant = "default" }: { isSubmitting: boolean, variant?: "default" | "hero" }) {
   return (
     <button
       type="submit"
@@ -30,10 +31,12 @@ function SearchSubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
       aria-busy={isSubmitting}
       className={cn(
         buttonVariants({ variant: "torzoPill" }),
-        "absolute inset-y-2 right-2 flex h-12 w-12 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[var(--ui-ease-enter)]",
-        "md:inset-y-1.5 md:right-1.5 md:h-13 md:w-13 md:opacity-0 md:pointer-events-none md:scale-90",
+        "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[var(--ui-ease-enter)]",
+        variant === "hero" ? "h-[55px] w-[55px]" : "h-12 w-12",
+        "md:right-2 md:opacity-0 md:pointer-events-none md:scale-90",
+        variant === "hero" ? "md:h-[59px] md:w-[59px] md:right-1.5" : "md:h-13 md:w-13 md:right-1.5",
         "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
-        "active:translate-y-0 motion-reduce:transition-none md:motion-reduce:scale-100"
+        "active:translate-y-[-50%] motion-reduce:transition-none md:motion-reduce:scale-100"
       )}
     >
       {isSubmitting ? (
@@ -45,7 +48,7 @@ function SearchSubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
   );
 }
 
-export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
+export function SearchForm({ id, defaultValue, className, variant = "default" }: SearchFormProps) {
   const router = useRouter();
   const listboxId = useId();
   const [query, setQuery] = useState(defaultValue ?? "");
@@ -150,8 +153,11 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
       <label className="sr-only" htmlFor={id}>
         Search torrents
       </label>
-      <div className="relative h-16">
-        <span className="pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-muted-foreground transition-colors group-focus-within:text-foreground-strong">
+      <div className={cn("relative", variant === "hero" ? "h-[71px]" : "h-16")}>
+        <span className={cn(
+          "pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-muted-foreground transition-colors group-focus-within:text-foreground-strong",
+          variant === "hero" && "left-6"
+        )}>
           <Search className="size-5" />
         </span>
         
@@ -170,7 +176,10 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
           spellCheck={false}
           value={query}
           placeholder="Search movies, shows, games, software..."
-          className="h-16 pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px]"
+          className={cn(
+            "pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_rgba(255,33,87,0.12)] [--ui-shadow-input-focus:0_0_0_4px_rgba(255,33,87,0.08),0_0_40px_rgba(255,33,87,0.15)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
+            variant === "hero" ? "h-[71px] rounded-full pl-14" : "h-16"
+          )}
           onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
               setIsSuggestionsOpen(false);
@@ -205,7 +214,7 @@ export function SearchForm({ id, defaultValue, className }: SearchFormProps) {
           </span>
         ) : null}
 
-        <SearchSubmitButton isSubmitting={isSubmitting} />
+        <SearchSubmitButton isSubmitting={isSubmitting} variant={variant} />
 
         {showSuggestions ? (
           <div

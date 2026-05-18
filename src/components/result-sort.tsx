@@ -22,25 +22,25 @@ export function ResultSort({ defaultValue }: { defaultValue: string }) {
 
   return (
     <Select defaultValue={defaultValue} onValueChange={handleSortChange}>
-      <SelectTrigger size="sm" className="w-[145px] rounded-pill text-sm font-bold">
+      <SelectTrigger size="sm" className="w-[145px] rounded-xl text-sm font-medium">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
-      <SelectContent className="rounded-[24px] p-2">
+      <SelectContent className="rounded-xl p-2">
         <SelectItem 
           value="seeders" 
-          className="font-heading font-extrabold data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+          className="font-heading font-medium rounded-pill data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary mb-1"
         >
           Most seeders
         </SelectItem>
         <SelectItem 
           value="recent" 
-          className="font-heading font-extrabold data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+          className="font-heading font-medium rounded-pill data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary mb-1"
         >
           Recent
         </SelectItem>
         <SelectItem 
           value="relevance" 
-          className="font-heading font-extrabold data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+          className="font-heading font-medium rounded-pill data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
         >
           Relevance
         </SelectItem>

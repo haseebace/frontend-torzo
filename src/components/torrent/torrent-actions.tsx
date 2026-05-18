@@ -258,7 +258,6 @@ export function TorrentActions({
         {magnetLink && (
           <Button asChild variant="default" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={magnetLink}>
-              <Magnet className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Magnet</span>
               <span className="hidden sm:inline">Magnet link</span>
             </a>
@@ -267,7 +266,6 @@ export function TorrentActions({
         {torrentFileUrl && (
           <Button asChild variant="secondary" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={torrentFileUrl}>
-              <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Torrent</span>
               <span className="hidden sm:inline">Download torrent</span>
             </a>
@@ -281,7 +279,7 @@ export function TorrentActions({
           onClick={handleAddToRD}
           disabled={isLoading || !magnetLink}
         >
-          {isLoading ? <Loader2 className="size-3.5 animate-spin sm:size-4" /> : <Cloud className="size-3.5 sm:size-4" />}
+          {isLoading && <Loader2 className="size-3.5 animate-spin sm:size-4" />}
           <span className="sm:hidden">
             {status === "ready" ? "Added" : status === "checking" ? "Check" : isLoading ? "Adding" : "Debrid"}
           </span>
@@ -304,7 +302,6 @@ export function TorrentActions({
             className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
             onClick={handleWatchNow}
           >
-            <Play className="size-3.5 sm:size-4" />
             <span className="sm:hidden">Watch</span>
             <span className="hidden sm:inline">Watch Now</span>
           </Button>
@@ -313,7 +310,6 @@ export function TorrentActions({
         {directLink && (
           <Button asChild variant="outline" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
             <a href={directLink} target="_blank" rel="noreferrer">
-              <Download className="size-3.5 sm:size-4" />
               <span className="sm:hidden">Direct</span>
               <span className="hidden sm:inline">Direct Download</span>
             </a>

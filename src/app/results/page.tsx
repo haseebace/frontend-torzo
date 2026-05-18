@@ -348,32 +348,35 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     <main className="min-h-dvh bg-surface text-foreground">
       <SiteNavbar />
 
-      <section className="flex w-full origin-center animate-homepage-enter flex-col gap-6 px-4 py-8 md:px-10 xl:px-page">
-        <div className="mx-auto flex w-full flex-col items-center gap-3">
+      <section className="flex w-full origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-page">
+        <div className="flex w-full flex-col gap-8 rounded-[32px] bg-surface-elevated px-8 py-6 md:px-12 md:py-8">
           <SearchForm
             key={searchFormValue}
             id="results-search"
             defaultValue={searchFormValue}
+            variant="hero"
+            className="mx-auto"
           />
         </div>
 
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border pb-2">
-          <p className="min-w-0 truncate text-xs text-muted-foreground">
-            {error ? (
-              <span className="text-destructive font-medium">{error}</span>
-            ) : (
-              <>
-                Found {totalResults} results for{" "}
-                <span className="font-medium text-foreground-strong">{displayName}</span>
-              </>
-            )}
-          </p>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-2 border-b border-border pb-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="font-heading text-[22px] font-extrabold text-foreground-strong">
+              {error ? (
+                <span className="text-destructive">{error}</span>
+              ) : (
+                <>
+                  {totalResults} results for <span className="text-primary">{displayName}</span>
+                </>
+              )}
+            </h2>
+          </div>
           <div className="flex min-w-0 items-center justify-end">
             <ResultSort defaultValue={sort} />
           </div>
         </div>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           {allResults.length > 0 ? (
             allResults.map((result) => (
               <TorrentResultCard key={result.id} result={result} />
