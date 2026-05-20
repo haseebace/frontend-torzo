@@ -177,7 +177,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           value={query}
           placeholder="Search movies, shows, games, software..."
           className={cn(
-            "pl-12 pr-16 bg-[oklch(0.985_0.008_357.793)] placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_oklch(0.644_0.245_16.285_/_12%)] [--ui-shadow-input-focus:0_0_0_4px_oklch(0.644_0.245_16.285_/_8%),0_0_40px_oklch(0.644_0.245_16.285_/_15%)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
+            "pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_oklch(0.644_0.245_16.285_/_12%)] [--ui-shadow-input-focus:0_0_0_4px_oklch(0.644_0.245_16.285_/_8%),0_0_40px_oklch(0.644_0.245_16.285_/_15%)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
             variant === "hero" ? "h-[71px] rounded-full pl-14" : "h-16"
           )}
           onBlur={() => {
@@ -238,19 +238,19 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                   onClick={() => handleSuggestionSelect(movie)}
                   className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-surface-subtle focus-visible:bg-surface-subtle focus-visible:outline-none"
                 >
-                  <span className="flex h-14 w-10 shrink-0 items-center justify-center overflow-hidden rounded-control border border-border bg-surface-subtle text-text-soft">
-                    {movie.posterUrl ? (
-                      <Image
-                        src={movie.posterUrl}
-                        alt=""
-                        width={40}
-                        height={56}
-                        className="h-full w-full object-contain"
-                      />
-                    ) : (
+                  {movie.posterUrl ? (
+                    <Image
+                      src={movie.posterUrl}
+                      alt=""
+                      width={32}
+                      height={45}
+                      className="h-[45px] w-8 shrink-0 rounded-[10px] object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-[45px] w-8 shrink-0 items-center justify-center rounded-[10px] border border-border bg-surface-subtle text-text-soft">
                       <Film className="size-4" />
-                    )}
-                  </span>
+                    </span>
+                  )}
                   <span className="min-w-0 flex-1">
                     <span className="flex min-w-0 items-baseline gap-2">
                       <span className="min-w-0 truncate text-sm font-medium text-foreground">

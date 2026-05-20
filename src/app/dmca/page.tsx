@@ -2,10 +2,10 @@ import { SiteNavbar } from "@/components/site-navbar";
 
 export default function DMCAPage() {
   return (
-    <main className="min-h-dvh bg-surface text-foreground">
+    <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
       <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
-        <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           DMCA Policy
         </h1>
         
@@ -15,7 +15,7 @@ export default function DMCAPage() {
           </p>
           
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">1. Notice & Takedown</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">1. Notice & Takedown</h2>
             <p>
               Torzo respects the intellectual property rights of others and complies with the Digital 
               Millennium Copyright Act (DMCA). As a search engine that indexes metadata from third-party 
@@ -24,7 +24,7 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">2. Filing a DMCA Notice</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">2. Filing a DMCA Notice</h2>
             <p>
               If you believe that content indexed by Torzo infringes your copyright, you may submit a 
               DMCA takedown notice. Your notice must include:
@@ -40,7 +40,7 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">3. Counter-Notification</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">3. Counter-Notification</h2>
             <p>
               If you believe content was mistakenly removed, you may submit a counter-notification 
               including:
@@ -54,7 +54,7 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">4. Submission</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">4. Submission</h2>
             <p>
               DMCA notices should be sent to our designated agent at:
             </p>
@@ -69,7 +69,7 @@ export default function DMCAPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">5. Repeat Infringers</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">5. Repeat Infringers</h2>
             <p>
               Torzo reserves the right to terminate access for users who are repeat infringers in 
               appropriate circumstances.

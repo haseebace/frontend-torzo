@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-ui-button hover:bg-primary-hover",
+          "bg-primary text-primary-foreground  hover:bg-primary-hover",
         outline:
           "border-border bg-surface text-foreground-strong hover:border-brand-border hover:bg-brand-surface hover:text-primary aria-expanded:border-brand-border aria-expanded:bg-brand-surface aria-expanded:text-primary dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
@@ -21,7 +21,7 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/15 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         torzoPill:
-          "rounded-pill bg-primary text-primary-foreground shadow-ui-button hover:bg-primary-hover focus-visible:border-transparent focus-visible:ring-4 focus-visible:ring-focus active:scale-95",
+          "rounded-pill bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:border-transparent focus-visible:ring-4 focus-visible:ring-focus active:scale-95",
       },
       size: {
         default:

@@ -1,15 +1,35 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Project Agent Rules
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+Be helpful and concise, but do not run validation or external tooling unless the user explicitly asks for it.
 
-## graphify
+## Testing And Checks
 
-This project has a graphify knowledge graph at graphify-out/.
+- Do not run type checks.
+- Do not run lint or ESLint.
+- Do not run tests.
+- Do not run builds as a substitute for testing.
+- Do not run broad validation after code changes unless the user specifically asks.
 
-Rules:
-- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
-- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
-- For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep — these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files
-- After modifying code files in this session, run `graphify update .` to keep the graph current (AST-only, no API cost)
+When you make code changes, explain what changed and mention that checks were not run because this project asks agents not to run them automatically.
+
+## Browser Testing
+
+- Do not use any browser automation unless the user explicitly asks for browser testing or visual verification.
+- When browser automation is requested, use the local skill at `~/.agents/skills/agent-browser`.
+- Prefer `agent-browser` over the internal Codex/browser automation tools for this project.
+- Before running `agent-browser`, load its current workflow with:
+
+```bash
+agent-browser skills get core
+```
+
+## Git And GitHub
+
+- Never run GitHub commands or use GitHub integrations unless the user explicitly asks.
+- Do not create commits, branches, pushes, pull requests, or GitHub comments unless requested.
+
+## Code Search
+
+- Prefer project-aware indexes such as `graphify-out/` when answering architecture or codebase questions.
+- Use `rg` for simple text search when needed.
+- After modifying code files, run `graphify update .` only when the user has not prohibited it for the task.

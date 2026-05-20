@@ -3,10 +3,10 @@ import { SiteNavbar } from "@/components/site-navbar";
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-dvh bg-surface text-foreground">
+    <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
       <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
-        <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           Privacy Policy
         </h1>
         
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
           </p>
           
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">1. Information We Collect</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">1. Information We Collect</h2>
             <p>
               Torzo is designed with privacy in mind. We collect minimal information:
             </p>
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">2. How We Use Information</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">2. How We Use Information</h2>
             <p>Information is used solely to:</p>
             <ul className="ml-6 list-disc space-y-2">
               <li>Provide and improve our search services</li>
@@ -47,7 +47,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">3. Third-Party Services</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">3. Third-Party Services</h2>
             <p>Torzo integrates with:</p>
             <ul className="ml-6 list-disc space-y-2">
               <li>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">4. Data Storage</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">4. Data Storage</h2>
             <p>
               Torzo does not maintain a user database. We do not collect names, emails, 
               or personal identifiers. All preferences are stored locally in your browser.
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">5. Cookies</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">5. Cookies</h2>
             <p>We use minimal cookies:</p>
             <ul className="ml-6 list-disc space-y-2">
               <li>Provider selection preferences (localStorage)</li>
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">6. Your Rights</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">6. Your Rights</h2>
             <p>
               Since we collect minimal data, there is little to access or delete. If you have 
               concerns about your privacy, contact us at privacy@torzo.app.
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">7. Changes</h2>
+            <h2 className="text-lg font-semibold text-foreground-strong">7. Changes</h2>
             <p>
               We may update this policy occasionally. Continued use of Torzo after changes 
               constitutes acceptance of the updated policy.

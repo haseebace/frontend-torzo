@@ -292,7 +292,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   if (!sourceUrl) {
     return (
-      <main className="min-h-dvh bg-brand-surface text-foreground">
+      <main className="min-h-dvh bg-background text-foreground">
         <SiteNavbar />
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <p className="text-muted-foreground">No media source provided.</p>
@@ -369,11 +369,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   if (error || !torrent) {
     return (
-      <main className="min-h-dvh bg-surface text-foreground">
+      <main className="min-h-dvh bg-background text-foreground">
         <SiteNavbar />
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
-            <h1 className="text-2xl font-bold text-foreground">Oops!</h1>
+            <h1 className="text-2xl font-bold text-foreground-strong">Oops!</h1>
             <p className="text-destructive font-medium">{error || "Media details not found."}</p>
             <p className="text-sm text-muted-foreground">Source: {source}</p>
             <p className="text-xs text-text-soft break-all">URL: {sourceUrl}</p>
@@ -398,13 +398,13 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   };
 
   return (
-    <main className="min-h-dvh overflow-x-hidden bg-surface text-foreground">
+    <main className="min-h-dvh overflow-x-hidden bg-background text-foreground">
       <SiteNavbar />
 
       <section className="flex w-full min-w-0 origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-page">
         <div className="min-w-0 space-y-5 border-b border-border pb-7">
           <div className="space-y-3">
-            <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl">
+            <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
               {title}
             </h1>
             <div className="ui-badge max-w-full [--badge-padding-x:14px]">
@@ -440,7 +440,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               <CollapsibleTrigger>
                 <div className="flex min-w-0 items-center gap-4">
                   <div>
-                    <h2 className="text-lg font-semibold tracking-tight text-foreground">
+                    <h2 className="text-lg font-semibold tracking-tight text-foreground-strong">
                       Files
                     </h2>
                   </div>
@@ -456,10 +456,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                     return (
                       <div
                         key={`${file.name}-${i}`}
-                        className="rounded-control px-2 py-3 text-xs transition-colors hover:bg-surface-subtle md:text-sm"
+                        className="px-2 py-3 text-xs transition-colors hover:bg-surface-subtle md:text-sm"
                       >
                         <div className="flex min-w-0 items-center gap-3">
-                          <span className="flex size-7 shrink-0 items-center justify-center rounded-control border border-border bg-surface-subtle text-muted-foreground md:size-8">
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--badge-background)] text-[var(--badge-foreground)] md:size-8">
                             <FileIcon className="size-3.5 md:size-4" />
                           </span>
                           <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
@@ -482,7 +482,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
             {torrent.images.length > 0 && (
               <section className="rounded-card border border-border bg-surface p-5">
-                <h2 className="mb-3 text-lg font-semibold tracking-tight text-foreground">
+                <h2 className="mb-3 text-lg font-semibold tracking-tight text-foreground-strong">
                   Screenshots
                 </h2>
                 <div className="flex flex-wrap gap-2">
@@ -506,7 +506,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
           <aside className="min-w-0 space-y-4">
             <section className="rounded-card border border-border bg-surface p-5">
-              <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
+              <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground-strong">
                 Health & Dates
               </h2>
               <div className="divide-y divide-border/70 text-sm">

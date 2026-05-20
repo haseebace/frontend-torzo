@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import { cookies } from "next/headers";
+import { gunzipSync } from "node:zlib";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
 import { ResultSort } from "@/components/result-sort";
@@ -96,6 +97,15 @@ type YtsSearchMeta = {
   has_next_page: boolean;
 };
 
+async function readJsonResponse<T>(response: Response): Promise<T> {
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const isGzip = bytes[0] === 0x1f && bytes[1] === 0x8b;
+  const decoded = isGzip ? gunzipSync(bytes) : bytes;
+  const text = new TextDecoder().decode(decoded);
+
+  return JSON.parse(text) as T;
+}
+
 function parsePageParam(page?: string) {
   const parsed = Number.parseInt(page || "1", 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
@@ -137,7 +147,7 @@ async function getMovieName(tmdbId: string) {
     });
     
     if (response.ok) {
-      const data = await response.json();
+      const data = await readJsonResponse<{ title?: string; name?: string }>(response);
       return data.title || data.name;
     } else {
       // Try TV if movie fails
@@ -149,7 +159,7 @@ async function getMovieName(tmdbId: string) {
         next: { revalidate: 3600 }
       });
       if (tvResponse.ok) {
-        const data = await tvResponse.json();
+        const data = await readJsonResponse<{ title?: string; name?: string }>(tvResponse);
         return data.name || data.title;
       }
     }
@@ -231,7 +241,10 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       });
       
       if (res.ok) {
-        const json = await res.json();
+        const json = await readJsonResponse<{
+          data: TorrentResult[];
+          meta?: SearchMeta;
+        }>(res);
         return { 
           results: json.data, 
           meta: json.meta || null,
@@ -239,7 +252,9 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         };
       }
 
-      const errJson = await res.json();
+      const errJson = await readJsonResponse<{
+        error?: { message?: string };
+      }>(res).catch(() => ({}));
       return {
         results: [],
         meta: null,
@@ -267,7 +282,14 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       });
       
       if (ytsRes.ok) {
-        const ytsJson = await ytsRes.json();
+        const ytsJson = await readJsonResponse<{
+          data?: {
+            movie_count?: number;
+            limit?: number;
+            page_number?: number;
+            movies?: YtsMovie[];
+          };
+        }>(ytsRes);
         const movieCount = Number(ytsJson.data?.movie_count ?? 0);
         const limit = Number(ytsJson.data?.limit ?? pageSize);
         const pageNumber = Number(ytsJson.data?.page_number ?? currentPage);
@@ -346,9 +368,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <div className="sticky top-0 z-50">
-        <SiteNavbar />
-      </div>
+      <SiteNavbar />
 
       <section className="flex w-full origin-center animate-homepage-enter flex-col gap-6 px-4 py-6 md:gap-8 md:px-10 md:py-8 xl:px-page">
         <div className="flex w-full flex-col gap-8 rounded-[32px] bg-surface-elevated px-4 py-6 md:px-12 md:py-8">

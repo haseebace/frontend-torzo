@@ -88,7 +88,7 @@ export function TorrentResultCard({
               </span>
             </div>
             <div className="flex min-w-0 items-center gap-2 pl-[5px] md:mb-3 md:pl-0">
-              <h2 className="min-w-0 flex-1 truncate text-[12px] font-medium leading-5 text-foreground-strong text-wrap-balance transition-colors group-hover:text-foreground md:text-base md:leading-6">
+              <h2 className="min-w-0 flex-1 truncate text-[12px] font-medium leading-5 text-foreground-strong text-wrap-balance transition-colors group-hover:text-foreground-strong md:text-base md:leading-6">
                 {result.title}
               </h2>
             </div>

@@ -203,15 +203,15 @@ export function ManageAccountForm() {
 
   return (
     <div className="flex w-full flex-col gap-6 md:gap-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-7">
-        <Card className="min-h-[300px] justify-between px-0 py-0 shadow-none">
-          <CardContent className="flex h-full flex-col justify-between gap-6 p-6 md:p-8">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-7">
+        <Card className="px-0 py-0 shadow-none">
+          <CardContent className="flex flex-col gap-6 p-6 md:p-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-2xl space-y-3">
                 <p className="font-heading text-xs font-extrabold uppercase tracking-[0.16em] text-primary">
                   Manage sources
                 </p>
-                <h1 className="font-heading text-3xl font-extrabold leading-[1.08] text-foreground md:text-[38px]">
+                <h1 className="font-heading text-3xl font-extrabold leading-[1.08] text-foreground-strong md:text-[38px]">
                   Connect Real-Debrid and control where Torzo searches.
                 </h1>
                 <p className="max-w-xl text-base leading-7 text-foreground-muted">
@@ -224,7 +224,6 @@ export function ManageAccountForm() {
                 Local only
               </span>
             </div>
-           
           </CardContent>
         </Card>
 
@@ -258,7 +257,7 @@ export function ManageAccountForm() {
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-7">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-7">
         <div className="flex flex-col gap-6 md:gap-7">
           <Card className="px-0 py-0 shadow-none">
             <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">

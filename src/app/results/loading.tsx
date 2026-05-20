@@ -33,7 +33,7 @@ function ResultCardSkeleton() {
 
 export default function ResultsLoading() {
   return (
-    <main className="min-h-dvh bg-surface text-foreground">
+    <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
 
       <section className="flex w-full flex-col gap-6 px-4 py-8 md:px-10 xl:px-page">

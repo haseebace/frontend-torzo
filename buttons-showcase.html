@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sora', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Custom values from Paper export */
+        .w-84-25 { width: 337px; }
+        .w-69-75 { width: 279px; }
+        .w-63 { width: 252px; }
+        .min-h-44 { min-height: 176px; }
+        .rounded-4xl { border-radius: 2rem; }
+        .min-h-13 { min-height: 52px; }
+        .gap-4-5 { gap: 18px; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-10 gap-12">
+
+    <!-- Semantic Color Matrix -->
+    <div class="flex flex-wrap justify-center gap-4 antialiased text-[12px]">
+        
+        <!-- Surface -->
+        <div class="flex flex-col w-63 min-h-44 rounded-[28px] py-[22px] px-[22px] gap-[14px] shrink-0 bg-[#FFF1F2] border border-solid border-[#4D02181F]">
+            <div class="tracking-[0.12em] uppercase font-extrabold text-[#A50036]">Surface</div>
+            <div class="tracking-[-0.04em] text-[#4D0218] text-[28px] leading-8 font-semibold">Soft page</div>
+            <div class="text-[#8B0836] text-[13px] leading-5">#FFF1F2 · page tint, low contrast zones</div>
+        </div>
+
+        <!-- Primary -->
+        <div class="flex flex-col w-63 min-h-44 rounded-[28px] py-[22px] px-[22px] gap-[14px] shrink-0 bg-[#FF2157]">
+            <div class="tracking-[0.12em] uppercase font-extrabold text-white">Primary</div>
+            <div class="tracking-[-0.04em] text-white text-[28px] leading-8 font-semibold">One CTA</div>
+            <div class="text-white text-[13px] leading-5">#FF2157 · one primary action per view</div>
+        </div>
+
+        <!-- Pressed -->
+        <div class="flex flex-col w-63 min-h-44 rounded-[28px] py-[22px] px-[22px] gap-[14px] shrink-0 bg-[#ED0040]">
+            <div class="tracking-[0.12em] uppercase font-extrabold text-white">Pressed</div>
+            <div class="tracking-[-0.04em] text-white text-[28px] leading-8 font-semibold">Active state</div>
+            <div class="text-white text-[13px] leading-5">#ED0040 · tap/press and selected UI</div>
+        </div>
+
+        <!-- Structure -->
+        <div class="flex flex-col w-63 min-h-44 rounded-[28px] py-[22px] px-[22px] gap-[14px] shrink-0 bg-[#8B0836]">
+            <div class="tracking-[0.12em] uppercase font-extrabold text-[#FFA0AE]">Structure</div>
+            <div class="tracking-[-0.04em] text-white text-[28px] leading-8 font-semibold">UI dark</div>
+            <div class="text-[#FFA0AE] text-[13px] leading-5">#8B0836 · nav, panels, chart rails</div>
+        </div>
+
+        <!-- Text -->
+        <div class="flex flex-col w-[280px] min-h-44 rounded-[28px] py-[22px] px-[22px] gap-[14px] bg-[#4D0218]">
+            <div class="tracking-[0.12em] uppercase font-extrabold text-[#FFA0AE]">Text</div>
+            <div class="tracking-[-0.04em] text-white text-[28px] leading-8 font-semibold">Ink layer</div>
+            <div class="text-[#FFA0AE] text-[13px] leading-5">#4D0218 · headings and high contrast copy</div>
+        </div>
+
+    </div>
+
+    <!-- Start of Paper Component -->
+    <div class="flex flex-col w-84-25 rounded-4xl gap-4-5 bg-white border border-solid border-[#4D02181F] antialiased text-[12px] p-7 shadow-sm">
+        
+        <div class="tracking-[0.14em] uppercase font-extrabold text-[#A50036]">
+            Buttons · min 48px
+        </div>
+
+        <div class="flex flex-col gap-3 w-69-75">
+            
+            <!-- Start Trial -->
+            <div class="flex items-center justify-between min-h-13 rounded-full px-[18px] bg-[#FF2157] cursor-pointer hover:opacity-90 transition-opacity">
+                <div class="font-extrabold text-white text-[14px]">Start trial</div>
+                <div class="font-extrabold text-white text-[14px]">→</div>
+            </div>
+
+            <!-- Pressed -->
+            <div class="flex items-center justify-between min-h-13 rounded-full px-[18px] bg-[#ED0040] cursor-pointer">
+                <div class="font-extrabold text-white text-[14px]">Pressed</div>
+                <div class="font-extrabold text-white text-[14px]">→</div>
+            </div>
+
+            <!-- Keyboard Focus -->
+            <div class="flex items-center justify-between min-h-13 rounded-full px-[16px] bg-white border-[3px] border-solid border-[#FF2157] cursor-pointer">
+                <div class="font-extrabold text-[#FF2157] text-[14px]">Keyboard focus</div>
+                <div class="font-extrabold text-[#FF2157] text-[14px]">→</div>
+            </div>
+
+            <!-- Disabled -->
+            <div class="flex items-center justify-between min-h-13 rounded-full px-[18px] bg-[#4D02181A] cursor-not-allowed">
+                <div class="font-extrabold text-[#4D021885] text-[14px]">Disabled</div>
+                <div class="font-extrabold text-[#4D021885] text-[14px]">—</div>
+            </div>
+
+            <!-- Google Button -->
+            <div class="flex items-center min-h-13 rounded-full px-5 h-[52px] w-69-75 justify-center gap-5 bg-[#FFF1F2] cursor-pointer hover:bg-[#ffe4e6] transition-colors">
+                <div class="flex items-center">
+                    <img src="https://app.paper.design/file-assets/01KRFBKJ28531H57ZZ2WQRVCEC/01KRW8QMQ7XDJXV5N0P28YFDDZ.png" alt="Google" class="h-8 w-[31px]">
+                </div>
+                <div class="font-extrabold text-[#FF2157] text-[14px]">Continue with Google</div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End of Paper Component -->
+
+</body>
+</html>

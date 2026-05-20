@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DetailLoading() {
   return (
-    <main className="min-h-dvh overflow-x-hidden bg-surface text-foreground">
+    <main className="min-h-dvh overflow-x-hidden bg-background text-foreground">
       <SiteNavbar />
 
       <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-10 xl:px-page">

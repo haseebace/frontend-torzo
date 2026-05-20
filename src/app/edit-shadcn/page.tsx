@@ -30,14 +30,14 @@ const badgeVariants = [
 
 export default function EditShadcnPage() {
   return (
-    <main className="min-h-dvh bg-surface-subtle px-4 py-10 text-foreground md:px-10 xl:px-page">
+    <main className="min-h-dvh bg-background px-4 py-10 text-foreground md:px-10 xl:px-page">
       <div className="mx-auto flex min-h-[calc(100dvh-5rem)] w-full max-w-5xl flex-col">
         <header className="flex items-center justify-between border-b border-border pb-6">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
               Components
             </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground-strong">
               Edit shadcn
             </h1>
           </div>
