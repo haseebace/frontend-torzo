@@ -254,7 +254,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
       const errJson = await readJsonResponse<{
         error?: { message?: string };
-      }>(res).catch(() => ({}));
+      }>(res).catch(() => ({ error: undefined }));
       return {
         results: [],
         meta: null,
