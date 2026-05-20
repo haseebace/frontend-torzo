@@ -177,7 +177,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           value={query}
           placeholder="Search movies, shows, games, software..."
           className={cn(
-            "pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_rgba(255,33,87,0.12)] [--ui-shadow-input-focus:0_0_0_4px_rgba(255,33,87,0.08),0_0_40px_rgba(255,33,87,0.15)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
+            "pl-12 pr-16 bg-[oklch(0.985_0.008_357.793)] placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_oklch(0.644_0.245_16.285_/_12%)] [--ui-shadow-input-focus:0_0_0_4px_oklch(0.644_0.245_16.285_/_8%),0_0_40px_oklch(0.644_0.245_16.285_/_15%)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
             variant === "hero" ? "h-[71px] rounded-full pl-14" : "h-16"
           )}
           onBlur={() => {

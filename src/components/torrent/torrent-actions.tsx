@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Cloud, Download, Magnet, Loader2, Play } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -318,7 +318,7 @@ export function TorrentActions({
       </div>
       {rdAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-md bg-surface-badge px-1.5 py-0.5 text-[10px] font-medium text-text-subtle sm:text-xs">
+          <span className="ui-badge">
             {rdAccountStatus}
           </span>
         </div>

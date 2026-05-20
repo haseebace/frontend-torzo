@@ -81,14 +81,14 @@
   --shadow-ui-popover: var(--ui-shadow-popover);
   --shadow-ui-result-hover: var(--ui-shadow-result-hover);
   --animate-page-fade-in: page-fade-in 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-homepage-enter: homepage-enter 1000ms cubic-bezier(0.16, 1, 0.3, 1)
-    both;
+  --animate-homepage-enter: homepage-enter 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes page-fade-in {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -100,6 +100,7 @@
     transform: scale(0.94);
     transform-origin: center center;
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -113,75 +114,88 @@ body {
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #ff2157;
-  --primary-hover: #ed0040;
-  --primary-foreground: #ffffff;
-  --secondary: #fff1f2;
-  --secondary-foreground: #ff2157;
-  --muted: #f5f6f8;
-  --muted-foreground: #64748b;
-  --accent: #fff1f2;
-  --accent-foreground: #ff2157;
-  --destructive: #ed0040;
-  --border: #e7e9ee;
-  --input: #e7e9ee;
-  --ring: #ffa0ae;
-  --chart-1: #ffa0ae;
-  --chart-2: #ff2157;
-  --chart-3: #ed0040;
-  --chart-4: #c70036;
-  --chart-5: #8b0836;
-  --surface: #ffffff;
-  --surface-elevated: #ffffff;
-  --surface-subtle: #f8fafc;
-  --surface-wash: #f5f6f8;
-  --surface-hover: #fff1f2;
-  --surface-badge: #f5f6f8;
-  --brand-surface: #fff1f2;
-  --brand-border: #ffa0ae;
-  --brand-foreground: #a50036;
-  --foreground-strong: #0f172a;
-  --foreground-muted: #475569;
-  --text-subtle: #64748b;
-  --text-soft: #8a8d93;
-  --link: #ff2157;
-  --success: #059669;
-  --focus: rgb(255 160 174 / 42%);
+  --background: oklch(0.991 0.004 359.993);
+  --foreground: oklch(0.208 0.04 265.755);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.208 0.04 265.755);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.208 0.04 265.755);
+  --primary: oklch(0.644 0.245 16.285);
+  --primary-hover: oklch(0.599 0.24 19.513);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.969 0.015 12.422);
+  --secondary-foreground: oklch(0.644 0.245 16.285);
+  --muted: oklch(0.973 0.003 264.542);
+  --muted-foreground: oklch(0.554 0.041 257.417);
+  --accent: oklch(0.969 0.015 12.422);
+  --accent-foreground: oklch(0.644 0.245 16.285);
+  --destructive: oklch(0.599 0.24 19.513);
+  --border: oklch(0.934 0.007 268.545);
+  --input: oklch(0.934 0.007 268.545);
+  --ring: oklch(0.805 0.114 10.37);
+  --chart-1: oklch(0.805 0.114 10.37);
+  --chart-2: oklch(0.644 0.245 16.285);
+  --chart-3: oklch(0.599 0.24 19.513);
+  --chart-4: oklch(0.525 0.211 18.944);
+  --chart-5: oklch(0.411 0.159 10.192);
+  --surface: oklch(1 0 0);
+  --surface-elevated: oklch(1 0 0);
+  --surface-subtle: oklch(0.984 0.003 247.858);
+  --surface-wash: oklch(0.973 0.003 264.542);
+  --surface-hover: oklch(0.969 0.015 12.422);
+  --surface-badge: oklch(0.973 0.003 264.542);
+  --brand-surface: oklch(0.972 0.015 1.543);
+  --brand-border: oklch(0.805 0.114 10.37);
+  --brand-foreground: oklch(0.459 0.184 14.559);
+  --foreground-strong: oklch(0.208 0.04 265.755);
+  --foreground-muted: oklch(0.446 0.037 257.281);
+  --text-subtle: oklch(0.554 0.041 257.417);
+  --text-soft: oklch(0.643 0.01 264.499);
+  --link: oklch(0.644 0.245 16.285);
+  --success: oklch(0.596 0.127 163.225);
+  --focus: oklch(0.805 0.114 10.37 / 42%);
   --inverse: oklch(0 0 0);
   --inverse-foreground: oklch(0.985 0 0);
   --inverse-muted: oklch(0.554 0.046 257.417);
   --inverse-border: oklch(0.985 0 0 / 10%);
-  --result-card-background: #f5f5f54d;
+  --result-card-background: oklch(0.97 0 0 / 30.2%);
   --radius: 1.125rem;
   --control-radius: 9999px;
   --card-radius: 1.5rem;
   --pill-radius: 9999px;
   --page-gutter: 50px;
+  --badge-height: 2rem;
+  --badge-gap: 0.5rem;
+  --badge-padding-x: 0.75rem;
+  --badge-padding-y: 0.5rem;
+  --badge-radius: var(--pill-radius);
+  --badge-font-size: 0.75rem;
+  --badge-font-weight: 700;
+  --badge-line-height: 1rem;
+  --badge-letter-spacing: 0;
+  --badge-background: var(--brand-surface);
+  --badge-foreground: var(--primary);
+  --badge-border-color: transparent;
+  --badge-dot-size: 0.5rem;
   --ui-ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
   --ui-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
-  --ui-shadow-sm: 0 8px 24px rgb(15 23 42 / 0.05);
-  --ui-shadow-md: 0 18px 44px rgb(15 23 42 / 0.1);
-  --ui-shadow-card: 0 18px 44px rgb(15 23 42 / 0.1);
-  --ui-shadow-button: 0 16px 34px rgb(237 0 64 / 0.22);
-  --ui-shadow-input-hover: 0 10px 28px rgb(15 23 42 / 0.06);
+  --ui-shadow-sm: 0 8px 24px oklch(0.208 0.04 265.755 / 5%);
+  --ui-shadow-md: 0 18px 44px oklch(0.208 0.04 265.755 / 10%);
+  --ui-shadow-card: 0 18px 44px oklch(0.208 0.04 265.755 / 10%);
+  --ui-shadow-button: 0 16px 34px oklch(0.599 0.24 19.513 / 22%);
+  --ui-shadow-input-hover: 0 10px 28px oklch(0.208 0.04 265.755 / 6%);
   --ui-shadow-input-focus: 0 0 0 4px var(--focus);
-  --ui-shadow-input-invalid: 0 0 0 4px rgb(237 0 64 / 16%);
-  --ui-shadow-popover: 0 18px 50px rgb(24 24 27 / 0.14);
-  --ui-shadow-result-hover: 0 18px 42px rgb(24 24 27 / 0.08);
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #ff2157;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #fff1f2;
-  --sidebar-accent-foreground: #ff2157;
-  --sidebar-border: #e7e9ee;
-  --sidebar-ring: #ffa0ae;
+  --ui-shadow-input-invalid: 0 0 0 4px oklch(0.599 0.24 19.513 / 16%);
+  --ui-shadow-popover: 0 18px 50px oklch(0.21 0.006 285.885 / 14%);
+  --ui-shadow-result-hover: 0 18px 42px oklch(0.21 0.006 285.885 / 8%);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.208 0.04 265.755);
+  --sidebar-primary: oklch(0.644 0.245 16.285);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.969 0.015 12.422);
+  --sidebar-accent-foreground: oklch(0.644 0.245 16.285);
+  --sidebar-border: oklch(0.934 0.007 268.545);
+  --sidebar-ring: oklch(0.805 0.114 10.37);
 }
 
 .dark {
@@ -215,9 +229,9 @@ body {
   --surface-hover: oklch(0.32 0 0);
   --surface-badge: oklch(0.269 0 0);
   --brand-surface: oklch(0.23 0.08 15);
-  --brand-border: #ffa0ae;
-  --brand-foreground: #ffa0ae;
-  --primary-hover: #ff6f8d;
+  --brand-border: oklch(0.805 0.114 10.37);
+  --brand-foreground: oklch(0.805 0.114 10.37);
+  --primary-hover: oklch(0.724 0.177 9.711);
   --foreground-strong: oklch(0.87 0 0);
   --foreground-muted: oklch(0.708 0 0);
   --text-subtle: oklch(0.708 0 0);
@@ -229,7 +243,7 @@ body {
   --inverse-foreground: oklch(0.985 0 0);
   --inverse-muted: oklch(0.554 0.046 257.417);
   --inverse-border: oklch(0.985 0 0 / 10%);
-  --result-card-background: #f5f5f54d;
+  --result-card-background: oklch(0.97 0 0 / 30.2%);
   --ui-shadow-input-invalid: 0 0 0 4px oklch(0.704 0.191 22.216 / 24%);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
@@ -245,10 +259,44 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .ui-badge {
+    display: inline-flex;
+    width: fit-content;
+    min-height: var(--badge-height);
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--badge-gap);
+    overflow: hidden;
+    border: 1px solid var(--badge-border-color);
+    border-radius: var(--badge-radius);
+    background: var(--badge-background);
+    padding: var(--badge-padding-y) var(--badge-padding-x);
+    color: var(--badge-foreground);
+    font-size: var(--badge-font-size);
+    font-weight: var(--badge-font-weight);
+    line-height: var(--badge-line-height);
+    letter-spacing: var(--badge-letter-spacing);
+    text-transform: capitalize;
+    white-space: nowrap;
+  }
+
+  .ui-badge-dot {
+    width: var(--badge-dot-size);
+    height: var(--badge-dot-size);
+    flex-shrink: 0;
+    border-radius: var(--badge-radius);
+    background: currentColor;
   }
 }

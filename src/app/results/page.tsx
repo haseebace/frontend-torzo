@@ -345,7 +345,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const hasNextPage = activePaginationMeta?.has_next_page ?? false;
 
   return (
-    <main className="min-h-dvh bg-surface text-foreground">
+    <main className="min-h-dvh bg-background text-foreground">
       <div className="sticky top-0 z-50">
         <SiteNavbar />
       </div>
@@ -361,9 +361,9 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           />
         </div>
 
-        <div className="flex flex-col items-start gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between md:gap-2">
-          <div className="flex flex-col gap-1">
-            <h2 className="font-heading text-lg font-extrabold text-foreground-strong md:text-[22px]">
+        <div className="flex items-center justify-between gap-3 border-b border-border pb-4 md:items-end md:gap-2">
+          <div className="min-w-0 flex-1">
+            <h2 className="font-heading text-sm font-extrabold text-foreground-strong text-wrap-balance md:text-[22px]">
               {error ? (
                 <span className="text-destructive">{error}</span>
               ) : (
@@ -373,7 +373,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               )}
             </h2>
           </div>
-          <div className="flex w-full min-w-0 items-center justify-end md:w-auto">
+          <div className="flex shrink-0 items-center justify-end">
             <ResultSort defaultValue={sort} />
           </div>
         </div>

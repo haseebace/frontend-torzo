@@ -147,14 +147,14 @@ type TorrentDetail = {
 export async function generateMetadata({ searchParams }: DetailPageProps): Promise<Metadata> {
   const params = await searchParams;
   const sourceUrl = params.source_url;
-  
+
   if (!sourceUrl) {
     return {
       title: "Details Not Found",
       description: "No media source provided.",
     };
   }
-  
+
   return {
     title: "Media Details",
     description: `View details, sources, and download information. Compare seeders, file sizes, and more.`,
@@ -255,25 +255,25 @@ function normalizeDetailResponse(
 
 function getFileSizeDisplay(file: TorrentFile): string {
   if (file.size_human) return file.size_human;
-  
+
   if (file.size && file.size !== "0 bytes") {
     const cleaned = file.size.replace(/[\[\]]/g, "").trim();
     const isHumanReadable = /(\d+(\.\d+)?)\s*(GB|MB|KB|TB|PB)/i.test(cleaned);
-    
+
     if (isHumanReadable) {
       return cleaned;
     }
-    
+
     const bytes = parseInt(cleaned, 10);
     if (!isNaN(bytes) && bytes > 0) {
       return formatBytesFromBytes(bytes);
     }
   }
-  
+
   if (file.size_bytes && file.size_bytes > 0) {
     return formatBytesFromBytes(file.size_bytes);
   }
-  
+
   return "Unknown";
 }
 
@@ -292,7 +292,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   if (!sourceUrl) {
     return (
-      <main className="min-h-dvh bg-surface text-foreground">
+      <main className="min-h-dvh bg-brand-surface text-foreground">
         <SiteNavbar />
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <p className="text-muted-foreground">No media source provided.</p>
@@ -314,7 +314,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         const json = (await res.json()) as YtsDetailResponse;
         const movie = json.data?.movie;
         if (!movie) throw new Error("YTS Movie not found");
-        
+
         const bestTorrent = movie.torrents?.[0];
         torrent = {
           title: movie.title_long || movie.title || "YTS media",
@@ -407,22 +407,22 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl">
               {title}
             </h1>
-            <div className="flex w-full min-w-0 items-baseline gap-2 rounded-control bg-surface-subtle px-3 py-2 sm:inline-flex sm:w-auto">
-              <span className="shrink-0 font-sans text-xs font-medium uppercase tracking-[0.08em] text-text-soft">
+            <div className="ui-badge max-w-full [--badge-padding-x:14px]">
+              <span className="shrink-0">
                 Info hash:
               </span>
-              <p className="min-w-0 truncate font-mono text-xs leading-5 text-text-subtle md:text-sm">
+              <p className="min-w-0 truncate font-mono">
                 {torrent.infoHash ?? "Unknown"}
               </p>
             </div>
           </div>
 
-          <TorrentActions 
-             magnetLink={torrent.magnetLink} 
-             torrentFileUrl={torrent.torrentFileUrl} 
-             infoHash={torrent.infoHash}
-             className="sm:w-full"
-           />
+          <TorrentActions
+            magnetLink={torrent.magnetLink}
+            torrentFileUrl={torrent.torrentFileUrl}
+            infoHash={torrent.infoHash}
+            className="sm:w-full"
+          />
         </div>
 
         <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -462,10 +462,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                           <span className="flex size-7 shrink-0 items-center justify-center rounded-control border border-border bg-surface-subtle text-muted-foreground md:size-8">
                             <FileIcon className="size-3.5 md:size-4" />
                           </span>
-                           <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
-                             {file.name}
-                           </p>
-                           <span className="ml-auto shrink-0 rounded-md bg-surface-badge px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-text-subtle md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
+                          <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
+                            {file.name}
+                          </p>
+                          <span className="ui-badge ml-auto">
                             {fileSize}
                           </span>
                         </div>
@@ -494,7 +494,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       className="rounded-control border border-border bg-surface-subtle px-2.5 py-1.5 text-xs font-medium text-foreground-strong hover:bg-surface-badge md:px-3 md:py-2 md:text-sm"
                     >
                       Screenshot {index + 1}
-                      <span className="ml-1.5 rounded-md bg-surface-badge px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-text-subtle md:ml-2 md:px-2 md:py-1 md:text-xs md:tracking-[0.12em]">
+                      <span className="ui-badge ml-1.5 md:ml-2">
                         {image.kind}
                       </span>
                     </Link>

@@ -22,7 +22,7 @@ export function ResultSort({ defaultValue }: { defaultValue: string }) {
 
   return (
     <Select defaultValue={defaultValue} onValueChange={handleSortChange}>
-      <SelectTrigger size="sm" className="w-[145px] rounded-xl text-sm font-medium">
+      <SelectTrigger size="sm" className="w-[145px] rounded-xl text-sm font-medium active:scale-[0.96]">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
       <SelectContent className="rounded-xl p-2">

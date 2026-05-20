@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { Gauge, LockKeyhole, ShieldCheck } from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -219,27 +219,16 @@ export function ManageAccountForm() {
                   provider choices that save locally.
                 </p>
               </div>
-              <span className="inline-flex w-fit min-w-[92px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-pill bg-brand-surface px-4 py-2.5 text-xs font-bold text-primary">
-                <span className="size-2 rounded-pill bg-primary" />
+              <span className="ui-badge min-w-[92px]">
+                <span className="ui-badge-dot" />
                 Local only
               </span>
             </div>
-            <div>
-              <Button
-                type="button"
-                size="lg"
-                className="h-[50px] w-full px-6 font-heading md:w-[180px]"
-                onClick={() => {
-                  document.getElementById("real-debrid-api-key")?.focus();
-                }}
-              >
-                Connect key
-              </Button>
-            </div>
+           
           </CardContent>
         </Card>
 
-        <Card className="bg-brand-surface px-0 py-0 text-brand-foreground shadow-none">
+        <Card className="bg-brand-surface px-0 py-0 text-brand-foreground border-none">
           <CardContent className="flex h-full flex-col gap-5 p-6">
             <div className="space-y-1.5">
               <p className="text-sm font-bold text-brand-foreground">
@@ -344,8 +333,8 @@ export function ManageAccountForm() {
                 <CardTitle className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
                   Provider configuration
                 </CardTitle>
-                <span className="inline-flex w-fit items-center gap-2 rounded-pill bg-brand-surface px-3 py-2 text-xs font-bold text-primary">
-                  <span className="size-2 rounded-pill bg-primary" />
+                <span className="ui-badge">
+                  <span className="ui-badge-dot" />
                   {isSavingProviders ? "Saving" : "Saved"}
                 </span>
               </div>
@@ -377,8 +366,8 @@ export function ManageAccountForm() {
                           {provider.label}
                         </span>
                         {isChecked ? (
-                          <span className="inline-flex shrink-0 items-center gap-1 rounded-pill bg-brand-surface px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.12em] text-primary">
-                            <span className="size-1 rounded-pill bg-primary" />
+                          <span className="ui-badge">
+                            <span className="ui-badge-dot" />
                             Active
                           </span>
                         ) : null}

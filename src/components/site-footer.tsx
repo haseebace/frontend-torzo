@@ -2,34 +2,32 @@ import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-background px-page py-9">
+    <footer className="bg-background px-page py-9">
       <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs font-medium leading-6 text-muted-foreground md:text-sm">
-        <span>© {new Date().getFullYear()} Torzo. All rights reserved.</span>
-        <span aria-hidden="true">·</span>
         <nav className="contents">
-          <Link 
-            href="/disclaimer" 
+          <Link
+            href="/disclaimer"
             className="transition-colors hover:text-foreground"
           >
             Disclaimer
           </Link>
           <span aria-hidden="true">·</span>
-          <Link 
-            href="/dmca" 
+          <Link
+            href="/dmca"
             className="transition-colors hover:text-foreground"
           >
             DMCA
           </Link>
           <span aria-hidden="true">·</span>
-          <Link 
-            href="/privacy" 
+          <Link
+            href="/privacy"
             className="transition-colors hover:text-foreground"
           >
             Privacy Policy
           </Link>
           <span aria-hidden="true">·</span>
-          <Link 
-            href="/terms" 
+          <Link
+            href="/terms"
             className="transition-colors hover:text-foreground"
           >
             Terms of Service
