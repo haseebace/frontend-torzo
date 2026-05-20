@@ -1,16 +1,16 @@
 # Graph Report - frontend-torzo  (2026-05-21)
 
 ## Corpus Check
-- 49 files · ~23,494 words
+- 49 files · ~23,534 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 597 nodes · 771 edges · 47 communities (39 shown, 8 thin omitted)
+- 597 nodes · 771 edges · 48 communities (40 shown, 8 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 19 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `99fe1382`
+- Built from commit: `d98d7242`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,14 +43,15 @@
 - [[_COMMUNITY_Community 25|Community 25]]
 - [[_COMMUNITY_Community 26|Community 26]]
 - [[_COMMUNITY_Community 27|Community 27]]
-- [[_COMMUNITY_Community 32|Community 32]]
+- [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 33|Community 33]]
 - [[_COMMUNITY_Community 34|Community 34]]
-- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 35|Community 35]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 46|Community 46]]
+- [[_COMMUNITY_Community 47|Community 47]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 55 edges
@@ -84,7 +85,7 @@
 - **Complete torrent-to-download workflow** — rd_endpoint_addMagnet, rd_endpoint_torrents_info, rd_endpoint_selectFiles, rd_endpoint_unrestrict_link, torrent_actions [INFERRED 0.85]
 - **Provider configuration persistence** — route_settings_providers, route_rd_status, app_settings_parseProviders, app_settings_type_ProviderId [INFERRED 0.80]
 
-## Communities (47 total, 8 thin omitted)
+## Communities (48 total, 8 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
@@ -147,32 +148,32 @@ Cohesion: 0.16
 Nodes (9): RealDebridError, realDebridFetch(), RealDebridRequestOptions, RealDebridAddMagnetResponse, RealDebridTorrentInfo, RealDebridTorrentSummary, RealDebridUnrestrictResponse, TorrentActions() (+1 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.15
-Nodes (13): API methods, code:block1 (https://api.real-debrid.com/rest/1.0/), GET /disable_access_token, GET /time, GET /time/iso, GET /user, Possible HTTP error codes:, Possible HTTP error codes: (+5 more)
-
-### Community 16 - "Community 16"
 Cohesion: 0.17
 Nodes (11): Authentication, Authentication for applications, code:block27 (curl -X GET \), code:block28 (HTTP/1.1 200 OK), code:block29 (Authorization: Bearer your_api_token), code:block30 (/rest/1.0/method?auth_token=your_api_token), Example calls, Getting user informations: (+3 more)
 
-### Community 17 - "Community 17"
+### Community 16 - "Community 16"
 Cohesion: 0.23
 Nodes (12): Real-Debrid Bearer token authentication, Real-Debrid API base URL, Real-Debrid API rate limit (250 req/min), POST /torrents/addMagnet endpoint, GET /disable_access_token endpoint, POST /torrents/selectFiles/{id} endpoint, GET /torrents endpoint, GET /torrents/info/{id} endpoint (+4 more)
 
-### Community 18 - "Community 18"
+### Community 17 - "Community 17"
 Cohesion: 0.18
 Nodes (11): GET /hosts, GET /hosts/domains, GET /hosts/regex, GET /hosts/regexFolder, GET /hosts/status, /hosts, Return value:, Return value: (+3 more)
 
-### Community 19 - "Community 19"
+### Community 18 - "Community 18"
 Cohesion: 0.18
 Nodes (10): code:console (npm i), code:console (npm run dev), code:console (npx remotion render), code:console (npx remotion upgrade), Commands, Docs, Help, Issues (+2 more)
 
-### Community 20 - "Community 20"
+### Community 19 - "Community 19"
 Cohesion: 0.18
 Nodes (10): API Endpoints Covered, Checking Results, code:block1 (api_key: "YOUR_API_KEY"), Example Variables After Successful Run, Option 1: Step-by-Step (Recommended for learning), Option 2: Quick Test (Full Flow), Real-Debrid API Testing with Postman, Setup Instructions (+2 more)
 
-### Community 21 - "Community 21"
+### Community 20 - "Community 20"
 Cohesion: 0.2
 Nodes (8): Browser Testing, Code Search, code:bash (agent-browser skills get core), Git And GitHub, graphify, Project Agent Rules, Testing And Checks, This is NOT the Next.js you know
+
+### Community 21 - "Community 21"
+Cohesion: 0.22
+Nodes (9): API methods, code:block1 (https://api.real-debrid.com/rest/1.0/), GET /disable_access_token, GET /time, GET /time/iso, Possible HTTP error codes:, Return value:, Return value: (+1 more)
 
 ### Community 22 - "Community 22"
 Cohesion: 0.25
@@ -198,6 +199,10 @@ Nodes (4): GET(), getTmdbAuth(), normalizeSearchText(), scoreMovie()
 Cohesion: 0.4
 Nodes (4): code:bash (npm run dev), Deploy on Vercel, Getting Started, Learn More
 
+### Community 28 - "Community 28"
+Cohesion: 0.5
+Nodes (4): GET /user, Possible HTTP error codes:, Return value:, /user
+
 ## Knowledge Gaps
 - **268 isolated node(s):** `plusJakartaSans`, `sora`, `metadata`, `Props`, `ResultsPageProps` (+263 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -206,11 +211,11 @@ Nodes (4): code:bash (npm run dev), Deploy on Vercel, Getting Started, Learn Mor
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `API methods` connect `Community 15` to `Community 5`, `Community 7`, `Community 9`, `Community 10`, `Community 16`, `Community 18`, `Community 22`, `Community 23`, `Community 25`?**
+- **Why does `API methods` connect `Community 21` to `Community 5`, `Community 7`, `Community 9`, `Community 10`, `Community 15`, `Community 17`, `Community 22`, `Community 23`, `Community 25`, `Community 28`?**
   _High betweenness centrality (0.090) - this node is a cross-community bridge._
-- **Why does `Real-Debrid API Documentation` connect `Community 16` to `Community 2`, `Community 15`?**
+- **Why does `Real-Debrid API Documentation` connect `Community 15` to `Community 2`, `Community 21`?**
   _High betweenness centrality (0.043) - this node is a cross-community bridge._
-- **Why does `Opensource Apps` connect `Community 2` to `Community 16`?**
+- **Why does `Opensource Apps` connect `Community 2` to `Community 15`?**
   _High betweenness centrality (0.037) - this node is a cross-community bridge._
 - **What connects `plusJakartaSans`, `sora`, `metadata` to the rest of the system?**
   _268 weakly-connected nodes found - possible documentation gaps or missing edges._

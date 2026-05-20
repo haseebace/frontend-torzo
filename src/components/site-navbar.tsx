@@ -1,10 +1,10 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { AnimatedMenuToggle } from "@/components/animated-menu-toggle";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export function SiteNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,8 @@ export function SiteNavbar() {
           href="/"
           className="font-heading text-[33px] font-extrabold leading-none text-primary"
         >
-          Torzo.
+          <span className="md:hidden">T.</span>
+          <span className="hidden md:inline">Torzo.</span>
         </Link>
 
         <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} />
@@ -30,28 +31,45 @@ export function SiteNavbar() {
         </Button>
       </nav>
 
-      <div
-        className={cn(
-          "fixed inset-0 z-[100] flex-col bg-background px-4 py-5 text-foreground md:hidden",
-          isOpen ? "flex" : "hidden"
-        )}
-      >
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-heading text-[33px] font-extrabold leading-none text-primary"
+      <AnimatePresence initial={false}>
+        {isOpen ? (
+          <motion.div
+            className="fixed inset-0 z-[100] flex flex-col bg-black/10 px-4 py-5 text-foreground backdrop-blur-xl md:hidden"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
           >
-            T.
-          </Link>
-          <span className="size-[50px]" aria-hidden="true" />
-        </div>
+            <div className="flex items-center justify-between">
+              <Link
+                href="/"
+                className="font-heading text-[33px] font-extrabold leading-none text-primary"
+              >
+                T.
+              </Link>
+              <span className="size-[50px]" aria-hidden="true" />
+            </div>
 
-        <div className="flex flex-1 items-center justify-center">
-          <Button asChild className="h-[50px] px-8 font-heading">
-            <Link href="/manage">Manage</Link>
-          </Button>
-        </div>
-      </div>
+            <div className="flex flex-1 items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
+                transition={{
+                  type: "spring",
+                  duration: 0.38,
+                  bounce: 0,
+                  delay: 0.08,
+                }}
+              >
+                <Button asChild className="h-[50px] px-8 font-heading">
+                  <Link href="/manage">Manage</Link>
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

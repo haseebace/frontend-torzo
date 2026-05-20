@@ -31,6 +31,7 @@ export function ManageAccountForm() {
   ]);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [providerError, setProviderError] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isSavingProviders, setIsSavingProviders] = useState(false);
 
@@ -108,12 +109,12 @@ export function ManageAccountForm() {
       : selectedProviders.filter((id) => id !== providerId);
 
     if (nextProviders.length === 0) {
-      setError("Choose at least one provider.");
+      setProviderError("Choose at least one provider.");
       return;
     }
 
     setSelectedProviders(nextProviders);
-    setError(null);
+    setProviderError(null);
     setMessage(null);
     setIsSavingProviders(true);
 
@@ -137,7 +138,7 @@ export function ManageAccountForm() {
 
       setSelectedProviders(data.providers);
     } catch (providerError) {
-      setError(
+      setProviderError(
         providerError instanceof Error
           ? providerError.message
           : "Could not save providers."
@@ -206,7 +207,7 @@ export function ManageAccountForm() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-7">
         <Card className="px-0 py-0 shadow-none">
           <CardContent className="flex flex-col gap-6 p-6 md:p-8">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+            <div className="flex flex-col gap-6">
               <div className="max-w-2xl space-y-3">
                 <p className="font-heading text-xs font-extrabold uppercase tracking-[0.16em] text-primary">
                   Manage sources
@@ -219,11 +220,58 @@ export function ManageAccountForm() {
                   provider choices that save locally.
                 </p>
               </div>
-              <span className="ui-badge min-w-[92px]">
-                <span className="ui-badge-dot" />
-                Local only
-              </span>
             </div>
+            <form className="flex max-w-3xl flex-col gap-4" onSubmit={handleConnect}>
+              <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+                <label className="sr-only" htmlFor="real-debrid-api-key">
+                  Real-Debrid API key
+                </label>
+                <div className="relative min-w-0 flex-1">
+                  <LockKeyhole className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-text-subtle" />
+                  <Input
+                    id="real-debrid-api-key"
+                    type="password"
+                    value={apiKey}
+                    onChange={(event) => {
+                      setApiKey(event.target.value);
+                    }}
+                    placeholder="Paste your Real-Debrid API key"
+                    className="bg-card pl-12 text-sm hover:bg-card focus-visible:bg-card"
+                    disabled={isConnected}
+                  />
+                </div>
+                {isConnected ? (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="lg"
+                    className="h-14 px-6 font-heading xl:w-[148px]"
+                    onClick={handleDisconnect}
+                  >
+                    Disconnect
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="h-14 px-6 font-heading xl:w-[148px]"
+                    disabled={isConnecting}
+                  >
+                    {isConnecting ? "Connecting" : "Connect"}
+                  </Button>
+                )}
+              </div>
+              {error ? (
+                <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive">
+                  {error}
+                </p>
+              ) : null}
+              {message ? (
+                <p className="rounded-control border border-border bg-surface-subtle px-4 py-3 text-sm font-medium text-foreground-strong">
+                  {message}
+                </p>
+              ) : null}
+            </form>
           </CardContent>
         </Card>
 
@@ -261,75 +309,8 @@ export function ManageAccountForm() {
         <div className="flex flex-col gap-6 md:gap-7">
           <Card className="px-0 py-0 shadow-none">
             <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
-              <div className="min-w-0 space-y-1">
-                <CardTitle className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
-                  Real-Debrid API key
-                </CardTitle>
-                <p className="text-sm leading-6 text-foreground-muted">
-                  Paste once, then manage sources without exposing the key
-                  outside your browser.
-                </p>
-              </div>
-            </CardHeader>
-            <CardContent className="px-5 pb-6 pt-5 md:px-7 md:pb-7 md:pt-6">
-              <form className="flex flex-col gap-4" onSubmit={handleConnect}>
-                <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-                  <label className="sr-only" htmlFor="real-debrid-api-key">
-                    Real-Debrid API key
-                  </label>
-                  <div className="relative min-w-0 flex-1">
-                    <LockKeyhole className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-text-subtle" />
-                    <Input
-                      id="real-debrid-api-key"
-                      type="password"
-                      value={apiKey}
-                      onChange={(event) => {
-                        setApiKey(event.target.value);
-                      }}
-                      placeholder="Paste your Real-Debrid API key"
-                      className="pl-12 text-sm"
-                      disabled={isConnected}
-                    />
-                  </div>
-                  {isConnected ? (
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="lg"
-                      className="h-14 px-6 font-heading xl:w-[148px]"
-                      onClick={handleDisconnect}
-                    >
-                      Disconnect
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="h-14 px-6 font-heading xl:w-[148px]"
-                      disabled={isConnecting}
-                    >
-                      {isConnecting ? "Connecting" : "Connect"}
-                    </Button>
-                  )}
-                </div>
-                {error ? (
-                  <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive">
-                    {error}
-                  </p>
-                ) : null}
-                {message ? (
-                  <p className="rounded-control border border-border bg-surface-subtle px-4 py-3 text-sm font-medium text-foreground-strong">
-                    {message}
-                  </p>
-                ) : null}
-              </form>
-            </CardContent>
-          </Card>
-
-          <Card className="px-0 py-0 shadow-none">
-            <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <CardTitle className="font-heading text-xl font-extrabold text-foreground md:text-2xl">
+              <div className="flex items-center justify-between gap-3">
+                <CardTitle className="min-w-0 font-heading text-xl font-extrabold text-foreground md:text-2xl">
                   Provider configuration
                 </CardTitle>
                 <span className="ui-badge">
@@ -375,6 +356,11 @@ export function ManageAccountForm() {
                   </label>
                 );
               })}
+              {providerError ? (
+                <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive md:basis-full">
+                  {providerError}
+                </p>
+              ) : null}
             </CardContent>
           </Card>
         </div>
