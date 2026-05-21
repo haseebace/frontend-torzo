@@ -36,7 +36,7 @@ function SearchSubmitButton({ isSubmitting, variant = "default" }: { isSubmittin
         "md:right-2 md:opacity-0 md:pointer-events-none md:scale-90",
         variant === "hero" ? "md:h-[59px] md:w-[59px] md:right-1.5" : "md:h-13 md:w-13 md:right-1.5",
         "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
-        "active:translate-y-[-50%] motion-reduce:transition-none md:motion-reduce:scale-100"
+        "active:not-aria-[haspopup]:translate-y-[-50%] motion-reduce:transition-none md:motion-reduce:scale-100"
       )}
     >
       {isSubmitting ? (
