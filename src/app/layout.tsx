@@ -58,6 +58,9 @@ export const metadata: Metadata = {
     description: "Search and discover movies, TV shows, and digital content with direct high-speed downloads via Real-Debrid.",
     images: ["/preview.png"],
   },
+  verification: {
+    google: "LzzoVc5jvxgq4tGlzyWKlZEQErcDJhyFPCL7IVO7yUo",
+  },
   robots: {
     index: true,
     follow: true,
