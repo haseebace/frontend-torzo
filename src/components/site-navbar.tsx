@@ -26,12 +26,18 @@ export function SiteNavbar() {
 
         <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} />
 
-        <Button
-          asChild
-          className="hidden h-[50px] px-6 font-heading md:inline-flex"
-        >
-          <Link href="/manage">Manage</Link>
-        </Button>
+        <div className="hidden items-center gap-3 md:flex">
+          <Button
+            asChild
+            variant="ghost"
+            className="h-[50px] px-5 font-heading"
+          >
+            <Link href="/how-to-use">How to Use</Link>
+          </Button>
+          <Button asChild className="h-[50px] px-6 font-heading">
+            <Link href="/manage">Manage</Link>
+          </Button>
+        </div>
       </nav>
 
       <AnimatePresence initial={false}>
@@ -53,7 +59,7 @@ export function SiteNavbar() {
               <span className="size-[50px]" aria-hidden="true" />
             </div>
 
-            <div className="flex flex-1 items-center justify-center">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
@@ -63,6 +69,25 @@ export function SiteNavbar() {
                   duration: 0.85,
                   bounce: 0.75,
                   delay: 0.08,
+                }}
+              >
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-[50px] px-8 font-heading"
+                >
+                  <Link href="/how-to-use">How to Use</Link>
+                </Button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
+                transition={{
+                  type: "spring",
+                  duration: 0.85,
+                  bounce: 0.75,
+                  delay: 0.12,
                 }}
               >
                 <Button asChild className="h-[50px] px-8 font-heading">
