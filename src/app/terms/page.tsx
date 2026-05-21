@@ -108,7 +108,7 @@ export default function TermsPage() {
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-foreground-strong">11. Contact</h2>
             <p>
-              For questions about these Terms, contact us at legal@torzo.app.
+              For questions about these Terms, contact us at legal@torzo.vercel.app.
             </p>
           </div>
 

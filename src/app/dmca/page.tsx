@@ -59,7 +59,7 @@ export default function DMCAPage() {
               DMCA notices should be sent to our designated agent at:
             </p>
             <div className="rounded-control bg-surface-subtle p-4 text-foreground-strong">
-              <p>Email: dmca@torzo.app</p>
+              <p>Email: dmca@torzo.vercel.app</p>
               <p>Subject Line: DMCA Takedown Request</p>
             </div>
             <p className="text-xs text-muted-foreground">

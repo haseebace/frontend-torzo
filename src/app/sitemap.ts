@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://torzo.app';
+  const baseUrl = 'https://torzo.vercel.app';
   
   return [
     {

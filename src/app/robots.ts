@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/results', '/detail', '/api/'],
       },
     ],
-    sitemap: 'https://torzo.app/sitemap.xml',
+    sitemap: 'https://torzo.vercel.app/sitemap.xml',
   };
 }

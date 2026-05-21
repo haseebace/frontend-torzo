@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-semibold text-foreground-strong">6. Your Rights</h2>
             <p>
               Since we collect minimal data, there is little to access or delete. If you have 
-              concerns about your privacy, contact us at privacy@torzo.app.
+              concerns about your privacy, contact us at privacy@torzo.vercel.app.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            For questions, contact us at privacy@torzo.app or visit our{" "}
+            For questions, contact us at privacy@torzo.vercel.app or visit our{" "}
             <Link href="/disclaimer" className="text-link hover:underline">
               Disclaimer
             </Link>{" "}
