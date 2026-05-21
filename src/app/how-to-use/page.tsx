@@ -21,13 +21,33 @@ export default function HowToUsePage() {
   const steps = [
     {
       icon: "🔍",
-      title: "Search for anything",
-      body: "Type a movie, TV show, game, or software name into the search bar. Pick a suggestion from TMDB to search by ID, or press Enter to search by keyword across all your providers.",
+      title: "Search for a movie or show",
+      body: (
+        <>
+          Type a title into the search bar on the{" "}
+          <Link href="/" className="text-link hover:underline">
+            home page
+          </Link>
+          . Pick a suggestion for instant results, or press Enter to search by
+          keyword across all your providers.
+        </>
+      ),
     },
     {
       icon: "📋",
-      title: "Pick the best result",
-      body: 'Each card shows the title, file size, seeders, and leechers so you can choose the best source. Results are sorted by availability by default, or switch to "Recent" to see the newest first.',
+      title: "Compare your results",
+      body: 'Each result card shows the title, file size, seeders, and leechers so you can pick the best source. Sort by "Most seeders" or "Recent" to find what you need fast.',
+    },
+    {
+      icon: "📄",
+      title: "Open the detail page",
+      body: (
+        <>
+          Click any result to see the full detail page. You&rsquo;ll find the
+          info hash, file list, screenshots, health score, and all available
+          actions in one place.
+        </>
+      ),
     },
     {
       icon: "🔑",
@@ -38,23 +58,31 @@ export default function HowToUsePage() {
           <Link href="/manage" className="text-link hover:underline">
             Manage page
           </Link>{" "}
-          and paste your Real-Debrid API key. Your key stays in your browser
-          and is never sent to our servers. Once connected you&rsquo;ll see
-          live status and can toggle providers on or off.
+          and paste your Real-Debrid API key. Your key is stored in your
+          browser and is never sent to our servers. You can also toggle which
+          providers Torzo searches.
         </>
       ),
     },
     {
-      icon: "🎬",
-      title: "Play on any device",
-      body: "Real-Debrid streams work with external players like VLC, Kodi, or your web browser. Just pick your result, click download, and your default player will handle the rest.",
+      icon: "⚡",
+      title: "Add to Real-Debrid",
+      body: "On any detail page, click \"Add to Real Debrid\". Torzo will add the magnet, select all files, wait for the download to finish on RD's servers, and generate a direct download link — all automatically.",
     },
     {
-      icon: "✅",
-      title: "Done — enjoy",
-      body: "No ads, no popups, no redirects. Torzo gives you clean, fast results every time. The whole process takes seconds from search to playback.",
+      icon: "▶️",
+      title: "Watch or download",
+      body: (
+        <>
+          Once the link is ready, click <strong>Watch Now</strong> to play on
+          iOS (Infuse) or macOS (IINA), or use <strong>Direct Download</strong>{" "}
+          to save the file. You can also grab the magnet link or .torrent file
+          directly without Real-Debrid.
+        </>
+      ),
     },
   ];
+
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
@@ -64,7 +92,7 @@ export default function HowToUsePage() {
             How to Use Torzo
           </h1>
           <p className="mt-3 text-sm text-muted-foreground md:text-base">
-            From your first search to playback — here is everything you need.
+            From your first search to watching — here is everything you need.
           </p>
         </div>
 
