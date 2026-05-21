@@ -13,7 +13,7 @@ type AnimatedMenuToggleProps = {
 
 const iconTransition = {
   type: "spring" as const,
-  duration: 0.3,
+  duration: 0.15,
   bounce: 0,
 };
 

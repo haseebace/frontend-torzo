@@ -26,7 +26,10 @@ export function SiteNavbar() {
 
         <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} />
 
-        <Button asChild className="hidden h-[50px] px-6 font-heading md:inline-flex">
+        <Button
+          asChild
+          className="hidden h-[50px] px-6 font-heading md:inline-flex"
+        >
           <Link href="/manage">Manage</Link>
         </Button>
       </nav>
@@ -57,8 +60,8 @@ export function SiteNavbar() {
                 exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
                 transition={{
                   type: "spring",
-                  duration: 0.38,
-                  bounce: 0,
+                  duration: 0.85,
+                  bounce: 0.75,
                   delay: 0.08,
                 }}
               >
