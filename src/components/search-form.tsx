@@ -151,7 +151,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       )}
     >
       <label className="sr-only" htmlFor={id}>
-        Search torrents
+        Search media
       </label>
       <div className={cn("relative", variant === "hero" ? "h-[71px]" : "h-16")}>
         <span className={cn(
