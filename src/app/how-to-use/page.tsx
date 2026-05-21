@@ -4,16 +4,15 @@ import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How to Use Torzo — Media Search & Real-Debrid Guide",
+  title: "How to Use Torzo — Find Movies & TV Shows Fast",
   description:
-    "Learn how to search movies and TV shows, connect Real-Debrid for high-speed downloads, and get the most out of Torzo — the media discovery platform.",
+    "Learn how to search for movies and TV shows, compare results across sources, and get the most out of Torzo.",
   keywords: [
     "how to use Torzo",
-    "media search guide",
-    "Real-Debrid setup",
     "search movies and TV shows",
-    "content discovery tool",
-    "streaming search platform",
+    "media discovery guide",
+    "find streaming content",
+    "movie search tool",
   ],
 };
 
