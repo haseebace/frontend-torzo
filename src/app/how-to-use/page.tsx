@@ -1,29 +1,45 @@
+import Link from "next/link";
 import { SiteNavbar } from "@/components/site-navbar";
+import type { Metadata } from "next";
 
-const steps = [
-  {
-    title: "Search for content",
-    body: 'Type a movie, TV show, game, or software name into the search bar on the homepage. As you type, suggestions from TMDB will appear — select one to search directly by ID, or press Enter to search by keyword across all providers.',
-  },
-  {
-    title: "Browse results",
-    body: 'Results from your selected providers are combined and sorted by seeders (or by date if you choose "Recent"). Each result card shows the title, category, file size, seeders, and leechers so you can pick the best source.',
-  },
-  {
-    title: "Connect Real-Debrid",
-    body: 'Go to the Manage page and paste your Real-Debrid API key. Your key is stored locally in your browser and is never sent to our servers. Once connected, you\'ll see your connection status and can enable or disable individual providers.',
-  },
-  {
-    title: "Choose your providers",
-    body: 'On the Manage page, toggle which sources Torzo searches — RARBG, The Pirate Bay, and YTS are available. Your preferences are saved automatically in your browser.',
-  },
-  {
-    title: "Download with one click",
-    body: 'Once you find what you\'re looking for, click the result to view details and start a high-speed download via Real-Debrid. No ads, no popups, no redirects.',
-  },
-];
+export const metadata: Metadata = {
+  title: "How to Use Torzo — Media Search & Real-Debrid Guide",
+  description:
+    "Learn how to search movies and TV shows, connect Real-Debrid for high-speed downloads, and get the most out of Torzo — the media discovery platform.",
+  keywords: [
+    "how to use Torzo",
+    "media search guide",
+    "Real-Debrid setup",
+    "search movies and TV shows",
+    "content discovery tool",
+    "streaming search platform",
+  ],
+};
 
 export default function HowToUsePage() {
+  const steps = [
+    {
+      title: "Search for movies and TV shows",
+      body: 'Type a movie, TV show, game, or software name into the search bar on the homepage. As you type, suggestions from TMDB will appear — select one to search directly by ID, or press Enter to search by keyword across all your selected providers.',
+    },
+    {
+      title: "Browse your results",
+      body: 'Results from your active providers are combined and sorted by availability (or by date if you choose "Recent"). Each result card shows the title, category, file size, seeders, and leechers so you can quickly pick the best source for your needs.',
+    },
+    {
+      title: "Connect Real-Debrid",
+      body: <>Go to the <Link href="/manage" className="text-link hover:underline">Manage page</Link> and paste your Real-Debrid API key. Your key is stored locally in your browser and is never sent to our servers. Once connected, you&rsquo;ll see your connection status and can enable or disable individual providers.</>,
+    },
+    {
+      title: "Choose your search sources",
+      body: 'On the Manage page, toggle which providers Torzo searches across. Your preferences are saved automatically in your browser so everything is ready for your next visit.',
+    },
+    {
+      title: "Download with one click",
+      body: 'Once you find what you\'re looking for, click the result to view details and start a high-speed download via Real-Debrid. No ads, no popups, no redirects — just a clean media search experience from start to finish.',
+    },
+  ];
+
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
