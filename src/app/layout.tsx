@@ -23,6 +23,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://torzo.vercel.app"),
   title: {
     default: "Torzo | Media Search Platform",
     template: "%s | Torzo",
@@ -40,15 +41,22 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://torzo.app",
+    url: "https://torzo.vercel.app",
     title: "Torzo | Media Search Platform",
     description: "Search and discover movies, TV shows, and digital content with direct high-speed downloads via Real-Debrid.",
     siteName: "Torzo",
+    images: [{
+      url: "/preview.png",
+      width: 1200,
+      height: 630,
+      alt: "Torzo | Media Search Platform",
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Torzo | Media Search Platform",
     description: "Search and discover movies, TV shows, and digital content with direct high-speed downloads via Real-Debrid.",
+    images: ["/preview.png"],
   },
   robots: {
     index: true,
