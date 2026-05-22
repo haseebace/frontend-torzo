@@ -50,7 +50,7 @@ function PaginationLink({
       variant={isActive ? "default" : "ghost"}
       size={size}
       className={cn(
-        isActive && "bg-primary! text-white! hover:bg-primary/90!",
+        isActive && "bg-primary! text-primary-foreground! hover:bg-primary-hover!",
         className
       )}
     >

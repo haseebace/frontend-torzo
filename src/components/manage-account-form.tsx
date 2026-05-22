@@ -58,7 +58,7 @@ export function ManageAccountForm() {
             },
             body: JSON.stringify({ endpoint: "/user" }),
           });
-          
+
           if (userResponse.ok) {
             const userData = await userResponse.json();
             if (isMounted) {
@@ -66,11 +66,11 @@ export function ManageAccountForm() {
               setUsername(userData.username);
             }
           } else {
-             if (isMounted) {
-                localStorage.removeItem("rd_api_key");
-                setIsConnected(false);
-                setUsername(null);
-             }
+            if (isMounted) {
+              localStorage.removeItem("rd_api_key");
+              setIsConnected(false);
+              setUsername(null);
+            }
           }
         }
       } catch {
@@ -93,14 +93,14 @@ export function ManageAccountForm() {
         .filter((provider) => selectedProviders.includes(provider.id))
         .map((provider) => provider.label)
         .join(", "),
-    [selectedProviders]
+    [selectedProviders],
   );
   const activeProviderCount = selectedProviders.length;
   const connectionStatus = isConnected ? "Connected" : "Not connected";
 
   const handleProviderChange = async (
     providerId: ProviderId,
-    checked: boolean
+    checked: boolean,
   ) => {
     const nextProviders = checked
       ? selectedProviders.includes(providerId)
@@ -141,7 +141,7 @@ export function ManageAccountForm() {
       setProviderError(
         providerError instanceof Error
           ? providerError.message
-          : "Could not save providers."
+          : "Could not save providers.",
       );
     } finally {
       setIsSavingProviders(false);
@@ -172,11 +172,11 @@ export function ManageAccountForm() {
       });
 
       if (!userResponse.ok) {
-         throw new Error("Invalid Real-Debrid API key.");
+        throw new Error("Invalid Real-Debrid API key.");
       }
 
       const userData = await userResponse.json();
-      
+
       localStorage.setItem("rd_api_key", apiKey.trim());
 
       setIsConnected(true);
@@ -188,7 +188,7 @@ export function ManageAccountForm() {
       setError(
         connectError instanceof Error
           ? connectError.message
-          : "Could not connect Real-Debrid."
+          : "Could not connect Real-Debrid.",
       );
     } finally {
       setIsConnecting(false);
@@ -205,8 +205,8 @@ export function ManageAccountForm() {
   return (
     <div className="flex w-full flex-col gap-6 md:gap-8">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-7">
-        <Card className="px-0 py-0 shadow-none">
-          <CardContent className="flex flex-col gap-6 p-6 md:p-8">
+        <Card className="px-0 py-0 shadow-none border-none">
+          <CardContent className="flex flex-col gap-6 p-6 md:p-8 border-none">
             <div className="flex flex-col gap-6">
               <div className="max-w-2xl space-y-3">
                 <p className="font-heading text-xs font-extrabold uppercase tracking-[0.16em] text-primary">
@@ -221,7 +221,10 @@ export function ManageAccountForm() {
                 </p>
               </div>
             </div>
-            <form className="flex max-w-3xl flex-col gap-4" onSubmit={handleConnect}>
+            <form
+              className="flex max-w-3xl flex-col gap-4"
+              onSubmit={handleConnect}
+            >
               <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
                 <label className="sr-only" htmlFor="real-debrid-api-key">
                   Real-Debrid API key
@@ -267,7 +270,7 @@ export function ManageAccountForm() {
                 </p>
               ) : null}
               {message ? (
-                <p className="rounded-control border border-border bg-surface-subtle px-4 py-3 text-sm font-medium text-foreground-strong">
+                <p className="rounded-control  bg-surface-subtle px-4 py-3 text-sm font-medium text-foreground-strong">
                   {message}
                 </p>
               ) : null}
@@ -292,7 +295,7 @@ export function ManageAccountForm() {
                   : "Torzo is ready to use your Real-Debrid account from this browser."
                 : "Add an API key to unlock Debrid actions. The key stays in this browser and is never uploaded to Torzo."}
             </p>
-            <div className="h-px w-full bg-brand-border" />
+            <div className="h-px w-full " />
             <div className="space-y-2">
               <p className="font-heading text-[11px] font-extrabold uppercase tracking-[0.16em] text-brand-foreground">
                 Selected providers
@@ -307,7 +310,7 @@ export function ManageAccountForm() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-7">
         <div className="flex flex-col gap-6 md:gap-7">
-          <Card className="px-0 py-0 shadow-none">
+          <Card className="px-0 py-0 shadow-none border-none">
             <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
               <div className="flex items-center justify-between gap-3">
                 <CardTitle className="min-w-0 font-heading text-xl font-extrabold text-foreground md:text-2xl">
@@ -327,10 +330,8 @@ export function ManageAccountForm() {
                   <label
                     key={provider.id}
                     className={cn(
-                      "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-all hover:bg-brand-surface hover:border-primary",
-                      isChecked
-                        ? "border-primary"
-                        : "border-border"
+                      "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:border-primary hover:bg-brand-surface active:scale-[0.96] motion-reduce:active:scale-100",
+                      isChecked ? "border-primary" : "border-border",
                     )}
                   >
                     <Checkbox
@@ -366,7 +367,7 @@ export function ManageAccountForm() {
         </div>
 
         <aside className="grid grid-cols-1 gap-6 self-start sm:grid-cols-2 lg:grid-cols-1">
-          <Card className="px-0 py-0 shadow-none">
+          <Card className="px-0 py-0 shadow-none border-none">
             <CardContent className="space-y-2.5 p-5 md:p-[18px]">
               <p className="text-sm font-bold text-muted-foreground">
                 Setup health
@@ -379,7 +380,7 @@ export function ManageAccountForm() {
               </p>
             </CardContent>
           </Card>
-          <Card className="px-0 py-0 shadow-none">
+          <Card className="px-0 py-0 shadow-none border-none">
             <CardContent className="space-y-2.5 p-5 md:p-[18px]">
               <p className="text-sm font-bold text-muted-foreground">
                 Key status
@@ -388,7 +389,9 @@ export function ManageAccountForm() {
                 {isConnected ? "Ready" : "Missing"}
               </p>
               <p className="text-sm font-semibold text-primary">
-                {isConnected ? "Debrid actions unlocked" : "Paste API key to unlock"}
+                {isConnected
+                  ? "Debrid actions unlocked"
+                  : "Paste API key to unlock"}
               </p>
             </CardContent>
           </Card>

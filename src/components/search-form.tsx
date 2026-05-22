@@ -36,7 +36,7 @@ function SearchSubmitButton({ isSubmitting, variant = "default" }: { isSubmittin
         "md:right-2 md:opacity-0 md:pointer-events-none md:scale-90",
         variant === "hero" ? "md:h-[59px] md:w-[59px] md:right-1.5" : "md:h-13 md:w-13 md:right-1.5",
         "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
-        "active:not-aria-[haspopup]:translate-y-[-50%] motion-reduce:transition-none md:motion-reduce:scale-100"
+        "active:scale-100 active:not-aria-[haspopup]:translate-y-[-50%] motion-reduce:transition-none md:motion-reduce:scale-100"
       )}
     >
       {isSubmitting ? (
@@ -177,7 +177,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           value={query}
           placeholder="Search movies, shows, games, software..."
           className={cn(
-            "bg-white pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_oklch(0.644_0.245_16.285_/_12%)] [--ui-shadow-input-focus:0_0_0_4px_oklch(0.644_0.245_16.285_/_8%),0_0_40px_oklch(0.644_0.245_16.285_/_15%)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
+            "bg-card pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_oklch(0.378_0.016_256_/_12%)] [--ui-shadow-input-focus:0_0_0_4px_var(--focus),0_0_40px_oklch(0.378_0.016_256_/_15%)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
             variant === "hero" ? "h-[71px] rounded-full pl-14" : "h-16"
           )}
           onBlur={() => {
@@ -236,7 +236,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                   aria-selected="false"
                   onMouseDown={(event) => event.preventDefault()}
                   onClick={() => handleSuggestionSelect(movie)}
-                  className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-surface-subtle focus-visible:bg-surface-subtle focus-visible:outline-none"
+                  className="flex w-full items-center gap-3 px-3 py-2 text-left transition-[background-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:bg-surface-subtle focus-visible:bg-surface-subtle focus-visible:outline-none active:scale-[0.96] motion-reduce:active:scale-100"
                 >
                   {movie.posterUrl ? (
                     <Image

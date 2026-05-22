@@ -105,7 +105,7 @@
       "source_file": "postcss.config.mjs",
       "source_location": "L1",
       "id": "postcss_config_mjs",
-      "community": 36,
+      "community": 41,
       "norm_label": "postcss.config.mjs"
     },
     {
@@ -114,7 +114,7 @@
       "source_file": "next-env.d.ts",
       "source_location": "L1",
       "id": "next_env_d_ts",
-      "community": 37,
+      "community": 42,
       "norm_label": "next-env.d.ts"
     },
     {
@@ -123,7 +123,7 @@
       "source_file": "eslint.config.mjs",
       "source_location": "L1",
       "id": "eslint_config_mjs",
-      "community": 38,
+      "community": 43,
       "norm_label": "eslint.config.mjs"
     },
     {
@@ -132,7 +132,7 @@
       "source_file": "next.config.ts",
       "source_location": "L1",
       "id": "next_config_ts",
-      "community": 39,
+      "community": 44,
       "norm_label": "next.config.ts"
     },
     {
@@ -141,7 +141,7 @@
       "source_file": "src/app/robots.ts",
       "source_location": "L1",
       "id": "src_app_robots_ts",
-      "community": 29,
+      "community": 34,
       "norm_label": "robots.ts"
     },
     {
@@ -150,7 +150,7 @@
       "source_file": "src/app/robots.ts",
       "source_location": "L3",
       "id": "app_robots_robots",
-      "community": 29,
+      "community": 34,
       "norm_label": "robots()"
     },
     {
@@ -159,7 +159,7 @@
       "source_file": "src/app/sitemap.ts",
       "source_location": "L1",
       "id": "src_app_sitemap_ts",
-      "community": 30,
+      "community": 35,
       "norm_label": "sitemap.ts"
     },
     {
@@ -168,7 +168,7 @@
       "source_file": "src/app/sitemap.ts",
       "source_location": "L3",
       "id": "app_sitemap_sitemap",
-      "community": 30,
+      "community": 35,
       "norm_label": "sitemap()"
     },
     {
@@ -177,7 +177,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L1",
       "id": "src_app_layout_tsx",
-      "community": 24,
+      "community": 0,
       "norm_label": "layout.tsx"
     },
     {
@@ -186,7 +186,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L9",
       "id": "app_layout_plusjakartasans",
-      "community": 24,
+      "community": 0,
       "norm_label": "plusjakartasans"
     },
     {
@@ -195,7 +195,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L17",
       "id": "app_layout_sora",
-      "community": 24,
+      "community": 0,
       "norm_label": "sora"
     },
     {
@@ -204,16 +204,16 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L25",
       "id": "app_layout_metadata",
-      "community": 24,
+      "community": 0,
       "norm_label": "metadata"
     },
     {
       "label": "RootLayout()",
       "file_type": "code",
       "source_file": "src/app/layout.tsx",
-      "source_location": "L66",
+      "source_location": "L77",
       "id": "app_layout_rootlayout",
-      "community": 24,
+      "community": 0,
       "norm_label": "rootlayout()"
     },
     {
@@ -222,7 +222,7 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L1",
       "id": "src_app_page_tsx",
-      "community": 0,
+      "community": 14,
       "norm_label": "page.tsx"
     },
     {
@@ -231,7 +231,7 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L4",
       "id": "app_page_home",
-      "community": 0,
+      "community": 14,
       "norm_label": "home()"
     },
     {
@@ -240,7 +240,7 @@
       "source_file": "src/app/not-found.tsx",
       "source_location": "L1",
       "id": "src_app_not_found_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "not-found.tsx"
     },
     {
@@ -249,8 +249,35 @@
       "source_file": "src/app/not-found.tsx",
       "source_location": "L4",
       "id": "app_not_found_notfound",
-      "community": 0,
+      "community": 8,
       "norm_label": "notfound()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L1",
+      "id": "src_app_how_to_use_page_tsx",
+      "community": 8,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "metadata",
+      "file_type": "code",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L6",
+      "id": "how_to_use_page_metadata",
+      "community": 8,
+      "norm_label": "metadata"
+    },
+    {
+      "label": "HowToUsePage()",
+      "file_type": "code",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L19",
+      "id": "how_to_use_page_howtousepage",
+      "community": 8,
+      "norm_label": "howtousepage()"
     },
     {
       "label": "page.tsx",
@@ -258,7 +285,7 @@
       "source_file": "src/app/privacy/page.tsx",
       "source_location": "L1",
       "id": "src_app_privacy_page_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -267,7 +294,7 @@
       "source_file": "src/app/privacy/page.tsx",
       "source_location": "L4",
       "id": "privacy_page_privacypage",
-      "community": 0,
+      "community": 8,
       "norm_label": "privacypage()"
     },
     {
@@ -276,7 +303,7 @@
       "source_file": "src/app/disclaimer/page.tsx",
       "source_location": "L1",
       "id": "src_app_disclaimer_page_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -285,7 +312,7 @@
       "source_file": "src/app/disclaimer/page.tsx",
       "source_location": "L4",
       "id": "disclaimer_page_disclaimerpage",
-      "community": 0,
+      "community": 8,
       "norm_label": "disclaimerpage()"
     },
     {
@@ -294,7 +321,7 @@
       "source_file": "src/app/terms/page.tsx",
       "source_location": "L1",
       "id": "src_app_terms_page_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -303,7 +330,7 @@
       "source_file": "src/app/terms/page.tsx",
       "source_location": "L4",
       "id": "terms_page_termspage",
-      "community": 0,
+      "community": 8,
       "norm_label": "termspage()"
     },
     {
@@ -312,7 +339,7 @@
       "source_file": "src/app/results/loading.tsx",
       "source_location": "L1",
       "id": "src_app_results_loading_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "loading.tsx"
     },
     {
@@ -321,16 +348,16 @@
       "source_file": "src/app/results/loading.tsx",
       "source_location": "L4",
       "id": "results_loading_resultcardskeleton",
-      "community": 0,
+      "community": 8,
       "norm_label": "resultcardskeleton()"
     },
     {
       "label": "ResultsLoading()",
       "file_type": "code",
       "source_file": "src/app/results/loading.tsx",
-      "source_location": "L34",
+      "source_location": "L25",
       "id": "results_loading_resultsloading",
-      "community": 0,
+      "community": 8,
       "norm_label": "resultsloading()"
     },
     {
@@ -339,7 +366,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L1",
       "id": "src_app_results_page_tsx",
-      "community": 3,
+      "community": 6,
       "norm_label": "page.tsx"
     },
     {
@@ -348,7 +375,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L19",
       "id": "results_page_formatbytesfrombytes",
-      "community": 3,
+      "community": 6,
       "norm_label": "formatbytesfrombytes()"
     },
     {
@@ -357,7 +384,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L33",
       "id": "results_page_props",
-      "community": 3,
+      "community": 6,
       "norm_label": "props"
     },
     {
@@ -366,7 +393,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L44",
       "id": "results_page_generatemetadata",
-      "community": 3,
+      "community": 6,
       "norm_label": "generatemetadata()"
     },
     {
@@ -375,7 +402,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L55",
       "id": "results_page_resultspageprops",
-      "community": 3,
+      "community": 6,
       "norm_label": "resultspageprops"
     },
     {
@@ -384,7 +411,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L66",
       "id": "results_page_ytstorrent",
-      "community": 3,
+      "community": 6,
       "norm_label": "ytstorrent"
     },
     {
@@ -393,7 +420,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L75",
       "id": "results_page_ytsmovie",
-      "community": 3,
+      "community": 6,
       "norm_label": "ytsmovie"
     },
     {
@@ -402,7 +429,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L85",
       "id": "results_page_searchmeta",
-      "community": 3,
+      "community": 6,
       "norm_label": "searchmeta"
     },
     {
@@ -411,7 +438,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L94",
       "id": "results_page_ytssearchmeta",
-      "community": 3,
+      "community": 6,
       "norm_label": "ytssearchmeta"
     },
     {
@@ -420,7 +447,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L100",
       "id": "results_page_readjsonresponse",
-      "community": 3,
+      "community": 6,
       "norm_label": "readjsonresponse()"
     },
     {
@@ -429,7 +456,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L109",
       "id": "results_page_parsepageparam",
-      "community": 3,
+      "community": 6,
       "norm_label": "parsepageparam()"
     },
     {
@@ -438,7 +465,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L114",
       "id": "results_page_getselectedproviders",
-      "community": 3,
+      "community": 6,
       "norm_label": "getselectedproviders()"
     },
     {
@@ -447,7 +474,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L131",
       "id": "results_page_getmoviename",
-      "community": 3,
+      "community": 6,
       "norm_label": "getmoviename()"
     },
     {
@@ -456,7 +483,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L172",
       "id": "results_page_buildpageurl",
-      "community": 3,
+      "community": 6,
       "norm_label": "buildpageurl()"
     },
     {
@@ -465,7 +492,7 @@
       "source_file": "src/app/results/page.tsx",
       "source_location": "L183",
       "id": "results_page_resultspage",
-      "community": 3,
+      "community": 6,
       "norm_label": "resultspage()"
     },
     {
@@ -474,7 +501,7 @@
       "source_file": "src/app/detail/loading.tsx",
       "source_location": "L1",
       "id": "src_app_detail_loading_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "loading.tsx"
     },
     {
@@ -483,7 +510,7 @@
       "source_file": "src/app/detail/loading.tsx",
       "source_location": "L4",
       "id": "detail_loading_detailloading",
-      "community": 0,
+      "community": 8,
       "norm_label": "detailloading()"
     },
     {
@@ -492,7 +519,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L1",
       "id": "src_app_detail_page_tsx",
-      "community": 6,
+      "community": 2,
       "norm_label": "page.tsx"
     },
     {
@@ -501,7 +528,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L15",
       "id": "detail_page_detailpageprops",
-      "community": 6,
+      "community": 2,
       "norm_label": "detailpageprops"
     },
     {
@@ -510,7 +537,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L22",
       "id": "detail_page_torrentfile",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentfile"
     },
     {
@@ -519,7 +546,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L30",
       "id": "detail_page_torrentimage",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentimage"
     },
     {
@@ -528,7 +555,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L36",
       "id": "detail_page_torrentsource",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentsource"
     },
     {
@@ -537,7 +564,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L46",
       "id": "detail_page_torrentdetaildata",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentdetaildata"
     },
     {
@@ -546,7 +573,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L74",
       "id": "detail_page_torrentdetailmeta",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentdetailmeta"
     },
     {
@@ -555,7 +582,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L81",
       "id": "detail_page_torrentdetailresponse",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentdetailresponse"
     },
     {
@@ -564,7 +591,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L86",
       "id": "detail_page_ytstorrent",
-      "community": 6,
+      "community": 2,
       "norm_label": "ytstorrent"
     },
     {
@@ -573,7 +600,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L97",
       "id": "detail_page_ytsmovie",
-      "community": 6,
+      "community": 2,
       "norm_label": "ytsmovie"
     },
     {
@@ -582,7 +609,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L106",
       "id": "detail_page_ytsdetailresponse",
-      "community": 6,
+      "community": 2,
       "norm_label": "ytsdetailresponse"
     },
     {
@@ -591,7 +618,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L115",
       "id": "detail_page_torrentdetail",
-      "community": 6,
+      "community": 2,
       "norm_label": "torrentdetail"
     },
     {
@@ -600,7 +627,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L147",
       "id": "detail_page_generatemetadata",
-      "community": 6,
+      "community": 2,
       "norm_label": "generatemetadata()"
     },
     {
@@ -609,7 +636,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L168",
       "id": "detail_page_cleantitle",
-      "community": 6,
+      "community": 2,
       "norm_label": "cleantitle()"
     },
     {
@@ -618,7 +645,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L176",
       "id": "detail_page_formatnumber",
-      "community": 6,
+      "community": 2,
       "norm_label": "formatnumber()"
     },
     {
@@ -627,7 +654,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L180",
       "id": "detail_page_formatpercent",
-      "community": 6,
+      "community": 2,
       "norm_label": "formatpercent()"
     },
     {
@@ -636,7 +663,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L185",
       "id": "detail_page_formatbytesfrombytes",
-      "community": 6,
+      "community": 2,
       "norm_label": "formatbytesfrombytes()"
     },
     {
@@ -645,7 +672,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L199",
       "id": "detail_page_formatproviderlinklabel",
-      "community": 6,
+      "community": 2,
       "norm_label": "formatproviderlinklabel()"
     },
     {
@@ -654,7 +681,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L215",
       "id": "detail_page_normalizedetailresponse",
-      "community": 6,
+      "community": 2,
       "norm_label": "normalizedetailresponse()"
     },
     {
@@ -663,7 +690,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L256",
       "id": "detail_page_getfilesizedisplay",
-      "community": 6,
+      "community": 2,
       "norm_label": "getfilesizedisplay()"
     },
     {
@@ -672,7 +699,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L280",
       "id": "detail_page_getfileicon",
-      "community": 6,
+      "community": 2,
       "norm_label": "getfileicon()"
     },
     {
@@ -681,7 +708,7 @@
       "source_file": "src/app/detail/page.tsx",
       "source_location": "L288",
       "id": "detail_page_detailpage",
-      "community": 6,
+      "community": 2,
       "norm_label": "detailpage()"
     },
     {
@@ -717,7 +744,7 @@
       "source_file": "src/app/api/real-debrid/proxy/route.ts",
       "source_location": "L1",
       "id": "src_app_api_real_debrid_proxy_route_ts",
-      "community": 31,
+      "community": 36,
       "norm_label": "route.ts"
     },
     {
@@ -726,7 +753,7 @@
       "source_file": "src/app/api/real-debrid/proxy/route.ts",
       "source_location": "L3",
       "id": "proxy_route_post",
-      "community": 31,
+      "community": 36,
       "norm_label": "post()"
     },
     {
@@ -735,7 +762,7 @@
       "source_file": "src/app/api/real-debrid/status/route.ts",
       "source_location": "L1",
       "id": "src_app_api_real_debrid_status_route_ts",
-      "community": 32,
+      "community": 37,
       "norm_label": "route.ts"
     },
     {
@@ -744,7 +771,7 @@
       "source_file": "src/app/api/real-debrid/status/route.ts",
       "source_location": "L6",
       "id": "status_route_get",
-      "community": 32,
+      "community": 37,
       "norm_label": "get()"
     },
     {
@@ -771,7 +798,7 @@
       "source_file": "src/app/api/tmdb/search/route.ts",
       "source_location": "L1",
       "id": "src_app_api_tmdb_search_route_ts",
-      "community": 26,
+      "community": 30,
       "norm_label": "route.ts"
     },
     {
@@ -780,7 +807,7 @@
       "source_file": "src/app/api/tmdb/search/route.ts",
       "source_location": "L20",
       "id": "search_route_gettmdbauth",
-      "community": 26,
+      "community": 30,
       "norm_label": "gettmdbauth()"
     },
     {
@@ -789,7 +816,7 @@
       "source_file": "src/app/api/tmdb/search/route.ts",
       "source_location": "L44",
       "id": "search_route_normalizesearchtext",
-      "community": 26,
+      "community": 30,
       "norm_label": "normalizesearchtext()"
     },
     {
@@ -798,7 +825,7 @@
       "source_file": "src/app/api/tmdb/search/route.ts",
       "source_location": "L51",
       "id": "search_route_scoremovie",
-      "community": 26,
+      "community": 30,
       "norm_label": "scoremovie()"
     },
     {
@@ -807,44 +834,8 @@
       "source_file": "src/app/api/tmdb/search/route.ts",
       "source_location": "L83",
       "id": "search_route_get",
-      "community": 26,
+      "community": 30,
       "norm_label": "get()"
-    },
-    {
-      "label": "page.tsx",
-      "file_type": "code",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L1",
-      "id": "src_app_edit_shadcn_page_tsx",
-      "community": 0,
-      "norm_label": "page.tsx"
-    },
-    {
-      "label": "previewResult",
-      "file_type": "code",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L8",
-      "id": "edit_shadcn_page_previewresult",
-      "community": 0,
-      "norm_label": "previewresult"
-    },
-    {
-      "label": "badgeVariants",
-      "file_type": "code",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L22",
-      "id": "edit_shadcn_page_badgevariants",
-      "community": 0,
-      "norm_label": "badgevariants"
-    },
-    {
-      "label": "EditShadcnPage()",
-      "file_type": "code",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L31",
-      "id": "edit_shadcn_page_editshadcnpage",
-      "community": 0,
-      "norm_label": "editshadcnpage()"
     },
     {
       "label": "page.tsx",
@@ -870,7 +861,7 @@
       "source_file": "src/app/dmca/page.tsx",
       "source_location": "L1",
       "id": "src_app_dmca_page_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "page.tsx"
     },
     {
@@ -879,7 +870,7 @@
       "source_file": "src/app/dmca/page.tsx",
       "source_location": "L3",
       "id": "dmca_page_dmcapage",
-      "community": 0,
+      "community": 8,
       "norm_label": "dmcapage()"
     },
     {
@@ -888,7 +879,7 @@
       "source_file": "src/components/search-form.tsx",
       "source_location": "L1",
       "id": "src_components_search_form_tsx",
-      "community": 0,
+      "community": 14,
       "norm_label": "search-form.tsx"
     },
     {
@@ -897,7 +888,7 @@
       "source_file": "src/components/search-form.tsx",
       "source_location": "L11",
       "id": "components_search_form_searchformprops",
-      "community": 0,
+      "community": 14,
       "norm_label": "searchformprops"
     },
     {
@@ -906,7 +897,7 @@
       "source_file": "src/components/search-form.tsx",
       "source_location": "L18",
       "id": "components_search_form_tmdbsuggestion",
-      "community": 0,
+      "community": 14,
       "norm_label": "tmdbsuggestion"
     },
     {
@@ -915,7 +906,7 @@
       "source_file": "src/components/search-form.tsx",
       "source_location": "L26",
       "id": "components_search_form_searchsubmitbutton",
-      "community": 0,
+      "community": 14,
       "norm_label": "searchsubmitbutton()"
     },
     {
@@ -924,7 +915,7 @@
       "source_file": "src/components/search-form.tsx",
       "source_location": "L51",
       "id": "components_search_form_searchform",
-      "community": 0,
+      "community": 14,
       "norm_label": "searchform()"
     },
     {
@@ -978,7 +969,7 @@
       "source_file": "src/components/site-footer.tsx",
       "source_location": "L1",
       "id": "src_components_site_footer_tsx",
-      "community": 24,
+      "community": 0,
       "norm_label": "site-footer.tsx"
     },
     {
@@ -987,7 +978,7 @@
       "source_file": "src/components/site-footer.tsx",
       "source_location": "L3",
       "id": "components_site_footer_sitefooter",
-      "community": 24,
+      "community": 0,
       "norm_label": "sitefooter()"
     },
     {
@@ -996,7 +987,7 @@
       "source_file": "src/components/torrent-result-card.tsx",
       "source_location": "L1",
       "id": "src_components_torrent_result_card_tsx",
-      "community": 3,
+      "community": 0,
       "norm_label": "torrent-result-card.tsx"
     },
     {
@@ -1005,7 +996,7 @@
       "source_file": "src/components/torrent-result-card.tsx",
       "source_location": "L16",
       "id": "components_torrent_result_card_torrentresult",
-      "community": 3,
+      "community": 0,
       "norm_label": "torrentresult"
     },
     {
@@ -1014,7 +1005,7 @@
       "source_file": "src/components/torrent-result-card.tsx",
       "source_location": "L31",
       "id": "components_torrent_result_card_torrentresultcardprops",
-      "community": 3,
+      "community": 0,
       "norm_label": "torrentresultcardprops"
     },
     {
@@ -1023,25 +1014,25 @@
       "source_file": "src/components/torrent-result-card.tsx",
       "source_location": "L36",
       "id": "components_torrent_result_card_torrentmetricprops",
-      "community": 3,
+      "community": 0,
       "norm_label": "torrentmetricprops"
     },
     {
-      "label": "TorrentMetric()",
+      "label": "TorrentBadge()",
       "file_type": "code",
       "source_file": "src/components/torrent-result-card.tsx",
-      "source_location": "L42",
-      "id": "components_torrent_result_card_torrentmetric",
-      "community": 3,
-      "norm_label": "torrentmetric()"
+      "source_location": "L43",
+      "id": "components_torrent_result_card_torrentbadge",
+      "community": 0,
+      "norm_label": "torrentbadge()"
     },
     {
       "label": "TorrentResultCard()",
       "file_type": "code",
       "source_file": "src/components/torrent-result-card.tsx",
-      "source_location": "L54",
+      "source_location": "L67",
       "id": "components_torrent_result_card_torrentresultcard",
-      "community": 3,
+      "community": 0,
       "norm_label": "torrentresultcard()"
     },
     {
@@ -1059,7 +1050,7 @@
       "source_file": "src/components/result-sort.tsx",
       "source_location": "L12",
       "id": "components_result_sort_resultsort",
-      "community": 3,
+      "community": 6,
       "norm_label": "resultsort()"
     },
     {
@@ -1104,7 +1095,7 @@
       "source_file": "src/components/home-content.tsx",
       "source_location": "L1",
       "id": "src_components_home_content_tsx",
-      "community": 0,
+      "community": 14,
       "norm_label": "home-content.tsx"
     },
     {
@@ -1113,7 +1104,7 @@
       "source_file": "src/components/home-content.tsx",
       "source_location": "L3",
       "id": "components_home_content_homecontent",
-      "community": 0,
+      "community": 14,
       "norm_label": "homecontent()"
     },
     {
@@ -1122,7 +1113,7 @@
       "source_file": "src/components/site-navbar.tsx",
       "source_location": "L1",
       "id": "src_components_site_navbar_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "site-navbar.tsx"
     },
     {
@@ -1131,7 +1122,7 @@
       "source_file": "src/components/site-navbar.tsx",
       "source_location": "L9",
       "id": "components_site_navbar_sitenavbar",
-      "community": 0,
+      "community": 8,
       "norm_label": "sitenavbar()"
     },
     {
@@ -1140,7 +1131,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L1",
       "id": "src_components_ui_pagination_tsx",
-      "community": 3,
+      "community": 6,
       "norm_label": "pagination.tsx"
     },
     {
@@ -1149,7 +1140,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L7",
       "id": "ui_pagination_pagination",
-      "community": 3,
+      "community": 6,
       "norm_label": "pagination()"
     },
     {
@@ -1158,7 +1149,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L19",
       "id": "ui_pagination_paginationcontent",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationcontent()"
     },
     {
@@ -1167,7 +1158,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L32",
       "id": "ui_pagination_paginationitem",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationitem()"
     },
     {
@@ -1176,7 +1167,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L36",
       "id": "ui_pagination_paginationlinkprops",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationlinkprops"
     },
     {
@@ -1185,7 +1176,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L41",
       "id": "ui_pagination_paginationlink",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationlink()"
     },
     {
@@ -1194,7 +1185,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L67",
       "id": "ui_pagination_paginationprevious",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationprevious()"
     },
     {
@@ -1203,7 +1194,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L85",
       "id": "ui_pagination_paginationnext",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationnext()"
     },
     {
@@ -1212,7 +1203,7 @@
       "source_file": "src/components/ui/pagination.tsx",
       "source_location": "L103",
       "id": "ui_pagination_paginationellipsis",
-      "community": 3,
+      "community": 6,
       "norm_label": "paginationellipsis()"
     },
     {
@@ -1329,7 +1320,7 @@
       "source_file": "src/components/ui/button.tsx",
       "source_location": "L7",
       "id": "ui_button_buttonvariants",
-      "community": 0,
+      "community": 14,
       "norm_label": "buttonvariants"
     },
     {
@@ -1365,7 +1356,7 @@
       "source_file": "src/components/ui/collapsible.tsx",
       "source_location": "L1",
       "id": "src_components_ui_collapsible_tsx",
-      "community": 6,
+      "community": 2,
       "norm_label": "collapsible.tsx"
     },
     {
@@ -1374,7 +1365,7 @@
       "source_file": "src/components/ui/collapsible.tsx",
       "source_location": "L7",
       "id": "ui_collapsible_collapsiblemotioncontext",
-      "community": 6,
+      "community": 2,
       "norm_label": "collapsiblemotioncontext"
     },
     {
@@ -1383,7 +1374,7 @@
       "source_file": "src/components/ui/collapsible.tsx",
       "source_location": "L12",
       "id": "ui_collapsible_collapsible",
-      "community": 6,
+      "community": 2,
       "norm_label": "collapsible()"
     },
     {
@@ -1392,7 +1383,7 @@
       "source_file": "src/components/ui/collapsible.tsx",
       "source_location": "L52",
       "id": "ui_collapsible_collapsibletrigger",
-      "community": 6,
+      "community": 2,
       "norm_label": "collapsibletrigger()"
     },
     {
@@ -1401,7 +1392,7 @@
       "source_file": "src/components/ui/collapsible.tsx",
       "source_location": "L72",
       "id": "ui_collapsible_collapsiblecontent",
-      "community": 6,
+      "community": 2,
       "norm_label": "collapsiblecontent()"
     },
     {
@@ -1527,7 +1518,7 @@
       "source_file": "src/components/ui/skeleton.tsx",
       "source_location": "L1",
       "id": "src_components_ui_skeleton_tsx",
-      "community": 0,
+      "community": 8,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -1536,7 +1527,7 @@
       "source_file": "src/components/ui/skeleton.tsx",
       "source_location": "L3",
       "id": "ui_skeleton_skeleton",
-      "community": 0,
+      "community": 8,
       "norm_label": "skeleton()"
     },
     {
@@ -1545,7 +1536,7 @@
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L1",
       "id": "src_components_torrent_torrent_actions_tsx",
-      "community": 14,
+      "community": 2,
       "norm_label": "torrent-actions.tsx"
     },
     {
@@ -1554,7 +1545,7 @@
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L8",
       "id": "torrent_torrent_actions_torrentactionsprops",
-      "community": 14,
+      "community": 2,
       "norm_label": "torrentactionsprops"
     },
     {
@@ -1563,7 +1554,7 @@
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L15",
       "id": "torrent_torrent_actions_torrentactions",
-      "community": 14,
+      "community": 2,
       "norm_label": "torrentactions()"
     },
     {
@@ -1572,7 +1563,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L1",
       "id": "src_lib_utils_ts",
-      "community": 0,
+      "community": 2,
       "norm_label": "utils.ts"
     },
     {
@@ -1590,7 +1581,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L8",
       "id": "lib_utils_formatbytes",
-      "community": 0,
+      "community": 2,
       "norm_label": "formatbytes()"
     },
     {
@@ -1599,7 +1590,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L22",
       "id": "lib_utils_formatdate",
-      "community": 3,
+      "community": 2,
       "norm_label": "formatdate()"
     },
     {
@@ -2121,7 +2112,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "id": "agents_md",
-      "community": 20,
+      "community": 19,
       "norm_label": "agents.md"
     },
     {
@@ -2130,7 +2121,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "id": "frontend_torzo_agents_project_agent_rules",
-      "community": 20,
+      "community": 19,
       "norm_label": "project agent rules"
     },
     {
@@ -2139,7 +2130,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L5",
       "id": "frontend_torzo_agents_testing_and_checks",
-      "community": 20,
+      "community": 19,
       "norm_label": "testing and checks"
     },
     {
@@ -2148,7 +2139,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L15",
       "id": "frontend_torzo_agents_browser_testing",
-      "community": 20,
+      "community": 19,
       "norm_label": "browser testing"
     },
     {
@@ -2157,7 +2148,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L22",
       "id": "frontend_torzo_agents_codeblock_1",
-      "community": 20,
+      "community": 19,
       "norm_label": "code:bash (agent-browser skills get core)"
     },
     {
@@ -2166,17 +2157,8 @@
       "source_file": "AGENTS.md",
       "source_location": "L26",
       "id": "frontend_torzo_agents_git_and_github",
-      "community": 20,
+      "community": 19,
       "norm_label": "git and github"
-    },
-    {
-      "label": "Code Search",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L31",
-      "id": "frontend_torzo_agents_code_search",
-      "community": 20,
-      "norm_label": "code search"
     },
     {
       "label": "realdebridapi.md",
@@ -2184,7 +2166,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1",
       "id": "realdebridapi_md",
-      "community": 15,
+      "community": 27,
       "norm_label": "realdebridapi.md"
     },
     {
@@ -2193,7 +2175,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1",
       "id": "frontend_torzo_realdebridapi_real_debrid_api_documentation",
-      "community": 15,
+      "community": 27,
       "norm_label": "real-debrid api documentation"
     },
     {
@@ -2202,7 +2184,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L5",
       "id": "frontend_torzo_realdebridapi_implementation_details",
-      "community": 15,
+      "community": 27,
       "norm_label": "implementation details"
     },
     {
@@ -2211,7 +2193,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L17",
       "id": "frontend_torzo_realdebridapi_api_methods",
-      "community": 21,
+      "community": 20,
       "norm_label": "api methods"
     },
     {
@@ -2220,7 +2202,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L21",
       "id": "frontend_torzo_realdebridapi_codeblock_1",
-      "community": 21,
+      "community": 20,
       "norm_label": "code:block1 (https://api.real-debrid.com/rest/1.0/)"
     },
     {
@@ -2229,7 +2211,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L27",
       "id": "frontend_torzo_realdebridapi_get_disable_access_token",
-      "community": 21,
+      "community": 20,
       "norm_label": "get /disable_access_token"
     },
     {
@@ -2238,7 +2220,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L33",
       "id": "frontend_torzo_realdebridapi_return_value",
-      "community": 21,
+      "community": 20,
       "norm_label": "return value:"
     },
     {
@@ -2247,7 +2229,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L37",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes",
-      "community": 21,
+      "community": 20,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2256,7 +2238,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L43",
       "id": "frontend_torzo_realdebridapi_get_time",
-      "community": 21,
+      "community": 20,
       "norm_label": "get /time"
     },
     {
@@ -2265,7 +2247,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L49",
       "id": "frontend_torzo_realdebridapi_return_value_49",
-      "community": 21,
+      "community": 20,
       "norm_label": "return value:"
     },
     {
@@ -2274,7 +2256,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L53",
       "id": "frontend_torzo_realdebridapi_get_time_iso",
-      "community": 21,
+      "community": 20,
       "norm_label": "get /time/iso"
     },
     {
@@ -2283,7 +2265,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L59",
       "id": "frontend_torzo_realdebridapi_return_value_59",
-      "community": 21,
+      "community": 20,
       "norm_label": "return value:"
     },
     {
@@ -2292,7 +2274,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L63",
       "id": "frontend_torzo_realdebridapi_user",
-      "community": 28,
+      "community": 32,
       "norm_label": "/user"
     },
     {
@@ -2301,7 +2283,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L65",
       "id": "frontend_torzo_realdebridapi_get_user",
-      "community": 28,
+      "community": 32,
       "norm_label": "get /user"
     },
     {
@@ -2310,7 +2292,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L71",
       "id": "frontend_torzo_realdebridapi_return_value_71",
-      "community": 28,
+      "community": 32,
       "norm_label": "return value:"
     },
     {
@@ -2319,7 +2301,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L75",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_75",
-      "community": 28,
+      "community": 32,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2517,7 +2499,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L203",
       "id": "frontend_torzo_realdebridapi_traffic",
-      "community": 22,
+      "community": 23,
       "norm_label": "/traffic"
     },
     {
@@ -2526,7 +2508,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L205",
       "id": "frontend_torzo_realdebridapi_get_traffic",
-      "community": 22,
+      "community": 23,
       "norm_label": "get /traffic"
     },
     {
@@ -2535,7 +2517,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L211",
       "id": "frontend_torzo_realdebridapi_return_value_211",
-      "community": 22,
+      "community": 23,
       "norm_label": "return value:"
     },
     {
@@ -2544,7 +2526,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L215",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_215",
-      "community": 22,
+      "community": 23,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2553,7 +2535,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L222",
       "id": "frontend_torzo_realdebridapi_get_traffic_details",
-      "community": 22,
+      "community": 23,
       "norm_label": "get /traffic/details"
     },
     {
@@ -2562,7 +2544,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L228",
       "id": "frontend_torzo_realdebridapi_parameters_228",
-      "community": 22,
+      "community": 23,
       "norm_label": "parameters:"
     },
     {
@@ -2571,7 +2553,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L237",
       "id": "frontend_torzo_realdebridapi_return_value_237",
-      "community": 22,
+      "community": 23,
       "norm_label": "return value:"
     },
     {
@@ -2580,7 +2562,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L241",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_241",
-      "community": 22,
+      "community": 23,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2589,7 +2571,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L248",
       "id": "frontend_torzo_realdebridapi_streaming",
-      "community": 25,
+      "community": 28,
       "norm_label": "/streaming"
     },
     {
@@ -2598,7 +2580,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L250",
       "id": "frontend_torzo_realdebridapi_get_streaming_transcode_id",
-      "community": 25,
+      "community": 28,
       "norm_label": "get /streaming/transcode/{id}"
     },
     {
@@ -2607,7 +2589,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L256",
       "id": "frontend_torzo_realdebridapi_return_value_256",
-      "community": 25,
+      "community": 28,
       "norm_label": "return value:"
     },
     {
@@ -2616,7 +2598,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L260",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_260",
-      "community": 25,
+      "community": 28,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2625,7 +2607,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L267",
       "id": "frontend_torzo_realdebridapi_get_streaming_mediainfos_id",
-      "community": 25,
+      "community": 28,
       "norm_label": "get /streaming/mediainfos/{id}"
     },
     {
@@ -2634,7 +2616,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L273",
       "id": "frontend_torzo_realdebridapi_return_value_273",
-      "community": 25,
+      "community": 28,
       "norm_label": "return value:"
     },
     {
@@ -2643,7 +2625,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L277",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_277",
-      "community": 25,
+      "community": 28,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2652,7 +2634,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L285",
       "id": "frontend_torzo_realdebridapi_downloads",
-      "community": 23,
+      "community": 22,
       "norm_label": "/downloads"
     },
     {
@@ -2661,7 +2643,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L287",
       "id": "frontend_torzo_realdebridapi_get_downloads",
-      "community": 23,
+      "community": 22,
       "norm_label": "get /downloads"
     },
     {
@@ -2670,7 +2652,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L293",
       "id": "frontend_torzo_realdebridapi_parameters_293",
-      "community": 23,
+      "community": 22,
       "norm_label": "parameters:"
     },
     {
@@ -2679,7 +2661,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L303",
       "id": "frontend_torzo_realdebridapi_return_value_303",
-      "community": 23,
+      "community": 22,
       "norm_label": "return value:"
     },
     {
@@ -2688,7 +2670,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L307",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_307",
-      "community": 23,
+      "community": 22,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2697,7 +2679,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L314",
       "id": "frontend_torzo_realdebridapi_delete_downloads_delete_id",
-      "community": 23,
+      "community": 22,
       "norm_label": "delete /downloads/delete/{id}"
     },
     {
@@ -2706,7 +2688,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L320",
       "id": "frontend_torzo_realdebridapi_return_value_320",
-      "community": 23,
+      "community": 22,
       "norm_label": "return value:"
     },
     {
@@ -2715,7 +2697,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L324",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_324",
-      "community": 23,
+      "community": 22,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2724,7 +2706,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L332",
       "id": "frontend_torzo_realdebridapi_torrents",
-      "community": 5,
+      "community": 4,
       "norm_label": "/torrents"
     },
     {
@@ -2733,7 +2715,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L334",
       "id": "frontend_torzo_realdebridapi_get_torrents",
-      "community": 5,
+      "community": 4,
       "norm_label": "get /torrents"
     },
     {
@@ -2742,7 +2724,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L340",
       "id": "frontend_torzo_realdebridapi_parameters_340",
-      "community": 5,
+      "community": 4,
       "norm_label": "parameters:"
     },
     {
@@ -2751,7 +2733,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L351",
       "id": "frontend_torzo_realdebridapi_return_value_351",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2760,7 +2742,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L355",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_355",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2769,7 +2751,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L362",
       "id": "frontend_torzo_realdebridapi_get_torrents_info_id",
-      "community": 5,
+      "community": 4,
       "norm_label": "get /torrents/info/{id}"
     },
     {
@@ -2778,7 +2760,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L368",
       "id": "frontend_torzo_realdebridapi_return_value_368",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2787,7 +2769,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L372",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_372",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2796,7 +2778,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L379",
       "id": "frontend_torzo_realdebridapi_get_torrents_activecount",
-      "community": 5,
+      "community": 4,
       "norm_label": "get /torrents/activecount"
     },
     {
@@ -2805,7 +2787,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L385",
       "id": "frontend_torzo_realdebridapi_return_value_385",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2814,7 +2796,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L389",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_389",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2823,7 +2805,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L396",
       "id": "frontend_torzo_realdebridapi_get_torrents_availablehosts",
-      "community": 5,
+      "community": 4,
       "norm_label": "get /torrents/availablehosts"
     },
     {
@@ -2832,7 +2814,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L402",
       "id": "frontend_torzo_realdebridapi_return_value_402",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2841,7 +2823,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L406",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_406",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2850,7 +2832,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L413",
       "id": "frontend_torzo_realdebridapi_put_torrents_addtorrent",
-      "community": 5,
+      "community": 4,
       "norm_label": "put /torrents/addtorrent"
     },
     {
@@ -2859,7 +2841,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L419",
       "id": "frontend_torzo_realdebridapi_parameters_419",
-      "community": 5,
+      "community": 4,
       "norm_label": "parameters:"
     },
     {
@@ -2868,7 +2850,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L425",
       "id": "frontend_torzo_realdebridapi_return_value_425",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2877,7 +2859,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L429",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_429",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2886,7 +2868,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L438",
       "id": "frontend_torzo_realdebridapi_post_torrents_addmagnet",
-      "community": 5,
+      "community": 4,
       "norm_label": "post /torrents/addmagnet"
     },
     {
@@ -2895,7 +2877,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L444",
       "id": "frontend_torzo_realdebridapi_parameters_444",
-      "community": 5,
+      "community": 4,
       "norm_label": "parameters:"
     },
     {
@@ -2904,7 +2886,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L451",
       "id": "frontend_torzo_realdebridapi_return_value_451",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2913,7 +2895,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L455",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_455",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2922,7 +2904,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L464",
       "id": "frontend_torzo_realdebridapi_post_torrents_selectfiles_id",
-      "community": 5,
+      "community": 4,
       "norm_label": "post /torrents/selectfiles/{id}"
     },
     {
@@ -2931,7 +2913,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L470",
       "id": "frontend_torzo_realdebridapi_parameters_470",
-      "community": 5,
+      "community": 4,
       "norm_label": "parameters:"
     },
     {
@@ -2940,7 +2922,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L478",
       "id": "frontend_torzo_realdebridapi_return_value_478",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2949,7 +2931,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L482",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_482",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2958,7 +2940,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L492",
       "id": "frontend_torzo_realdebridapi_delete_torrents_delete_id",
-      "community": 5,
+      "community": 4,
       "norm_label": "delete /torrents/delete/{id}"
     },
     {
@@ -2967,7 +2949,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L498",
       "id": "frontend_torzo_realdebridapi_return_value_498",
-      "community": 5,
+      "community": 4,
       "norm_label": "return value:"
     },
     {
@@ -2976,7 +2958,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L502",
       "id": "frontend_torzo_realdebridapi_possible_http_error_codes_502",
-      "community": 5,
+      "community": 4,
       "norm_label": "possible http error codes:"
     },
     {
@@ -2985,7 +2967,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L510",
       "id": "frontend_torzo_realdebridapi_hosts",
-      "community": 17,
+      "community": 16,
       "norm_label": "/hosts"
     },
     {
@@ -2994,7 +2976,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L512",
       "id": "frontend_torzo_realdebridapi_get_hosts",
-      "community": 17,
+      "community": 16,
       "norm_label": "get /hosts"
     },
     {
@@ -3003,7 +2985,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L518",
       "id": "frontend_torzo_realdebridapi_return_value_518",
-      "community": 17,
+      "community": 16,
       "norm_label": "return value:"
     },
     {
@@ -3012,7 +2994,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L522",
       "id": "frontend_torzo_realdebridapi_get_hosts_status",
-      "community": 17,
+      "community": 16,
       "norm_label": "get /hosts/status"
     },
     {
@@ -3021,7 +3003,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L528",
       "id": "frontend_torzo_realdebridapi_return_value_528",
-      "community": 17,
+      "community": 16,
       "norm_label": "return value:"
     },
     {
@@ -3030,7 +3012,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L532",
       "id": "frontend_torzo_realdebridapi_get_hosts_regex",
-      "community": 17,
+      "community": 16,
       "norm_label": "get /hosts/regex"
     },
     {
@@ -3039,7 +3021,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L538",
       "id": "frontend_torzo_realdebridapi_return_value_538",
-      "community": 17,
+      "community": 16,
       "norm_label": "return value:"
     },
     {
@@ -3048,7 +3030,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L542",
       "id": "frontend_torzo_realdebridapi_get_hosts_regexfolder",
-      "community": 17,
+      "community": 16,
       "norm_label": "get /hosts/regexfolder"
     },
     {
@@ -3057,7 +3039,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L548",
       "id": "frontend_torzo_realdebridapi_return_value_548",
-      "community": 17,
+      "community": 16,
       "norm_label": "return value:"
     },
     {
@@ -3066,7 +3048,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L552",
       "id": "frontend_torzo_realdebridapi_get_hosts_domains",
-      "community": 17,
+      "community": 16,
       "norm_label": "get /hosts/domains"
     },
     {
@@ -3075,7 +3057,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L558",
       "id": "frontend_torzo_realdebridapi_return_value_558",
-      "community": 17,
+      "community": 16,
       "norm_label": "return value:"
     },
     {
@@ -3264,7 +3246,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L676",
       "id": "frontend_torzo_realdebridapi_support",
-      "community": 7,
+      "community": 5,
       "norm_label": "/support"
     },
     {
@@ -3273,7 +3255,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L678",
       "id": "frontend_torzo_realdebridapi_codeblock_2",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block2 ({)"
     },
     {
@@ -3282,7 +3264,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L692",
       "id": "frontend_torzo_realdebridapi_codeblock_3",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block3 ({)"
     },
     {
@@ -3291,7 +3273,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L707",
       "id": "frontend_torzo_realdebridapi_codeblock_4",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block4 ({)"
     },
     {
@@ -3300,7 +3282,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L736",
       "id": "frontend_torzo_realdebridapi_codeblock_5",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block5 ([\\)"
     },
     {
@@ -3309,7 +3291,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L764",
       "id": "frontend_torzo_realdebridapi_codeblock_6",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block6 ({)"
     },
     {
@@ -3318,7 +3300,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L787",
       "id": "frontend_torzo_realdebridapi_codeblock_7",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block7 ({)"
     },
     {
@@ -3327,7 +3309,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L813",
       "id": "frontend_torzo_realdebridapi_codeblock_8",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block8 ([\\)"
     },
     {
@@ -3336,7 +3318,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L851",
       "id": "frontend_torzo_realdebridapi_codeblock_9",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block9 ([\\)"
     },
     {
@@ -3345,7 +3327,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L889",
       "id": "frontend_torzo_realdebridapi_codeblock_10",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block10 ({)"
     },
     {
@@ -3354,7 +3336,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L896",
       "id": "frontend_torzo_realdebridapi_codeblock_11",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block11 ({)"
     },
     {
@@ -3363,7 +3345,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L903",
       "id": "frontend_torzo_realdebridapi_codeblock_12",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block12 ([\\)"
     },
     {
@@ -3372,7 +3354,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L916",
       "id": "frontend_torzo_realdebridapi_codeblock_13",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block13 ({)"
     },
     {
@@ -3381,7 +3363,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L963",
       "id": "frontend_torzo_realdebridapi_codeblock_14",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block14 ({)"
     },
     {
@@ -3390,7 +3372,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L970",
       "id": "frontend_torzo_realdebridapi_codeblock_15",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block15 ([\\)"
     },
     {
@@ -3399,7 +3381,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L978",
       "id": "frontend_torzo_realdebridapi_codeblock_16",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block16 ([\\)"
     },
     {
@@ -3408,7 +3390,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L986",
       "id": "frontend_torzo_realdebridapi_codeblock_17",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block17 ([\\)"
     },
     {
@@ -3417,7 +3399,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L994",
       "id": "frontend_torzo_realdebridapi_codeblock_18",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block18 ([\\)"
     },
     {
@@ -3426,7 +3408,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1002",
       "id": "frontend_torzo_realdebridapi_codeblock_19",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block19 ({)"
     },
     {
@@ -3435,7 +3417,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1017",
       "id": "frontend_torzo_realdebridapi_codeblock_20",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block20 ({)"
     },
     {
@@ -3444,7 +3426,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1066",
       "id": "frontend_torzo_realdebridapi_codeblock_21",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block21 ({)"
     },
     {
@@ -3453,7 +3435,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1139",
       "id": "frontend_torzo_realdebridapi_codeblock_22",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block22 ({)"
     },
     {
@@ -3462,7 +3444,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1149",
       "id": "frontend_torzo_realdebridapi_codeblock_23",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block23 ({)"
     },
     {
@@ -3471,7 +3453,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1170",
       "id": "frontend_torzo_realdebridapi_codeblock_24",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block24 ({)"
     },
     {
@@ -3480,7 +3462,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1219",
       "id": "frontend_torzo_realdebridapi_codeblock_25",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block25 ({)"
     },
     {
@@ -3489,7 +3471,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1252",
       "id": "frontend_torzo_realdebridapi_codeblock_26",
-      "community": 7,
+      "community": 5,
       "norm_label": "code:block26 ({)"
     },
     {
@@ -3498,7 +3480,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1306",
       "id": "frontend_torzo_realdebridapi_example_calls",
-      "community": 15,
+      "community": 33,
       "norm_label": "example calls"
     },
     {
@@ -3507,7 +3489,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1310",
       "id": "frontend_torzo_realdebridapi_getting_user_informations",
-      "community": 15,
+      "community": 33,
       "norm_label": "getting user informations:"
     },
     {
@@ -3516,7 +3498,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1314",
       "id": "frontend_torzo_realdebridapi_codeblock_27",
-      "community": 15,
+      "community": 33,
       "norm_label": "code:block27 (curl -x get \\)"
     },
     {
@@ -3525,7 +3507,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1320",
       "id": "frontend_torzo_realdebridapi_codeblock_28",
-      "community": 15,
+      "community": 33,
       "norm_label": "code:block28 (http/1.1 200 ok)"
     },
     {
@@ -3534,7 +3516,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1338",
       "id": "frontend_torzo_realdebridapi_authentication",
-      "community": 15,
+      "community": 27,
       "norm_label": "authentication"
     },
     {
@@ -3543,7 +3525,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1342",
       "id": "frontend_torzo_realdebridapi_codeblock_29",
-      "community": 15,
+      "community": 27,
       "norm_label": "code:block29 (authorization: bearer your_api_token)"
     },
     {
@@ -3552,7 +3534,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1348",
       "id": "frontend_torzo_realdebridapi_codeblock_30",
-      "community": 15,
+      "community": 27,
       "norm_label": "code:block30 (/rest/1.0/method?auth_token=your_api_token)"
     },
     {
@@ -3561,7 +3543,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1356",
       "id": "frontend_torzo_realdebridapi_authentication_for_applications",
-      "community": 15,
+      "community": 27,
       "norm_label": "authentication for applications"
     },
     {
@@ -3570,7 +3552,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1362",
       "id": "frontend_torzo_realdebridapi_opensource_apps",
-      "community": 2,
+      "community": 25,
       "norm_label": "opensource apps"
     },
     {
@@ -3579,7 +3561,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1366",
       "id": "frontend_torzo_realdebridapi_codeblock_31",
-      "community": 2,
+      "community": 25,
       "norm_label": "code:block31 (x245a4xaibgvm)"
     },
     {
@@ -3588,7 +3570,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1374",
       "id": "frontend_torzo_realdebridapi_which_authentication_process_should_you_use",
-      "community": 2,
+      "community": 25,
       "norm_label": "which authentication process should you use?"
     },
     {
@@ -3597,7 +3579,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1382",
       "id": "frontend_torzo_realdebridapi_codeblock_32",
-      "community": 2,
+      "community": 25,
       "norm_label": "code:block32 (https://api.real-debrid.com/oauth/v2/)"
     },
     {
@@ -3606,7 +3588,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1386",
       "id": "frontend_torzo_realdebridapi_workflow_for_websites_or_client_applications",
-      "community": 2,
+      "community": 29,
       "norm_label": "workflow for websites or client applications"
     },
     {
@@ -3615,7 +3597,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1397",
       "id": "frontend_torzo_realdebridapi_full_workflow",
-      "community": 2,
+      "community": 29,
       "norm_label": "full workflow"
     },
     {
@@ -3624,7 +3606,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1405",
       "id": "frontend_torzo_realdebridapi_example_url_for_authorization",
-      "community": 2,
+      "community": 29,
       "norm_label": "example url for authorization:"
     },
     {
@@ -3633,7 +3615,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1407",
       "id": "frontend_torzo_realdebridapi_codeblock_33",
-      "community": 2,
+      "community": 29,
       "norm_label": "code:block33 (https://api.real-debrid.com/oauth/v2/auth?client_id=abcdefgh)"
     },
     {
@@ -3642,7 +3624,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1423",
       "id": "frontend_torzo_realdebridapi_example_curl_call_to_obtain_an_access_token",
-      "community": 2,
+      "community": 29,
       "norm_label": "example curl call to obtain an access token:"
     },
     {
@@ -3651,7 +3633,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1425",
       "id": "frontend_torzo_realdebridapi_codeblock_34",
-      "community": 2,
+      "community": 29,
       "norm_label": "code:block34 (curl -x post \"https://api.real-debrid.com/oauth/v2/token\" -d)"
     },
     {
@@ -3660,7 +3642,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1438",
       "id": "frontend_torzo_realdebridapi_workflow_for_mobile_apps",
-      "community": 2,
+      "community": 26,
       "norm_label": "workflow for mobile apps"
     },
     {
@@ -3669,7 +3651,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1449",
       "id": "frontend_torzo_realdebridapi_full_workflow_1449",
-      "community": 2,
+      "community": 26,
       "norm_label": "full workflow"
     },
     {
@@ -3678,7 +3660,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1453",
       "id": "frontend_torzo_realdebridapi_example_url_to_obtain_authentication_data",
-      "community": 2,
+      "community": 26,
       "norm_label": "example url to obtain authentication data:"
     },
     {
@@ -3687,7 +3669,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1455",
       "id": "frontend_torzo_realdebridapi_codeblock_35",
-      "community": 2,
+      "community": 26,
       "norm_label": "code:block35 (https://api.real-debrid.com/oauth/v2/device/code?client_id=a)"
     },
     {
@@ -3696,7 +3678,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1459",
       "id": "frontend_torzo_realdebridapi_example_authentication_data",
-      "community": 2,
+      "community": 26,
       "norm_label": "example authentication data:"
     },
     {
@@ -3705,7 +3687,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1461",
       "id": "frontend_torzo_realdebridapi_codeblock_36",
-      "community": 2,
+      "community": 26,
       "norm_label": "code:block36 ({)"
     },
     {
@@ -3714,7 +3696,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1479",
       "id": "frontend_torzo_realdebridapi_example_curl_call_to_obtain_an_access_token_1479",
-      "community": 2,
+      "community": 26,
       "norm_label": "example curl call to obtain an access token:"
     },
     {
@@ -3723,7 +3705,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1481",
       "id": "frontend_torzo_realdebridapi_codeblock_37",
-      "community": 2,
+      "community": 26,
       "norm_label": "code:block37 (curl -x post \"https://api.real-debrid.com/oauth/v2/token\" -d)"
     },
     {
@@ -3732,7 +3714,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1500",
       "id": "frontend_torzo_realdebridapi_workflow_for_opensource_apps",
-      "community": 2,
+      "community": 24,
       "norm_label": "workflow for opensource apps"
     },
     {
@@ -3741,7 +3723,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1514",
       "id": "frontend_torzo_realdebridapi_full_workflow_1514",
-      "community": 2,
+      "community": 24,
       "norm_label": "full workflow"
     },
     {
@@ -3750,7 +3732,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1518",
       "id": "frontend_torzo_realdebridapi_example_url_to_obtain_authentication_data_1518",
-      "community": 2,
+      "community": 24,
       "norm_label": "example url to obtain authentication data:"
     },
     {
@@ -3759,7 +3741,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1520",
       "id": "frontend_torzo_realdebridapi_codeblock_38",
-      "community": 2,
+      "community": 24,
       "norm_label": "code:block38 (https://api.real-debrid.com/oauth/v2/device/code?client_id=a)"
     },
     {
@@ -3768,7 +3750,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1524",
       "id": "frontend_torzo_realdebridapi_example_authentication_data_1524",
-      "community": 2,
+      "community": 24,
       "norm_label": "example authentication data:"
     },
     {
@@ -3777,7 +3759,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1526",
       "id": "frontend_torzo_realdebridapi_codeblock_39",
-      "community": 2,
+      "community": 24,
       "norm_label": "code:block39 ({)"
     },
     {
@@ -3786,7 +3768,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1567",
       "id": "frontend_torzo_realdebridapi_example_curl_call_to_obtain_an_access_token_1567",
-      "community": 2,
+      "community": 24,
       "norm_label": "example curl call to obtain an access token:"
     },
     {
@@ -3795,7 +3777,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1569",
       "id": "frontend_torzo_realdebridapi_codeblock_40",
-      "community": 2,
+      "community": 24,
       "norm_label": "code:block40 (curl -x post \"https://api.real-debrid.com/oauth/v2/token\" -d)"
     },
     {
@@ -3804,7 +3786,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1577",
       "id": "frontend_torzo_realdebridapi_workflow_for_old_apps",
-      "community": 2,
+      "community": 21,
       "norm_label": "workflow for old apps"
     },
     {
@@ -3813,7 +3795,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1585",
       "id": "frontend_torzo_realdebridapi_full_workflow_1585",
-      "community": 2,
+      "community": 21,
       "norm_label": "full workflow"
     },
     {
@@ -3822,7 +3804,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1595",
       "id": "frontend_torzo_realdebridapi_testing_two_factor_process",
-      "community": 2,
+      "community": 21,
       "norm_label": "testing two-factor process"
     },
     {
@@ -3831,7 +3813,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1608",
       "id": "frontend_torzo_realdebridapi_workflow_if_you_use_a_webview_popup",
-      "community": 2,
+      "community": 21,
       "norm_label": "workflow if you use a webview / popup"
     },
     {
@@ -3840,7 +3822,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1618",
       "id": "frontend_torzo_realdebridapi_example_curl_call_to_obtain_an_access_token_1618",
-      "community": 2,
+      "community": 21,
       "norm_label": "example curl call to obtain an access token:"
     },
     {
@@ -3849,7 +3831,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1620",
       "id": "frontend_torzo_realdebridapi_codeblock_41",
-      "community": 2,
+      "community": 21,
       "norm_label": "code:block41 (curl -x post \"https://api.real-debrid.com/oauth/v2/token\" -d)"
     },
     {
@@ -3858,7 +3840,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1626",
       "id": "frontend_torzo_realdebridapi_workflow_if_you_want_to_handle_the_security_code_validation_process",
-      "community": 2,
+      "community": 21,
       "norm_label": "workflow if you want to handle the security code validation process"
     },
     {
@@ -3867,7 +3849,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1657",
       "id": "frontend_torzo_realdebridapi_example_curl_call_to_obtain_an_access_token_1657",
-      "community": 2,
+      "community": 21,
       "norm_label": "example curl call to obtain an access token:"
     },
     {
@@ -3876,7 +3858,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1659",
       "id": "frontend_torzo_realdebridapi_codeblock_42",
-      "community": 2,
+      "community": 21,
       "norm_label": "code:block42 (curl -x post \"https://api.real-debrid.com/oauth/v2/token\" -d)"
     },
     {
@@ -3885,7 +3867,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1663",
       "id": "frontend_torzo_realdebridapi_get_a_new_access_token_from_a_refresh_token",
-      "community": 2,
+      "community": 25,
       "norm_label": "get a new access token from a refresh token"
     },
     {
@@ -3894,7 +3876,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1669",
       "id": "frontend_torzo_realdebridapi_full_workflow_1669",
-      "community": 2,
+      "community": 25,
       "norm_label": "full workflow"
     },
     {
@@ -3903,7 +3885,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1684",
       "id": "frontend_torzo_realdebridapi_example_curl_call_to_obtain_an_access_token_1684",
-      "community": 2,
+      "community": 25,
       "norm_label": "example curl call to obtain an access token:"
     },
     {
@@ -3912,7 +3894,7 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1686",
       "id": "frontend_torzo_realdebridapi_codeblock_43",
-      "community": 2,
+      "community": 25,
       "norm_label": "code:block43 (curl -x post \"https://api.real-debrid.com/oauth/v2/token\" -d)"
     },
     {
@@ -3921,15 +3903,69 @@
       "source_file": "realdebridapi.md",
       "source_location": "L1690",
       "id": "frontend_torzo_realdebridapi_list_of_numeric_error_codes",
-      "community": 15,
+      "community": 27,
       "norm_label": "list of numeric error codes"
+    },
+    {
+      "label": "Code Search",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L31",
+      "community": 19,
+      "norm_label": "code search",
+      "id": "frontend_torzo_agents_code_search"
+    },
+    {
+      "label": "TorrentMetric()",
+      "file_type": "code",
+      "source_file": "src/components/torrent-result-card.tsx",
+      "source_location": "L42",
+      "community": 0,
+      "norm_label": "torrentmetric()",
+      "id": "components_torrent_result_card_torrentmetric"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L1",
+      "community": 0,
+      "norm_label": "page.tsx",
+      "id": "src_app_edit_shadcn_page_tsx"
+    },
+    {
+      "label": "previewResult",
+      "file_type": "code",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L8",
+      "community": 0,
+      "norm_label": "previewresult",
+      "id": "edit_shadcn_page_previewresult"
+    },
+    {
+      "label": "badgeVariants",
+      "file_type": "code",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L22",
+      "community": 0,
+      "norm_label": "badgevariants",
+      "id": "edit_shadcn_page_badgevariants"
+    },
+    {
+      "label": "EditShadcnPage()",
+      "file_type": "code",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L31",
+      "community": 0,
+      "norm_label": "editshadcnpage()",
+      "id": "edit_shadcn_page_editshadcnpage"
     },
     {
       "label": "remotion.config.ts",
       "file_type": "code",
       "source_file": "video/torzo-demo/remotion.config.ts",
       "source_location": "L1",
-      "community": 40,
+      "community": 45,
       "norm_label": "remotion.config.ts",
       "id": "video_torzo_demo_remotion_config_ts"
     },
@@ -3938,7 +3974,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/eslint.config.mjs",
       "source_location": "L1",
-      "community": 41,
+      "community": 46,
       "norm_label": "eslint.config.mjs",
       "id": "video_torzo_demo_eslint_config_mjs"
     },
@@ -3947,7 +3983,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L1",
-      "community": 8,
+      "community": 7,
       "norm_label": "composition.tsx",
       "id": "video_torzo_demo_src_composition_tsx"
     },
@@ -3956,7 +3992,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L10",
-      "community": 8,
+      "community": 7,
       "norm_label": "ease",
       "id": "src_composition_ease"
     },
@@ -3965,7 +4001,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L12",
-      "community": 8,
+      "community": 7,
       "norm_label": "clamp",
       "id": "src_composition_clamp"
     },
@@ -3974,7 +4010,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L17",
-      "community": 8,
+      "community": 7,
       "norm_label": "providers",
       "id": "src_composition_providers"
     },
@@ -3983,7 +4019,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L19",
-      "community": 8,
+      "community": 7,
       "norm_label": "results",
       "id": "src_composition_results"
     },
@@ -3992,7 +4028,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L46",
-      "community": 8,
+      "community": 7,
       "norm_label": "flowsteps",
       "id": "src_composition_flowsteps"
     },
@@ -4001,7 +4037,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L48",
-      "community": 8,
+      "community": 7,
       "norm_label": "shotlabelstyle",
       "id": "src_composition_shotlabelstyle"
     },
@@ -4010,7 +4046,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L58",
-      "community": 8,
+      "community": 7,
       "norm_label": "framein()",
       "id": "src_composition_framein"
     },
@@ -4019,7 +4055,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L61",
-      "community": 8,
+      "community": 7,
       "norm_label": "background()",
       "id": "src_composition_background"
     },
@@ -4028,7 +4064,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L99",
-      "community": 8,
+      "community": 7,
       "norm_label": "logomark()",
       "id": "src_composition_logomark"
     },
@@ -4037,7 +4073,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L118",
-      "community": 8,
+      "community": 7,
       "norm_label": "browsershell()",
       "id": "src_composition_browsershell"
     },
@@ -4046,7 +4082,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L174",
-      "community": 8,
+      "community": 7,
       "norm_label": "searchinput()",
       "id": "src_composition_searchinput"
     },
@@ -4055,7 +4091,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L197",
-      "community": 8,
+      "community": 7,
       "norm_label": "resultcard()",
       "id": "src_composition_resultcard"
     },
@@ -4064,7 +4100,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L236",
-      "community": 8,
+      "community": 7,
       "norm_label": "metric()",
       "id": "src_composition_metric"
     },
@@ -4073,7 +4109,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L253",
-      "community": 8,
+      "community": 7,
       "norm_label": "coldopen()",
       "id": "src_composition_coldopen"
     },
@@ -4082,7 +4118,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L323",
-      "community": 8,
+      "community": 7,
       "norm_label": "searchscene()",
       "id": "src_composition_searchscene"
     },
@@ -4091,7 +4127,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L366",
-      "community": 8,
+      "community": 7,
       "norm_label": "providersweep()",
       "id": "src_composition_providersweep"
     },
@@ -4100,7 +4136,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L426",
-      "community": 8,
+      "community": 7,
       "norm_label": "resultsreveal()",
       "id": "src_composition_resultsreveal"
     },
@@ -4109,7 +4145,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L477",
-      "community": 8,
+      "community": 7,
       "norm_label": "detailscene()",
       "id": "src_composition_detailscene"
     },
@@ -4118,7 +4154,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L545",
-      "community": 8,
+      "community": 7,
       "norm_label": "realdebridscene()",
       "id": "src_composition_realdebridscene"
     },
@@ -4127,7 +4163,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L625",
-      "community": 8,
+      "community": 7,
       "norm_label": "finalbrand()",
       "id": "src_composition_finalbrand"
     },
@@ -4136,7 +4172,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L651",
-      "community": 8,
+      "community": 7,
       "norm_label": "torzodemo()",
       "id": "src_composition_torzodemo"
     },
@@ -4145,7 +4181,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Root.tsx",
       "source_location": "L1",
-      "community": 8,
+      "community": 7,
       "norm_label": "root.tsx",
       "id": "video_torzo_demo_src_root_tsx"
     },
@@ -4154,7 +4190,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/Root.tsx",
       "source_location": "L5",
-      "community": 8,
+      "community": 7,
       "norm_label": "remotionroot()",
       "id": "src_root_remotionroot"
     },
@@ -4163,7 +4199,7 @@
       "file_type": "code",
       "source_file": "video/torzo-demo/src/index.ts",
       "source_location": "L1",
-      "community": 8,
+      "community": 7,
       "norm_label": "index.ts",
       "id": "video_torzo_demo_src_index_ts"
     },
@@ -4172,7 +4208,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L2",
-      "community": 20,
+      "community": 19,
       "norm_label": "this is not the next.js you know",
       "id": "frontend_torzo_agents_this_is_not_the_next_js_you_know"
     },
@@ -4181,7 +4217,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L7",
-      "community": 20,
+      "community": 19,
       "norm_label": "graphify",
       "id": "frontend_torzo_agents_graphify"
     },
@@ -4190,7 +4226,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L1",
-      "community": 18,
+      "community": 17,
       "norm_label": "readme.md",
       "id": "video_torzo_demo_readme_md"
     },
@@ -4199,7 +4235,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L1",
-      "community": 18,
+      "community": 17,
       "norm_label": "remotion video",
       "id": "torzo_demo_readme_remotion_video"
     },
@@ -4208,7 +4244,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L14",
-      "community": 18,
+      "community": 17,
       "norm_label": "commands",
       "id": "torzo_demo_readme_commands"
     },
@@ -4217,7 +4253,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L18",
-      "community": 18,
+      "community": 17,
       "norm_label": "code:console (npm i)",
       "id": "torzo_demo_readme_codeblock_1"
     },
@@ -4226,7 +4262,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L24",
-      "community": 18,
+      "community": 17,
       "norm_label": "code:console (npm run dev)",
       "id": "torzo_demo_readme_codeblock_2"
     },
@@ -4235,7 +4271,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L30",
-      "community": 18,
+      "community": 17,
       "norm_label": "code:console (npx remotion render)",
       "id": "torzo_demo_readme_codeblock_3"
     },
@@ -4244,7 +4280,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L36",
-      "community": 18,
+      "community": 17,
       "norm_label": "code:console (npx remotion upgrade)",
       "id": "torzo_demo_readme_codeblock_4"
     },
@@ -4253,7 +4289,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L40",
-      "community": 18,
+      "community": 17,
       "norm_label": "docs",
       "id": "torzo_demo_readme_docs"
     },
@@ -4262,7 +4298,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L44",
-      "community": 18,
+      "community": 17,
       "norm_label": "help",
       "id": "torzo_demo_readme_help"
     },
@@ -4271,7 +4307,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L48",
-      "community": 18,
+      "community": 17,
       "norm_label": "issues",
       "id": "torzo_demo_readme_issues"
     },
@@ -4280,7 +4316,7 @@
       "file_type": "document",
       "source_file": "video/torzo-demo/README.md",
       "source_location": "L52",
-      "community": 18,
+      "community": 17,
       "norm_label": "license",
       "id": "torzo_demo_readme_license"
     },
@@ -4298,7 +4334,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L1",
-      "community": 19,
+      "community": 18,
       "norm_label": "postman_readme.md",
       "id": "postman_readme_md"
     },
@@ -4307,7 +4343,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L1",
-      "community": 19,
+      "community": 18,
       "norm_label": "real-debrid api testing with postman",
       "id": "frontend_torzo_postman_readme_real_debrid_api_testing_with_postman"
     },
@@ -4316,7 +4352,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L3",
-      "community": 19,
+      "community": 18,
       "norm_label": "setup instructions",
       "id": "frontend_torzo_postman_readme_setup_instructions"
     },
@@ -4325,7 +4361,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L22",
-      "community": 19,
+      "community": 18,
       "norm_label": "testing flow",
       "id": "frontend_torzo_postman_readme_testing_flow"
     },
@@ -4334,7 +4370,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L24",
-      "community": 19,
+      "community": 18,
       "norm_label": "option 1: step-by-step (recommended for learning)",
       "id": "frontend_torzo_postman_readme_option_1_step_by_step_recommended_for_learning"
     },
@@ -4343,7 +4379,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L48",
-      "community": 19,
+      "community": 18,
       "norm_label": "option 2: quick test (full flow)",
       "id": "frontend_torzo_postman_readme_option_2_quick_test_full_flow"
     },
@@ -4352,7 +4388,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L58",
-      "community": 19,
+      "community": 18,
       "norm_label": "checking results",
       "id": "frontend_torzo_postman_readme_checking_results"
     },
@@ -4361,7 +4397,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L73",
-      "community": 19,
+      "community": 18,
       "norm_label": "api endpoints covered",
       "id": "frontend_torzo_postman_readme_api_endpoints_covered"
     },
@@ -4370,7 +4406,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L83",
-      "community": 19,
+      "community": 18,
       "norm_label": "troubleshooting",
       "id": "frontend_torzo_postman_readme_troubleshooting"
     },
@@ -4379,7 +4415,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L100",
-      "community": 19,
+      "community": 18,
       "norm_label": "example variables after successful run",
       "id": "frontend_torzo_postman_readme_example_variables_after_successful_run"
     },
@@ -4388,7 +4424,7 @@
       "file_type": "document",
       "source_file": "POSTMAN_README.md",
       "source_location": "L102",
-      "community": 19,
+      "community": 18,
       "norm_label": "code:block1 (api_key: \"your_api_key\")",
       "id": "frontend_torzo_postman_readme_codeblock_1"
     },
@@ -4397,7 +4433,7 @@
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L1",
-      "community": 27,
+      "community": 31,
       "norm_label": "readme.md",
       "id": "readme_md"
     },
@@ -4406,7 +4442,7 @@
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L3",
-      "community": 27,
+      "community": 31,
       "norm_label": "getting started",
       "id": "frontend_torzo_readme_getting_started"
     },
@@ -4415,7 +4451,7 @@
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L7",
-      "community": 27,
+      "community": 31,
       "norm_label": "code:bash (npm run dev)",
       "id": "frontend_torzo_readme_codeblock_1"
     },
@@ -4424,7 +4460,7 @@
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L23",
-      "community": 27,
+      "community": 31,
       "norm_label": "learn more",
       "id": "frontend_torzo_readme_learn_more"
     },
@@ -4433,7 +4469,7 @@
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L32",
-      "community": 27,
+      "community": 31,
       "norm_label": "deploy on vercel",
       "id": "frontend_torzo_readme_deploy_on_vercel"
     },
@@ -4442,7 +4478,7 @@
       "file_type": "document",
       "source_file": "post.md",
       "source_location": "L1",
-      "community": 42,
+      "community": 47,
       "norm_label": "post.md",
       "id": "post_md"
     },
@@ -4451,7 +4487,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L1",
-      "community": 4,
+      "community": 3,
       "norm_label": "design.md",
       "id": "design_md"
     },
@@ -4460,7 +4496,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L1",
-      "community": 4,
+      "community": 3,
       "norm_label": "torrentsearch design system",
       "id": "frontend_torzo_design_torrentsearch_design_system"
     },
@@ -4469,7 +4505,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L7",
-      "community": 4,
+      "community": 3,
       "norm_label": "core direction",
       "id": "frontend_torzo_design_core_direction"
     },
@@ -4478,7 +4514,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L20",
-      "community": 4,
+      "community": 3,
       "norm_label": "design principles",
       "id": "frontend_torzo_design_design_principles"
     },
@@ -4487,7 +4523,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L37",
-      "community": 4,
+      "community": 3,
       "norm_label": "light mode color tokens",
       "id": "frontend_torzo_design_light_mode_color_tokens"
     },
@@ -4496,7 +4532,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L41",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:css (:root {)",
       "id": "frontend_torzo_design_codeblock_1"
     },
@@ -4505,7 +4541,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L87",
-      "community": 4,
+      "community": 3,
       "norm_label": "tailwind mapping",
       "id": "frontend_torzo_design_tailwind_mapping"
     },
@@ -4514,7 +4550,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L110",
-      "community": 4,
+      "community": 3,
       "norm_label": "typography",
       "id": "frontend_torzo_design_typography"
     },
@@ -4523,7 +4559,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L116",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:css (font-family: \"plus jakarta sans\", ui-sans-serif, system-ui, )",
       "id": "frontend_torzo_design_codeblock_2"
     },
@@ -4532,7 +4568,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L120",
-      "community": 4,
+      "community": 3,
       "norm_label": "type scale",
       "id": "frontend_torzo_design_type_scale"
     },
@@ -4541,7 +4577,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L134",
-      "community": 4,
+      "community": 3,
       "norm_label": "spacing",
       "id": "frontend_torzo_design_spacing"
     },
@@ -4550,7 +4586,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L151",
-      "community": 4,
+      "community": 3,
       "norm_label": "layout system",
       "id": "frontend_torzo_design_layout_system"
     },
@@ -4559,7 +4595,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L153",
-      "community": 4,
+      "community": 3,
       "norm_label": "page shell",
       "id": "frontend_torzo_design_page_shell"
     },
@@ -4568,7 +4604,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L163",
-      "community": 4,
+      "community": 3,
       "norm_label": "header",
       "id": "frontend_torzo_design_header"
     },
@@ -4577,7 +4613,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L174",
-      "community": 4,
+      "community": 3,
       "norm_label": "background treatment",
       "id": "frontend_torzo_design_background_treatment"
     },
@@ -4586,7 +4622,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L186",
-      "community": 4,
+      "community": 3,
       "norm_label": "components",
       "id": "frontend_torzo_design_components"
     },
@@ -4595,7 +4631,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L188",
-      "community": 4,
+      "community": 3,
       "norm_label": "logo tile",
       "id": "frontend_torzo_design_logo_tile"
     },
@@ -4604,7 +4640,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L212",
-      "community": 4,
+      "community": 3,
       "norm_label": "search input",
       "id": "frontend_torzo_design_search_input"
     },
@@ -4613,7 +4649,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L250",
-      "community": 4,
+      "community": 3,
       "norm_label": "buttons",
       "id": "frontend_torzo_design_buttons"
     },
@@ -4622,7 +4658,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L279",
-      "community": 4,
+      "community": 3,
       "norm_label": "badges",
       "id": "frontend_torzo_design_badges"
     },
@@ -4631,7 +4667,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L295",
-      "community": 4,
+      "community": 3,
       "norm_label": "result rows",
       "id": "frontend_torzo_design_result_rows"
     },
@@ -4640,7 +4676,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L323",
-      "community": 4,
+      "community": 3,
       "norm_label": "detail panels",
       "id": "frontend_torzo_design_detail_panels"
     },
@@ -4649,7 +4685,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L349",
-      "community": 4,
+      "community": 3,
       "norm_label": "iconography",
       "id": "frontend_torzo_design_iconography"
     },
@@ -4658,7 +4694,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L377",
-      "community": 4,
+      "community": 3,
       "norm_label": "motion",
       "id": "frontend_torzo_design_motion"
     },
@@ -4667,7 +4703,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L393",
-      "community": 4,
+      "community": 3,
       "norm_label": "screen patterns",
       "id": "frontend_torzo_design_screen_patterns"
     },
@@ -4676,7 +4712,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L395",
-      "community": 4,
+      "community": 3,
       "norm_label": "homepage",
       "id": "frontend_torzo_design_homepage"
     },
@@ -4685,7 +4721,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L418",
-      "community": 4,
+      "community": 3,
       "norm_label": "results page",
       "id": "frontend_torzo_design_results_page"
     },
@@ -4694,7 +4730,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L438",
-      "community": 4,
+      "community": 3,
       "norm_label": "detail page",
       "id": "frontend_torzo_design_detail_page"
     },
@@ -4703,7 +4739,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L458",
-      "community": 4,
+      "community": 3,
       "norm_label": "accessibility",
       "id": "frontend_torzo_design_accessibility"
     },
@@ -4712,7 +4748,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L470",
-      "community": 4,
+      "community": 3,
       "norm_label": "implementation notes",
       "id": "frontend_torzo_design_implementation_notes"
     },
@@ -4721,7 +4757,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L482",
-      "community": 4,
+      "community": 3,
       "norm_label": "do not do",
       "id": "frontend_torzo_design_do_not_do"
     },
@@ -4730,7 +4766,7 @@
       "file_type": "document",
       "source_file": "design.md",
       "source_location": "L493",
-      "community": 4,
+      "community": 3,
       "norm_label": "quick reference",
       "id": "frontend_torzo_design_quick_reference"
     },
@@ -4739,7 +4775,7 @@
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L1",
-      "community": 20,
+      "community": 19,
       "norm_label": "claude.md",
       "id": "claude_md"
     },
@@ -4748,7 +4784,7 @@
       "file_type": "code",
       "source_file": "src/components/search-form.tsx",
       "source_location": "L115",
-      "community": 0,
+      "community": 14,
       "norm_label": "clearblurtimer()",
       "id": "components_search_form_clearblurtimer"
     },
@@ -4757,7 +4793,7 @@
       "file_type": "code",
       "source_file": "src/components/search-form.tsx",
       "source_location": "L122",
-      "community": 0,
+      "community": 14,
       "norm_label": "handlesuggestionselect()",
       "id": "components_search_form_handlesuggestionselect"
     },
@@ -4766,7 +4802,7 @@
       "file_type": "code",
       "source_file": "src/components/search-form.tsx",
       "source_location": "L198",
-      "community": 0,
+      "community": 14,
       "norm_label": "selectedmovie()",
       "id": "components_search_form_selectedmovie"
     },
@@ -4784,7 +4820,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L134",
-      "community": 14,
+      "community": 2,
       "norm_label": "handleaddtord()",
       "id": "torrent_torrent_actions_handleaddtord"
     },
@@ -4793,7 +4829,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L207",
-      "community": 14,
+      "community": 2,
       "norm_label": "handlewatchnow()",
       "id": "torrent_torrent_actions_handlewatchnow"
     },
@@ -4802,7 +4838,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L241",
-      "community": 14,
+      "community": 2,
       "norm_label": "checkinbackground()",
       "id": "torrent_torrent_actions_checkinbackground"
     },
@@ -4820,7 +4856,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L16",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebridtorrentsummary",
       "id": "torrent_torrent_actions_realdebridtorrentsummary"
     },
@@ -4829,7 +4865,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L22",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebridtorrentinfo",
       "id": "torrent_torrent_actions_realdebridtorrentinfo"
     },
@@ -4838,7 +4874,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L27",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebridaddmagnetresponse",
       "id": "torrent_torrent_actions_realdebridaddmagnetresponse"
     },
@@ -4847,7 +4883,7 @@
       "file_type": "code",
       "source_file": "src/components/torrent/torrent-actions.tsx",
       "source_location": "L31",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebridunrestrictresponse",
       "id": "torrent_torrent_actions_realdebridunrestrictresponse"
     },
@@ -4856,7 +4892,7 @@
       "file_type": "code",
       "source_file": "src/lib/real-debrid-client.ts",
       "source_location": "L1",
-      "community": 14,
+      "community": 2,
       "norm_label": "real-debrid-client.ts",
       "id": "src_lib_real_debrid_client_ts"
     },
@@ -4865,7 +4901,7 @@
       "file_type": "code",
       "source_file": "src/lib/real-debrid-client.ts",
       "source_location": "L3",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebridrequestoptions",
       "id": "lib_real_debrid_client_realdebridrequestoptions"
     },
@@ -4874,7 +4910,7 @@
       "file_type": "code",
       "source_file": "src/lib/real-debrid-client.ts",
       "source_location": "L8",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebriderror",
       "id": "lib_real_debrid_client_realdebriderror"
     },
@@ -4883,7 +4919,7 @@
       "file_type": "code",
       "source_file": "src/lib/real-debrid-client.ts",
       "source_location": "L13",
-      "community": 14,
+      "community": 2,
       "norm_label": "realdebridfetch()",
       "id": "lib_real_debrid_client_realdebridfetch"
     },
@@ -5412,7 +5448,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "real-debrid api documentation",
       "id": "realdebrid_api"
     },
@@ -5425,7 +5461,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "real-debrid api base url",
       "id": "rd_api_base_url"
     },
@@ -5438,7 +5474,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "real-debrid api rate limit (250 req/min)",
       "id": "rd_api_rate_limit"
     },
@@ -5451,7 +5487,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "real-debrid bearer token authentication",
       "id": "rd_api_auth_bearer"
     },
@@ -5464,7 +5500,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "get /user endpoint",
       "id": "rd_endpoint_user"
     },
@@ -5490,7 +5526,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "get /torrents endpoint",
       "id": "rd_endpoint_torrents"
     },
@@ -5503,7 +5539,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "get /torrents/info/{id} endpoint",
       "id": "rd_endpoint_torrents_info"
     },
@@ -5516,7 +5552,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "post /torrents/addmagnet endpoint",
       "id": "rd_endpoint_addMagnet"
     },
@@ -5529,7 +5565,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "post /torrents/selectfiles/{id} endpoint",
       "id": "rd_endpoint_selectFiles"
     },
@@ -5542,7 +5578,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "get /disable_access_token endpoint",
       "id": "rd_endpoint_disable_token"
     },
@@ -5555,7 +5591,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "real-debrid oauth2 authentication workflows",
       "id": "rd_oauth2_auth"
     },
@@ -5568,7 +5604,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "real-debrid opensource client id (x245a4xaibgvm)",
       "id": "rd_opensource_client_id"
     },
@@ -5581,7 +5617,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 48,
       "norm_label": "file icon",
       "id": "file_svg"
     },
@@ -5594,7 +5630,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 38,
       "norm_label": "vercel logo",
       "id": "vercel_svg"
     },
@@ -5607,7 +5643,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 38,
       "norm_label": "next.js logo",
       "id": "next_svg"
     },
@@ -5620,7 +5656,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 49,
       "norm_label": "globe icon",
       "id": "globe_svg"
     },
@@ -5633,7 +5669,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 45,
+      "community": 50,
       "norm_label": "window icon",
       "id": "window_svg"
     },
@@ -5646,7 +5682,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 34,
+      "community": 39,
       "norm_label": "app favicon",
       "id": "icon_svg"
     },
@@ -5659,7 +5695,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 51,
       "norm_label": "instagram social image",
       "id": "ig_png"
     },
@@ -5672,7 +5708,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 35,
+      "community": 40,
       "norm_label": "home background svg",
       "id": "homebg_svg"
     },
@@ -5685,7 +5721,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 52,
       "norm_label": "white background image",
       "id": "new_whitebg_png"
     },
@@ -5698,7 +5734,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 34,
+      "community": 39,
       "norm_label": "t logo (torrent/torzo)",
       "id": "t_svg"
     },
@@ -5711,7 +5747,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 35,
+      "community": 40,
       "norm_label": "home background jpg",
       "id": "homebg_jpg"
     }
@@ -5917,6 +5953,70 @@
       "confidence_score": 1.0,
       "source": "src_app_not_found_tsx",
       "target": "app_not_found_notfound"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_how_to_use_page_tsx",
+      "target": "src_components_site_navbar_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_how_to_use_page_tsx",
+      "target": "components_site_navbar_sitenavbar"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_how_to_use_page_tsx",
+      "target": "src_components_ui_button_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_how_to_use_page_tsx",
+      "target": "ui_button_button"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_how_to_use_page_tsx",
+      "target": "how_to_use_page_metadata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/how-to-use/page.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_how_to_use_page_tsx",
+      "target": "how_to_use_page_howtousepage"
     },
     {
       "relation": "imports_from",
@@ -7102,135 +7202,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "src_components_ui_badge_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "ui_badge_badge"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "src_components_torrent_result_card_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "components_torrent_result_card_torrentresultcard"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "src_components_ui_button_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "ui_button_button"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "src_components_ui_input_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "ui_input_input"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "edit_shadcn_page_previewresult"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "edit_shadcn_page_badgevariants"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/app/edit-shadcn/page.tsx",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_edit_shadcn_page_tsx",
-      "target": "edit_shadcn_page_editshadcnpage"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/components/ui/badge.tsx",
-      "source_location": "L43",
-      "weight": 1.0,
-      "source": "ui_badge_badge",
-      "target": "edit_shadcn_page_badgevariants"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/app/manage/page.tsx",
       "source_location": "L1",
       "weight": 1.0,
@@ -7847,17 +7818,6 @@
       "target": "lib_utils_cn"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/torrent-result-card.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_components_torrent_result_card_tsx",
-      "target": "lib_utils_formatdate"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/torrent-result-card.tsx",
@@ -7895,7 +7855,7 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_components_torrent_result_card_tsx",
-      "target": "components_torrent_result_card_torrentmetric"
+      "target": "components_torrent_result_card_torrentbadge"
     },
     {
       "relation": "contains",
@@ -7906,6 +7866,49 @@
       "confidence_score": 1.0,
       "source": "src_components_torrent_result_card_tsx",
       "target": "components_torrent_result_card_torrentresultcard"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/torrent-result-card.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_components_torrent_result_card_tsx",
+      "target": "lib_utils_formatdate"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/torrent-result-card.tsx",
+      "source_location": "L42",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_components_torrent_result_card_tsx",
+      "target": "components_torrent_result_card_torrentmetric"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "src_components_torrent_result_card_tsx"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/torrent-result-card.tsx",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "components_torrent_result_card_torrentbadge",
+      "target": "lib_utils_cn"
     },
     {
       "relation": "calls",
@@ -7928,6 +7931,17 @@
       "weight": 1.0,
       "source": "components_torrent_result_card_torrentresultcard",
       "target": "lib_utils_formatdate"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "components_torrent_result_card_torrentresultcard"
     },
     {
       "relation": "imports_from",
@@ -8599,6 +8613,17 @@
       "target": "ui_badge_badge"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "src_components_ui_badge_tsx"
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -8619,6 +8644,28 @@
       "weight": 1.0,
       "source": "ui_badge_badge",
       "target": "lib_utils_cn"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "ui_badge_badge"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/components/ui/badge.tsx",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "ui_badge_badge",
+      "target": "edit_shadcn_page_badgevariants"
     },
     {
       "relation": "imports_from",
@@ -8674,6 +8721,17 @@
       "target": "src_components_ui_button_tsx"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "src_components_ui_button_tsx"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/ui/button.tsx",
@@ -8715,6 +8773,17 @@
       "weight": 1.0,
       "source": "ui_button_button",
       "target": "lib_utils_cn"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "ui_button_button"
     },
     {
       "relation": "imports_from",
@@ -9097,6 +9166,17 @@
       "target": "ui_input_input"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "src_components_ui_input_tsx"
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -9106,6 +9186,17 @@
       "weight": 1.0,
       "source": "ui_input_input",
       "target": "lib_utils_cn"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "ui_input_input"
     },
     {
       "relation": "imports_from",
@@ -11969,6 +12060,36 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "edit_shadcn_page_previewresult"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "edit_shadcn_page_badgevariants"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/edit-shadcn/page.tsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_edit_shadcn_page_tsx",
+      "target": "edit_shadcn_page_editshadcnpage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "video/torzo-demo/src/Composition.tsx",
       "source_location": "L10",
       "weight": 1.0,
@@ -13731,5 +13852,5 @@
       "source_file": "src/lib/server/app-settings.ts"
     }
   ],
-  "built_at_commit": "d98d7242603f9d1847c0db2a6e67f45570b8f18f"
+  "built_at_commit": "09899b4afaa3d5e8f450878451bdfaee628a6469"
 }

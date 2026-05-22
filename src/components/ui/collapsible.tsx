@@ -61,7 +61,7 @@ function CollapsibleTrigger({
       aria-controls={contentId}
       aria-expanded={open}
       className={cn(
-        "flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-surface-subtle",
+        "flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-[background-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:bg-surface-subtle active:scale-[0.96] motion-reduce:active:scale-100",
         className,
       )}
       {...props}

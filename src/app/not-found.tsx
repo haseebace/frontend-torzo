@@ -16,7 +16,7 @@ export default function NotFound() {
           </p>
           <Link
             href="/"
-            className="inline-block rounded-control bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-foreground-strong"
+            className="inline-block rounded-control bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-[background-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:bg-foreground-strong active:scale-[0.96] motion-reduce:active:scale-100"
           >
             Go Back Home
           </Link>

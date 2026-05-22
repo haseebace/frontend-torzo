@@ -3,29 +3,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function ResultCardSkeleton() {
   return (
-    <div className="grid gap-3 rounded-card bg-result-card px-[5px] pb-4 pt-1 text-sm md:grid-cols-[1fr_auto] md:px-5 md:py-4">
-      <div className="min-w-0">
-        <div className="mb-1 flex items-center gap-1.5 md:hidden">
-          <Skeleton className="h-5 w-16 rounded-md" />
-          <Skeleton className="h-5 w-14 rounded-md" />
+    <div className="rounded-[var(--torrent-card-radius)] bg-[var(--torrent-card-background-color)] px-0 py-0">
+      <div className="flex min-h-[var(--torrent-card-min-height)] flex-col justify-between gap-[var(--torrent-card-mobile-section-gap)] p-[var(--torrent-card-padding)] md:flex-row md:items-center md:gap-[var(--torrent-card-column-gap)]">
+        <div className="flex min-w-0 flex-1 flex-col justify-center gap-[var(--torrent-card-content-gap)] md:max-w-[var(--torrent-card-left-column-max-width)]">
+          <Skeleton className="h-7 w-full max-w-[620px] rounded-control bg-[var(--skeleton-strong-background-color)] md:h-[28px]" />
+          <div className="flex flex-wrap items-center gap-[var(--torrent-card-content-gap)]">
+            <Skeleton className="h-[var(--torrent-badge-height)] w-[92px] rounded-pill" />
+            <Skeleton className="h-[var(--torrent-badge-height)] w-[134px] rounded-pill" />
+          </div>
         </div>
-        <div className="mb-3 min-w-0">
-          <Skeleton className="h-5 w-full md:h-6 md:w-[min(620px,70%)]" />
-        </div>
-        <div className="hidden items-center gap-4 md:flex">
-          <Skeleton className="h-6 w-20 rounded-md" />
-          <Skeleton className="h-6 w-16 rounded-md" />
-          <Skeleton className="h-4 w-36" />
-        </div>
-      </div>
 
-      <div className="flex items-end justify-between gap-4 md:justify-end">
-        <div className="grid grid-cols-3 gap-3">
-          <Skeleton className="h-9 w-16" />
-          <Skeleton className="h-9 w-16" />
-          <Skeleton className="h-9 w-16" />
+        <div className="flex min-w-[var(--torrent-card-status-column-width)] shrink-0 flex-row gap-[var(--torrent-card-content-gap)] md:flex-col">
+          <Skeleton className="h-[var(--torrent-badge-height)] w-[125px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
+          <Skeleton className="h-[var(--torrent-badge-height)] w-[125px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
         </div>
-        <Skeleton className="h-4 w-16 md:hidden" />
       </div>
     </div>
   );
@@ -38,12 +29,12 @@ export default function ResultsLoading() {
 
       <section className="flex w-full flex-col gap-6 px-4 py-8 md:px-10 xl:px-page">
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-3">
-          <Skeleton className="h-16 w-full rounded-[2rem]" />
+          <Skeleton className="h-16 w-full rounded-control bg-[var(--skeleton-strong-background-color)]" />
         </div>
 
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border pb-2">
-          <Skeleton className="h-4 w-full max-w-64" />
-          <Skeleton className="h-8 w-[130px] rounded-pill" />
+          <Skeleton className="h-6 w-full max-w-64 rounded-control bg-[var(--skeleton-strong-background-color)]" />
+          <Skeleton className="h-8 w-[130px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
         </div>
 
         <div className="flex flex-col gap-5">

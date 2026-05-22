@@ -26,10 +26,4 @@ agent-browser skills get core
 ## Git And GitHub
 
 - Never run GitHub commands or use GitHub integrations unless the user explicitly asks.
-- Do not create commits, branches, pushes, pull requests, or GitHub comments unless requested.
-
-## Code Search
-
-- Prefer project-aware indexes such as `graphify-out/` when answering architecture or codebase questions.
-- Use `rg` for simple text search when needed.
-- After modifying code files, run `graphify update .` only when the user has not prohibited it for the task.
+- Do not create commits, branches, pushes, pull requests, or GitHub comments unless requsted

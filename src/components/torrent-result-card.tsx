@@ -1,17 +1,17 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  ArrowDown,
-  ArrowUp,
-  Calendar,
-  HardDrive,
+  CircleArrowDown,
+  CircleArrowUp,
+  Film,
+  Globe,
   type LucideIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn, formatDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 export interface TorrentResult {
   id: string;
@@ -35,19 +35,32 @@ type TorrentResultCardProps = {
 
 type TorrentMetricProps = {
   icon: LucideIcon;
-  label: string;
-  value: string;
+  children: ReactNode;
+  tone?: "default" | "seeders" | "leechers";
+  className?: string;
 };
 
-function TorrentMetric({ icon: Icon, label, value }: TorrentMetricProps) {
+function TorrentBadge({
+  icon: Icon,
+  children,
+  tone = "default",
+  className,
+}: TorrentMetricProps) {
   return (
-    <div className="w-16">
-      <p className="font-semibold tabular-nums text-foreground-strong">{value}</p>
-      <p className="inline-flex items-center justify-start gap-1 text-text-soft md:justify-end">
-        <Icon className="hidden size-3 md:block" />
-        {label}
-      </p>
-    </div>
+    <span
+      className={cn(
+        "inline-flex h-[var(--torrent-badge-height)] shrink-0 items-center justify-center gap-[var(--torrent-badge-gap)] rounded-[var(--torrent-badge-radius)] px-[var(--torrent-badge-padding-x)] text-[length:var(--torrent-badge-font-size)] font-[var(--torrent-badge-font-weight)] leading-[var(--torrent-badge-line-height)] text-[var(--torrent-badge-text-color)]",
+        tone === "seeders"
+          ? "bg-[var(--torrent-seeder-badge-background-color)]"
+          : tone === "leechers"
+            ? "bg-[var(--torrent-leecher-badge-background-color)]"
+            : "bg-[var(--torrent-badge-background-color)]",
+        className,
+      )}
+    >
+      <span className="truncate">{children}</span>
+      <Icon className="size-4 stroke-[1.5]" aria-hidden="true" />
+    </span>
   );
 }
 
@@ -71,62 +84,44 @@ export function TorrentResultCard({
     <Link
       href={detailHref}
       className={cn(
-        "group block rounded-[32px] transition-transform duration-200 ease-[var(--ui-ease-standard)] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus",
+        "group block rounded-[var(--torrent-card-radius)] transition-transform duration-200 ease-[var(--ui-ease-standard)] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus",
         className,
       )}
       onMouseEnter={handleMouseEnter}
     >
-      <Card className="grid gap-3 rounded-[32px] border-2 border-border/50 bg-surface-elevated p-5 text-sm ring-0 transition-[border-color,box-shadow] duration-300 ease-[var(--ui-ease-standard)] group-hover:ring-[1px] group-hover:ring-border group-hover:shadow-ui-result-hover group-focus-visible:border-input md:grid-cols-[1fr_auto]">
-        <CardContent className="contents p-0">
-          <div className="min-w-0">
-            <div className="mb-1 flex items-center gap-1.5 pl-[5px] md:hidden">
-              <span className="ui-badge">
-                {result.category}
-              </span>
-              <span className="ui-badge">
-                {provider}
-              </span>
-            </div>
-            <div className="flex min-w-0 items-center gap-2 pl-[5px] md:mb-3 md:pl-0">
-              <h2 className="min-w-0 flex-1 truncate text-[12px] font-medium leading-5 text-foreground-strong text-wrap-balance transition-colors group-hover:text-foreground-strong md:text-base md:leading-6">
+      <Card className="rounded-[var(--torrent-card-radius)] border-0 bg-[var(--torrent-card-background-color)] px-0 py-0 shadow-none ring-0 transition-[box-shadow,transform] duration-300 ease-[var(--ui-ease-standard)] group-hover:shadow-ui-result-hover">
+        <CardContent className="flex min-h-[var(--torrent-card-min-height)] flex-col justify-between gap-4 p-4 sm:p-5 md:flex-row md:items-center md:gap-[var(--torrent-card-column-gap)] md:p-[var(--torrent-card-padding)]">
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-3 md:max-w-[var(--torrent-card-left-column-max-width)] md:gap-[var(--torrent-card-content-gap)]">
+            <div className="flex min-w-0 items-center">
+              <h2 className="min-w-0 flex-1 truncate font-sans text-[length:var(--torrent-card-title-mobile-font-size)] font-[var(--torrent-card-title-font-weight)] leading-[var(--torrent-card-title-mobile-line-height)] text-[var(--torrent-card-text-color)] md:[font-size:var(--torrent-card-title-font-size)] md:leading-[var(--torrent-card-title-line-height)]">
                 {result.title}
               </h2>
             </div>
-            <div className="hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground md:flex">
-              <span className="ui-badge">
+            <div className="hidden flex-wrap items-center gap-2.5 md:flex md:gap-[var(--torrent-card-content-gap)]">
+              <TorrentBadge icon={Film}>
                 {result.category}
-              </span>
-              <span className="ui-badge">
+              </TorrentBadge>
+              <TorrentBadge icon={Globe}>
                 {provider}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar className="size-3" />
-                Uploaded {formatDate(result.uploaded_at)}
-              </span>
+              </TorrentBadge>
             </div>
           </div>
 
-          <div className="flex items-end justify-between gap-4 pl-[5px] pr-[5px] md:justify-end md:pl-0 md:pr-0">
-            <div className="grid grid-cols-3 gap-3 text-left text-xs md:text-right">
-              <TorrentMetric
-                icon={HardDrive}
-                label="size"
-                value={result.size_human}
-              />
-              <TorrentMetric
-                icon={ArrowUp}
-                label="seed"
-                value={result.seeders.toLocaleString()}
-              />
-              <TorrentMetric
-                icon={ArrowDown}
-                label="leech"
-                value={result.leechers.toLocaleString()}
-              />
-            </div>
-            <span className="shrink-0 pb-0.5 text-right text-[10px] leading-4 tabular-nums text-muted-foreground md:hidden">
-              {formatDate(result.uploaded_at)}
-            </span>
+          <div className="grid w-full shrink-0 grid-cols-2 gap-2.5 md:flex md:w-auto md:min-w-[var(--torrent-card-status-column-width)] md:flex-col md:gap-[var(--torrent-card-content-gap)]">
+            <TorrentBadge
+              icon={CircleArrowUp}
+              tone="seeders"
+              className="w-full justify-between md:w-[var(--torrent-card-status-column-width)]"
+            >
+              {result.seeders.toLocaleString()} Seeders
+            </TorrentBadge>
+            <TorrentBadge
+              icon={CircleArrowDown}
+              tone="leechers"
+              className="w-full justify-between md:w-[var(--torrent-card-status-column-width)]"
+            >
+              {result.leechers.toLocaleString()} Leechers
+            </TorrentBadge>
           </div>
         </CardContent>
       </Card>
