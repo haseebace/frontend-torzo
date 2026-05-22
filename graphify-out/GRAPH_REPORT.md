@@ -1,16 +1,16 @@
 # Graph Report - frontend-torzo  (2026-05-22)
 
 ## Corpus Check
-- 49 files · ~36,980 words
+- 49 files · ~36,984 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 601 nodes · 779 edges · 53 communities (45 shown, 8 thin omitted)
+- 601 nodes · 779 edges · 52 communities (44 shown, 8 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 19 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `09899b4a`
+- Built from commit: `ff7d5e92`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -48,15 +48,14 @@
 - [[_COMMUNITY_Community 30|Community 30]]
 - [[_COMMUNITY_Community 31|Community 31]]
 - [[_COMMUNITY_Community 32|Community 32]]
-- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 37|Community 37]]
 - [[_COMMUNITY_Community 38|Community 38]]
 - [[_COMMUNITY_Community 39|Community 39]]
-- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 47|Community 47]]
 - [[_COMMUNITY_Community 48|Community 48]]
 - [[_COMMUNITY_Community 49|Community 49]]
 - [[_COMMUNITY_Community 50|Community 50]]
 - [[_COMMUNITY_Community 51|Community 51]]
-- [[_COMMUNITY_Community 52|Community 52]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 56 edges
@@ -90,7 +89,7 @@
 - **Complete torrent-to-download workflow** — rd_endpoint_addMagnet, rd_endpoint_torrents_info, rd_endpoint_selectFiles, rd_endpoint_unrestrict_link, torrent_actions [INFERRED 0.85]
 - **Provider configuration persistence** — route_settings_providers, route_rd_status, app_settings_parseProviders, app_settings_type_ProviderId [INFERRED 0.80]
 
-## Communities (53 total, 8 thin omitted)
+## Communities (52 total, 8 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.06
@@ -153,28 +152,28 @@ Cohesion: 0.21
 Nodes (8): HomeContent(), clearBlurTimer(), handleSuggestionSelect(), SearchForm(), SearchFormProps, SearchSubmitButton(), TmdbSuggestion, buttonVariants
 
 ### Community 15 - "Community 15"
+Cohesion: 0.15
+Nodes (13): API methods, code:block1 (https://api.real-debrid.com/rest/1.0/), GET /disable_access_token, GET /time, GET /time/iso, GET /user, Possible HTTP error codes:, Possible HTTP error codes: (+5 more)
+
+### Community 16 - "Community 16"
 Cohesion: 0.23
 Nodes (12): Real-Debrid Bearer token authentication, Real-Debrid API base URL, Real-Debrid API rate limit (250 req/min), POST /torrents/addMagnet endpoint, GET /disable_access_token endpoint, POST /torrents/selectFiles/{id} endpoint, GET /torrents endpoint, GET /torrents/info/{id} endpoint (+4 more)
 
-### Community 16 - "Community 16"
+### Community 17 - "Community 17"
 Cohesion: 0.18
 Nodes (11): GET /hosts, GET /hosts/domains, GET /hosts/regex, GET /hosts/regexFolder, GET /hosts/status, /hosts, Return value:, Return value: (+3 more)
 
-### Community 17 - "Community 17"
+### Community 18 - "Community 18"
 Cohesion: 0.18
 Nodes (10): code:console (npm i), code:console (npm run dev), code:console (npx remotion render), code:console (npx remotion upgrade), Commands, Docs, Help, Issues (+2 more)
 
-### Community 18 - "Community 18"
+### Community 19 - "Community 19"
 Cohesion: 0.18
 Nodes (10): API Endpoints Covered, Checking Results, code:block1 (api_key: "YOUR_API_KEY"), Example Variables After Successful Run, Option 1: Step-by-Step (Recommended for learning), Option 2: Quick Test (Full Flow), Real-Debrid API Testing with Postman, Setup Instructions (+2 more)
 
-### Community 19 - "Community 19"
+### Community 20 - "Community 20"
 Cohesion: 0.2
 Nodes (8): Browser Testing, Code Search, code:bash (agent-browser skills get core), Git And GitHub, graphify, Project Agent Rules, Testing And Checks, This is NOT the Next.js you know
-
-### Community 20 - "Community 20"
-Cohesion: 0.22
-Nodes (9): API methods, code:block1 (https://api.real-debrid.com/rest/1.0/), GET /disable_access_token, GET /time, GET /time/iso, Possible HTTP error codes:, Return value:, Return value: (+1 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.22
@@ -190,7 +189,7 @@ Nodes (8): GET /traffic, GET /traffic/details, Parameters:, Possible HTTP error 
 
 ### Community 24 - "Community 24"
 Cohesion: 0.25
-Nodes (8): code:block38 (https://api.real-debrid.com/oauth/v2/device/code?client_id=A), code:block39 ({), code:block40 (curl -X POST "https://api.real-debrid.com/oauth/v2/token" -d), Example authentication data:, Example cURL call to obtain an access token:, Example URL to obtain authentication data:, Full workflow, Workflow for opensource apps
+Nodes (8): code:block35 (https://api.real-debrid.com/oauth/v2/device/code?client_id=A), code:block36 ({), code:block37 (curl -X POST "https://api.real-debrid.com/oauth/v2/token" -d), Example authentication data:, Example cURL call to obtain an access token:, Example URL to obtain authentication data:, Full workflow, Workflow for mobile apps
 
 ### Community 25 - "Community 25"
 Cohesion: 0.25
@@ -198,7 +197,7 @@ Nodes (8): code:block31 (X245A4XAIBGVM), code:block32 (https://api.real-debrid.c
 
 ### Community 26 - "Community 26"
 Cohesion: 0.25
-Nodes (8): code:block35 (https://api.real-debrid.com/oauth/v2/device/code?client_id=A), code:block36 ({), code:block37 (curl -X POST "https://api.real-debrid.com/oauth/v2/token" -d), Example authentication data:, Example cURL call to obtain an access token:, Example URL to obtain authentication data:, Full workflow, Workflow for mobile apps
+Nodes (8): code:block38 (https://api.real-debrid.com/oauth/v2/device/code?client_id=A), code:block39 ({), code:block40 (curl -X POST "https://api.real-debrid.com/oauth/v2/token" -d), Example authentication data:, Example cURL call to obtain an access token:, Example URL to obtain authentication data:, Full workflow, Workflow for opensource apps
 
 ### Community 27 - "Community 27"
 Cohesion: 0.25
@@ -222,10 +221,6 @@ Nodes (4): code:bash (npm run dev), Deploy on Vercel, Getting Started, Learn Mor
 
 ### Community 32 - "Community 32"
 Cohesion: 0.5
-Nodes (4): GET /user, Possible HTTP error codes:, Return value:, /user
-
-### Community 33 - "Community 33"
-Cohesion: 0.5
 Nodes (4): code:block27 (curl -X GET \), code:block28 (HTTP/1.1 200 OK), Example calls, Getting user informations:
 
 ## Knowledge Gaps
@@ -236,9 +231,9 @@ Nodes (4): code:block27 (curl -X GET \), code:block28 (HTTP/1.1 200 OK), Example
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `API methods` connect `Community 20` to `Community 32`, `Community 4`, `Community 5`, `Community 9`, `Community 10`, `Community 16`, `Community 22`, `Community 23`, `Community 27`, `Community 28`?**
+- **Why does `API methods` connect `Community 15` to `Community 4`, `Community 5`, `Community 9`, `Community 10`, `Community 17`, `Community 22`, `Community 23`, `Community 27`, `Community 28`?**
   _High betweenness centrality (0.089) - this node is a cross-community bridge._
-- **Why does `Real-Debrid API Documentation` connect `Community 27` to `Community 33`, `Community 20`, `Community 25`?**
+- **Why does `Real-Debrid API Documentation` connect `Community 27` to `Community 32`, `Community 25`, `Community 15`?**
   _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Why does `Opensource Apps` connect `Community 25` to `Community 21`, `Community 24`, `Community 26`, `Community 27`, `Community 29`?**
   _High betweenness centrality (0.036) - this node is a cross-community bridge._

@@ -322,43 +322,45 @@ export function ManageAccountForm() {
                 </span>
               </div>
             </CardHeader>
-            <CardContent className="flex flex-col gap-3 px-5 pb-6 pt-5 md:flex-row md:gap-3.5 md:px-7 md:pb-7 md:pt-6">
-              {providers.map((provider) => {
-                const isChecked = selectedProviders.includes(provider.id);
+            <CardContent className="flex flex-col gap-3 px-5 pb-6 pt-5 md:px-7 md:pb-7 md:pt-6">
+              <div className="flex flex-col gap-3 md:flex-row md:gap-3.5">
+                {providers.map((provider) => {
+                  const isChecked = selectedProviders.includes(provider.id);
 
-                return (
-                  <label
-                    key={provider.id}
-                    className={cn(
-                      "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:border-primary hover:bg-brand-surface active:scale-[0.96] motion-reduce:active:scale-100",
-                      isChecked ? "border-primary" : "border-border",
-                    )}
-                  >
-                    <Checkbox
-                      checked={isChecked}
-                      onCheckedChange={(checked) =>
-                        handleProviderChange(provider.id, checked === true)
-                      }
-                      aria-label={`Use ${provider.label}`}
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span className="flex min-w-0 items-center justify-between gap-2">
-                        <span className="font-heading text-sm font-extrabold text-foreground">
-                          {provider.label}
-                        </span>
-                        {isChecked ? (
-                          <span className="ui-badge">
-                            <span className="ui-badge-dot" />
-                            Active
+                  return (
+                    <label
+                      key={provider.id}
+                      className={cn(
+                        "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:border-primary hover:bg-brand-surface active:scale-[0.96] motion-reduce:active:scale-100",
+                        isChecked ? "border-primary" : "border-border",
+                      )}
+                    >
+                      <Checkbox
+                        checked={isChecked}
+                        onCheckedChange={(checked) =>
+                          handleProviderChange(provider.id, checked === true)
+                        }
+                        aria-label={`Use ${provider.label}`}
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="flex min-w-0 items-center justify-between gap-2">
+                          <span className="font-heading text-sm font-extrabold text-foreground">
+                            {provider.label}
                           </span>
-                        ) : null}
+                          {isChecked ? (
+                            <span className="ui-badge">
+                              <span className="ui-badge-dot" />
+                              Active
+                            </span>
+                          ) : null}
+                        </span>
                       </span>
-                    </span>
-                  </label>
-                );
-              })}
+                    </label>
+                  );
+                })}
+              </div>
               {providerError ? (
-                <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive md:basis-full">
+                <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive">
                   {providerError}
                 </p>
               ) : null}
