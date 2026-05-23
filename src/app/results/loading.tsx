@@ -8,14 +8,17 @@ function ResultCardSkeleton() {
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-[var(--torrent-card-content-gap)] md:max-w-[var(--torrent-card-left-column-max-width)]">
           <Skeleton className="h-7 w-full max-w-[620px] rounded-control bg-[var(--skeleton-strong-background-color)] md:h-[28px]" />
           <div className="flex flex-wrap items-center gap-[var(--torrent-card-content-gap)]">
-            <Skeleton className="h-[var(--torrent-badge-height)] w-[92px] rounded-pill" />
-            <Skeleton className="h-[var(--torrent-badge-height)] w-[134px] rounded-pill" />
+            <Skeleton className="h-[var(--badge-height)] w-[92px] rounded-pill" />
+            <Skeleton className="h-[var(--badge-height)] w-[134px] rounded-pill" />
           </div>
         </div>
 
-        <div className="flex min-w-[var(--torrent-card-status-column-width)] shrink-0 flex-row gap-[var(--torrent-card-content-gap)] md:flex-col">
-          <Skeleton className="h-[var(--torrent-badge-height)] w-[125px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
-          <Skeleton className="h-[var(--torrent-badge-height)] w-[125px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
+        <div className="flex shrink-0 items-center gap-[var(--torrent-card-content-gap)]">
+          <Skeleton className="hidden h-16 min-w-[41px] w-11 shrink-0 rounded-xl bg-[var(--skeleton-strong-background-color)] md:block" />
+          <div className="flex min-w-[var(--torrent-card-status-column-width)] flex-col gap-[var(--torrent-card-content-gap)]">
+            <Skeleton className="h-[var(--badge-height)] w-[125px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
+            <Skeleton className="h-[var(--badge-height)] w-[125px] rounded-pill bg-[var(--skeleton-strong-background-color)]" />
+          </div>
         </div>
       </div>
     </div>

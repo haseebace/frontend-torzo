@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ChevronDown,
-  File,
-  FileText,
-  Image,
-  Video,
-} from "lucide-react";
+import { ChevronDown, File, FileText, Image, Video } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
+import { Badge } from "@/components/ui/badge";
 import { TorrentActions } from "@/components/torrent/torrent-actions";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { cn, formatDate } from "@/lib/utils";
 
 type DetailPageProps = {
@@ -144,7 +143,9 @@ type TorrentDetail = {
   meta: TorrentDetailMeta;
 };
 
-export async function generateMetadata({ searchParams }: DetailPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: DetailPageProps): Promise<Metadata> {
   const params = await searchParams;
   const sourceUrl = params.source_url;
 
@@ -215,7 +216,7 @@ function formatProviderLinkLabel(value: string | null | undefined) {
 function normalizeDetailResponse(
   response: TorrentDetailResponse,
   fallbackSource: string,
-  fallbackSourceUrl: string
+  fallbackSourceUrl: string,
 ): TorrentDetail {
   const { data, meta = {} } = response;
   const primarySource = data.sources?.[0];
@@ -296,7 +297,12 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         <SiteNavbar />
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <p className="text-muted-foreground">No media source provided.</p>
-          <Link href="/" className="text-link hover:underline mt-4 inline-block">Go back home</Link>
+          <Link
+            href="/"
+            className="text-link hover:underline mt-4 inline-block"
+          >
+            Go back home
+          </Link>
         </section>
       </main>
     );
@@ -307,9 +313,12 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   try {
     if (source === "yts") {
-      const res = await fetch(`https://torzoapi.vercel.app/api/v1/yts/movies/${sourceUrl}`, {
-        cache: "no-store"
-      });
+      const res = await fetch(
+        `https://torzoapi.vercel.app/api/v1/yts/movies/${sourceUrl}`,
+        {
+          cache: "no-store",
+        },
+      );
       if (res.ok) {
         const json = (await res.json()) as YtsDetailResponse;
         const movie = json.data?.movie;
@@ -322,14 +331,28 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           torrentFileUrl: bestTorrent?.url ?? null,
           infoHash: bestTorrent?.hash ?? null,
           sizeBytes: bestTorrent?.size_bytes ?? 0,
-          sizeHuman: bestTorrent?.size || formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
+          sizeHuman:
+            bestTorrent?.size ||
+            formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
           uploadedAt: movie.date_uploaded ?? null,
           category: "movies",
           uploader: "YTS",
           seeders: bestTorrent?.seeds ?? 0,
           leechers: bestTorrent?.peers ?? 0,
           fileCount: 1,
-          files: [{ name: movie.title || "Media file", size: bestTorrent?.size || formatBytesFromBytes(bestTorrent?.size_bytes ?? 0), size_bytes: bestTorrent?.size_bytes ?? 0, size_human: bestTorrent?.size || formatBytesFromBytes(bestTorrent?.size_bytes ?? 0), extension: ".mp4" }],
+          files: [
+            {
+              name: movie.title || "Media file",
+              size:
+                bestTorrent?.size ||
+                formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
+              size_bytes: bestTorrent?.size_bytes ?? 0,
+              size_human:
+                bestTorrent?.size ||
+                formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
+              extension: ".mp4",
+            },
+          ],
           source: { provider: "yts", url: movie.url ?? sourceUrl },
           sources: [],
           images: [],
@@ -351,7 +374,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     } else {
       const res = await fetch(
         `https://torzoapi.vercel.app/api/v1/torrents/detail?source=${source}&source_url=${encodeURIComponent(sourceUrl)}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       if (res.ok) {
         const json = (await res.json()) as TorrentDetailResponse;
@@ -374,10 +397,17 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
             <h1 className="text-2xl font-bold text-foreground-strong">Oops!</h1>
-            <p className="text-destructive font-medium">{error || "Media details not found."}</p>
+            <p className="text-destructive font-medium">
+              {error || "Media details not found."}
+            </p>
             <p className="text-sm text-muted-foreground">Source: {source}</p>
             <p className="text-xs text-text-soft break-all">URL: {sourceUrl}</p>
-            <Link href="/" className="text-link hover:underline mt-6 inline-block">Go back home</Link>
+            <Link
+              href="/"
+              className="text-link hover:underline mt-6 inline-block"
+            >
+              Go back home
+            </Link>
           </div>
         </section>
       </main>
@@ -387,7 +417,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   const title = cleanTitle(torrent.title);
   const hasFiles = torrent.files.length > 0;
   const detailStats = [
-    { label: "Files", value: (torrent.fileCount || torrent.files?.length || 0).toString() },
+    {
+      label: "Files",
+      value: (torrent.fileCount || torrent.files?.length || 0).toString(),
+    },
     { label: "Size", value: torrent.sizeHuman || "Unknown" },
     { label: "Seeders", value: formatNumber(torrent.seeders) },
     { label: "Leechers", value: formatNumber(torrent.leechers) },
@@ -407,14 +440,12 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
               {title}
             </h1>
-            <div className="ui-badge max-w-full [--badge-padding-x:14px]">
-              <span className="shrink-0">
-                Info hash:
-              </span>
+            <Badge className="max-w-full [--badge-padding-x:14px]">
+              <span className="shrink-0">Info hash:</span>
               <p className="min-w-0 truncate font-mono">
                 {torrent.infoHash ?? "Unknown"}
               </p>
-            </div>
+            </Badge>
           </div>
 
           <TorrentActions
@@ -431,7 +462,9 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               {detailStats.map((stat) => (
                 <div key={stat.label} className="flex items-baseline gap-2">
                   <span className="text-muted-foreground">{stat.label}</span>
-                  <span className="font-semibold text-foreground">{stat.value}</span>
+                  <span className="font-semibold text-foreground">
+                    {stat.value}
+                  </span>
                 </div>
               ))}
             </div>
@@ -449,29 +482,29 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="min-w-0 divide-y divide-border/70">
-                  {hasFiles ? torrent.files.map((file, i) => {
-                    const FileIcon = getFileIcon(file.extension || "");
-                    const fileSize = getFileSizeDisplay(file);
+                  {hasFiles ? (
+                    torrent.files.map((file, i) => {
+                      const FileIcon = getFileIcon(file.extension || "");
+                      const fileSize = getFileSizeDisplay(file);
 
-                    return (
-                      <div
-                        key={`${file.name}-${i}`}
-                        className="px-2 py-3 text-xs transition-colors hover:bg-surface-subtle md:text-sm"
-                      >
-                        <div className="flex min-w-0 items-center gap-3">
-                          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--badge-background)] text-[var(--badge-foreground)] md:size-8">
-                            <FileIcon className="size-3.5 md:size-4" />
-                          </span>
-                          <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
-                            {file.name}
-                          </p>
-                          <span className="ui-badge ml-auto">
-                            {fileSize}
-                          </span>
+                      return (
+                        <div
+                          key={`${file.name}-${i}`}
+                          className="px-2 py-3 text-xs transition-colors hover:bg-surface-subtle md:text-sm"
+                        >
+                          <div className="flex min-w-0 items-center gap-3">
+                            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--badge-background)] text-[var(--badge-foreground)] md:size-8">
+                              <FileIcon className="size-3.5 md:size-4" />
+                            </span>
+                            <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
+                              {file.name}
+                            </p>
+                            <Badge className="ml-auto">{fileSize}</Badge>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  }) : (
+                      );
+                    })
+                  ) : (
                     <p className="px-2 py-3 text-sm text-muted-foreground">
                       No file list returned for this media yet.
                     </p>
@@ -494,9 +527,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       className="rounded-control border border-border bg-surface-subtle px-2.5 py-1.5 text-xs font-medium text-foreground-strong hover:bg-surface-badge md:px-3 md:py-2 md:text-sm"
                     >
                       Screenshot {index + 1}
-                      <span className="ui-badge ml-1.5 md:ml-2">
-                        {image.kind}
-                      </span>
+                      <Badge className="ml-1.5 md:ml-2">{image.kind}</Badge>
                     </Link>
                   ))}
                 </div>
@@ -512,7 +543,9 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               <div className="divide-y divide-border/70 text-sm">
                 {sourceLink.source_url ? (
                   <div className="flex min-w-0 items-center justify-between gap-4 py-3 first:pt-0">
-                    <span className="shrink-0 text-muted-foreground">Source</span>
+                    <span className="shrink-0 text-muted-foreground">
+                      Source
+                    </span>
                     <Link
                       href={sourceLink.source_url}
                       target="_blank"
@@ -531,18 +564,24 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 </div>
                 <div className="flex items-center justify-between gap-4 py-3">
                   <span className="text-muted-foreground">Verified</span>
-                  <span className={cn("font-semibold", torrent.verified ? "text-success" : "text-foreground")}>
+                  <span
+                    className={cn(
+                      "font-semibold",
+                      torrent.verified ? "text-success" : "text-foreground",
+                    )}
+                  >
                     {torrent.verified ? "Yes" : "No"}
                   </span>
                 </div>
-                {torrent.downloaded !== undefined && torrent.downloaded !== null && (
-                  <div className="flex items-center justify-between gap-4 py-3">
-                    <span className="text-muted-foreground">Downloads</span>
-                    <span className="font-semibold text-foreground">
-                      {formatNumber(torrent.downloaded)}
-                    </span>
-                  </div>
-                )}
+                {torrent.downloaded !== undefined &&
+                  torrent.downloaded !== null && (
+                    <div className="flex items-center justify-between gap-4 py-3">
+                      <span className="text-muted-foreground">Downloads</span>
+                      <span className="font-semibold text-foreground">
+                        {formatNumber(torrent.downloaded)}
+                      </span>
+                    </div>
+                  )}
                 <div className="flex items-center justify-between gap-4 py-3">
                   <span className="text-muted-foreground">Health score</span>
                   <span className="font-semibold text-foreground">
@@ -563,7 +602,6 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 </div>
               </div>
             </section>
-
           </aside>
         </div>
       </section>

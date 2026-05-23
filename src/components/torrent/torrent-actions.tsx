@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -32,104 +33,119 @@ export function TorrentActions({
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const rdFetch = useCallback(async (endpoint: string, options: { method?: string; body?: unknown } = {}) => {
-    const apiKey = localStorage.getItem("rd_api_key");
-    if (!apiKey) throw new Error("No API key found");
+  const rdFetch = useCallback(
+    async (
+      endpoint: string,
+      options: { method?: string; body?: unknown } = {},
+    ) => {
+      const apiKey = localStorage.getItem("rd_api_key");
+      if (!apiKey) throw new Error("No API key found");
 
-    const res = await fetch("/api/real-debrid/proxy", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-rd-api-key": apiKey,
-      },
-      body: JSON.stringify({
-        endpoint,
-        method: options.method || "GET",
-        body: options.body,
-      }),
-    });
+      const res = await fetch("/api/real-debrid/proxy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-rd-api-key": apiKey,
+        },
+        body: JSON.stringify({
+          endpoint,
+          method: options.method || "GET",
+          body: options.body,
+        }),
+      });
 
-    if (res.status === 204) return null;
-    const data = await res.json();
-    if (!res.ok) {
-      const error = new Error(data.error || "Real-Debrid error") as Error & {
-        code?: number;
-        status?: number;
-      };
-      error.code = data.error_code;
-      error.status = res.status;
-      throw error;
-    }
-    return data;
-  }, []);
-
-  const unrestrictLink = useCallback(async (link: string) => {
-    const data = await rdFetch("/unrestrict/link", {
-      method: "POST",
-      body: { link },
-    });
-    if (!data?.download) {
-      throw new Error("No direct download link found");
-    }
-    return data.download;
-  }, [rdFetch]);
-
-  const lookupExistingTorrent = useCallback(async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
-    const normalizedHash = infoHash?.trim().toLowerCase();
-    const apiKey = localStorage.getItem("rd_api_key");
-
-    if (!normalizedHash || !apiKey) return false;
-
-    try {
-      if (!options.silent) setStatus("checking");
-      setErrorMessage(null);
-
-      const torrents = await rdFetch("/torrents?limit=5000");
-
-      const match = Array.isArray(torrents)
-        ? torrents.find((torrent) => torrent?.hash?.toLowerCase() === normalizedHash)
-        : null;
-
-      if (!match) {
-        if (!options.silent) setStatus("idle");
-        if (!options.hideBadge) setRdAccountStatus(null);
-        return false;
+      if (res.status === 204) return null;
+      const data = await res.json();
+      if (!res.ok) {
+        const error = new Error(data.error || "Real-Debrid error") as Error & {
+          code?: number;
+          status?: number;
+        };
+        error.code = data.error_code;
+        error.status = res.status;
+        throw error;
       }
+      return data;
+    },
+    [],
+  );
 
-      if (match.status === "downloaded") {
-        if (!options.hideBadge) setRdAccountStatus("Ready in Real-Debrid");
+  const unrestrictLink = useCallback(
+    async (link: string) => {
+      const data = await rdFetch("/unrestrict/link", {
+        method: "POST",
+        body: { link },
+      });
+      if (!data?.download) {
+        throw new Error("No direct download link found");
+      }
+      return data.download;
+    },
+    [rdFetch],
+  );
 
-        // Fetch torrent info to get the hoster link
-        try {
-          const info = await rdFetch(`/torrents/info/${match.id}`);
-          const links = info?.links || [];
+  const lookupExistingTorrent = useCallback(
+    async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
+      const normalizedHash = infoHash?.trim().toLowerCase();
+      const apiKey = localStorage.getItem("rd_api_key");
 
-          if (links.length > 0) {
-            // Unrestrict the hoster link to get direct download URL
-            const downloadLink = await unrestrictLink(links[0]);
-            setDirectLink(downloadLink);
-            setStatus("ready");
-            return true;
-          }
-        } catch {
-          // Failed to get links
+      if (!normalizedHash || !apiKey) return false;
+
+      try {
+        if (!options.silent) setStatus("checking");
+        setErrorMessage(null);
+
+        const torrents = await rdFetch("/torrents?limit=5000");
+
+        const match = Array.isArray(torrents)
+          ? torrents.find(
+              (torrent) => torrent?.hash?.toLowerCase() === normalizedHash,
+            )
+          : null;
+
+        if (!match) {
+          if (!options.silent) setStatus("idle");
+          if (!options.hideBadge) setRdAccountStatus(null);
+          return false;
         }
-      }
 
-      setDirectLink(null);
-      setStatus("idle");
-      if (!options.hideBadge) setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
-      return true;
-    } catch (err: unknown) {
-      const rdError = err as Error & { code?: number };
-      if (rdError.code === 37) {
-        // Torrent API disabled, just skip silently
-        if (!options.silent) setStatus("idle");
-        return false;
+        if (match.status === "downloaded") {
+          if (!options.hideBadge) setRdAccountStatus("Ready in Real-Debrid");
+
+          // Fetch torrent info to get the hoster link
+          try {
+            const info = await rdFetch(`/torrents/info/${match.id}`);
+            const links = info?.links || [];
+
+            if (links.length > 0) {
+              // Unrestrict the hoster link to get direct download URL
+              const downloadLink = await unrestrictLink(links[0]);
+              setDirectLink(downloadLink);
+              setStatus("ready");
+              return true;
+            }
+          } catch {
+            // Failed to get links
+          }
+        }
+
+        setDirectLink(null);
+        setStatus("idle");
+        if (!options.hideBadge)
+          setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
+        return true;
+      } catch (err: unknown) {
+        const rdError = err as Error & { code?: number };
+        if (rdError.code === 37) {
+          // Torrent API disabled, just skip silently
+          if (!options.silent) setStatus("idle");
+          return false;
+        }
+        throw err;
       }
-      throw err;
-    }
-  }, [infoHash, rdFetch, unrestrictLink]);
+    },
+    [infoHash, rdFetch, unrestrictLink],
+  );
 
   const handleAddToRD = async () => {
     try {
@@ -151,7 +167,11 @@ export function TorrentActions({
       let info;
       while (true) {
         info = await rdFetch(`/torrents/info/${id}`);
-        if (info.status === "waiting_files_selection" || info.status === "downloaded") break;
+        if (
+          info.status === "waiting_files_selection" ||
+          info.status === "downloaded"
+        )
+          break;
         if (["magnet_error", "error", "dead"].includes(info.status)) {
           throw new Error(`Torrent error: ${info.status}`);
         }
@@ -188,7 +208,10 @@ export function TorrentActions({
     } catch (err) {
       console.error(err);
       const rdError = err as Error & { code?: number };
-      if (rdError.code === 33 || rdError.message.toLowerCase().includes("already active")) {
+      if (
+        rdError.code === 33 ||
+        rdError.message.toLowerCase().includes("already active")
+      ) {
         try {
           const foundExisting = await lookupExistingTorrent({ silent: true });
           if (foundExisting) return;
@@ -197,12 +220,20 @@ export function TorrentActions({
         }
       }
 
-      setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred");
+      setErrorMessage(
+        err instanceof Error ? err.message : "An unknown error occurred",
+      );
       setStatus("error");
     }
   };
 
-  const isLoading = ["checking", "adding", "selecting", "downloading", "unrestricting"].includes(status);
+  const isLoading = [
+    "checking",
+    "adding",
+    "selecting",
+    "downloading",
+    "unrestricting",
+  ].includes(status);
 
   const handleWatchNow = () => {
     if (!directLink) return;
@@ -227,7 +258,9 @@ export function TorrentActions({
       // Fallback: If IINA isn't installed, show a notification after a delay
       setTimeout(() => {
         if (document.hasFocus()) {
-          alert("INA player not found. The video link has been copied to your clipboard.");
+          alert(
+            "INA player not found. The video link has been copied to your clipboard.",
+          );
           navigator.clipboard.writeText(linkToPlay).catch(() => {});
         }
       }, 2000);
@@ -254,9 +287,19 @@ export function TorrentActions({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className={cn("flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3", className)}>
+      <div
+        className={cn(
+          "flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3",
+          className,
+        )}
+      >
         {magnetLink && (
-          <Button asChild variant="default" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button
+            asChild
+            variant="default"
+            size="lg"
+            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+          >
             <a href={magnetLink}>
               <span className="sm:hidden">Magnet</span>
               <span className="hidden sm:inline">Magnet link</span>
@@ -264,7 +307,12 @@ export function TorrentActions({
           </Button>
         )}
         {torrentFileUrl && (
-          <Button asChild variant="secondary" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button
+            asChild
+            variant="secondary"
+            size="lg"
+            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+          >
             <a href={torrentFileUrl}>
               <span className="sm:hidden">Torrent</span>
               <span className="hidden sm:inline">Download torrent</span>
@@ -281,7 +329,13 @@ export function TorrentActions({
         >
           {isLoading && <Loader2 className="size-3.5 animate-spin sm:size-4" />}
           <span className="sm:hidden">
-            {status === "ready" ? "Added" : status === "checking" ? "Check" : isLoading ? "Adding" : "Debrid"}
+            {status === "ready"
+              ? "Added"
+              : status === "checking"
+                ? "Check"
+                : isLoading
+                  ? "Adding"
+                  : "Debrid"}
           </span>
           <span className="hidden sm:inline">
             {status === "checking" && "Checking Real-Debrid..."}
@@ -308,7 +362,12 @@ export function TorrentActions({
         )}
 
         {directLink && (
-          <Button asChild variant="outline" size="lg" className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+          >
             <a href={directLink} target="_blank" rel="noreferrer">
               <span className="sm:hidden">Direct</span>
               <span className="hidden sm:inline">Direct Download</span>
@@ -318,12 +377,12 @@ export function TorrentActions({
       </div>
       {rdAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="ui-badge">
-            {rdAccountStatus}
-          </span>
+          <Badge>{rdAccountStatus}</Badge>
         </div>
       )}
-      {errorMessage && <p className="text-sm font-medium text-destructive">{errorMessage}</p>}
+      {errorMessage && (
+        <p className="text-sm font-medium text-destructive">{errorMessage}</p>
+      )}
     </div>
   );
 }

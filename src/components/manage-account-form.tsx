@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { LockKeyhole } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -203,8 +204,8 @@ export function ManageAccountForm() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 md:gap-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-7">
+    <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-7">
+      <div className="flex min-w-0 flex-1 flex-col gap-6 md:gap-7">
         <Card className="px-0 py-0 shadow-none border-none">
           <CardContent className="flex flex-col gap-6 p-6 md:p-8 border-none">
             <div className="flex flex-col gap-6">
@@ -278,6 +279,57 @@ export function ManageAccountForm() {
           </CardContent>
         </Card>
 
+        <Card className="px-0 py-0 shadow-none border-none">
+          <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
+            <div className="flex items-center justify-between gap-3">
+              <CardTitle className="min-w-0 font-heading text-xl font-extrabold text-foreground md:text-2xl">
+                Provider configuration
+              </CardTitle>
+              <Badge dot>{isSavingProviders ? "Saving" : "Saved"}</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3 px-5 pb-6 pt-5 md:px-7 md:pb-7 md:pt-6">
+            <div className="flex flex-col gap-3 md:flex-row md:gap-3.5">
+              {providers.map((provider) => {
+                const isChecked = selectedProviders.includes(provider.id);
+
+                return (
+                  <label
+                    key={provider.id}
+                    className={cn(
+                      "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:border-primary hover:bg-brand-surface active:scale-[0.96] motion-reduce:active:scale-100",
+                      isChecked ? "border-primary" : "border-border",
+                    )}
+                  >
+                    <Checkbox
+                      checked={isChecked}
+                      onCheckedChange={(checked) =>
+                        handleProviderChange(provider.id, checked === true)
+                      }
+                      aria-label={`Use ${provider.label}`}
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="flex min-w-0 items-center justify-between gap-2">
+                        <span className="font-heading text-sm font-extrabold text-foreground">
+                          {provider.label}
+                        </span>
+                        {isChecked ? <Badge dot>Active</Badge> : null}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+            {providerError ? (
+              <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive">
+                {providerError}
+              </p>
+            ) : null}
+          </CardContent>
+        </Card>
+      </div>
+
+      <aside className="flex min-w-0 w-full flex-col gap-6 md:gap-7 lg:w-[360px] lg:shrink-0 lg:sticky lg:top-8 lg:self-start">
         <Card className="bg-brand-surface px-0 py-0 text-brand-foreground border-none">
           <CardContent className="flex h-full flex-col gap-5 p-6">
             <div className="space-y-1.5">
@@ -306,99 +358,36 @@ export function ManageAccountForm() {
             </div>
           </CardContent>
         </Card>
-      </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-7">
-        <div className="flex flex-col gap-6 md:gap-7">
-          <Card className="px-0 py-0 shadow-none border-none">
-            <CardHeader className="px-5 pt-6 md:px-7 md:pt-7">
-              <div className="flex items-center justify-between gap-3">
-                <CardTitle className="min-w-0 font-heading text-xl font-extrabold text-foreground md:text-2xl">
-                  Provider configuration
-                </CardTitle>
-                <span className="ui-badge">
-                  <span className="ui-badge-dot" />
-                  {isSavingProviders ? "Saving" : "Saved"}
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3 px-5 pb-6 pt-5 md:px-7 md:pb-7 md:pt-6">
-              <div className="flex flex-col gap-3 md:flex-row md:gap-3.5">
-                {providers.map((provider) => {
-                  const isChecked = selectedProviders.includes(provider.id);
-
-                  return (
-                    <label
-                      key={provider.id}
-                      className={cn(
-                        "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-pill border-2 bg-surface px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:border-primary hover:bg-brand-surface active:scale-[0.96] motion-reduce:active:scale-100",
-                        isChecked ? "border-primary" : "border-border",
-                      )}
-                    >
-                      <Checkbox
-                        checked={isChecked}
-                        onCheckedChange={(checked) =>
-                          handleProviderChange(provider.id, checked === true)
-                        }
-                        aria-label={`Use ${provider.label}`}
-                      />
-                      <span className="min-w-0 flex-1">
-                        <span className="flex min-w-0 items-center justify-between gap-2">
-                          <span className="font-heading text-sm font-extrabold text-foreground">
-                            {provider.label}
-                          </span>
-                          {isChecked ? (
-                            <span className="ui-badge">
-                              <span className="ui-badge-dot" />
-                              Active
-                            </span>
-                          ) : null}
-                        </span>
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-              {providerError ? (
-                <p className="rounded-control bg-brand-surface px-4 py-3 text-sm font-medium text-destructive">
-                  {providerError}
-                </p>
-              ) : null}
-            </CardContent>
-          </Card>
-        </div>
-
-        <aside className="grid grid-cols-1 gap-6 self-start sm:grid-cols-2 lg:grid-cols-1">
-          <Card className="px-0 py-0 shadow-none border-none">
-            <CardContent className="space-y-2.5 p-5 md:p-[18px]">
-              <p className="text-sm font-bold text-muted-foreground">
-                Setup health
-              </p>
-              <p className="font-heading text-[28px] font-bold leading-none text-foreground md:text-[34px]">
-                {activeProviderCount}/{providers.length}
-              </p>
-              <p className="text-sm font-semibold text-primary">
-                Providers active
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="px-0 py-0 shadow-none border-none">
-            <CardContent className="space-y-2.5 p-5 md:p-[18px]">
-              <p className="text-sm font-bold text-muted-foreground">
-                Key status
-              </p>
-              <p className="font-heading text-[28px] font-bold leading-none text-primary md:text-[34px]">
-                {isConnected ? "Ready" : "Missing"}
-              </p>
-              <p className="text-sm font-semibold text-primary">
-                {isConnected
-                  ? "Debrid actions unlocked"
-                  : "Paste API key to unlock"}
-              </p>
-            </CardContent>
-          </Card>
-        </aside>
-      </div>
+        <Card className="px-0 py-0 shadow-none border-none">
+          <CardContent className="space-y-2.5 p-5 md:p-[18px]">
+            <p className="text-sm font-bold text-muted-foreground">
+              Setup health
+            </p>
+            <p className="font-heading text-[28px] font-bold leading-none text-foreground md:text-[34px]">
+              {activeProviderCount}/{providers.length}
+            </p>
+            <p className="text-sm font-semibold text-primary">
+              Providers active
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="px-0 py-0 shadow-none border-none">
+          <CardContent className="space-y-2.5 p-5 md:p-[18px]">
+            <p className="text-sm font-bold text-muted-foreground">
+              Key status
+            </p>
+            <p className="font-heading text-[28px] font-bold leading-none text-primary md:text-[34px]">
+              {isConnected ? "Ready" : "Missing"}
+            </p>
+            <p className="text-sm font-semibold text-primary">
+              {isConnected
+                ? "Debrid actions unlocked"
+                : "Paste API key to unlock"}
+            </p>
+          </CardContent>
+        </Card>
+      </aside>
     </div>
   );
 }
