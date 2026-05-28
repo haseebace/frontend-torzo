@@ -77,7 +77,7 @@ export function TorrentActions({
         error.status = res.status;
         throw error;
       }
-      return data as TorBoxResponse<unknown>;
+      return data as unknown as TorBoxResponse<unknown>;
     },
     [],
   );
