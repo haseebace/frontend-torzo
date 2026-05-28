@@ -14,11 +14,11 @@ export function SiteNavbar() {
   };
 
   return (
-    <header className="relative z-50 flex h-[90px] w-full px-4 md:px-16">
+    <header className="relative z-50 flex h-[90px] w-full px-4 md:px-12">
       <nav className="relative flex w-full items-center justify-between">
         <Link
           href="/"
-          className="font-heading text-[33px] font-extrabold leading-none text-primary"
+          className="font-sans text-[33px] font-extrabold leading-none text-primary"
         >
           <span className="md:hidden">T.</span>
           <span className="hidden md:inline">Torzo.</span>
@@ -30,11 +30,11 @@ export function SiteNavbar() {
           <Button
             asChild
             variant="ghost"
-            className="h-[50px] px-5 font-heading"
+            className="h-[50px] px-5 font-sans"
           >
             <Link href="/how-to-use">How to Use</Link>
           </Button>
-          <Button asChild className="h-[50px] px-6 font-heading">
+          <Button asChild className="h-[50px] px-6 font-sans">
             <Link href="/manage">Manage</Link>
           </Button>
         </div>
@@ -52,7 +52,7 @@ export function SiteNavbar() {
             <div className="flex items-center justify-between">
               <Link
                 href="/"
-                className="font-heading text-[33px] font-extrabold leading-none text-primary"
+                className="font-sans text-[33px] font-extrabold leading-none text-primary"
               >
                 T.
               </Link>
@@ -74,7 +74,7 @@ export function SiteNavbar() {
                 <Button
                   asChild
                   variant="ghost"
-                  className="h-[50px] px-8 font-heading"
+                  className="h-[50px] px-8 font-sans"
                 >
                   <Link href="/how-to-use">How to Use</Link>
                 </Button>
@@ -90,7 +90,7 @@ export function SiteNavbar() {
                   delay: 0.12,
                 }}
               >
-                <Button asChild className="h-[50px] px-8 font-heading">
+                <Button asChild className="h-[50px] px-8 font-sans">
                   <Link href="/manage">Manage</Link>
                 </Button>
               </motion.div>

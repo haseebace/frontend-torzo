@@ -5,7 +5,7 @@ export default function TermsPage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           Terms of Service
         </h1>
@@ -46,7 +46,7 @@ export default function TermsPage() {
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-foreground-strong">4. Third-Party Services</h2>
             <p>
-              Torzo integrates with third-party services including Real-Debrid, TMDB, and various 
+              Torzo integrates with third-party services including TorBox, TMDB, and various 
               content providers. Your use of these services is subject to their respective terms 
               and policies. Torzo is not responsible for the content, accuracy, or legality of 
               third-party services.

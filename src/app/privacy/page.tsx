@@ -5,7 +5,7 @@ export default function PrivacyPage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           Privacy Policy
         </h1>
@@ -51,8 +51,8 @@ export default function PrivacyPage() {
             <p>Torzo integrates with:</p>
             <ul className="ml-6 list-disc space-y-2">
               <li>
-                <strong>Real-Debrid:</strong> If you connect your Real-Debrid account, 
-                authentication is handled directly between you and Real-Debrid. We do not 
+                <strong>TorBox:</strong> If you connect your TorBox account, 
+                authentication is handled directly between you and TorBox. We do not 
                 store your credentials.
               </li>
               <li>

@@ -4,7 +4,7 @@ export default function DMCAPage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           DMCA Policy
         </h1>
@@ -58,7 +58,7 @@ export default function DMCAPage() {
             <p>
               DMCA notices should be sent to our designated agent at:
             </p>
-            <div className="rounded-control bg-surface-subtle p-4 text-foreground-strong">
+            <div className="rounded-full bg-surface-subtle p-4 text-foreground-strong">
               <p>Email: dmca@torzo.vercel.app</p>
               <p>Subject Line: DMCA Takedown Request</p>
             </div>

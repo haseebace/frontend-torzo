@@ -48,35 +48,35 @@ export function TorrentResultCard({
     <Link
       href={detailHref}
       className={cn(
-        "group block rounded-[var(--torrent-card-radius)] transition-transform duration-200 ease-[var(--ui-ease-standard)] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus",
+        "group block rounded-[22px] transition-transform duration-200 ease-out active:scale-[0.96] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus",
         className,
       )}
       onMouseEnter={handleMouseEnter}
     >
-      <Card className="rounded-[var(--torrent-card-radius)] border-0 bg-[var(--torrent-card-background-color)] px-0 py-0 shadow-none ring-0 transition-[box-shadow,transform] duration-300 ease-[var(--ui-ease-standard)] group-hover:shadow-ui-result-hover">
-        <CardContent className="flex min-h-[var(--torrent-card-min-height)] flex-col justify-between gap-4 p-4 sm:p-5 md:flex-row md:items-center md:gap-[var(--torrent-card-column-gap)] md:p-[var(--torrent-card-padding)] [&_.torrent-size-badge]:hidden [&_.torrent-size-badge]:px-[var(--torrent-size-badge-padding-x)] [&_.torrent-size-badge]:md:flex">
-          <div className="flex min-w-0 flex-1 flex-col justify-center gap-3 md:max-w-[var(--torrent-card-left-column-max-width)] md:gap-[var(--torrent-card-content-gap)]">
+      <Card className="rounded-[22px] border-0 bg-card px-0 py-0 shadow-none ring-0 transition-[box-shadow,transform] duration-300 ease-out group-hover:shadow-sm">
+        <CardContent className="flex min-h-[114px] flex-col justify-between gap-4 p-4 sm:p-5 md:flex-row md:items-center md:gap-8 md:p-6 [&_.torrent-size-badge]:hidden [&_.torrent-size-badge]:px-3.5 [&_.torrent-size-badge]:md:flex">
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-3 md:max-w-[624px] md:gap-4">
             <div className="flex min-w-0 items-center">
-              <h2 className="min-w-0 flex-1 truncate font-sans text-[length:var(--torrent-card-title-mobile-font-size)] font-[var(--torrent-card-title-font-weight)] leading-[var(--torrent-card-title-mobile-line-height)] text-[var(--torrent-card-text-color)] md:[font-size:var(--torrent-card-title-font-size)] md:leading-[var(--torrent-card-title-line-height)]">
+              <h2 className="min-w-0 flex-1 truncate font-sans text-sm font-extrabold leading-7 text-primary md:text-lg md:leading-9">
                 {result.title}
               </h2>
             </div>
-            <div className="hidden flex-wrap items-center gap-2.5 md:flex md:gap-[var(--torrent-card-content-gap)]">
+            <div className="hidden flex-wrap items-center gap-2.5 md:flex md:gap-4">
               <Badge>{result.category}</Badge>
               <Badge>{provider}</Badge>
             </div>
           </div>
 
-          <div className="flex w-full shrink-0 items-center gap-2.5 md:w-auto md:gap-[var(--torrent-card-content-gap)]">
+          <div className="flex w-full shrink-0 items-center gap-2.5 md:w-auto md:gap-4">
             <TorrentSizeBadge
               sizeHuman={result.size_human}
               sizeBytes={result.size_bytes}
             />
-            <div className="grid min-w-0 flex-1 grid-cols-2 gap-2.5 md:flex md:min-w-[var(--torrent-card-status-column-width)] md:flex-col md:gap-[var(--torrent-card-content-gap)]">
-              <Badge className="w-full md:w-[var(--torrent-card-status-column-width)]">
+            <div className="grid min-w-0 flex-1 grid-cols-2 gap-2.5 md:flex md:min-w-32 md:flex-col md:gap-4">
+              <Badge className="w-full md:w-32">
                 {result.seeders.toLocaleString()} Seeders
               </Badge>
-              <Badge className="w-full md:w-[var(--torrent-card-status-column-width)]">
+              <Badge className="w-full md:w-32">
                 {result.leechers.toLocaleString()} Leechers
               </Badge>
             </div>

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronDown, File, FileText, Image, Video } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { Badge } from "@/components/ui/badge";
 import { TorrentActions } from "@/components/torrent/torrent-actions";
+import { TorrentFileList } from "@/components/torrent/torrent-file-list";
 import {
   Collapsible,
   CollapsibleContent,
@@ -254,37 +255,7 @@ function normalizeDetailResponse(
   };
 }
 
-function getFileSizeDisplay(file: TorrentFile): string {
-  if (file.size_human) return file.size_human;
 
-  if (file.size && file.size !== "0 bytes") {
-    const cleaned = file.size.replace(/[\[\]]/g, "").trim();
-    const isHumanReadable = /(\d+(\.\d+)?)\s*(GB|MB|KB|TB|PB)/i.test(cleaned);
-
-    if (isHumanReadable) {
-      return cleaned;
-    }
-
-    const bytes = parseInt(cleaned, 10);
-    if (!isNaN(bytes) && bytes > 0) {
-      return formatBytesFromBytes(bytes);
-    }
-  }
-
-  if (file.size_bytes && file.size_bytes > 0) {
-    return formatBytesFromBytes(file.size_bytes);
-  }
-
-  return "Unknown";
-}
-
-function getFileIcon(extension: string) {
-  const ext = extension.toLowerCase();
-  if ([".mkv", ".mp4", ".avi", ".mov", ".webm"].includes(ext)) return Video;
-  if ([".png", ".jpg", ".jpeg", ".webp", ".gif"].includes(ext)) return Image;
-  if ([".nfo", ".txt", ".srt", ".md"].includes(ext)) return FileText;
-  return File;
-}
 
 export default async function DetailPage({ searchParams }: DetailPageProps) {
   const params = await searchParams;
@@ -295,7 +266,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     return (
       <main className="min-h-dvh bg-background text-foreground">
         <SiteNavbar />
-        <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
+        <section className="origin-center animate-page-fade-in px-4 py-20 text-center">
           <p className="text-muted-foreground">No media source provided.</p>
           <Link
             href="/"
@@ -394,7 +365,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     return (
       <main className="min-h-dvh bg-background text-foreground">
         <SiteNavbar />
-        <section className="origin-center animate-homepage-enter px-4 py-20 text-center">
+        <section className="origin-center animate-page-fade-in px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
             <h1 className="text-2xl font-bold text-foreground-strong">Oops!</h1>
             <p className="text-destructive font-medium">
@@ -434,15 +405,15 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     <main className="min-h-dvh overflow-x-hidden bg-background text-foreground">
       <SiteNavbar />
 
-      <section className="flex w-full min-w-0 origin-center animate-homepage-enter flex-col gap-8 px-4 py-8 md:px-10 xl:px-page">
+      <section className="flex w-full min-w-0 origin-center animate-page-fade-in flex-col gap-8 px-4 py-8 md:px-12">
         <div className="min-w-0 space-y-5 border-b border-border pb-7">
           <div className="space-y-3">
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
               {title}
             </h1>
-            <Badge className="max-w-full [--badge-padding-x:14px]">
+            <Badge className="max-w-full">
               <span className="shrink-0">Info hash:</span>
-              <p className="min-w-0 truncate font-mono">
+              <p className="min-w-0 truncate">
                 {torrent.infoHash ?? "Unknown"}
               </p>
             </Badge>
@@ -471,72 +442,68 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
             <Collapsible>
               <CollapsibleTrigger>
-                <div className="flex min-w-0 items-center gap-4">
-                  <div>
-                    <h2 className="text-lg font-semibold tracking-tight text-foreground-strong">
-                      Files
-                    </h2>
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex min-w-0 items-center gap-4">
+                    <div>
+                      <h2 className="text-lg font-semibold tracking-tight text-foreground-strong">
+                        Files
+                      </h2>
+                    </div>
                   </div>
+                  <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform duration-200" />
                 </div>
-                <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform duration-200" />
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="min-w-0 divide-y divide-border/70">
-                  {hasFiles ? (
-                    torrent.files.map((file, i) => {
-                      const FileIcon = getFileIcon(file.extension || "");
-                      const fileSize = getFileSizeDisplay(file);
-
-                      return (
-                        <div
-                          key={`${file.name}-${i}`}
-                          className="px-2 py-3 text-xs transition-colors hover:bg-surface-subtle md:text-sm"
-                        >
-                          <div className="flex min-w-0 items-center gap-3">
-                            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--badge-background)] text-[var(--badge-foreground)] md:size-8">
-                              <FileIcon className="size-3.5 md:size-4" />
-                            </span>
-                            <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
-                              {file.name}
-                            </p>
-                            <Badge className="ml-auto">{fileSize}</Badge>
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <p className="px-2 py-3 text-sm text-muted-foreground">
-                      No file list returned for this media yet.
-                    </p>
-                  )}
-                </div>
+                {hasFiles ? (
+                  <TorrentFileList files={torrent.files} />
+                ) : (
+                  <p className="px-2 py-3 text-sm text-muted-foreground">
+                    No file list returned for this media yet.
+                  </p>
+                )}
               </CollapsibleContent>
             </Collapsible>
 
             {torrent.images.length > 0 && (
-              <section className="rounded-card border border-border bg-surface p-5">
+              <section className="rounded-3xl border border-border bg-surface p-5">
                 <h2 className="mb-3 text-lg font-semibold tracking-tight text-foreground-strong">
                   Screenshots
                 </h2>
                 <div className="flex flex-wrap gap-2">
-                  {torrent.images.map((image, index) => (
-                    <Link
-                      key={`${image.url}-${index}`}
-                      href={image.page_url ?? image.url}
-                      target="_blank"
-                      className="rounded-control border border-border bg-surface-subtle px-2.5 py-1.5 text-xs font-medium text-foreground-strong hover:bg-surface-badge md:px-3 md:py-2 md:text-sm"
-                    >
-                      Screenshot {index + 1}
-                      <Badge className="ml-1.5 md:ml-2">{image.kind}</Badge>
-                    </Link>
-                  ))}
+                  {torrent.images.map((image, index) => {
+                    const rawHref = image.page_url || image.url;
+                    const href =
+                      rawHref && !rawHref.startsWith("http")
+                        ? `https://${rawHref}`
+                        : rawHref;
+
+                    return (
+                      <Badge
+                        key={`${image.url}-${index}`}
+                        asChild
+                        variant="outline"
+                        className="cursor-pointer hover:bg-surface-hover"
+                      >
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Screenshot {index + 1}
+                          <span className="ml-1.5 text-[10px] text-muted-foreground md:ml-2">
+                            {image.kind}
+                          </span>
+                        </a>
+                      </Badge>
+                    );
+                  })}
                 </div>
               </section>
             )}
           </div>
 
           <aside className="min-w-0 space-y-4">
-            <section className="rounded-card border border-border bg-surface p-5">
+            <section className="rounded-3xl bg-surface p-5">
               <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground-strong">
                 Health & Dates
               </h2>

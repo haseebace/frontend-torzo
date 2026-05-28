@@ -5,7 +5,7 @@ export default function DisclaimerPage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           Disclaimer
         </h1>
@@ -55,7 +55,7 @@ export default function DisclaimerPage() {
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-foreground-strong">5. Third-Party Services</h2>
             <p>
-              Torzo integrates with third-party services including Real-Debrid for enhanced download 
+              Torzo integrates with third-party services including TorBox for enhanced download 
               capabilities. Use of such services is subject to their respective terms of service and 
               privacy policies. Torzo is not affiliated with, endorsed by, or responsible for these 
               third-party services.

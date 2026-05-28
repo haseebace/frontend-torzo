@@ -26,7 +26,7 @@ export function TorrentSizeBadge({
     >
       <span
         className={cn(
-          "max-w-full truncate text-center font-sans font-extrabold tabular-nums text-foreground-strong",
+          "max-w-full truncate text-center font-sans font-extrabold text-foreground-strong",
           valueLength <= 2 && "text-2xl leading-[30px]",
           valueLength === 3 && "text-xl leading-7",
           valueLength >= 4 && "text-base leading-5",

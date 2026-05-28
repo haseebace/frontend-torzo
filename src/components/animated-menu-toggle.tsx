@@ -34,7 +34,7 @@ export function AnimatedMenuToggle({
       aria-expanded={isOpen}
       onClick={toggleMenu}
       className={cn(
-        "relative z-[120] size-[50px] rounded-pill bg-transparent text-primary hover:bg-primary/5 hover:text-primary focus-visible:ring-primary/15 active:scale-[0.96] md:hidden",
+        "relative z-[120] size-[50px] rounded-full bg-transparent text-primary hover:bg-primary/5 hover:text-primary focus-visible:ring-primary/15 active:scale-[0.96] md:hidden",
         className
       )}
     >

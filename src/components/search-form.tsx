@@ -31,7 +31,7 @@ function SearchSubmitButton({ isSubmitting, variant = "default" }: { isSubmittin
       aria-busy={isSubmitting}
       className={cn(
         buttonVariants({ variant: "torzoPill" }),
-        "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-[var(--ui-ease-enter)]",
+        "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-out",
         variant === "hero" ? "h-[55px] w-[55px]" : "h-12 w-12",
         "md:right-2 md:opacity-0 md:pointer-events-none md:scale-90",
         variant === "hero" ? "md:h-[59px] md:w-[59px] md:right-1.5" : "md:h-13 md:w-13 md:right-1.5",
@@ -59,8 +59,10 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const hasUserTypedRef = useRef(false);
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const listboxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!hasUserTypedRef.current) {
@@ -98,6 +100,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
 
         setSuggestions(data.results ?? []);
         setIsSuggestionsOpen(true);
+        setActiveIndex(-1);
       } catch {
         if (!abortController.signal.aborted) {
           setSuggestions([]);
@@ -115,6 +118,15 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     };
   }, [query, selectedMovie]);
 
+  useEffect(() => {
+    if (activeIndex >= 0 && listboxRef.current) {
+      const option = listboxRef.current.querySelectorAll('[role="option"]')[activeIndex] as HTMLElement;
+      if (option) {
+        option.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [activeIndex]);
+
   const clearBlurTimer = () => {
     if (blurTimeoutRef.current) {
       clearTimeout(blurTimeoutRef.current);
@@ -129,9 +141,39 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     setQuery(movie.title);
     setIsSuggestionsOpen(false);
     setSuggestions([]);
+    setActiveIndex(-1);
     
     // Automatically navigate using only tmdbId
     router.push(`/results?tmdbId=${movie.id}`);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions) return;
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault();
+        setActiveIndex((prev) =>
+          prev < suggestions.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        setActiveIndex((prev) =>
+          prev > 0 ? prev - 1 : suggestions.length - 1
+        );
+        break;
+      case "Enter":
+        if (activeIndex >= 0 && suggestions[activeIndex]) {
+          event.preventDefault();
+          handleSuggestionSelect(suggestions[activeIndex]);
+        }
+        break;
+      case "Escape":
+        setIsSuggestionsOpen(false);
+        setActiveIndex(-1);
+        break;
+    }
   };
 
   const showSuggestions =
@@ -146,7 +188,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       autoComplete="off"
       onSubmit={() => setIsSubmitting(true)}
       className={cn(
-        "group w-full max-w-3xl md:transition-[max-width] md:duration-300 md:ease-[var(--ui-ease-enter)] md:focus-within:max-w-[52rem]",
+        "group w-full max-w-3xl md:transition-[max-width] md:duration-300 md:ease-out md:focus-within:max-w-[52rem]",
         className
       )}
     >
@@ -155,10 +197,10 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       </label>
       <div className={cn("relative", variant === "hero" ? "h-[71px]" : "h-16")}>
         <span className={cn(
-          "pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-muted-foreground transition-colors group-focus-within:text-foreground-strong",
+          "pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-text-subtle transition-colors group-focus-within:text-foreground-strong",
           variant === "hero" && "left-6"
         )}>
-          <Search className="size-5" />
+          <Search className="size-4" />
         </span>
         
         {/* Only include q if no selectedMovie, to avoid query overlap */}
@@ -170,6 +212,9 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           aria-autocomplete="list"
           aria-controls={listboxId}
           aria-expanded={showSuggestions}
+          aria-activedescendant={
+            activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined
+          }
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
@@ -177,12 +222,13 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           value={query}
           placeholder="Search movies, shows, games, software..."
           className={cn(
-            "bg-card pl-12 pr-16 placeholder:text-[12px] md:placeholder:text-[14px] [--ui-shadow-input-hover:0_0_30px_oklch(0.378_0.016_256_/_12%)] [--ui-shadow-input-focus:0_0_0_4px_var(--focus),0_0_40px_oklch(0.378_0.016_256_/_15%)] hover:shadow-ui-input-hover focus-visible:shadow-ui-input-focus",
+            "bg-card pl-12 pr-16 placeholder:text-[12px] placeholder:text-text-subtle md:placeholder:text-[14px] hover:shadow-sm",
             variant === "hero" ? "h-[71px] rounded-full pl-14" : "h-16"
           )}
           onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
               setIsSuggestionsOpen(false);
+              setActiveIndex(-1);
             }, 120);
           }}
           onChange={(event) => {
@@ -192,6 +238,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             setIsSubmitting(false);
             setQuery(nextQuery);
             setSelectedMovie(null);
+            setActiveIndex(-1);
 
             if (!nextQuery.trim()) {
               setSuggestions([]);
@@ -202,6 +249,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           onFocus={() => {
             clearBlurTimer();
           }}
+          onKeyDown={handleKeyDown}
         />
 
         {selectedMovie ? (
@@ -219,8 +267,9 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         {showSuggestions ? (
           <div
             id={listboxId}
+            ref={listboxRef}
             role="listbox"
-            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface py-1 shadow-ui-popover md:max-h-72"
+            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface py-1 shadow-sm md:max-h-72"
           >
             {isLoading && suggestions.length === 0 ? (
               <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
@@ -228,15 +277,22 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                 Searching TMDB
               </div>
             ) : (
-              suggestions.map((movie) => (
+              suggestions.map((movie, index) => (
                 <button
                   key={movie.id}
+                  id={`${listboxId}-option-${index}`}
                   type="button"
                   role="option"
-                  aria-selected="false"
+                  aria-selected={index === activeIndex}
                   onMouseDown={(event) => event.preventDefault()}
+                  onMouseEnter={() => setActiveIndex(index)}
                   onClick={() => handleSuggestionSelect(movie)}
-                  className="flex w-full items-center gap-3 px-3 py-2 text-left transition-[background-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:bg-surface-subtle focus-visible:bg-surface-subtle focus-visible:outline-none active:scale-[0.96] motion-reduce:active:scale-100"
+                  className={cn(
+                    "flex w-full items-center gap-3 px-3 py-2 text-left transition-[background-color,transform] duration-200 ease-out focus-visible:outline-none active:scale-[0.96] motion-reduce:active:scale-100",
+                    index === activeIndex
+                      ? "bg-surface-subtle"
+                      : "hover:bg-surface-subtle"
+                  )}
                 >
                   {movie.posterUrl ? (
                     <Image

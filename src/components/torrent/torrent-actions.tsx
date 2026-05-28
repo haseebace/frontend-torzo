@@ -5,6 +5,11 @@ import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
+
+const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
+const MIN_VIDEO_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
+const API_KEY_STORAGE_KEY = "torbox_api_key";
 
 interface TorrentActionsProps {
   magnetLink?: string | null;
@@ -20,74 +25,112 @@ export function TorrentActions({
   className,
 }: TorrentActionsProps) {
   const [directLink, setDirectLink] = useState<string | null>(null);
-  const [rdAccountStatus, setRdAccountStatus] = useState<string | null>(null);
+  const [torboxAccountStatus, setTorboxAccountStatus] = useState<string | null>(null);
   const [status, setStatus] = useState<
     | "idle"
     | "checking"
     | "adding"
-    | "selecting"
     | "downloading"
-    | "unrestricting"
     | "ready"
     | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isZipFallback, setIsZipFallback] = useState(false);
 
-  const rdFetch = useCallback(
+  const torboxFetch = useCallback(
     async (
       endpoint: string,
-      options: { method?: string; body?: unknown } = {},
+      options: { method?: string; body?: unknown; params?: Record<string, unknown> } = {},
     ) => {
-      const apiKey = localStorage.getItem("rd_api_key");
+      const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
       if (!apiKey) throw new Error("No API key found");
 
-      const res = await fetch("/api/real-debrid/proxy", {
+      const res = await fetch("/api/torbox/proxy", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-rd-api-key": apiKey,
+          "x-torbox-api-key": apiKey,
         },
         body: JSON.stringify({
           endpoint,
           method: options.method || "GET",
           body: options.body,
+          params: options.params,
         }),
       });
 
-      if (res.status === 204) return null;
-      const data = await res.json();
+      const data = (await res.json()) as Record<string, unknown>;
       if (!res.ok) {
-        const error = new Error(data.error || "Real-Debrid error") as Error & {
-          code?: number;
+        const detail =
+          typeof data.detail === "string"
+            ? data.detail
+            : typeof data.error === "string"
+              ? data.error
+              : typeof data.message === "string"
+                ? data.message
+                : "TorBox error";
+        const error = new Error(detail) as Error & {
+          code?: string;
           status?: number;
         };
-        error.code = data.error_code;
+        error.code = typeof data.error === "string" ? data.error : undefined;
         error.status = res.status;
         throw error;
       }
-      return data;
+      return data as TorBoxResponse<unknown>;
     },
     [],
   );
 
-  const unrestrictLink = useCallback(
-    async (link: string) => {
-      const data = await rdFetch("/unrestrict/link", {
-        method: "POST",
-        body: { link },
-      });
-      if (!data?.download) {
-        throw new Error("No direct download link found");
+  const findBestVideoFile = useCallback((files: Array<{ id: number; name: string; size: number; mimetype: string }>) => {
+    const videoFiles = files.filter((f) => {
+      const nameLower = f.name.toLowerCase();
+      const isVideoExt = VIDEO_EXTENSIONS.some((ext) => nameLower.endsWith(ext));
+      const isVideoMime = f.mimetype?.startsWith("video/");
+      const isBigEnough = f.size >= MIN_VIDEO_SIZE_BYTES;
+      return (isVideoExt || isVideoMime) && isBigEnough;
+    });
+
+    if (videoFiles.length === 0) return null;
+
+    // Pick the largest video file
+    return videoFiles.reduce((largest, current) =>
+      current.size > largest.size ? current : largest,
+    );
+  }, []);
+
+  const requestDownloadLink = useCallback(
+    async (torrentId: number, files: Array<{ id: number; name: string; size: number; mimetype: string }>) => {
+      const bestFile = findBestVideoFile(files);
+
+      if (bestFile) {
+        const res = await torboxFetch("/torrents/requestdl", {
+          params: {
+            torrent_id: torrentId,
+            file_id: bestFile.id,
+          },
+        });
+        setIsZipFallback(false);
+        return res.data as string;
       }
-      return data.download;
+
+      // Fallback: zip download
+      const res = await torboxFetch("/torrents/requestdl", {
+        params: {
+          torrent_id: torrentId,
+          zip_link: true,
+        },
+      });
+      setIsZipFallback(true);
+      return res.data as string;
     },
-    [rdFetch],
+    [torboxFetch, findBestVideoFile],
   );
 
   const lookupExistingTorrent = useCallback(
     async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
       const normalizedHash = infoHash?.trim().toLowerCase();
-      const apiKey = localStorage.getItem("rd_api_key");
+      const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
 
       if (!normalizedHash || !apiKey) return false;
 
@@ -95,7 +138,10 @@ export function TorrentActions({
         if (!options.silent) setStatus("checking");
         setErrorMessage(null);
 
-        const torrents = await rdFetch("/torrents?limit=5000");
+        const res = await torboxFetch("/torrents/mylist", {
+          params: { limit: 1000 },
+        });
+        const torrents = res.data as TorBoxTorrent[];
 
         const match = Array.isArray(torrents)
           ? torrents.find(
@@ -105,121 +151,123 @@ export function TorrentActions({
 
         if (!match) {
           if (!options.silent) setStatus("idle");
-          if (!options.hideBadge) setRdAccountStatus(null);
+          if (!options.hideBadge) setTorboxAccountStatus(null);
           return false;
         }
 
-        if (match.status === "downloaded") {
-          if (!options.hideBadge) setRdAccountStatus("Ready in Real-Debrid");
+        if (match.download_finished) {
+          if (!options.hideBadge) setTorboxAccountStatus("Ready in TorBox");
 
-          // Fetch torrent info to get the hoster link
           try {
-            const info = await rdFetch(`/torrents/info/${match.id}`);
-            const links = info?.links || [];
-
-            if (links.length > 0) {
-              // Unrestrict the hoster link to get direct download URL
-              const downloadLink = await unrestrictLink(links[0]);
-              setDirectLink(downloadLink);
-              setStatus("ready");
-              return true;
-            }
+            const downloadLink = await requestDownloadLink(match.id, match.files);
+            setDirectLink(downloadLink);
+            setStatus("ready");
+            return true;
           } catch {
-            // Failed to get links
+            // Failed to get download link
           }
         }
 
         setDirectLink(null);
         setStatus("idle");
         if (!options.hideBadge)
-          setRdAccountStatus(`In Real-Debrid: ${match.status ?? "processing"}`);
+          setTorboxAccountStatus(`In TorBox: ${match.download_state ?? "processing"}`);
         return true;
       } catch (err: unknown) {
-        const rdError = err as Error & { code?: number };
-        if (rdError.code === 37) {
-          // Torrent API disabled, just skip silently
+        const tbError = err as Error & { code?: string };
+        if (tbError.code === "AUTH_ERROR") {
           if (!options.silent) setStatus("idle");
           return false;
         }
         throw err;
       }
     },
-    [infoHash, rdFetch, unrestrictLink],
+    [infoHash, torboxFetch, requestDownloadLink],
   );
 
-  const handleAddToRD = async () => {
+  const handleAddToTorBox = async () => {
     try {
       if (!magnetLink) throw new Error("No magnet link found");
+      const normalizedHash = infoHash?.trim().toLowerCase();
+      const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+      if (!apiKey) throw new Error("No API key found");
 
-      setStatus("adding");
+      setStatus("checking");
       setErrorMessage(null);
       setDirectLink(null);
-      setRdAccountStatus(null);
+      setTorboxAccountStatus(null);
+      setIsZipFallback(false);
 
-      // 1. Add Magnet
-      const addData = await rdFetch("/torrents/addMagnet", {
-        method: "POST",
-        body: { magnet: magnetLink },
-      });
-      const id = addData.id;
-
-      // 2. Poll for info
-      let info;
-      while (true) {
-        info = await rdFetch(`/torrents/info/${id}`);
-        if (
-          info.status === "waiting_files_selection" ||
-          info.status === "downloaded"
-        )
-          break;
-        if (["magnet_error", "error", "dead"].includes(info.status)) {
-          throw new Error(`Torrent error: ${info.status}`);
+      // 1. Check if already cached on TorBox servers
+      if (normalizedHash) {
+        try {
+          const cacheRes = await torboxFetch("/torrents/checkcached", {
+            params: { hash: normalizedHash, format: "object", list_files: true },
+          });
+          const cachedData = cacheRes.data as Record<string, unknown>;
+          if (cachedData && Object.keys(cachedData).length > 0) {
+            // It's cached on TorBox — great, will be fast
+          }
+        } catch {
+          // Cache check failed, continue anyway
         }
-        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
-      // 3. Select all files
-      if (info.status === "waiting_files_selection") {
-        setStatus("selecting");
-        await rdFetch(`/torrents/selectFiles/${id}`, {
+      // 2. Add Magnet
+      setStatus("adding");
+      let torrentId: number;
+      try {
+        const addRes = await torboxFetch("/torrents/createtorrent", {
           method: "POST",
-          body: { files: "all" },
+          body: new URLSearchParams({ magnet: magnetLink }).toString(),
         });
+        const addData = addRes.data as { torrent_id: number; hash: string };
+        torrentId = addData.torrent_id;
+      } catch (addErr) {
+        const tbError = addErr as Error & { code?: string };
+        if (tbError.code === "DUPLICATE_ITEM") {
+          // Already in account — look it up and proceed
+          const found = await lookupExistingTorrent({ silent: true });
+          if (found) return;
+        }
+        throw addErr;
       }
 
-      // 4. Wait for download
+      // 3. Poll for download completion
       setStatus("downloading");
       while (true) {
-        info = await rdFetch(`/torrents/info/${id}`);
-        if (info.status === "downloaded") break;
-        if (["error", "dead", "virus"].includes(info.status)) {
-          throw new Error(`Torrent error: ${info.status}`);
+        const listRes = await torboxFetch("/torrents/mylist", {
+          params: { id: torrentId },
+        });
+        const torrent = listRes.data as TorBoxTorrent;
+
+        if (torrent.download_finished) {
+          break;
         }
+
+        // Show raw TorBox state
+        setTorboxAccountStatus(`In TorBox: ${torrent.download_state ?? "processing"}`);
+
+        // Error states
+        const deadStates = ["error", "dead", "magnet_error"];
+        if (deadStates.includes(torrent.download_state?.toLowerCase())) {
+          throw new Error(`Torrent error: ${torrent.download_state}`);
+        }
+
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
-      // 5. Unrestrict link to get direct download URL
-      setStatus("unrestricting");
-      if (info.links?.[0]) {
-        const downloadLink = await unrestrictLink(info.links[0]);
-        setDirectLink(downloadLink);
-        setStatus("ready");
-      }
+      // 4. Request download link
+      const listRes = await torboxFetch("/torrents/mylist", {
+        params: { id: torrentId },
+      });
+      const torrent = listRes.data as TorBoxTorrent;
+
+      const downloadLink = await requestDownloadLink(torrent.id, torrent.files);
+      setDirectLink(downloadLink);
+      setStatus("ready");
     } catch (err) {
       console.error(err);
-      const rdError = err as Error & { code?: number };
-      if (
-        rdError.code === 33 ||
-        rdError.message.toLowerCase().includes("already active")
-      ) {
-        try {
-          const foundExisting = await lookupExistingTorrent({ silent: true });
-          if (foundExisting) return;
-        } catch (lookupError) {
-          console.error(lookupError);
-        }
-      }
-
       setErrorMessage(
         err instanceof Error ? err.message : "An unknown error occurred",
       );
@@ -227,13 +275,7 @@ export function TorrentActions({
     }
   };
 
-  const isLoading = [
-    "checking",
-    "adding",
-    "selecting",
-    "downloading",
-    "unrestricting",
-  ].includes(status);
+  const isLoading = ["checking", "adding", "downloading"].includes(status);
 
   const handleWatchNow = () => {
     if (!directLink) return;
@@ -259,7 +301,7 @@ export function TorrentActions({
       setTimeout(() => {
         if (document.hasFocus()) {
           alert(
-            "INA player not found. The video link has been copied to your clipboard.",
+            "IINA player not found. The video link has been copied to your clipboard.",
           );
           navigator.clipboard.writeText(linkToPlay).catch(() => {});
         }
@@ -272,13 +314,13 @@ export function TorrentActions({
 
   useEffect(() => {
     const checkInBackground = async () => {
-      const apiKey = localStorage.getItem("rd_api_key");
+      const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
       if (!apiKey || !infoHash) return;
 
       try {
         await lookupExistingTorrent({ silent: true, hideBadge: true });
       } catch {
-        // Silently fail — user still sees "Add to Real-Debrid" button
+        // Silently fail — user still sees "Add to TorBox" button
       }
     };
 
@@ -298,7 +340,7 @@ export function TorrentActions({
             asChild
             variant="default"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
           >
             <a href={magnetLink}>
               <span className="sm:hidden">Magnet</span>
@@ -311,7 +353,7 @@ export function TorrentActions({
             asChild
             variant="secondary"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
           >
             <a href={torrentFileUrl}>
               <span className="sm:hidden">Torrent</span>
@@ -323,8 +365,8 @@ export function TorrentActions({
           type="button"
           variant="outline"
           size="lg"
-          className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
-          onClick={handleAddToRD}
+          className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
+          onClick={handleAddToTorBox}
           disabled={isLoading || !magnetLink}
         >
           {isLoading && <Loader2 className="size-3.5 animate-spin sm:size-4" />}
@@ -335,16 +377,14 @@ export function TorrentActions({
                 ? "Check"
                 : isLoading
                   ? "Adding"
-                  : "Debrid"}
+                  : "TorBox"}
           </span>
           <span className="hidden sm:inline">
-            {status === "checking" && "Checking Real-Debrid..."}
+            {status === "checking" && "Checking TorBox..."}
             {status === "adding" && "Adding..."}
-            {status === "selecting" && "Selecting files..."}
             {status === "downloading" && "Downloading..."}
-            {status === "unrestricting" && "Unrestricting..."}
-            {status === "ready" && "Added to RD"}
-            {(status === "idle" || status === "error") && "Add to Real Debrid"}
+            {status === "ready" && "Added to TorBox"}
+            {(status === "idle" || status === "error") && "Add to TorBox"}
           </span>
         </Button>
 
@@ -353,7 +393,7 @@ export function TorrentActions({
             type="button"
             variant="outline"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
             onClick={handleWatchNow}
           >
             <span className="sm:hidden">Watch</span>
@@ -366,19 +406,26 @@ export function TorrentActions({
             asChild
             variant="outline"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-pill px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
           >
             <a href={directLink} target="_blank" rel="noreferrer">
               <span className="sm:hidden">Direct</span>
-              <span className="hidden sm:inline">Direct Download</span>
+              <span className="hidden sm:inline">
+                {isZipFallback ? "Download Zip" : "Direct Download"}
+              </span>
             </a>
           </Button>
         )}
       </div>
-      {rdAccountStatus && (
+      {torboxAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
-          <Badge>{rdAccountStatus}</Badge>
+          <Badge>{torboxAccountStatus}</Badge>
         </div>
+      )}
+      {isZipFallback && (
+        <p className="text-sm font-medium text-amber-600">
+          No video file available — this can only be downloaded.
+        </p>
       )}
       {errorMessage && (
         <p className="text-sm font-medium text-destructive">{errorMessage}</p>

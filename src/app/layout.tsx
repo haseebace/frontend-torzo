@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Sora } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -8,14 +8,6 @@ import { SiteFooter } from "@/components/site-footer";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-  adjustFontFallback: false,
-});
-
-const sora = Sora({
-  variable: "--font-sora",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
@@ -87,7 +79,6 @@ export default function RootLayout({
         "antialiased",
         plusJakartaSans.className,
         plusJakartaSans.variable,
-        sora.variable,
         "font-sans",
       )}
     >

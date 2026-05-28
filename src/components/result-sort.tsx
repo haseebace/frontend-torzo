@@ -28,19 +28,19 @@ export function ResultSort({ defaultValue }: { defaultValue: string }) {
       <SelectContent className="rounded-xl p-2">
         <SelectItem 
           value="seeders" 
-          className="font-heading font-medium rounded-pill data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary mb-1"
+          className="font-sans font-medium rounded-full data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary mb-1"
         >
           Most seeders
         </SelectItem>
         <SelectItem 
           value="recent" 
-          className="font-heading font-medium rounded-pill data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary mb-1"
+          className="font-sans font-medium rounded-full data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary mb-1"
         >
           Recent
         </SelectItem>
         <SelectItem 
           value="relevance" 
-          className="font-heading font-medium rounded-pill data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
+          className="font-sans font-medium rounded-full data-[state=checked]:bg-brand-surface data-[state=checked]:text-primary"
         >
           Relevance
         </SelectItem>

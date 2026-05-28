@@ -6,25 +6,12 @@ export type ProviderId = (typeof providerIds)[number];
 
 export type AppSettings = {
   id: "global";
-  real_debrid_api_key_ciphertext: string | null;
-  real_debrid_api_key_iv: string | null;
-  real_debrid_api_key_tag: string | null;
-  real_debrid_connected: boolean;
-  real_debrid_username: string | null;
   providers: ProviderId[];
   updated_at: string;
 };
 
 type AppSettingsPatch = Partial<
-  Pick<
-    AppSettings,
-    | "real_debrid_api_key_ciphertext"
-    | "real_debrid_api_key_iv"
-    | "real_debrid_api_key_tag"
-    | "real_debrid_connected"
-    | "real_debrid_username"
-    | "providers"
-  >
+  Pick<AppSettings, "providers">
 >;
 
 function getSupabaseConfig() {

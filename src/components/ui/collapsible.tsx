@@ -38,7 +38,7 @@ function Collapsible({
         open={open}
         onOpenChange={handleOpenChange}
         className={cn(
-          "overflow-hidden rounded-card border border-border bg-surface",
+          "overflow-hidden rounded-3xl border border-border bg-surface",
           className,
         )}
         {...props}
@@ -60,10 +60,10 @@ function CollapsibleTrigger({
       data-slot="collapsible-trigger"
       aria-controls={contentId}
       aria-expanded={open}
-      className={cn(
-        "flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-[background-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:bg-surface-subtle active:scale-[0.96] motion-reduce:active:scale-100",
-        className,
-      )}
+        className={cn(
+          "flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-[background-color,transform] duration-200 ease-out hover:bg-surface-subtle",
+          className,
+        )}
       {...props}
     />
   )
@@ -82,7 +82,7 @@ function CollapsibleContent({
       data-slot="collapsible-content"
       data-state={open ? "open" : "closed"}
       className={cn(
-        "overflow-hidden transition-all duration-300 ease-[var(--ui-ease-enter)]",
+        "overflow-hidden transition-all duration-300 ease-out",
         open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0",
         className
       )}

@@ -6,20 +6,20 @@ import { Slot } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "ui-badge group/badge transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "inline-flex w-fit shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full px-3.5 py-1.5 text-xs font-bold capitalize whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3",
   {
     variants: {
       variant: {
-        default: "[a]:hover:opacity-80",
+        default: "bg-secondary text-secondary-foreground [a]:hover:opacity-80",
         secondary:
-          "[--badge-background:var(--secondary)] [--badge-foreground:var(--secondary-foreground)] [a]:hover:opacity-80",
+          "bg-secondary text-secondary-foreground [a]:hover:opacity-80",
         destructive:
-          "[--badge-background:color-mix(in_oklch,var(--destructive)_10%,transparent)] [--badge-foreground:var(--destructive)] focus-visible:ring-destructive/20 dark:[--badge-background:color-mix(in_oklch,var(--destructive)_20%,transparent)] dark:focus-visible:ring-destructive/40 [a]:hover:opacity-80",
+          "bg-destructive/10 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 [a]:hover:opacity-80",
         outline:
-          "[--badge-background:transparent] [--badge-border-color:var(--border)] [--badge-foreground:var(--foreground)] [a]:hover:[--badge-background:var(--muted)] [a]:hover:[--badge-foreground:var(--muted-foreground)]",
+          "border border-border bg-transparent text-foreground hover:bg-muted hover:text-muted-foreground",
         ghost:
-          "[--badge-background:transparent] hover:[--badge-background:var(--muted)] hover:[--badge-foreground:var(--muted-foreground)] dark:hover:[--badge-background:color-mix(in_oklch,var(--muted)_50%,transparent)]",
-        link: "[--badge-background:transparent] underline-offset-4 hover:underline",
+          "bg-transparent hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
+        link: "bg-transparent underline-offset-4 hover:underline",
       },
     },
     defaultVariants: {
@@ -44,17 +44,35 @@ function Badge({
   }) {
   const Comp = asChild ? Slot.Root : "span";
 
+  if (asChild) {
+    return (
+      <Comp
+        data-slot="badge"
+        data-variant={variant}
+        className={cn(badgeVariants({ variant }), className)}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
+
   return (
-    <Comp
+    <span
       data-slot="badge"
       data-variant={variant}
       className={cn(badgeVariants({ variant }), className)}
       {...props}
     >
-      {dot ? <span className="ui-badge-dot" aria-hidden="true" /> : null}
+      {dot ? (
+        <span
+          className="size-2 shrink-0 rounded-full bg-current"
+          aria-hidden="true"
+        />
+      ) : null}
       {children}
       {Icon ? <Icon aria-hidden="true" /> : null}
-    </Comp>
+    </span>
   );
 }
 

@@ -50,14 +50,14 @@ export default function HowToUsePage() {
     },
     {
       icon: "🔑",
-      title: "Connect Real-Debrid",
+      title: "Connect TorBox",
       body: (
         <>
           Head to the{" "}
           <Link href="/manage" className="text-link hover:underline">
             Manage page
           </Link>{" "}
-          and paste your Real-Debrid API key. Your key is stored in your
+          and paste your TorBox API key. Your key is stored in your
           browser and is never sent to our servers. You can also toggle which
           providers Torzo searches.
         </>
@@ -65,8 +65,8 @@ export default function HowToUsePage() {
     },
     {
       icon: "⚡",
-      title: "Add to Real-Debrid",
-      body: "On any detail page, click \"Add to Real Debrid\". Torzo will add the magnet, select all files, wait for the download to finish on RD's servers, and generate a direct download link — all automatically.",
+      title: "Add to TorBox",
+      body: "On any detail page, click \"Add to TorBox\". Torzo will add the magnet, wait for the download to finish on TorBox's servers, and generate a direct download link — all automatically.",
     },
     {
       icon: "▶️",
@@ -76,7 +76,7 @@ export default function HowToUsePage() {
           Once the link is ready, click <strong>Watch Now</strong> to play on
           iOS (Infuse) or macOS (IINA), or use <strong>Direct Download</strong>{" "}
           to save the file. You can also grab the magnet link or .torrent file
-          directly without Real-Debrid.
+          directly without TorBox.
         </>
       ),
     },
@@ -85,7 +85,7 @@ export default function HowToUsePage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-10">
+      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
         <div className="text-center">
           <h1 className="text-4xl font-black tracking-tight text-foreground-strong md:text-5xl">
             How to Use Torzo
@@ -120,7 +120,7 @@ export default function HowToUsePage() {
           <p className="mb-4 text-sm text-muted-foreground">
             Ready to find something great?
           </p>
-          <Button asChild className="h-[52px] px-8 text-base font-heading">
+          <Button asChild className="h-[52px] px-8 text-base font-sans">
             <Link href="/">Start searching now</Link>
           </Button>
         </div>

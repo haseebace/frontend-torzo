@@ -48,7 +48,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   
   return {
     title: `Search: ${displayName}`,
-    description: `Find ${displayName} with high-speed downloads via Real-Debrid. Compare sources, check seeders, and download instantly.`,
+    description: `Find ${displayName} with high-speed downloads via TorBox. Compare sources, check seeders, and download instantly.`,
   };
 }
 
@@ -370,7 +370,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
 
-      <section className="flex w-full origin-center animate-homepage-enter flex-col gap-6 px-4 py-6 md:gap-8 md:px-10 md:py-8 xl:px-page">
+      <section className="flex w-full origin-center animate-page-fade-in flex-col gap-6 px-4 py-6 md:gap-8 md:px-12 md:py-8">
         <SearchForm
           key={searchFormValue}
           id="results-search"
@@ -381,7 +381,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
         <div className="flex items-center justify-between gap-3 border-b border-border pb-4 md:items-end md:gap-2">
           <div className="min-w-0 flex-1">
-            <h2 className="font-heading text-sm font-extrabold text-foreground-strong text-wrap-balance md:text-[22px]">
+            <h2 className="font-sans text-sm font-extrabold text-foreground-strong text-wrap-balance md:text-[22px]">
               {error ? (
                 <span className="text-destructive">{error}</span>
               ) : (

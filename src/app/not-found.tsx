@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="flex min-h-[calc(100dvh-80px)] items-center justify-center px-4">
+      <section className="flex min-h-[calc(100dvh-80px)] items-center justify-center px-4 md:px-12">
         <div className="text-center space-y-6">
           <h1 className="text-8xl font-bold text-foreground-strong">404</h1>
           <h2 className="text-2xl font-semibold text-foreground-strong">
@@ -16,7 +16,7 @@ export default function NotFound() {
           </p>
           <Link
             href="/"
-            className="inline-block rounded-control bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-[background-color,transform] duration-200 ease-[var(--ui-ease-standard)] hover:bg-foreground-strong active:scale-[0.96] motion-reduce:active:scale-100"
+            className="inline-block rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-[background-color,transform] duration-200 ease-out hover:bg-foreground-strong active:scale-[0.96] motion-reduce:active:scale-100"
           >
             Go Back Home
           </Link>
