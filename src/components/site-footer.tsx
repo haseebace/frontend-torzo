@@ -29,15 +29,12 @@ export function SiteFooter() {
 
           return (
             <div key={link.href} className="flex items-center gap-1">
-              <div
-                className="relative"
-                onMouseEnter={() => setHoveredIndex(i)}
-              >
+              <div className="relative" onMouseEnter={() => setHoveredIndex(i)}>
                 <AnimatePresence>
                   {bgProps.isActive && (
                     <MagneticHoverBackground
                       {...bgProps}
-                      className="rounded-[18px] bg-secondary"
+                      className="rounded-[12px] bg-secondary"
                     />
                   )}
                 </AnimatePresence>
