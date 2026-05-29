@@ -4,7 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cn } from "@/lib/utils";
-import { SiteFooter } from "@/components/site-footer";
+import { SiteFooterWithAnimation } from "@/components/site-footer-wrapper";
 import { Toaster } from "sonner";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -110,7 +110,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-dvh flex-col">
         {children}
-        <SiteFooter />
+        <SiteFooterWithAnimation />
         <Toaster 
           position="bottom-right" 
           richColors 

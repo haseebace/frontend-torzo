@@ -2,19 +2,22 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatedMenuToggle } from "@/components/animated-menu-toggle";
 import { Button } from "@/components/ui/button";
 
 export function SiteNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
 
   const toggleMenu = () => {
     setIsOpen((current) => !current);
   };
 
   return (
-    <header className="relative z-50 flex h-[90px] w-full origin-center animate-homepage-enter px-4 md:px-12">
+    <header className={`relative z-50 flex h-[90px] w-full px-4 md:px-12 ${isHomepage ? "origin-center animate-homepage-enter" : ""}`}>
       <nav className="relative flex w-full items-center justify-between">
         <Link
           href="/"
