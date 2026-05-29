@@ -1,8 +1,9 @@
 "use client";
 
+import { AnimatePresence } from "framer-motion";
 import { File, FileText, Image, Video } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { HoverList, HoverItem } from "@/components/ui/shared-hover-background";
+import { useMagneticHover, MagneticHoverBackground } from "@/animations";
 
 type TorrentFile = {
   name: string;
@@ -50,18 +51,36 @@ function getFileSizeDisplay(file: TorrentFile): string {
 }
 
 export function TorrentFileList({ files }: { files: TorrentFile[] }) {
+  const { containerProps, setHoveredIndex, getBackgroundProps } =
+    useMagneticHover({
+      layoutId: "torrent-file-hover",
+    });
+
   return (
-    <HoverList
+    <div
+      {...containerProps}
       className="min-w-0 divide-y divide-border/70"
-      backgroundClassName="rounded-[18px] bg-surface-subtle"
     >
       {files.map((file, i) => {
         const FileIcon = getFileIcon(file.extension || "");
         const fileSize = getFileSizeDisplay(file);
+        const bgProps = getBackgroundProps(i);
 
         return (
-          <HoverItem key={`${file.name}-${i}`}>
-            <div className="flex min-w-0 items-center gap-3 px-2 py-3 text-xs md:text-sm">
+          <div
+            key={`${file.name}-${i}`}
+            className="relative"
+            onMouseEnter={() => setHoveredIndex(i)}
+          >
+            <AnimatePresence>
+              {bgProps.isActive && (
+                <MagneticHoverBackground
+                  {...bgProps}
+                  className="rounded-[18px] bg-surface-subtle"
+                />
+              )}
+            </AnimatePresence>
+            <div className="relative z-10 flex min-w-0 items-center gap-3 px-2 py-3 text-xs md:text-sm">
               <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-primary md:size-8">
                 <FileIcon className="size-3.5 md:size-4" />
               </span>
@@ -70,9 +89,9 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
               </p>
               <Badge className="ml-auto">{fileSize}</Badge>
             </div>
-          </HoverItem>
+          </div>
         );
       })}
-    </HoverList>
+    </div>
   );
 }
