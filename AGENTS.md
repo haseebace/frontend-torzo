@@ -57,14 +57,14 @@ agent-browser skills get core
 - `src/components/home-content.tsx` — Homepage hero section
 - `src/components/torrent-result-card.tsx` — Result listing cards
 - `src/components/torrent/torrent-actions.tsx` — Detail page action buttons
-- `src/components/torrent/torrent-file-list.tsx` — File list with SharedHoverBackground
+- `src/components/torrent/torrent-file-list.tsx` — File list with magnetic hover effect
 - `src/components/torrent/torrent-size-badge.tsx` — Size display badge
 - `src/components/manage-account-form.tsx` — TorBox connection form
 - `src/components/animated-menu-toggle.tsx` — Mobile menu button
 
 **Custom Reusable Components:**
 
-- `src/components/ui/shared-hover-background.tsx` — Magnetic hover effect using Framer Motion layoutId
+- `src/animations/hooks/useMagneticHover.ts` — Magnetic hover effect hook using Framer Motion layoutId
 
 ## Styling Conventions
 
