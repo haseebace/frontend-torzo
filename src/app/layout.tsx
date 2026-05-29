@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cn } from "@/lib/utils";
 import { SiteFooterWithAnimation } from "@/components/site-footer-wrapper";
 import { Toaster } from "sonner";
+import { CssStudio } from "@/components/css-studio";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -119,6 +120,7 @@ export default function RootLayout({
         />
         <Analytics />
         <SpeedInsights />
+        <CssStudio />
       </body>
     </html>
   );
