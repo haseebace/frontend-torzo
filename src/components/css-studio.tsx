@@ -6,7 +6,10 @@ import { useEffect } from "react";
 export function CssStudio() {
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      startStudio();
+      const timer = setTimeout(() => {
+        startStudio();
+      }, 500);
+      return () => clearTimeout(timer);
     }
   }, []);
 
