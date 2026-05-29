@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Search, List, FileText, Key, Zap, Play } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 export default function HowToUsePage() {
   const steps = [
     {
-      icon: "🔍",
+      icon: Search,
       title: "Search for a movie or show",
       body: (
         <>
@@ -33,12 +34,12 @@ export default function HowToUsePage() {
       ),
     },
     {
-      icon: "📋",
+      icon: List,
       title: "Compare your results",
       body: 'Each result card shows the title, file size, seeders, and leechers so you can pick the best source. Sort by "Most seeders" or "Recent" to find what you need fast.',
     },
     {
-      icon: "📄",
+      icon: FileText,
       title: "Open the detail page",
       body: (
         <>
@@ -49,7 +50,7 @@ export default function HowToUsePage() {
       ),
     },
     {
-      icon: "🔑",
+      icon: Key,
       title: "Connect TorBox",
       body: (
         <>
@@ -64,12 +65,12 @@ export default function HowToUsePage() {
       ),
     },
     {
-      icon: "⚡",
+      icon: Zap,
       title: "Add to TorBox",
       body: "On any detail page, click \"Add to TorBox\". Torzo will add the magnet, wait for the download to finish on TorBox's servers, and generate a direct download link — all automatically.",
     },
     {
-      icon: "▶️",
+      icon: Play,
       title: "Watch or download",
       body: (
         <>
@@ -96,13 +97,15 @@ export default function HowToUsePage() {
         </div>
 
         <div className="mt-12 space-y-8">
-          {steps.map((step, i) => (
+          {steps.map((step, i) => {
+            const IconComponent = step.icon;
+            return (
             <div
               key={i}
               className="flex gap-4 rounded-2xl border border-border bg-surface-elevated p-5 md:gap-5 md:p-6"
             >
-              <span className="mt-0.5 shrink-0 text-2xl leading-none md:text-3xl">
-                {step.icon}
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[50px] bg-primary text-primary-foreground">
+                <IconComponent className="size-3" />
               </span>
               <div className="min-w-0 space-y-1.5">
                 <h2 className="text-base font-bold text-foreground-strong md:text-lg">
@@ -113,7 +116,8 @@ export default function HowToUsePage() {
                 </p>
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
 
         <div className="mt-12 text-center">

@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { LockKeyhole } from "lucide-react";
+import { toast } from "sonner";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,7 +35,6 @@ export function ManageAccountForm() {
   const [selectedProviders, setSelectedProviders] = useState<ProviderId[]>([
     "rarbg",
   ]);
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [providerError, setProviderError] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -125,7 +126,6 @@ export function ManageAccountForm() {
 
     setSelectedProviders(nextProviders);
     setProviderError(null);
-    setMessage(null);
     setIsSavingProviders(true);
 
     try {
@@ -167,7 +167,6 @@ export function ManageAccountForm() {
     }
 
     setError(null);
-    setMessage(null);
     setIsConnecting(true);
 
     try {
@@ -193,7 +192,7 @@ export function ManageAccountForm() {
       setIsConnected(true);
       setUsername(userData.data?.email ?? null);
       setApiKey("");
-      setMessage("TorBox connected locally.");
+      toast.success("TorBox connected locally.");
     } catch (connectError) {
       setIsConnected(false);
       setError(
@@ -210,7 +209,7 @@ export function ManageAccountForm() {
     localStorage.removeItem(API_KEY_STORAGE_KEY);
     setIsConnected(false);
     setUsername(null);
-    setMessage("TorBox disconnected.");
+    toast.success("TorBox disconnected.");
   };
 
   return (
@@ -241,7 +240,7 @@ export function ManageAccountForm() {
                   TorBox API key
                 </label>
                 <div className="relative min-w-0 flex-1">
-                  <LockKeyhole className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-text-subtle" />
+                  <LockKeyhole className="pointer-events-none absolute left-5 top-1/2 size-4 -translate-y-1/2 text-text-subtle" />
                   <Input
                     id="torbox-api-key"
                     type="password"
@@ -250,7 +249,7 @@ export function ManageAccountForm() {
                       setApiKey(event.target.value);
                     }}
                     placeholder="Paste your TorBox API key"
-                    className="bg-card pl-12 text-sm hover:bg-card focus-visible:bg-card"
+                    className="bg-background pl-12 text-sm placeholder:text-[12px] placeholder:text-text-subtle hover:shadow-sm focus-visible:bg-background"
                     disabled={isConnected}
                   />
                 </div>
@@ -276,14 +275,10 @@ export function ManageAccountForm() {
                 )}
               </div>
               {error ? (
-                <Badge variant="destructive" className="w-full whitespace-normal px-4 py-3 text-sm font-medium">
-                  {error}
-                </Badge>
-              ) : null}
-              {message ? (
-                <Badge className="w-full whitespace-normal px-4 py-3 text-sm font-medium">
-                  {message}
-                </Badge>
+                <Alert variant="destructive">
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
               ) : null}
             </form>
           </CardContent>
@@ -331,9 +326,10 @@ export function ManageAccountForm() {
               })}
             </div>
             {providerError ? (
-              <Badge variant="destructive" className="w-full whitespace-normal px-4 py-3 text-sm font-medium">
-                {providerError}
-              </Badge>
+              <Alert variant="destructive">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{providerError}</AlertDescription>
+              </Alert>
             ) : null}
           </CardContent>
         </Card>

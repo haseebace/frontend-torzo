@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { File, FileText, Image, Video } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { HoverList, HoverItem } from "@/components/ui/shared-hover-background";
 
 type TorrentFile = {
   name: string;
@@ -51,40 +50,18 @@ function getFileSizeDisplay(file: TorrentFile): string {
 }
 
 export function TorrentFileList({ files }: { files: TorrentFile[] }) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
   return (
-    <div
+    <HoverList
       className="min-w-0 divide-y divide-border/70"
-      onMouseLeave={() => setHoveredIndex(null)}
+      backgroundClassName="rounded-[18px] bg-surface-subtle"
     >
       {files.map((file, i) => {
         const FileIcon = getFileIcon(file.extension || "");
         const fileSize = getFileSizeDisplay(file);
 
         return (
-          <div
-            key={`${file.name}-${i}`}
-            className="relative px-2 py-3 text-xs md:text-sm"
-            onMouseEnter={() => setHoveredIndex(i)}
-          >
-            <AnimatePresence>
-              {hoveredIndex === i && (
-                <motion.div
-                  layoutId="file-hover"
-                  className="absolute inset-0 rounded-[18px] bg-surface-subtle"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 350,
-                    damping: 30,
-                  }}
-                />
-              )}
-            </AnimatePresence>
-            <div className="relative z-10 flex min-w-0 items-center gap-3">
+          <HoverItem key={`${file.name}-${i}`} index={i}>
+            <div className="flex min-w-0 items-center gap-3 px-2 py-3 text-xs md:text-sm">
               <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-primary md:size-8">
                 <FileIcon className="size-3.5 md:size-4" />
               </span>
@@ -93,9 +70,9 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
               </p>
               <Badge className="ml-auto">{fileSize}</Badge>
             </div>
-          </div>
+          </HoverItem>
         );
       })}
-    </div>
+    </HoverList>
   );
 }
