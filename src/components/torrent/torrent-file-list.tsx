@@ -60,7 +60,7 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
         const fileSize = getFileSizeDisplay(file);
 
         return (
-          <HoverItem key={`${file.name}-${i}`} index={i}>
+          <HoverItem key={`${file.name}-${i}`}>
             <div className="flex min-w-0 items-center gap-3 px-2 py-3 text-xs md:text-sm">
               <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-primary md:size-8">
                 <FileIcon className="size-3.5 md:size-4" />

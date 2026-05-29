@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -74,6 +74,17 @@ export function HoverList({
 }: HoverListProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  // Automatically inject `index` into direct HoverItem children
+  const childrenWithIndex = React.Children.map(children, (child, index) => {
+    if (React.isValidElement<HoverItemProps>(child) && child.type === HoverItem) {
+      // Only inject if the user didn't explicitly pass an index
+      if (child.props.index === undefined) {
+        return React.cloneElement(child, { index });
+      }
+    }
+    return child;
+  });
+
   return (
     <HoverListContext.Provider
       value={{
@@ -87,7 +98,7 @@ export function HoverList({
         className={className}
         onMouseLeave={() => setHoveredIndex(null)}
       >
-        {children}
+        {childrenWithIndex}
       </div>
     </HoverListContext.Provider>
   );
@@ -100,17 +111,15 @@ export function HoverList({
 type HoverItemProps = {
   children: React.ReactNode;
   className?: string;
-  index?: number; // auto-assigned via cloneElement if omitted
+  index?: number; // automatically provided by HoverList when used as direct child
 };
 
 export function HoverItem({ children, className, index: propIndex }: HoverItemProps) {
   const ctx = useHoverList();
-  const [autoIndex] = useState<number | undefined>(propIndex);
 
-  // When rendered inside HoverList, we rely on the parent to inject the
-  // correct index via cloneElement. If the user passes `index` manually
-  // (e.g. when mapping), we respect that.
-  const effectiveIndex = propIndex ?? autoIndex ?? 0;
+  // HoverList automatically injects the index when HoverItem is used as a direct child.
+  // Users can still pass `index` manually if needed.
+  const effectiveIndex = propIndex ?? 0;
   const isHovered = ctx.hoveredIndex === effectiveIndex;
 
   return (
@@ -139,26 +148,7 @@ export function HoverItem({ children, className, index: propIndex }: HoverItemPr
 }
 
 // -------------------------------------------------------------------
-// Convenience: cloneElement-based auto-indexing
+// Note:
+// HoverList now automatically injects `index` into direct HoverItem children.
+// You no longer need to manually pass `index` or use any wrapper component.
 // -------------------------------------------------------------------
-
-type AutoIndexedHoverListProps = Omit<HoverListProps, "children"> & {
-  children: React.ReactElement<HoverItemProps> | React.ReactElement<HoverItemProps>[];
-};
-
-export function AutoIndexedHoverList({
-  children,
-  ...listProps
-}: AutoIndexedHoverListProps) {
-  const items = Array.isArray(children) ? children : [children];
-
-  return (
-    <HoverList {...listProps}>
-      {items.map((child, index) =>
-        // Inject the index into each HoverItem automatically
-        // @ts-expect-error cloneElement with custom props
-        <child.type key={child.key ?? index} {...child.props} index={index} />
-      )}
-    </HoverList>
-  );
-}

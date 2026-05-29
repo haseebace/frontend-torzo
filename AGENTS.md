@@ -2,16 +2,6 @@
 
 Be helpful and concise, but do not run validation or external tooling unless the user explicitly asks for it.
 
-## Testing And Checks
-
-- Do not run type checks.
-- Do not run lint or ESLint.
-- Do not run tests.
-- Do not run builds as a substitute for testing.
-- Do not run broad validation after code changes unless the user specifically asks.
-
-When you make code changes, explain what changed and mention that checks were not run because this project asks agents not to run them automatically.
-
 ## Browser Testing
 
 - Do not use any browser automation unless the user explicitly asks for browser testing or visual verification.
@@ -31,6 +21,7 @@ agent-browser skills get core
 ## Project Structure
 
 **Tech Stack:**
+
 - Next.js 16.2.4 (App Router)
 - React 19.2.4
 - TypeScript 5
@@ -41,10 +32,12 @@ agent-browser skills get core
 - Lucide React icons
 
 **Font:**
+
 - Plus Jakarta Sans (only font used site-wide)
 - No other fonts (Sora removed)
 
 **Pages:**
+
 - `/` — Homepage with search
 - `/results` — Search results with pagination
 - `/detail` — Torrent detail page
@@ -56,6 +49,7 @@ agent-browser skills get core
 - `/disclaimer` — Disclaimer
 
 **Key Components:**
+
 - `src/components/ui/*` — shadcn/ui primitives (button, input, badge, card, checkbox, select, skeleton, collapsible)
 - `src/components/site-navbar.tsx` — Site navigation
 - `src/components/site-footer.tsx` — Site footer
@@ -69,34 +63,41 @@ agent-browser skills get core
 - `src/components/animated-menu-toggle.tsx` — Mobile menu button
 
 **Custom Reusable Components:**
+
 - `src/components/ui/shared-hover-background.tsx` — Magnetic hover effect using Framer Motion layoutId
 
 ## Styling Conventions
 
 **Design System:**
+
 - All colors controlled via `globals.css` semantic tokens
 - Only color tokens in `:root` + `.dark` — no layout/spacing tokens
 - Use Tailwind utilities for padding, spacing, shadows, radius
 - Single font: Plus Jakarta Sans (via `--font-sans`)
 
 **Standard Padding:**
+
 - Mobile: `px-4` (16px)
 - Desktop: `md:px-12` (48px)
 - Applied consistently across all pages, navbar, and footer
 
 **Color Palette:**
+
 - Light mode: `--p-background: #FCFDFE`, `--p-card: #F8F9FA`, `--p-secondary: #F0F2F4`, `--p-muted: #79818D`, `--p-primary: #3C424A`
 - Dark mode: `--p-background: #0B0C0E`, `--p-card: #131416`, `--p-secondary: #1E2023`, `--p-muted: #71767D`, `--p-primary: #E8EAED`
 
 **Shadows:**
+
 - Use `shadow-sm` everywhere (replaced all `shadow-md`, `shadow-lg`, `shadow-xl`)
 
 **Input Styling:**
+
 - Default: `border-0` (no border)
 - Focus: `border-4 border-secondary` (4px secondary border)
 - No ring/outline on focus
 
 **Badge Styling:**
+
 - `py-1.5` (6px Y padding)
 - `px-3.5` (14px X padding)
 - `rounded-full` pill shape
@@ -127,6 +128,7 @@ Use graphify instead of grep or reading raw files for architecture questions, re
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
 
 Rules:
+
 - ALWAYS read graphify-out/GRAPH_REPORT.md before reading any source files, running grep/glob searches, or answering codebase questions. The graph is your primary map of the codebase.
 - IF graphify-out/wiki/index.md EXISTS, navigate it instead of reading raw files
 - For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep — these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files
