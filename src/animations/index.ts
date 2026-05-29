@@ -16,7 +16,7 @@
  * @example
  * ```tsx
  * import { useMagneticHover, MagneticHoverBackground } from "@/animations";
- * import { magneticSpring, easeOut } from "@/animations/core";
+ * import { magneticSpring, easeOut } from "@/animations";
  *
  * const { containerProps, getBackgroundProps } = useMagneticHover({
  *   layoutId: "my-list",

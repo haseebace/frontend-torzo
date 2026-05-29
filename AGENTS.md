@@ -129,6 +129,8 @@ All animation logic lives in `src/animations/` — never trap animation inside U
 | `gentleSpring` | `core/springs` | Page transitions, large elements |
 | `bouncySpring` | `core/springs` | Playful UI |
 | `magneticSpring` | `core/springs` | Magnetic hover background |
+| `menuItemSpring` | `core/springs` | Mobile menu items, dropdowns |
+| `iconSwapSpring` | `core/springs` | Icon toggles, state changes |
 | `easeOut` | `core/easings` | Elements entering viewport |
 | `easeHomepage` | `core/easings` | Homepage entrance |
 | `fadeIn` | `core/transitions` | Standard fade |
