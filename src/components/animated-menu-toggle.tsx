@@ -4,17 +4,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { iconSwapSpring } from "@/animations";
 
 type AnimatedMenuToggleProps = {
   isOpen: boolean;
   toggleMenu: () => void;
   className?: string;
-};
-
-const iconTransition = {
-  type: "spring" as const,
-  duration: 0.15,
-  bounce: 0,
 };
 
 export function AnimatedMenuToggle({
@@ -59,7 +54,7 @@ export function AnimatedMenuToggle({
             rotate: isOpen ? 18 : -18,
             filter: "blur(4px)",
           }}
-          transition={iconTransition}
+          transition={iconSwapSpring}
           className="absolute inset-0 flex items-center justify-center"
         >
           <Icon className="size-7" aria-hidden="true" />

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatedMenuToggle } from "@/components/animated-menu-toggle";
 import { Button } from "@/components/ui/button";
+import { easeOut, menuItemSpring } from "@/animations";
 
 export function SiteNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +51,7 @@ export function SiteNavbar() {
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
             animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.22, ease: easeOut }}
           >
             <div className="flex items-center justify-between">
               <Link
@@ -67,12 +68,7 @@ export function SiteNavbar() {
                 initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
-                transition={{
-                  type: "spring",
-                  duration: 0.85,
-                  bounce: 0.75,
-                  delay: 0.08,
-                }}
+                transition={{ ...menuItemSpring, delay: 0.08 }}
               >
                 <Button
                   asChild
@@ -86,12 +82,7 @@ export function SiteNavbar() {
                 initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
-                transition={{
-                  type: "spring",
-                  duration: 0.85,
-                  bounce: 0.75,
-                  delay: 0.12,
-                }}
+                transition={{ ...menuItemSpring, delay: 0.12 }}
               >
                 <Button asChild className="h-[50px] px-8 font-sans">
                   <Link href="/manage">Manage</Link>
