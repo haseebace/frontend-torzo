@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-background px-4 md:px-12 py-9">
+    <footer className="border-t border-border bg-background px-4 md:px-12 py-9 origin-center animate-homepage-enter">
       <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs font-medium leading-6 text-muted-foreground md:text-sm">
         <nav className="contents">
           <Link

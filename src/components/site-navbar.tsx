@@ -14,7 +14,7 @@ export function SiteNavbar() {
   };
 
   return (
-    <header className="relative z-50 flex h-[90px] w-full px-4 md:px-12">
+    <header className="relative z-50 flex h-[90px] w-full origin-center animate-homepage-enter px-4 md:px-12">
       <nav className="relative flex w-full items-center justify-between">
         <Link
           href="/"
