@@ -37,7 +37,7 @@ export function SiteFooter() {
                   {bgProps.isActive && (
                     <MagneticHoverBackground
                       {...bgProps}
-                      className="rounded-full bg-secondary"
+                      className="rounded-[18px] bg-secondary"
                     />
                   )}
                 </AnimatePresence>
