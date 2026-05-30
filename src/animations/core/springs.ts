@@ -75,3 +75,27 @@ export const iconSwapSpring: Transition = {
   duration: 0.15,
   bounce: 0,
 };
+
+/**
+ * Morph spring — tuned for large shape/layout transformations.
+ * Lower stiffness + added mass gives a smooth, weighty, premium feel
+ * when elements dramatically change size or form (button → input, panel expansion).
+ * Use on the container that is changing dimensions.
+ */
+export const morphSpring: Transition = {
+  type: "spring",
+  stiffness: 180,
+  damping: 26,
+  mass: 1.1,
+};
+
+/**
+ * Content swap spring — slightly snappier spring for inner content cross-fades.
+ * Ideal for fading, blurring, and scaling text/labels while the parent container morphs.
+ * Pairs perfectly with morphSpring on the outer element.
+ */
+export const contentSwapSpring: Transition = {
+  type: "spring",
+  stiffness: 280,
+  damping: 32,
+};

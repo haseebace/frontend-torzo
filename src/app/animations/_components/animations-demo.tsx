@@ -1,7 +1,7 @@
 "use client";
 
 import type { Transition } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { SiteNavbar } from "@/components/site-navbar";
@@ -15,6 +15,8 @@ import {
   magneticSpring,
   menuItemSpring,
   iconSwapSpring,
+  morphSpring,
+  contentSwapSpring,
   easeOut,
   easeSmooth,
   easeExpo,
@@ -25,6 +27,8 @@ import {
   homepageEnter,
   magneticHover,
   microInteraction,
+  morphContainer,
+  morphContent,
   useMagneticHover,
   MagneticHoverBackground,
 } from "@/animations";
@@ -279,6 +283,246 @@ function MagneticPillsDemo() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// MORPHING TRANSITIONS — Expert-level shape + content morphs
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ButtonToInputMorph() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [query, setQuery] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const collapse = () => {
+    setIsExpanded(false);
+    setTimeout(() => setQuery(""), 180);
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        collapse();
+      }
+    }
+    if (isExpanded) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isExpanded]);
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="mb-2 text-xs uppercase tracking-[1px] text-muted-foreground">
+        Button → Input Morph
+      </div>
+
+      {/* SVG Gooey Filter - hidden from layout, provides liquid merging effect */}
+      <svg className="pointer-events-none absolute -z-50 h-0 w-0 opacity-0">
+        <defs>
+          <filter id="gooey-morph" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8"
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
+      </svg>
+
+      <motion.div
+        ref={containerRef}
+        layout
+        onClick={() => !isExpanded && setIsExpanded(true)}
+        className={`group relative flex items-center overflow-hidden rounded-2xl border border-border bg-surface-elevated shadow-sm transition-colors will-change-transform ${
+          isExpanded
+            ? "w-full max-w-md h-[58px] bg-card"
+            : "h-[52px] w-[260px] cursor-pointer px-6 hover:bg-secondary/60"
+        }`}
+        transition={morphContainer}
+      >
+        {/* Gooey / liquid overlay that creates the soft merging feel */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-2xl bg-primary/5"
+          animate={{
+            opacity: isExpanded ? 0.6 : 0.15,
+            scale: isExpanded ? 1.015 : 1,
+          }}
+          transition={{
+            ...morphContent,
+            duration: 0.4,
+          }}
+          style={{
+            filter: isExpanded ? "url(#gooey-morph)" : "none",
+          }}
+        />
+
+        {/* Collapsed label */}
+        <AnimatePresence mode="wait">
+          {!isExpanded && (
+            <motion.div
+              key="label"
+              initial={{ opacity: 1, y: 0, scale: 1 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 3, scale: 0.985 }}
+              transition={morphContent}
+              className="flex items-center gap-3 text-sm font-medium text-foreground-strong"
+            >
+              <span className="text-lg opacity-70">⌘</span>
+              Search movies &amp; shows
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Expanded input state */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              key="input"
+              initial={{ opacity: 0, y: -4, scale: 0.985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.985 }}
+              transition={morphContent}
+              className="flex w-full items-center gap-3 px-5"
+            >
+              <span className="text-lg opacity-60">⌘</span>
+              <input
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") collapse();
+                  if (e.key === "Enter" && query.trim()) collapse();
+                }}
+                placeholder="Start typing to search..."
+                className="flex-1 bg-transparent text-[15px] text-foreground-strong placeholder:text-muted-foreground focus:outline-none"
+              />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  collapse();
+                }}
+                className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary/60 hover:text-foreground-strong"
+                aria-label="Close search"
+              >
+                ✕
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      <p className="mt-3 max-w-[260px] text-center text-[11px] leading-snug text-muted-foreground">
+        Clean shape morph with a soft gooey layer. No heavy blur fighting the layout.
+        The liquid edge comes from the filtered overlay blending during expansion.
+      </p>
+    </div>
+  );
+}
+
+function SelectToDropdownMorph() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const options = ["Action", "Drama", "Sci-Fi", "Thriller", "Comedy", "Horror"];
+
+  const close = () => {
+    setIsOpen(false);
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        close();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="mb-2 text-xs uppercase tracking-[1px] text-muted-foreground">
+        Select → Dropdown Morph
+      </div>
+
+      <div ref={containerRef} className="relative w-full max-w-[260px]">
+        {/* Trigger that morphs */}
+        <motion.button
+          layout
+          onClick={() => setIsOpen(!isOpen)}
+          className={`flex w-full items-center justify-between rounded-2xl border border-border bg-surface-elevated px-4 py-3 text-left text-sm font-medium text-foreground-strong shadow-sm transition-colors ${
+            isOpen ? "rounded-b-none border-b-0 bg-card" : "hover:bg-secondary/60"
+          }`}
+          transition={morphContainer}
+        >
+          <span>{selected ? selected : "Choose a genre"}</span>
+          <motion.span
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={iconSwapSpring}
+            className="text-muted-foreground"
+          >
+            ▾
+          </motion.span>
+        </motion.button>
+
+        {/* Expanding panel */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, filter: "blur(10px)", scale: 0.96, y: -4 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1, y: 0 }}
+              exit={{ opacity: 0, filter: "blur(8px)", scale: 0.985, y: -4 }}
+              transition={morphContent}
+              className="absolute left-0 right-0 z-10 overflow-hidden rounded-2xl rounded-t-none border border-border bg-card shadow-sm"
+            >
+              <div className="divide-y divide-border/70 py-1">
+                {options.map((option, index) => (
+                  <motion.button
+                    key={option}
+                    onClick={() => {
+                      setSelected(option);
+                      setTimeout(close, 120);
+                    }}
+                    initial={{ opacity: 0, filter: "blur(6px)", y: 6 }}
+                    animate={{
+                      opacity: 1,
+                      filter: "blur(0px)",
+                      y: 0,
+                      transition: {
+                        ...morphContent,
+                        delay: 0.02 * index,
+                      },
+                    }}
+                    className="flex w-full items-center px-4 py-2.5 text-left text-sm text-foreground-strong hover:bg-secondary/60 active:bg-secondary"
+                  >
+                    {option}
+                    {selected === option && (
+                      <span className="ml-auto text-xs text-muted-foreground">✓</span>
+                    )}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <p className="mt-3 text-center text-[11px] leading-snug text-muted-foreground">
+        The trigger and panel share the same morph language. Options arrive with
+        a soft staggered blur-to-focus motion.
+      </p>
+    </div>
+  );
+}
+
 export function AnimationsDemo() {
   const [showManual, setShowManual] = useState(false);
 
@@ -303,7 +547,7 @@ export function AnimationsDemo() {
             <code className="rounded bg-secondary px-1.5 py-px text-sm">
               @/animations
             </code>
-            . All springs, easings, transitions, and the magnetic hover primitive.
+            . Springs, easings, transitions, magnetic hover, and new high-end morphing patterns.
           </p>
           <div className="mt-4">
             <Link
@@ -577,16 +821,50 @@ return (
           </div>
         </section>
 
+        {/* MORPHING TRANSITIONS */}
+        <section className="mb-16">
+          <div className="mb-6">
+            <div className="text-xs uppercase tracking-[1.5px] text-muted-foreground">
+              NEW
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground-strong">
+              Morphing Transitions
+            </h2>
+            <p className="mt-1.5 max-w-prose text-sm text-muted-foreground">
+              Shape-changing interactions that feel alive. The container uses a weighty <code>morphSpring</code> while inner content cross-fades with blur, fade, and micro-scale using <code>contentSwapSpring</code>. These are the same primitives used in premium interfaces.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="rounded-2xl border border-border bg-surface-elevated p-6">
+              <ButtonToInputMorph />
+            </div>
+            <div className="rounded-2xl border border-border bg-surface-elevated p-6">
+              <SelectToDropdownMorph />
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-border bg-surface-elevated p-5 text-sm">
+            <div className="font-medium text-foreground-strong">Motion Design Notes</div>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-muted-foreground">
+              <li>The outer container always drives the spatial change using <code>layout</code> + <code>morphSpring</code> (low stiffness, higher mass).</li>
+              <li>Content layers are completely separate from the shape. They only handle opacity + blur + tiny scale — never fight the layout animation.</li>
+              <li>Stagger on the dropdown options creates a soft “liquid” arrival without feeling busy.</li>
+              <li>Exit states are deliberately more blurred than enter states. This creates an elegant “dissolve back into the trigger” feeling.</li>
+            </ul>
+          </div>
+        </section>
+
         {/* Quick reference */}
         <section>
           <div className="mb-4 text-sm font-medium text-muted-foreground">
             Quick import reference
           </div>
           <div className="rounded-2xl border border-border bg-surface-elevated p-5 text-xs leading-relaxed text-muted-foreground">
-            import &#123; standardSpring, easeOut, fadeIn, useMagneticHover, MagneticHoverBackground &#125; from "@/animations";
+            import &#123; morphSpring, contentSwapSpring, morphContainer, morphContent, useMagneticHover &#125; from "@/animations";
           </div>
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            Source: <code className="rounded bg-secondary px-1 py-px text-[10px]">src/animations/</code> — springs.ts, easings.ts, transitions.ts, hooks/, effects/
+            Source: <code className="rounded bg-secondary px-1 py-px text-[10px]">src/animations/</code> — springs.ts (new morphSpring), transitions.ts (morphContainer), and custom patterns on this page.
           </p>
         </section>
       </div>

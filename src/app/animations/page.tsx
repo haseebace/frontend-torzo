@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AnimationsDemo } from "./_components/animations-demo";
+import { FeedbackCard } from "./_components/feedback-card";
 
 export const metadata: Metadata = {
   title: "Animation System",
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function AnimationsPage() {
-  return <AnimationsDemo />;
+  return <FeedbackCard />;
 }
