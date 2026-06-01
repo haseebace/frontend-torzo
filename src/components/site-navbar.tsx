@@ -18,31 +18,33 @@ export function SiteNavbar() {
   };
 
   return (
-    <header className={`relative z-50 flex h-[90px] w-full px-4 md:px-12 ${isHomepage ? "origin-center animate-homepage-enter" : ""}`}>
-      <nav className="relative flex w-full items-center justify-between">
-        <Link
-          href="/"
-          className="font-sans text-[33px] font-extrabold leading-none text-primary"
-        >
-          <span className="md:hidden">T.</span>
-          <span className="hidden md:inline">Torzo.</span>
-        </Link>
-
-        <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} />
-
-        <div className="hidden items-center gap-3 md:flex">
-          <Button
-            asChild
-            variant="ghost"
-            className="h-[50px] px-5 font-sans"
+    <>
+      <header className={`relative z-50 flex h-[90px] w-full px-4 md:px-12 ${isHomepage ? "origin-center animate-homepage-enter" : ""}`}>
+        <nav className="relative flex w-full items-center justify-between">
+          <Link
+            href="/"
+            className="font-sans text-[33px] font-extrabold leading-none text-primary"
           >
-            <Link href="/how-to-use">How to Use</Link>
-          </Button>
-          <Button asChild className="h-[50px] px-6 font-sans">
-            <Link href="/manage">Manage</Link>
-          </Button>
-        </div>
-      </nav>
+            <span className="md:hidden">T.</span>
+            <span className="hidden md:inline">Torzo.</span>
+          </Link>
+
+          <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} />
+
+          <div className="hidden items-center gap-3 md:flex">
+            <Button
+              asChild
+              variant="ghost"
+              className="h-[50px] px-5 font-sans"
+            >
+              <Link href="/how-to-use">How to Use</Link>
+            </Button>
+            <Button asChild className="h-[50px] px-6 font-sans">
+              <Link href="/manage">Manage</Link>
+            </Button>
+          </div>
+        </nav>
+      </header>
 
       <AnimatePresence initial={false}>
         {isOpen ? (
@@ -92,6 +94,6 @@ export function SiteNavbar() {
           </motion.div>
         ) : null}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
