@@ -302,11 +302,12 @@ export function ManageAccountForm() {
                   <label
                     key={provider.id}
                     className={cn(
-                      "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-full border-2 bg-surface px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-primary hover:bg-brand-surface active:scale-[0.96] motion-reduce:active:scale-100",
+                      "group flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-full border-2 bg-background px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-primary hover:bg-primary active:scale-[0.96] motion-reduce:active:scale-100",
                       isChecked ? "border-primary" : "border-border",
                     )}
                   >
                     <Checkbox
+                      className="bg-secondary group-hover:bg-primary-foreground group-hover:text-primary group-hover:border-primary-foreground"
                       checked={isChecked}
                       onCheckedChange={(checked) =>
                         handleProviderChange(provider.id, checked === true)
@@ -315,7 +316,7 @@ export function ManageAccountForm() {
                     />
                     <span className="min-w-0 flex-1">
                       <span className="flex min-w-0 items-center justify-between gap-2">
-                        <span className="font-sans text-sm font-extrabold text-foreground">
+                        <span className="font-sans text-sm font-extrabold text-foreground group-hover:text-primary-foreground">
                           {provider.label}
                         </span>
                         {isChecked ? <Badge dot>Active</Badge> : null}

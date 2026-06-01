@@ -46,14 +46,23 @@ export * from "./core/transitions";
 
 // Hooks
 export { useMagneticHover } from "./hooks/useMagneticHover";
+export { useMorphTransition } from "./hooks/useMorphTransition";
 
 // Effect components (optional convenience wrappers)
 export { MagneticHoverBackground } from "./effects/magnetic-hover";
+export {
+  MorphSurface,
+  MorphChild,
+  MorphContent,
+} from "./effects/morph-transition";
 
 // Types
 export type {
-  SpringPreset,
   HoverPredicate,
   MagneticHoverBackgroundProps,
   MagneticHoverContainerProps,
+  MorphTransitionConfig,
+  MorphTransitionState,
+  MorphChildProps,
+  MorphContentProps,
 } from "./types";

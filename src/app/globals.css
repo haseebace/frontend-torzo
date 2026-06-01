@@ -73,62 +73,81 @@ body {
 }
 
 :root {
-  --p-background: #fcfdfe;
-  --p-card: #f8f9fa;
-  --p-secondary: #f0f2f4;
-  --p-muted: #79818d;
-  --p-primary: #3c424a;
-  --p-destructive: #d93c15;
-  --p-success: #008a1f;
+  --background: #fcfdfe;
+  --foreground: #3c424a;
+  --card: #f8f9fa;
+  --card-foreground: #3c424a;
+  --popover: #f8f9fa;
+  --popover-foreground: #3c424a;
+  --primary: #3c424a;
+  --primary-hover: #79818d;
+  --primary-foreground: #ffffff;
+  --secondary: #f0f2f4;
+  --secondary-foreground: #3c424a;
+  --muted: #f0f2f4;
+  --muted-foreground: #79818d;
+  --accent: #f0f2f4;
+  --accent-foreground: #3c424a;
+  --destructive: #d93c15;
+  --border: #f0f2f4;
+  --input: #f0f2f4;
+  --ring: oklch(from #3c424a l c h / 0.45);
+
+  --surface: #f8f9fa;
+  --surface-elevated: #f8f9fa;
+  --surface-subtle: #f0f2f4;
+  --surface-hover: #f0f2f4;
+  --surface-badge: #f0f2f4;
+  --brand-surface: #f0f2f4;
+  --brand-border: #f0f2f4;
+  --brand-foreground: #3c424a;
+
+  --foreground-strong: #3c424a;
+  --foreground-muted: #79818d;
+  --text-subtle: #79818d;
+  --text-soft: #79818d;
+  --link: #3c424a;
+  --success: #008a1f;
+  --focus: oklch(from #3c424a l c h / 0.45);
 }
 
 .dark {
-  --p-background: #0b0c0e;
-  --p-card: #131416;
-  --p-secondary: #1e2023;
-  --p-muted: #71767d;
-  --p-primary: #e8eaed;
-  --p-destructive: #ef4444;
-  --p-success: #22c55e;
-}
-
-:root {
-  --background: var(--p-background);
-  --foreground: var(--p-primary);
-  --card: var(--p-card);
-  --card-foreground: var(--p-primary);
-  --popover: var(--p-card);
-  --popover-foreground: var(--p-primary);
-  --primary: var(--p-primary);
-  --primary-hover: var(--p-muted);
+  --background: #0b0c0e;
+  --foreground: #e8eaed;
+  --card: #131416;
+  --card-foreground: #e8eaed;
+  --popover: #131416;
+  --popover-foreground: #e8eaed;
+  --primary: #e8eaed;
+  --primary-hover: #71767d;
   --primary-foreground: #ffffff;
-  --secondary: var(--p-secondary);
-  --secondary-foreground: var(--p-primary);
-  --muted: var(--p-secondary);
-  --muted-foreground: var(--p-muted);
-  --accent: var(--p-secondary);
-  --accent-foreground: var(--p-primary);
-  --destructive: var(--p-destructive);
-  --border: var(--p-secondary);
-  --input: var(--p-secondary);
-  --ring: oklch(from var(--p-primary) l c h / 0.45);
+  --secondary: #1e2023;
+  --secondary-foreground: #e8eaed;
+  --muted: #1e2023;
+  --muted-foreground: #71767d;
+  --accent: #1e2023;
+  --accent-foreground: #e8eaed;
+  --destructive: #ef4444;
+  --border: #1e2023;
+  --input: #1e2023;
+  --ring: oklch(from #e8eaed l c h / 0.45);
 
-  --surface: var(--p-card);
-  --surface-elevated: var(--p-card);
-  --surface-subtle: var(--p-secondary);
-  --surface-hover: var(--p-secondary);
-  --surface-badge: var(--p-secondary);
-  --brand-surface: var(--p-secondary);
-  --brand-border: var(--p-secondary);
-  --brand-foreground: var(--p-primary);
+  --surface: #131416;
+  --surface-elevated: #131416;
+  --surface-subtle: #1e2023;
+  --surface-hover: #1e2023;
+  --surface-badge: #1e2023;
+  --brand-surface: #1e2023;
+  --brand-border: #1e2023;
+  --brand-foreground: #e8eaed;
 
-  --foreground-strong: var(--p-primary);
-  --foreground-muted: var(--p-muted);
-  --text-subtle: var(--p-muted);
-  --text-soft: var(--p-muted);
-  --link: var(--p-primary);
-  --success: var(--p-success);
-  --focus: oklch(from var(--p-primary) l c h / 0.45);
+  --foreground-strong: #e8eaed;
+  --foreground-muted: #71767d;
+  --text-subtle: #71767d;
+  --text-soft: #71767d;
+  --link: #e8eaed;
+  --success: #22c55e;
+  --focus: oklch(from #e8eaed l c h / 0.45);
 }
 
 @layer base {

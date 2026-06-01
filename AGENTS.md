@@ -138,6 +138,37 @@ All animation logic lives in `src/animations/` — never trap animation inside U
 | `homepageEnter` | `core/transitions` | Homepage animation |
 | `magneticHover` | `core/transitions` | Magnetic hover (alias of `magneticSpring`) |
 
+### Morph Transition System
+
+For shape-morphing between two states (button ↔ card, circle ↔ pill):
+
+| Export | Source | Use Case |
+|--------|--------|----------|
+| `useMorphTransition` | `hooks/useMorphTransition` | State hook for morph surfaces |
+| `MorphSurface` | `effects/morph-transition` | AnimatePresence wrapper |
+| `MorphChild` | `effects/morph-transition` | Inner elements that morph (text, icons) |
+| `MorphContent` | `effects/morph-transition` | Expanded-only content fade-in |
+
+**Example:**
+```tsx
+const morph = useMorphTransition({ layoutId: "feedback-card" });
+
+<MorphSurface morph={morph}>
+  {!morph.isOpen ? (
+    <motion.button layoutId={morph.layoutId} onClick={morph.open}>
+      <MorphChild layoutId="title">Feedback</MorphChild>
+    </motion.button>
+  ) : (
+    <motion.div layoutId={morph.layoutId}>
+      <MorphChild layoutId="title">Feedback</MorphChild>
+      <MorphContent>
+        <textarea />
+      </MorphContent>
+    </motion.div>
+  )}
+</MorphSurface>
+```
+
 ### Example: Creating a New Animation
 
 1. Add your spring/easing/transition to the appropriate `core/` file.

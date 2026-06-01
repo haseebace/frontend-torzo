@@ -285,11 +285,24 @@ export function TorrentActions({
     const isIOS =
       /iPad|iPhone|iPod/.test(userAgent) ||
       (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(userAgent);
+    const isMobile = isIOS || isAndroid;
     const isMacOS = /Macintosh|Mac OS X/.test(userAgent);
 
-    if (isIOS) {
-      const infuseUrl = `infuse://x-callback-url/play?url=${encodeURIComponent(linkToPlay)}`;
-      window.location.href = infuseUrl;
+    // Mobile → VLC external player
+    if (isMobile) {
+      const vlcUrl = `vlc://${encodeURIComponent(linkToPlay)}`;
+      window.location.href = vlcUrl;
+
+      // Fallback: if VLC isn't installed, copy link after a short delay
+      setTimeout(() => {
+        if (document.hasFocus()) {
+          alert(
+            "VLC player not found. The stream link has been copied to your clipboard.",
+          );
+          navigator.clipboard.writeText(linkToPlay).catch(() => {});
+        }
+      }, 2500);
       return;
     }
 

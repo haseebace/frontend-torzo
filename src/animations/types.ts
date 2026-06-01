@@ -2,15 +2,9 @@
  * Shared animation types used across the animation system.
  */
 
-import type { Spring, Transition } from "framer-motion";
+import type { Transition } from "framer-motion";
 
-/** Preset spring configuration. */
-export type SpringPreset = {
-  type: "spring";
-  stiffness: number;
-  damping: number;
-  mass?: number;
-};
+// ─── Magnetic Hover Types ───
 
 /** Callback to check if a specific index is currently hovered. */
 export type HoverPredicate = (index: number) => boolean;
@@ -35,4 +29,52 @@ export type MagneticHoverBackgroundProps = {
 export type MagneticHoverContainerProps = {
   /** Call this on mouse leave to clear the hover state. */
   onMouseLeave: () => void;
+};
+
+// ─── Morph Transition Types ───
+
+/** Configuration for useMorphTransition hook. */
+export type MorphTransitionConfig = {
+  /** Unique layoutId for the morphing surface. Must be unique per page. */
+  layoutId: string;
+  /** Framer Motion spring/transition config. Defaults to a smooth spring. */
+  transition?: Transition;
+};
+
+/** State and controls returned by useMorphTransition. */
+export type MorphTransitionState = {
+  /** Whether the morph surface is in expanded state. */
+  isOpen: boolean;
+  /** Expand the surface. */
+  open: () => void;
+  /** Collapse the surface. */
+  close: () => void;
+  /** Toggle between states. */
+  toggle: () => void;
+  /** The shared layoutId for the morphing surface. */
+  layoutId: string;
+  /** The transition config to apply to motion elements. */
+  transition: Transition;
+};
+
+/** Props for a morphing child element (text, icon, etc). */
+export type MorphChildProps = {
+  /** Unique layoutId for this child. Must match between collapsed and expanded. */
+  layoutId: string;
+  /** Additional CSS classes. */
+  className?: string;
+  /** Whether to only animate position (prevents size distortion). */
+  positionOnly?: boolean;
+  /** Children to render. */
+  children: React.ReactNode;
+};
+
+/** Props for expanded-only content that fades in/out. */
+export type MorphContentProps = {
+  /** Delay before fade-in starts. */
+  delay?: number;
+  /** Duration of the fade. */
+  duration?: number;
+  /** Children to render. */
+  children: React.ReactNode;
 };
