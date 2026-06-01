@@ -5,6 +5,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { Badge } from "@/components/ui/badge";
 import { TorrentActions } from "@/components/torrent/torrent-actions";
 import { TorrentFileList } from "@/components/torrent/torrent-file-list";
+import { VisitedTorrentsTracker } from "@/components/torrent/visited-torrents-tracker";
 import {
   Collapsible,
   CollapsibleContent,
@@ -113,6 +114,7 @@ type YtsDetailResponse = {
 };
 
 type TorrentDetail = {
+  id: string;
   title: string;
   magnetLink: string | null;
   torrentFileUrl: string | null;
@@ -223,6 +225,7 @@ function normalizeDetailResponse(
   const primarySource = data.sources?.[0];
 
   return {
+    id: data.id,
     title: data.title,
     magnetLink: data.magnet_link,
     torrentFileUrl: data.torrent_file_url,
@@ -297,6 +300,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
         const bestTorrent = movie.torrents?.[0];
         torrent = {
+          id: `yts-${sourceUrl}`,
           title: movie.title_long || movie.title || "YTS media",
           magnetLink: bestTorrent?.magnet_link ?? null,
           torrentFileUrl: bestTorrent?.url ?? null,
@@ -404,6 +408,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   return (
     <main className="min-h-dvh overflow-x-hidden bg-background text-foreground">
       <SiteNavbar />
+      <VisitedTorrentsTracker id={torrent.id} />
 
       <section className="flex w-full min-w-0 origin-center animate-page-fade-in flex-col gap-8 px-4 py-8 md:px-12">
         <div className="min-w-0 space-y-5 border-b border-border pb-7">

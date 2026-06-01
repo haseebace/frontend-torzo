@@ -3,10 +3,12 @@
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Eye } from "lucide-react";
 import { TorrentSizeBadge } from "@/components/torrent/torrent-size-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useVisitedTorrents } from "@/lib/hooks/use-visited-torrents";
 
 export interface TorrentResult {
   id: string;
@@ -33,6 +35,8 @@ export function TorrentResultCard({
   className,
 }: TorrentResultCardProps) {
   const router = useRouter();
+  const { isVisited } = useVisitedTorrents();
+  const showVisited = isVisited(result.id);
 
   const primarySource = result.sources[0];
   const provider = primarySource?.provider || "unknown";
@@ -56,7 +60,13 @@ export function TorrentResultCard({
       <Card className="rounded-[22px] border-0 bg-card px-0 py-0 shadow-none ring-0 transition-[box-shadow,transform] duration-300 ease-out group-hover:shadow-sm">
         <CardContent className="flex min-h-[114px] flex-col justify-between gap-4 p-4 sm:p-5 md:flex-row md:items-center md:gap-8 md:p-6 [&_.torrent-size-badge]:hidden [&_.torrent-size-badge]:px-3.5 [&_.torrent-size-badge]:md:flex">
           <div className="flex min-w-0 flex-1 flex-col justify-center gap-3 md:max-w-[624px] md:gap-4">
-            <div className="flex min-w-0 items-center">
+            <div className="flex min-w-0 flex-col items-start gap-2">
+              {showVisited && (
+                <Badge>
+                  <Eye aria-hidden="true" />
+                  Visited
+                </Badge>
+              )}
               <h2 className="min-w-0 flex-1 truncate font-sans text-sm font-extrabold leading-7 text-primary md:text-lg md:leading-9">
                 {result.title}
               </h2>
