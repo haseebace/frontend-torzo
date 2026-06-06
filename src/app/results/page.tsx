@@ -15,20 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-function formatBytesFromBytes(bytes: number) {
-  if (bytes === 0) return "0 B";
-  const units = ["B", "KB", "MB", "GB", "TB"];
-  let size = bytes;
-  let unitIndex = 0;
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex += 1;
-  }
-
-  return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
-}
+import { formatBytes } from "@/lib/utils";
 
 type Props = {
   searchParams: Promise<{
@@ -310,7 +297,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
                 category: "movies",
                 uploaded_at: null,
                 size_bytes: t.size_bytes,
-                size_human: t.size_human || formatBytesFromBytes(t.size_bytes),
+                size_human: t.size_human || formatBytes(t.size_bytes),
                 seeders: t.seeds,
                 leechers: t.peers,
                 sources: [{
@@ -375,7 +362,6 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           key={searchFormValue}
           id="results-search"
           defaultValue={searchFormValue}
-          variant="hero"
           className="mx-auto"
         />
 

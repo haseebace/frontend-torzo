@@ -11,7 +11,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { cn, formatDate } from "@/lib/utils";
+import { cn, formatBytes, formatDate } from "@/lib/utils";
 
 type DetailPageProps = {
   searchParams: Promise<{
@@ -186,20 +186,6 @@ function formatPercent(value: number | null | undefined) {
   return `${Math.round(value * 100)}%`;
 }
 
-function formatBytesFromBytes(bytes: number) {
-  if (bytes === 0) return "0 B";
-  const units = ["B", "KB", "MB", "GB", "TB"];
-  let size = bytes;
-  let unitIndex = 0;
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex += 1;
-  }
-
-  return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
-}
-
 function formatProviderLinkLabel(value: string | null | undefined) {
   if (!value) return "Unknown";
   const normalized = value.toLowerCase();
@@ -231,7 +217,7 @@ function normalizeDetailResponse(
     torrentFileUrl: data.torrent_file_url,
     infoHash: data.info_hash,
     sizeBytes: data.size_bytes ?? 0,
-    sizeHuman: data.size_human || formatBytesFromBytes(data.size_bytes ?? 0),
+    sizeHuman: data.size_human || formatBytes(data.size_bytes ?? 0),
     uploadedAt: data.uploaded_at,
     category: data.category ?? "unknown",
     language: data.language,
@@ -308,7 +294,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
           sizeBytes: bestTorrent?.size_bytes ?? 0,
           sizeHuman:
             bestTorrent?.size ||
-            formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
+            formatBytes(bestTorrent?.size_bytes ?? 0),
           uploadedAt: movie.date_uploaded ?? null,
           category: "movies",
           uploader: "YTS",
@@ -320,11 +306,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               name: movie.title || "Media file",
               size:
                 bestTorrent?.size ||
-                formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
+                formatBytes(bestTorrent?.size_bytes ?? 0),
               size_bytes: bestTorrent?.size_bytes ?? 0,
               size_human:
                 bestTorrent?.size ||
-                formatBytesFromBytes(bestTorrent?.size_bytes ?? 0),
+                formatBytes(bestTorrent?.size_bytes ?? 0),
               extension: ".mp4",
             },
           ],

@@ -958,215 +958,9 @@
     },
     {
       "type": "frame",
-      "id": "SeBTu",
-      "x": 1080,
-      "y": 1573,
-      "name": "Colors",
-      "flipX": true,
-      "stroke": {
-        "align": "inside",
-        "thickness": 1
-      },
-      "alignItems": "center",
-      "children": [
-        {
-          "type": "frame",
-          "id": "NmS3o",
-          "name": "Forground",
-          "flipX": true,
-          "fill": "#fcfdfeff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
-          "layout": "vertical",
-          "gap": 10,
-          "padding": 50,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "z2Vg0",
-              "name": "Background",
-              "fill": "#000000ff",
-              "content": "Background",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "text",
-              "id": "nF523",
-              "name": "FCFDFE",
-              "fill": "#000000ff",
-              "content": "FCFDFE",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "BUI8v",
-          "name": "Primary-BG",
-          "flipX": true,
-          "fill": "#f8f9faff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
-          "layout": "vertical",
-          "gap": 10,
-          "padding": 50,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "KJOVC",
-              "name": "Foreground",
-              "fill": "#000000ff",
-              "content": "Foreground",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "text",
-              "id": "sSy3P",
-              "name": "F8F9FA",
-              "fill": "#000000ff",
-              "content": "F8F9FA",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "zRsVp",
-          "name": "Secandory/Button/badges",
-          "flipX": true,
-          "fill": "#f0f2f4ff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
-          "layout": "vertical",
-          "gap": 10,
-          "padding": 50,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "kM5oz",
-              "name": "Secandory/Button/badges",
-              "fill": "#000000ff",
-              "content": "Secandory/Button/badges",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "text",
-              "id": "Jrgit",
-              "name": "F0F2F4",
-              "fill": "#000000ff",
-              "content": "F0F2F4",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "DoF2g",
-          "name": "Less Importance",
-          "flipX": true,
-          "fill": "#79818dff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
-          "layout": "vertical",
-          "gap": 10,
-          "padding": 50,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "F2hxjs",
-              "name": "Less Importance",
-              "fill": "#ffffffff",
-              "content": "Less Importance",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "text",
-              "id": "F7vbI",
-              "name": "79818D",
-              "fill": "#ffffffff",
-              "content": "79818D",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "rFU78",
-          "name": "Primary",
-          "fill": "#3c424aff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
-          "layout": "vertical",
-          "gap": 10,
-          "padding": 50,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "FDY32",
-              "name": "Primary",
-              "flipX": true,
-              "fill": "#ffffffff",
-              "content": "Primary",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "text",
-              "id": "h7ffq",
-              "name": "3C424A",
-              "flipX": true,
-              "fill": "#ffffffff",
-              "content": "3C424A",
-              "fontFamily": "Plus Jakarta Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "frame",
       "id": "ph1Lv",
-      "x": 1454,
-      "y": 221,
+      "x": 3436,
+      "y": 344,
       "name": "iPhone 16 & 17 Pro Max - 1",
       "clip": true,
       "width": 440,
@@ -2028,6 +1822,7 @@
               "type": "frame",
               "id": "YInSc",
               "name": "Nav Links",
+              "cornerRadius": 22,
               "gap": 12,
               "alignItems": "center",
               "children": [
@@ -2035,9 +1830,11 @@
                   "type": "frame",
                   "id": "pXXB3",
                   "name": "How to Use",
+                  "fill": "$--card-bg",
+                  "cornerRadius": 14,
                   "padding": [
-                    14,
-                    20
+                    10,
+                    16
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -2061,8 +1858,8 @@
                   "fill": "$--primary",
                   "cornerRadius": 50,
                   "padding": [
-                    14,
-                    24
+                    12,
+                    18
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -2087,7 +1884,7 @@
           "type": "frame",
           "id": "k7dEc",
           "name": "Hero Section",
-          "width": "fill_container",
+          "width": 1280,
           "height": "fill_container",
           "layout": "vertical",
           "gap": 32,
@@ -2098,8 +1895,9 @@
               "type": "frame",
               "id": "bw98C",
               "name": "Title Group",
+              "width": 620,
               "layout": "vertical",
-              "gap": 12,
+              "gap": 4,
               "alignItems": "center",
               "children": [
                 {
@@ -2120,7 +1918,7 @@
                   "name": "Marketing Copy",
                   "fill": "$--muted-primary",
                   "textGrowth": "fixed-width",
-                  "width": 500,
+                  "width": "fill_container",
                   "content": "Discover movies and TV shows across multiple sources. Fast, clean, and straightforward.",
                   "lineHeight": 1.5,
                   "textAlign": "center",
@@ -2188,6 +1986,203 @@
                   ]
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kDzT7",
+      "x": 138,
+      "y": -429,
+      "name": "colors",
+      "children": [
+        {
+          "type": "frame",
+          "id": "etTSR",
+          "name": "Forground",
+          "fill": "#fcfdfeff",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1
+          },
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 50,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "SDVU2",
+              "name": "Background",
+              "fill": "#000000ff",
+              "content": "Background",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "Yejd6",
+              "name": "FCFDFE",
+              "fill": "#000000ff",
+              "content": "FCFDFE",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "DeTuB",
+          "name": "Primary-BG",
+          "fill": "#f8f9faff",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1
+          },
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 50,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "j0FihP",
+              "name": "Foreground",
+              "fill": "#000000ff",
+              "content": "Foreground",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "RRiJx",
+              "name": "F8F9FA",
+              "fill": "#000000ff",
+              "content": "F8F9FA",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "CAlAY",
+          "name": "Secandory/Button/badges",
+          "fill": "#f0f2f4ff",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1
+          },
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 50,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "M4uur",
+              "name": "Secandory/Button/badges",
+              "fill": "#000000ff",
+              "content": "Secandory/Button/badges/Stroke",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "WeQ0x",
+              "name": "F0F2F4",
+              "fill": "#000000ff",
+              "content": "F0F2F4",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Txpi5",
+          "name": "Less Importance",
+          "fill": "#79818dff",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1
+          },
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 50,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "CIzby",
+              "name": "Less Importance",
+              "fill": "#ffffffff",
+              "content": "Less Importance",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "AQlgH",
+              "name": "79818D",
+              "fill": "#ffffffff",
+              "content": "79818D",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Qup03",
+          "name": "Primary",
+          "flipX": true,
+          "fill": "#3c424aff",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1
+          },
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 50,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "EwFH0",
+              "name": "Primary",
+              "flipX": true,
+              "fill": "#ffffffff",
+              "content": "Primary",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "tCeKS",
+              "name": "3C424A",
+              "flipX": true,
+              "fill": "#ffffffff",
+              "content": "3C424A",
+              "fontFamily": "Plus Jakarta Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
             }
           ]
         }

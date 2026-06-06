@@ -378,7 +378,10 @@ export function TorrentActions({
           type="button"
           variant="outline"
           size="lg"
-          className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm"
+          className={cn(
+            "h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm",
+            status === "ready" && "hidden",
+          )}
           onClick={handleAddToTorBox}
           disabled={isLoading || !magnetLink}
         >

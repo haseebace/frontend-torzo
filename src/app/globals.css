@@ -41,8 +41,8 @@
   --color-link: var(--link);
   --color-success: var(--success);
   --color-focus: var(--focus);
-  --animate-page-fade-in: page-fade-in 2s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-homepage-enter: homepage-enter 2s cubic-bezier(0.56, 0.01, 0, 1.22)
+  --animate-page-fade-in: page-fade-in 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-homepage-enter: homepage-enter 3s cubic-bezier(0.56, 0.01, 0, 1.22)
     both;
 }
 
@@ -171,6 +171,23 @@ body {
   h6 {
     @apply text-foreground-strong;
     text-wrap: balance;
+  }
+}
+
+/* Reduced motion: disable decorative animations and instant transitions */
+@media (prefers-reduced-motion: reduce) {
+  .animate-homepage-enter,
+  .animate-page-fade-in {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
 

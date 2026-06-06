@@ -4,6 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import { File, FileText, Image, Video } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useMagneticHover, MagneticHoverBackground } from "@/animations";
+import { formatBytes } from "@/lib/utils";
 
 type TorrentFile = {
   name: string;
@@ -21,18 +22,6 @@ function getFileIcon(extension: string) {
   return File;
 }
 
-function formatBytesFromBytes(bytes: number) {
-  if (bytes === 0) return "0 B";
-  const units = ["B", "KB", "MB", "GB", "TB"];
-  let size = bytes;
-  let unitIndex = 0;
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex += 1;
-  }
-  return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
-}
-
 function getFileSizeDisplay(file: TorrentFile): string {
   if (file.size_human) return file.size_human;
   if (file.size && file.size !== "0 bytes") {
@@ -41,11 +30,11 @@ function getFileSizeDisplay(file: TorrentFile): string {
     if (isHumanReadable) return cleaned;
     const bytes = parseInt(cleaned, 10);
     if (!isNaN(bytes) && bytes > 0) {
-      return formatBytesFromBytes(bytes);
+      return formatBytes(bytes);
     }
   }
   if (file.size_bytes && file.size_bytes > 0) {
-    return formatBytesFromBytes(file.size_bytes);
+    return formatBytes(file.size_bytes);
   }
   return "Unknown";
 }

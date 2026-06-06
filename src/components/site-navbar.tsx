@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -17,9 +17,11 @@ export function SiteNavbar() {
     setIsOpen((current) => !current);
   };
 
+  const reduceMotion = useReducedMotion();
+
   return (
     <>
-      <header className={`relative z-50 flex h-[90px] w-full px-4 md:px-12 ${isHomepage ? "origin-center animate-homepage-enter" : ""}`}>
+      <header className={`relative z-[110] flex h-[72px] w-full px-4 md:px-12 ${isHomepage ? "origin-center animate-homepage-enter" : ""}`}>
         <nav className="relative flex w-full items-center justify-between">
           <Link
             href="/"
@@ -35,9 +37,16 @@ export function SiteNavbar() {
             <Button
               asChild
               variant="ghost"
-              className="h-[50px] px-5 font-sans"
+              className="h-[40px] px-5 font-sans rounded-full"
             >
               <Link href="/how-to-use">How to Use</Link>
+            </Button>
+            <Button
+              asChild
+              variant="ghost"
+              className="h-[40px] px-5 font-sans rounded-full"
+            >
+              <Link href="/library">Library</Link>
             </Button>
             <Button asChild className="h-[50px] px-6 font-sans">
               <Link href="/manage">Manage</Link>
@@ -50,9 +59,9 @@ export function SiteNavbar() {
         {isOpen ? (
           <motion.div
             className="fixed inset-0 z-[100] flex flex-col bg-black/10 px-4 py-5 text-foreground backdrop-blur-xl md:hidden"
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0 }}
             transition={{ duration: 0.22, ease: easeOut }}
           >
             <div className="flex items-center justify-between">
@@ -67,10 +76,10 @@ export function SiteNavbar() {
 
             <div className="flex flex-1 flex-col items-center justify-center gap-4">
               <motion.div
-                initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
-                transition={{ ...menuItemSpring, delay: 0.08 }}
+                initial={reduceMotion ? false : { opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
+                transition={reduceMotion ? { duration: 0 } : { ...menuItemSpring, delay: 0.08 }}
               >
                 <Button
                   asChild
@@ -81,10 +90,24 @@ export function SiteNavbar() {
                 </Button>
               </motion.div>
               <motion.div
-                initial={{ opacity: 0, scale: 0, filter: "blur(4px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
-                transition={{ ...menuItemSpring, delay: 0.12 }}
+                initial={reduceMotion ? false : { opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
+                transition={reduceMotion ? { duration: 0 } : { ...menuItemSpring, delay: 0.12 }}
+              >
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-[50px] px-8 font-sans"
+                >
+                  <Link href="/library">Library</Link>
+                </Button>
+              </motion.div>
+              <motion.div
+                initial={reduceMotion ? false : { opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
+                transition={reduceMotion ? { duration: 0 } : { ...menuItemSpring, delay: 0.16 }}
               >
                 <Button asChild className="h-[50px] px-8 font-sans">
                   <Link href="/manage">Manage</Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Film, Loader2, Search } from "lucide-react";
+import { ArrowRight, Film, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
@@ -31,12 +31,10 @@ function SearchSubmitButton({ isSubmitting, variant = "default" }: { isSubmittin
       aria-busy={isSubmitting}
       className={cn(
         buttonVariants({ variant: "torzoPill" }),
-        "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center transition-[opacity,transform,background-color,box-shadow] duration-300 ease-out",
+        "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center",
         variant === "hero" ? "h-[55px] w-[55px]" : "h-12 w-12",
-        "md:right-2 md:opacity-0 md:pointer-events-none md:scale-90",
         variant === "hero" ? "md:h-[59px] md:w-[59px] md:right-1.5" : "md:h-13 md:w-13 md:right-1.5",
-        "md:group-focus-within:scale-100 md:group-focus-within:opacity-100 md:group-focus-within:pointer-events-auto",
-        "active:scale-100 active:not-aria-[haspopup]:translate-y-[-50%] motion-reduce:transition-none md:motion-reduce:scale-100"
+        "active:scale-100 active:not-aria-[haspopup]:translate-y-[-50%]"
       )}
     >
       {isSubmitting ? (
@@ -188,7 +186,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       autoComplete="off"
       onSubmit={() => setIsSubmitting(true)}
       className={cn(
-        "group w-full max-w-3xl md:transition-[max-width] md:duration-300 md:ease-out md:focus-within:max-w-[52rem]",
+        "group w-full max-w-3xl",
         className
       )}
     >
@@ -196,14 +194,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         Search media
       </label>
       <div className={cn("relative", variant === "hero" ? "h-[71px]" : "h-16")}>
-        <span className={cn(
-          "pointer-events-none absolute inset-y-0 left-5 z-10 flex items-center text-text-subtle transition-colors group-focus-within:text-foreground-strong",
-          variant === "hero" && "left-6"
-        )}>
-          <Search className="size-4" />
-        </span>
-        
-        {/* Only include q if no selectedMovie, to avoid query overlap */}
         <Input
           id={id}
           name={!selectedMovie ? "q" : undefined}
@@ -222,8 +212,8 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           value={query}
           placeholder="Search movies, shows, games, software..."
           className={cn(
-            "bg-card pl-12 pr-16 placeholder:text-[12px] placeholder:text-text-subtle md:placeholder:text-[14px] hover:shadow-sm",
-            variant === "hero" ? "h-[71px] rounded-full pl-14" : "h-16"
+            "bg-card pr-16 placeholder:text-[12px] placeholder:text-text-subtle md:placeholder:text-[14px] hover:shadow-sm",
+            variant === "hero" ? "h-[71px] rounded-full" : "h-16"
           )}
           onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
@@ -300,10 +290,10 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                       alt=""
                       width={32}
                       height={45}
-                      className="h-[45px] w-8 shrink-0 rounded-[10px] object-cover"
+                      className="h-[45px] w-8 shrink-0 rounded-lg object-cover"
                     />
                   ) : (
-                    <span className="flex h-[45px] w-8 shrink-0 items-center justify-center rounded-[10px] border border-border bg-surface-subtle text-text-soft">
+                    <span className="flex h-[45px] w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-subtle text-text-soft">
                       <Film className="size-4" />
                     </span>
                   )}

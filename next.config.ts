@@ -7,9 +7,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "image.tmdb.org",
-        pathname: "/t/p/w92/**",
+        pathname: "/t/p/**",
       },
     ],
+    qualities: [75, 90],
   },
   reactCompiler: true,
   async headers() {

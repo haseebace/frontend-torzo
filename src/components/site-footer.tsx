@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence } from "framer-motion";
-import { useMagneticHover, MagneticHoverBackground } from "@/animations";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useMagneticHover, magneticSpring } from "@/animations";
 
 const footerLinks = [
   { href: "/disclaimer", label: "Disclaimer" },
@@ -12,10 +12,11 @@ const footerLinks = [
 ];
 
 export function SiteFooter() {
-  const { containerProps, setHoveredIndex, getBackgroundProps } =
+  const { containerProps, setHoveredIndex, hoveredIndex } =
     useMagneticHover({
       layoutId: "footer-hover",
     });
+  const reduceMotion = useReducedMotion();
 
   return (
     <footer className="border-t border-border bg-background px-4 py-9 md:px-12">
@@ -24,17 +25,21 @@ export function SiteFooter() {
         className="flex flex-wrap items-center justify-center gap-1 text-center text-xs font-medium leading-6 text-muted-foreground md:text-sm"
       >
         {footerLinks.map((link, i) => {
-          const bgProps = getBackgroundProps(i);
+          const isActive = hoveredIndex === i;
           const isLast = i === footerLinks.length - 1;
 
           return (
             <div key={link.href} className="flex items-center gap-1">
               <div className="relative" onMouseEnter={() => setHoveredIndex(i)}>
                 <AnimatePresence>
-                  {bgProps.isActive && (
-                    <MagneticHoverBackground
-                      {...bgProps}
-                      className="rounded-[12px] bg-secondary"
+                  {isActive && !reduceMotion && (
+                    <motion.div
+                      layoutId="footer-hover"
+                      className="absolute inset-0 rounded-xl bg-secondary"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0.5 } }}
+                      transition={magneticSpring}
                     />
                   )}
                 </AnimatePresence>
@@ -46,9 +51,7 @@ export function SiteFooter() {
                 </Link>
               </div>
               {!isLast && (
-                <span aria-hidden="true" className="select-none">
-                  ·
-                </span>
+                <span aria-hidden="true" className="mx-1 h-3 w-px bg-border select-none" />
               )}
             </div>
           );
