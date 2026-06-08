@@ -439,8 +439,8 @@ export function TorrentActions({
         </div>
       )}
       {isZipFallback && (
-        <p className="text-sm font-medium text-amber-600">
-          No video file available — this can only be downloaded.
+        <p className="text-sm font-medium text-foreground-muted">
+          No video file available. This can only be downloaded.
         </p>
       )}
       {errorMessage && (

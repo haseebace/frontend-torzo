@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cn } from "@/lib/utils";
 import { SiteFooterWithAnimation } from "@/components/site-footer-wrapper";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "sonner";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -82,6 +83,7 @@ export default function RootLayout({
         plusJakartaSans.variable,
         "font-sans",
       )}
+      suppressHydrationWarning
     >
       <head>
         <link rel="preconnect" href="https://image.tmdb.org" />
@@ -109,14 +111,22 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-dvh flex-col">
-        {children}
-        <SiteFooterWithAnimation />
-        <Toaster 
-          position="bottom-right" 
-          richColors 
-          closeButton 
-          className="toaster group"
-        />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+          storageKey="torzo_theme"
+        >
+          {children}
+          <SiteFooterWithAnimation />
+          <Toaster
+            position="bottom-right"
+            richColors
+            closeButton
+            className="toaster group"
+          />
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

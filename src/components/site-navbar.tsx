@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatedMenuToggle } from "@/components/animated-menu-toggle";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { easeOut, menuItemSpring } from "@/animations";
 
 export function SiteNavbar() {
@@ -48,6 +49,10 @@ export function SiteNavbar() {
             >
               <Link href="/library">Library</Link>
             </Button>
+            <ThemeToggle
+              size="icon-sm"
+              className="h-[40px] w-[40px] rounded-full"
+            />
             <Button asChild className="h-[50px] px-6 font-sans">
               <Link href="/manage">Manage</Link>
             </Button>
@@ -58,7 +63,7 @@ export function SiteNavbar() {
       <AnimatePresence initial={false}>
         {isOpen ? (
           <motion.div
-            className="fixed inset-0 z-[100] flex flex-col bg-black/10 px-4 py-5 text-foreground backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-[100] flex flex-col bg-foreground/10 px-4 py-5 text-foreground backdrop-blur-xl md:hidden"
             initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0 }}
@@ -108,6 +113,17 @@ export function SiteNavbar() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
                 transition={reduceMotion ? { duration: 0 } : { ...menuItemSpring, delay: 0.16 }}
+              >
+                <ThemeToggle
+                  size="icon"
+                  className="h-[50px] w-[50px] rounded-full"
+                />
+              </motion.div>
+              <motion.div
+                initial={reduceMotion ? false : { opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
+                transition={reduceMotion ? { duration: 0 } : { ...menuItemSpring, delay: 0.20 }}
               >
                 <Button asChild className="h-[50px] px-8 font-sans">
                   <Link href="/manage">Manage</Link>
