@@ -372,7 +372,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
                 <span className="text-destructive">{error}</span>
               ) : (
                 <>
-                  {totalResults} results for <span className="text-primary">{displayName}</span>
+                  {totalResults} results for <span className="text-foreground">{displayName}</span>
                 </>
               )}
             </h2>

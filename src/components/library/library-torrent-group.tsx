@@ -236,7 +236,7 @@ function LibraryFileRow({
         ) : null}
       </AnimatePresence>
       <div className="relative z-10 flex min-w-0 items-center gap-3 px-5 py-3 text-xs md:px-6 md:gap-4 md:text-sm">
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
           <FileIcon className="size-4" />
         </span>
         <p

@@ -219,7 +219,7 @@ export function ManageAccountForm() {
           <CardContent className="flex flex-col gap-6 p-6 md:p-8 border-none">
             <div className="flex flex-col gap-6">
               <div className="max-w-2xl space-y-3">
-                <p className="font-sans text-xs font-extrabold uppercase tracking-[0.16em] text-primary">
+                <p className="font-sans text-xs font-extrabold uppercase tracking-[0.16em] text-foreground">
                   Manage sources
                 </p>
                 <h1 className="font-sans text-3xl font-extrabold leading-[1.08] text-foreground-strong md:text-[38px]">
@@ -299,15 +299,15 @@ export function ManageAccountForm() {
                 const isChecked = selectedProviders.includes(provider.id);
 
                 return (
-                  <label
+                    <label
                     key={provider.id}
                     className={cn(
-                      "group flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-full border-2 bg-background px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-primary hover:bg-primary active:scale-[0.96] motion-reduce:active:scale-100",
-                      isChecked ? "border-primary" : "border-border",
+                      "group flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-full border-2 bg-background px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground hover:bg-primary active:scale-[0.96] motion-reduce:active:scale-100",
+                      isChecked ? "border-foreground" : "border-border",
                     )}
                   >
                     <Checkbox
-                      className="bg-secondary group-hover:bg-primary-foreground group-hover:text-primary group-hover:border-primary-foreground"
+                      className="bg-secondary group-hover:bg-primary-foreground group-hover:text-primary-foreground group-hover:border-primary-foreground"
                       checked={isChecked}
                       onCheckedChange={(checked) =>
                         handleProviderChange(provider.id, checked === true)
@@ -374,7 +374,7 @@ export function ManageAccountForm() {
             <p className="font-sans text-[28px] font-bold leading-none text-foreground md:text-[34px]">
               {activeProviderCount}/{providers.length}
             </p>
-            <p className="text-sm font-semibold text-primary">
+            <p className="text-sm font-semibold text-foreground">
               Providers active
             </p>
           </CardContent>
@@ -384,10 +384,10 @@ export function ManageAccountForm() {
             <p className="text-sm font-bold text-muted-foreground">
               Key status
             </p>
-            <p className="font-sans text-[28px] font-bold leading-none text-primary md:text-[34px]">
+            <p className="font-sans text-[28px] font-bold leading-none text-foreground md:text-[34px]">
               {isConnected ? "Ready" : "Missing"}
             </p>
-            <p className="text-sm font-semibold text-primary">
+            <p className="text-sm font-semibold text-foreground">
               {isConnected
                 ? "Debrid actions unlocked"
                 : "Paste API key to unlock"}

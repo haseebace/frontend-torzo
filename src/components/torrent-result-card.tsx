@@ -68,7 +68,7 @@ export function TorrentResultCard({
                 </Badge>
               )}
               <div className="flex w-full items-center gap-3">
-                <h2 className="min-w-0 flex-1 truncate font-sans text-sm font-extrabold leading-7 text-primary md:text-lg md:leading-9">
+                <h2 className="min-w-0 flex-1 truncate font-sans text-sm font-extrabold leading-7 text-foreground md:text-lg md:leading-9">
                   {result.title}
                 </h2>
                 <Badge className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-[10px] font-semibold text-foreground-strong md:hidden">

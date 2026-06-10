@@ -26,7 +26,7 @@ export function SiteNavbar() {
         <nav className="relative flex w-full items-center justify-between">
           <Link
             href="/"
-            className="font-sans text-[33px] font-extrabold leading-none text-primary"
+            className="font-sans text-[33px] font-extrabold leading-none text-foreground"
           >
             <span className="md:hidden">T.</span>
             <span className="hidden md:inline">Torzo.</span>
@@ -72,7 +72,7 @@ export function SiteNavbar() {
             <div className="flex items-center justify-between">
               <Link
                 href="/"
-                className="font-sans text-[33px] font-extrabold leading-none text-primary"
+                className="font-sans text-[33px] font-extrabold leading-none text-foreground"
               >
                 T.
               </Link>

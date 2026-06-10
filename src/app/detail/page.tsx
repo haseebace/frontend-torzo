@@ -508,7 +508,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       href={sourceLink.source_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="min-w-0 truncate border-b border-input pb-0.5 text-right text-xs font-medium text-text-subtle hover:border-primary hover:text-foreground md:text-sm"
+                      className="min-w-0 truncate border-b border-input pb-0.5 text-right text-xs font-medium text-text-subtle hover:border-foreground hover:text-foreground md:text-sm"
                     >
                       {formatProviderLinkLabel(sourceLink.provider)}
                     </Link>

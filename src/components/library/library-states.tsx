@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function LibraryNotConnected() {
   return (
     <div className="flex flex-col items-start gap-5 rounded-3xl border border-border bg-surface p-6 md:p-8">
-      <span className="flex size-11 items-center justify-center rounded-full bg-secondary text-primary">
+      <span className="flex size-11 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
         <Plug2 className="size-5" />
       </span>
       <div className="space-y-2">
@@ -94,7 +94,7 @@ export function LibraryError({
 export function LibraryEmpty() {
   return (
     <div className="flex flex-col items-center gap-4 rounded-3xl border border-border bg-surface px-6 py-14 text-center md:py-16">
-      <span className="flex size-12 items-center justify-center rounded-full bg-secondary text-primary">
+      <span className="flex size-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
         <FolderOpen className="size-5" />
       </span>
       <div className="space-y-1.5">
@@ -113,7 +113,7 @@ export function LibraryEmpty() {
 export function LibraryFilteredEmpty({ onClear }: { onClear: () => void }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-3xl border border-border bg-surface px-6 py-10 text-center">
-      <span className="flex size-10 items-center justify-center rounded-full bg-secondary text-primary">
+      <span className="flex size-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
         <Inbox className="size-4" />
       </span>
       <div className="space-y-1">

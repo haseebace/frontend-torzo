@@ -70,7 +70,7 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
               )}
             </AnimatePresence>
             <div className="relative z-10 flex min-w-0 items-center gap-3 px-2 py-3 text-xs md:text-sm">
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-primary md:size-8">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground md:size-8">
                 <FileIcon className="size-3.5 md:size-4" />
               </span>
               <p className="min-w-0 flex-1 truncate font-medium text-foreground-strong">
