@@ -113,8 +113,7 @@ export default function RootLayout({
       <body className="flex min-h-dvh flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
           disableTransitionOnChange={false}
           storageKey="torzo_theme"
         >

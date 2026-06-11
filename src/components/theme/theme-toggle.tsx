@@ -1,33 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { iconSwapSpring } from "@/animations";
 
-type ThemeMode = "light" | "dark" | "system";
+type ThemeMode = "light" | "dark";
 
-const ORDER: ThemeMode[] = ["light", "dark", "system"];
-
-function getNextMode(current: ThemeMode | undefined): ThemeMode {
-  if (!current) return "dark";
-  const idx = ORDER.indexOf(current);
-  return ORDER[(idx + 1) % ORDER.length];
-}
-
-function getModeIcon(mode: ThemeMode | undefined) {
-  if (mode === "dark") return Moon;
-  if (mode === "system") return Monitor;
-  return Sun;
-}
-
-function getAriaLabel(mode: ThemeMode | undefined, resolved: string | undefined) {
-  if (mode === "light") return "Switch to dark mode";
-  if (mode === "dark") return "Switch to system theme";
-  if (mode === "system") return "Switch to light mode";
-  return resolved === "dark" ? "Switch theme" : "Switch theme";
+function getOpposite(current: ThemeMode | undefined): ThemeMode {
+  return current === "dark" ? "light" : "dark";
 }
 
 type ThemeToggleProps = {
@@ -36,7 +19,7 @@ type ThemeToggleProps = {
 };
 
 export function ThemeToggle({ size = "icon-sm", className }: ThemeToggleProps) {
-  const { theme, resolvedTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const reduceMotion = useReducedMotion();
 
@@ -44,14 +27,16 @@ export function ThemeToggle({ size = "icon-sm", className }: ThemeToggleProps) {
     setMounted(true);
   }, []);
 
-  const displayMode: ThemeMode = (theme as ThemeMode) ?? "system";
-  const Icon = getModeIcon(mounted ? displayMode : undefined);
+  const displayMode: ThemeMode = theme === "dark" ? "dark" : "light";
+  const Icon = displayMode === "dark" ? Sun : Moon;
   const ariaLabel = mounted
-    ? getAriaLabel(displayMode, resolvedTheme)
+    ? displayMode === "dark"
+      ? "Switch to light mode"
+      : "Switch to dark mode"
     : "Toggle theme";
 
   const handleClick = () => {
-    setTheme(getNextMode(displayMode));
+    setTheme(getOpposite(displayMode));
   };
 
   return (
