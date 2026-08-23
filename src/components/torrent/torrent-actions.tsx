@@ -343,12 +343,12 @@ export function TorrentActions({
       const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
       if (!apiKey || !infoHash) return;
 
-      try {
-        await Promise.all([
-          lookupExistingTorrent({ silent: true, hideBadge: true }),
-          lookupCachedTorrent(),
-        ]);
-      } catch {
+      const [, cacheLookup] = await Promise.allSettled([
+        lookupExistingTorrent({ silent: true, hideBadge: true }),
+        lookupCachedTorrent(),
+      ]);
+
+      if (cacheLookup.status === "rejected") {
         setIsCachedOnTorbox(null);
       }
     };
