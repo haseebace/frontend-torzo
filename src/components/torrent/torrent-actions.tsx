@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
+import type { TorBoxCachedResult, TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
 
 const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
 const MIN_VIDEO_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
@@ -26,6 +26,7 @@ export function TorrentActions({
 }: TorrentActionsProps) {
   const [directLink, setDirectLink] = useState<string | null>(null);
   const [torboxAccountStatus, setTorboxAccountStatus] = useState<string | null>(null);
+  const [isCachedOnTorbox, setIsCachedOnTorbox] = useState<boolean | null>(null);
   const [status, setStatus] = useState<
     | "idle"
     | "checking"
@@ -127,6 +128,28 @@ export function TorrentActions({
     [torboxFetch, findBestVideoFile],
   );
 
+  const lookupCachedTorrent = useCallback(async () => {
+    const normalizedHash = infoHash?.trim().toLowerCase();
+    const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+
+    if (!normalizedHash || !apiKey) {
+      setIsCachedOnTorbox(null);
+      return false;
+    }
+
+    const res = await torboxFetch("/torrents/checkcached", {
+      params: {
+        hash: normalizedHash,
+        format: "object",
+        list_files: false,
+      },
+    });
+    const cachedResults = res.data as TorBoxCachedResult;
+    const isCached = Object.keys(cachedResults).length > 0;
+    setIsCachedOnTorbox(isCached);
+    return isCached;
+  }, [infoHash, torboxFetch]);
+
   const lookupExistingTorrent = useCallback(
     async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
       const normalizedHash = infoHash?.trim().toLowerCase();
@@ -198,22 +221,14 @@ export function TorrentActions({
       setTorboxAccountStatus(null);
       setIsZipFallback(false);
 
-      // 1. Check if already cached on TorBox servers
       if (normalizedHash) {
         try {
-          const cacheRes = await torboxFetch("/torrents/checkcached", {
-            params: { hash: normalizedHash, format: "object", list_files: true },
-          });
-          const cachedData = cacheRes.data as Record<string, unknown>;
-          if (cachedData && Object.keys(cachedData).length > 0) {
-            // It's cached on TorBox — great, will be fast
-          }
+          await lookupCachedTorrent();
         } catch {
-          // Cache check failed, continue anyway
+          setIsCachedOnTorbox(null);
         }
       }
 
-      // 2. Add Magnet
       setStatus("adding");
       let torrentId: number;
       try {
@@ -233,7 +248,6 @@ export function TorrentActions({
         throw addErr;
       }
 
-      // 3. Poll for download completion
       setStatus("downloading");
       while (true) {
         const listRes = await torboxFetch("/torrents/mylist", {
@@ -257,7 +271,6 @@ export function TorrentActions({
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
-      // 4. Request download link
       const listRes = await torboxFetch("/torrents/mylist", {
         params: { id: torrentId },
       });
@@ -331,14 +344,17 @@ export function TorrentActions({
       if (!apiKey || !infoHash) return;
 
       try {
-        await lookupExistingTorrent({ silent: true, hideBadge: true });
+        await Promise.all([
+          lookupExistingTorrent({ silent: true, hideBadge: true }),
+          lookupCachedTorrent(),
+        ]);
       } catch {
-        // Silently fail — user still sees "Add to TorBox" button
+        setIsCachedOnTorbox(null);
       }
     };
 
     checkInBackground();
-  }, [infoHash, lookupExistingTorrent]);
+  }, [infoHash, lookupCachedTorrent, lookupExistingTorrent]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -436,6 +452,11 @@ export function TorrentActions({
       {torboxAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{torboxAccountStatus}</Badge>
+        </div>
+      )}
+      {isCachedOnTorbox !== null && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge>{isCachedOnTorbox ? "Cached on TorBox — instant download" : "Not cached on TorBox"}</Badge>
         </div>
       )}
       {isZipFallback && (
