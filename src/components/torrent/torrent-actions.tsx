@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { TorBoxCachedResult, TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
+import type { TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
 
 const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
 const MIN_VIDEO_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
@@ -24,9 +24,9 @@ export function TorrentActions({
   infoHash,
   className,
 }: TorrentActionsProps) {
+  const normalizedHash = infoHash?.trim().toLowerCase();
   const [directLink, setDirectLink] = useState<string | null>(null);
   const [torboxAccountStatus, setTorboxAccountStatus] = useState<string | null>(null);
-  const [isCachedOnTorbox, setIsCachedOnTorbox] = useState<boolean | null>(null);
   const [status, setStatus] = useState<
     | "idle"
     | "checking"
@@ -128,31 +128,8 @@ export function TorrentActions({
     [torboxFetch, findBestVideoFile],
   );
 
-  const lookupCachedTorrent = useCallback(async () => {
-    const normalizedHash = infoHash?.trim().toLowerCase();
-    const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
-
-    if (!normalizedHash || !apiKey) {
-      setIsCachedOnTorbox(null);
-      return false;
-    }
-
-    const res = await torboxFetch("/torrents/checkcached", {
-      params: {
-        hash: normalizedHash,
-        format: "object",
-        list_files: false,
-      },
-    });
-    const cachedResults = res.data as TorBoxCachedResult;
-    const isCached = Object.keys(cachedResults).length > 0;
-    setIsCachedOnTorbox(isCached);
-    return isCached;
-  }, [infoHash, torboxFetch]);
-
   const lookupExistingTorrent = useCallback(
     async (options: { silent?: boolean; hideBadge?: boolean } = {}) => {
-      const normalizedHash = infoHash?.trim().toLowerCase();
       const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
 
       if (!normalizedHash || !apiKey) return false;
@@ -205,13 +182,12 @@ export function TorrentActions({
         throw err;
       }
     },
-    [infoHash, torboxFetch, requestDownloadLink],
+    [normalizedHash, torboxFetch, requestDownloadLink],
   );
 
   const handleAddToTorBox = async () => {
     try {
       if (!magnetLink) throw new Error("No magnet link found");
-      const normalizedHash = infoHash?.trim().toLowerCase();
       const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
       if (!apiKey) throw new Error("No API key found");
 
@@ -220,14 +196,6 @@ export function TorrentActions({
       setDirectLink(null);
       setTorboxAccountStatus(null);
       setIsZipFallback(false);
-
-      if (normalizedHash) {
-        try {
-          await lookupCachedTorrent();
-        } catch {
-          setIsCachedOnTorbox(null);
-        }
-      }
 
       setStatus("adding");
       let torrentId: number;
@@ -343,18 +311,11 @@ export function TorrentActions({
       const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
       if (!apiKey || !infoHash) return;
 
-      const [, cacheLookup] = await Promise.allSettled([
-        lookupExistingTorrent({ silent: true, hideBadge: true }),
-        lookupCachedTorrent(),
-      ]);
-
-      if (cacheLookup.status === "rejected") {
-        setIsCachedOnTorbox(null);
-      }
+      await lookupExistingTorrent({ silent: true, hideBadge: true });
     };
 
     checkInBackground();
-  }, [infoHash, lookupCachedTorrent, lookupExistingTorrent]);
+  }, [infoHash, lookupExistingTorrent]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -452,11 +413,6 @@ export function TorrentActions({
       {torboxAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{torboxAccountStatus}</Badge>
-        </div>
-      )}
-      {isCachedOnTorbox !== null && (
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge>{isCachedOnTorbox ? "Cached on TorBox — instant download" : "Not cached on TorBox"}</Badge>
         </div>
       )}
       {isZipFallback && (

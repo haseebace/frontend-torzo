@@ -6,6 +6,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
 import { ResultSort } from "@/components/result-sort";
 import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
+import { TorboxCacheStatusProvider } from "@/components/torrent/torbox-cache-status-provider";
 import {
   Pagination,
   PaginationContent,
@@ -298,6 +299,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               movie.torrents.map((t) => ({
                 id: `yts-${movie.id}-${t.hash}`,
                 title: `${movie.title} (${movie.year}) [${t.quality}]`,
+                info_hash: t.hash.toLowerCase(),
                 category: "movies",
                 uploaded_at: null,
                 size_bytes: t.size_bytes,
@@ -386,9 +388,13 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
         <div className="flex flex-col gap-3 md:gap-4">
           {allResults.length > 0 ? (
-            allResults.map((result) => (
-              <TorrentResultCard key={result.id} result={result} />
-            ))
+            <TorboxCacheStatusProvider
+              hashes={allResults.map((result) => result.info_hash)}
+            >
+              {allResults.map((result) => (
+                <TorrentResultCard key={result.id} result={result} />
+              ))}
+            </TorboxCacheStatusProvider>
           ) : (
             !error && (
               <div className="py-20 text-center">
