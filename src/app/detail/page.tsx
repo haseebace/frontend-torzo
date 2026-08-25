@@ -276,7 +276,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
       const res = await fetch(
         `https://torzoapi.vercel.app/api/v1/yts/movies/${sourceUrl}`,
         {
-          cache: "no-store",
+          next: { revalidate: 300 },
+          signal: AbortSignal.timeout(15_000),
         },
       );
       if (res.ok) {
@@ -335,7 +336,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     } else {
       const res = await fetch(
         `https://torzoapi.vercel.app/api/v1/torrents/detail?source=${source}&source_url=${encodeURIComponent(sourceUrl)}`,
-        { cache: "no-store" },
+        {
+          next: { revalidate: 300 },
+          signal: AbortSignal.timeout(15_000),
+        },
       );
       if (res.ok) {
         const json = (await res.json()) as TorrentDetailResponse;

@@ -67,9 +67,10 @@ type YtsMovie = {
 };
 
 const PROVIDERS_COOKIE_NAME = "torzo_selected_providers";
-const RESULTS_PAGE_SIZE = 10;
+const YTS_PAGE_SIZE = 20;
 
 type SearchMeta = {
+  query?: string;
   total: number;
   total_pages: number;
   has_next_page: boolean;
@@ -175,7 +176,6 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const category = params.category?.trim();
   const sort = params.sort || "seeders";
   const currentPage = parsePageParam(params.page);
-  const pageSize = RESULTS_PAGE_SIZE;
 
   const selectedProviders = await getSelectedProviders();
   
@@ -209,9 +209,11 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     if (genericSources) apiParams.append("source", genericSources);
     apiParams.append("sort", sort);
     apiParams.append("page", currentPage.toString());
-    apiParams.append("page_size", pageSize.toString());
-
-    const movieNamePromise = tmdbId ? getMovieName(tmdbId) : Promise.resolve(null);
+    // Let generic providers use their native page size. Sending a custom page
+    // size makes the API crawl all upstream pages to rebuild logical pages.
+    const movieNamePromise = tmdbId && !genericSources
+      ? getMovieName(tmdbId)
+      : Promise.resolve(null);
 
     const genericResultsPromise = (async (): Promise<{
       results: TorrentResult[];
@@ -224,7 +226,8 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       }
 
       const res = await fetch(`https://torzoapi.vercel.app/api/v1/search?${apiParams.toString()}`, {
-        cache: "no-store"
+        next: { revalidate: 30 },
+        signal: AbortSignal.timeout(12_000),
       });
       
       if (res.ok) {
@@ -262,10 +265,11 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       if (tmdbId) ytsParams.append("tmdb_id", tmdbId);
       if (imdbId) ytsParams.append("imdb_id", imdbId);
       ytsParams.append("page", currentPage.toString());
-      ytsParams.append("limit", pageSize.toString());
+      ytsParams.append("limit", YTS_PAGE_SIZE.toString());
       
       const ytsRes = await fetch(`https://torzoapi.vercel.app/api/v1/yts/search?${ytsParams.toString()}`, {
-        cache: "no-store"
+        next: { revalidate: 30 },
+        signal: AbortSignal.timeout(12_000),
       });
       
       if (ytsRes.ok) {
@@ -278,7 +282,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           };
         }>(ytsRes);
         const movieCount = Number(ytsJson.data?.movie_count ?? 0);
-        const limit = Number(ytsJson.data?.limit ?? pageSize);
+        const limit = Number(ytsJson.data?.limit ?? YTS_PAGE_SIZE);
         const pageNumber = Number(ytsJson.data?.page_number ?? currentPage);
         const totalPages = movieCount > 0 ? Math.ceil(movieCount / limit) : 0;
         const meta = {
@@ -322,9 +326,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       ytsResultsPromise,
     ]);
 
-    if (movieName) {
-      displayName = movieName;
-    }
+    displayName = movieName || genericResults.meta?.query || displayName;
 
     allResults = [...genericResults.results, ...ytsResults.results];
     error = genericResults.error;

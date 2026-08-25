@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Film, Loader2 } from "lucide-react";
+import Form from "next/form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
@@ -181,7 +182,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     (isLoading || suggestions.length > 0);
 
   return (
-    <form
+    <Form
       action="/results"
       autoComplete="off"
       onSubmit={() => setIsSubmitting(true)}
@@ -315,6 +316,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           </div>
         ) : null}
       </div>
-    </form>
+    </Form>
   );
 }

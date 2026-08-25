@@ -41,7 +41,7 @@
   --color-link: var(--link);
   --color-success: var(--success);
   --color-focus: var(--focus);
-  --animate-page-fade-in: page-fade-in 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-page-fade-in: page-fade-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-homepage-enter: homepage-enter 3s cubic-bezier(0.56, 0.01, 0, 1.22)
     both;
 }
