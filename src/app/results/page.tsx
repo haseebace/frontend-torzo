@@ -69,6 +69,7 @@ type YtsMovie = {
 
 const PROVIDERS_COOKIE_NAME = "torzo_selected_providers";
 const YTS_PAGE_SIZE = 20;
+const SEARCH_TIMEOUT_MS = 12_000;
 
 type SearchMeta = {
   query?: string;
@@ -85,6 +86,28 @@ type YtsSearchMeta = {
   total_pages: number;
   has_next_page: boolean;
 };
+
+type GenericSearchResult = {
+  results: TorrentResult[];
+  meta: SearchMeta | null;
+  error: string | null;
+};
+
+type YtsSearchResult = {
+  results: TorrentResult[];
+  meta: YtsSearchMeta | null;
+  error: string | null;
+};
+
+function searchFailureMessage(provider: string, failure: unknown) {
+  if (failure instanceof Error && failure.name === "TimeoutError") {
+    console.warn(`${provider} search timed out after ${SEARCH_TIMEOUT_MS}ms.`);
+    return `${provider} search took too long to respond. Please try again.`;
+  }
+
+  console.error(`${provider} search failed.`, failure);
+  return `${provider} search is temporarily unavailable. Please try again.`;
+}
 
 async function readJsonResponse<T>(response: Response): Promise<T> {
   const bytes = new Uint8Array(await response.arrayBuffer());
@@ -216,11 +239,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       ? getMovieName(tmdbId)
       : Promise.resolve(null);
 
-    const genericResultsPromise = (async (): Promise<{
-      results: TorrentResult[];
-      meta: SearchMeta | null;
-      error: string | null;
-    }> => {
+    const genericResultsPromise = (async (): Promise<GenericSearchResult> => {
       // Only call generic search if we have sources and a query/ID
       if (!genericSources || !(query || tmdbId || imdbId)) {
         return { results: [], meta: null, error: null };
@@ -228,7 +247,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
       const res = await fetch(`https://torzoapi.vercel.app/api/v1/search?${apiParams.toString()}`, {
         next: { revalidate: 30 },
-        signal: AbortSignal.timeout(12_000),
+        signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
       });
       
       if (res.ok) {
@@ -253,13 +272,10 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       };
     })();
 
-    const ytsResultsPromise = (async (): Promise<{
-      results: TorrentResult[];
-      meta: YtsSearchMeta | null;
-    }> => {
+    const ytsResultsPromise = (async (): Promise<YtsSearchResult> => {
       // Handle YTS separately if selected and we have an ID
       if (!selectedProviders.includes("yts") || !(tmdbId || imdbId)) {
-        return { results: [], meta: null };
+        return { results: [], meta: null, error: null };
       }
 
       const ytsParams = new URLSearchParams();
@@ -270,7 +286,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       
       const ytsRes = await fetch(`https://torzoapi.vercel.app/api/v1/yts/search?${ytsParams.toString()}`, {
         next: { revalidate: 30 },
-        signal: AbortSignal.timeout(12_000),
+        signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
       });
       
       if (ytsRes.ok) {
@@ -313,25 +329,50 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               }))
             ),
             meta,
+            error: null,
           };
         }
 
-        return { results: [], meta };
+        return { results: [], meta, error: null };
       }
 
-      return { results: [], meta: null };
+      return {
+        results: [],
+        meta: null,
+        error: "YTS search is temporarily unavailable. Please try again.",
+      };
     })();
 
-    const [movieName, genericResults, ytsResults] = await Promise.all([
+    const [movieNameOutcome, genericResultsOutcome, ytsResultsOutcome] = await Promise.allSettled([
       movieNamePromise,
       genericResultsPromise,
       ytsResultsPromise,
     ]);
 
+    const movieName = movieNameOutcome.status === "fulfilled"
+      ? movieNameOutcome.value
+      : null;
+    const genericResults: GenericSearchResult = genericResultsOutcome.status === "fulfilled"
+      ? genericResultsOutcome.value
+      : {
+          results: [],
+          meta: null,
+          error: searchFailureMessage("Torrent provider", genericResultsOutcome.reason),
+        };
+    const ytsResults: YtsSearchResult = ytsResultsOutcome.status === "fulfilled"
+      ? ytsResultsOutcome.value
+      : {
+          results: [],
+          meta: null,
+          error: searchFailureMessage("YTS", ytsResultsOutcome.reason),
+        };
+
     displayName = movieName || genericResults.meta?.query || displayName;
 
     allResults = [...genericResults.results, ...ytsResults.results];
-    error = genericResults.error;
+    error = allResults.length === 0
+      ? genericResults.error || ytsResults.error
+      : null;
     paginationMeta = genericResults.meta;
     ytsPaginationMeta = ytsResults.meta;
 
