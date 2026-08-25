@@ -55,7 +55,13 @@ export async function POST(request: NextRequest) {
 
     if (params && typeof params === "object") {
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            if (item !== undefined && item !== null) {
+              url.searchParams.append(key, String(item));
+            }
+          });
+        } else if (value !== undefined && value !== null) {
           url.searchParams.set(key, String(value));
         }
       });

@@ -70,7 +70,7 @@ export function TorboxCacheStatusProvider({
               endpoint: "/torrents/checkcached",
               method: "GET",
               params: {
-                hash: hashChunk.join(","),
+                hash: hashChunk,
                 format: "object",
                 list_files: false,
               },
