@@ -1,5 +1,5 @@
 {
-  "version": "2.11",
+  "version": "2.15",
   "children": [
     {
       "type": "frame",
@@ -7,14 +7,11 @@
       "x": 138,
       "y": 221,
       "name": "Frame",
+      "enabled": false,
       "clip": true,
       "width": 1280,
       "height": 1182,
       "fill": "#fcfdfeff",
-      "stroke": {
-        "align": "inside",
-        "thickness": 1
-      },
       "layout": "none",
       "children": [
         {
@@ -28,10 +25,6 @@
           "height": 114,
           "fill": "#f8f9faff",
           "cornerRadius": 22,
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "gap": 446,
           "padding": 22,
           "justifyContent": "space_between",
@@ -41,10 +34,6 @@
               "type": "frame",
               "id": "q9vrP",
               "name": "left",
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "layout": "vertical",
               "gap": 15,
               "justifyContent": "center",
@@ -63,10 +52,6 @@
                   "type": "frame",
                   "id": "J9Vg6U",
                   "name": "Badges",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1
-                  },
                   "gap": 15,
                   "children": [
                     {
@@ -77,10 +62,6 @@
                       "height": 32,
                       "fill": "#f0f2f4ff",
                       "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1
-                      },
                       "gap": 6,
                       "padding": [
                         6,
@@ -95,10 +76,6 @@
                           "name": "video-01",
                           "width": 16,
                           "height": 16,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 0.6666666865348816
-                          },
                           "layout": "none",
                           "children": [
                             {
@@ -110,11 +87,8 @@
                               "geometry": "M0 7c0-3.29983 0-4.94975 1.02513-5.97487 1.02512-1.02513 2.67504-1.02513 5.97487-1.02513l1 0c3.2998 0 4.9497 0 5.9749 1.02513 1.0251 1.02512 1.0251 2.67504 1.0251 5.97487l0 2c0 3.2998 0 4.9497-1.0251 5.9749-1.0252 1.0251-2.6751 1.0251-5.9749 1.0251l-1 0c-3.29983 0-4.94975 0-5.97487-1.0251-1.02513-1.0252-1.02513-2.6751-1.02513-5.9749l0-2z",
                               "width": 10,
                               "height": 10.666666984558105,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1
                             },
                             {
                               "type": "path",
@@ -125,12 +99,9 @@
                               "geometry": "M0 2.40585l0.1259-0.10389c2.1158-1.74573 3.1737-2.6186 4.0239-2.19714 0.8502 0.42146 0.8502 1.81873 0.8502 4.61328l0 1.5638c0 2.7946 0 4.1918-0.8502 4.6133-0.8502 0.4214-1.9081-0.4514-4.0239-2.1972l-0.1259-0.1039",
                               "width": 3.3333332538604736,
                               "height": 7.333336353302002,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "cap": "round",
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1,
+                              "strokeLinecap": "round"
                             },
                             {
                               "type": "path",
@@ -141,11 +112,8 @@
                               "geometry": "M3 1.5c0 0.82843-0.67157 1.5-1.5 1.5-0.82843 0-1.5-0.67157-1.5-1.5 0-0.82843 0.67157-1.5 1.5-1.5 0.82843 0 1.5 0.67157 1.5 1.5z",
                               "width": 2,
                               "height": 2,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1
                             }
                           ]
                         },
@@ -169,10 +137,6 @@
                       "height": 32,
                       "fill": "#f0f2f4ff",
                       "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1
-                      },
                       "gap": 6,
                       "padding": [
                         6,
@@ -187,10 +151,6 @@
                           "name": "internet",
                           "width": 16,
                           "height": 16,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 0.6666666865348816
-                          },
                           "layout": "none",
                           "children": [
                             {
@@ -202,11 +162,8 @@
                               "geometry": "M20 10c0 5.52285-4.47715 10-10 10-5.52285 0-10-4.47715-10-10 0-5.52285 4.47715-10 10-10 5.52285 0 10 4.47715 10 10z",
                               "width": 13.333333015441895,
                               "height": 13.333333015441895,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1
                             },
                             {
                               "type": "path",
@@ -217,11 +174,8 @@
                               "geometry": "M8 10c0 5.52285-1.79086 10-4 10-2.20914 0-4-4.47715-4-10 0-5.52285 1.79086-10 4-10 2.20914 0 4 4.47715 4 10z",
                               "width": 5.333333492279053,
                               "height": 13.333333015441895,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1
                             },
                             {
                               "type": "path",
@@ -232,13 +186,10 @@
                               "geometry": "M0 0l20 0",
                               "width": 13.333333015441895,
                               "height": 0,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "join": "round",
-                                "cap": "round",
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1,
+                              "strokeLinejoin": "round",
+                              "strokeLinecap": "round"
                             }
                           ]
                         },
@@ -263,10 +214,6 @@
               "id": "A54qlo",
               "name": "Size and seedrs",
               "width": 474,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "gap": 26,
               "justifyContent": "end",
               "alignItems": "center",
@@ -277,10 +224,6 @@
                   "name": "Size",
                   "fill": "#f0f2f4ff",
                   "cornerRadius": 12,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1
-                  },
                   "layout": "vertical",
                   "padding": [
                     8,
@@ -316,10 +259,6 @@
                   "id": "eLZkd",
                   "name": "right",
                   "width": "fit_content(125)",
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1
-                  },
                   "layout": "vertical",
                   "gap": 15,
                   "justifyContent": "center",
@@ -334,10 +273,6 @@
                       "height": 32,
                       "fill": "#f0f2f4ff",
                       "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1
-                      },
                       "gap": 5,
                       "padding": [
                         6,
@@ -364,10 +299,6 @@
                           "width": 16,
                           "height": 16,
                           "fill": "#00000000",
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1
-                          },
                           "layout": "none",
                           "children": [
                             {
@@ -379,13 +310,10 @@
                               "geometry": "M20 10c0 5.5228-4.4772 10-10 10-5.52285 0-10-4.4772-10-10 0-5.52285 4.47715-10 10-10 5.5228 0 10 4.47715 10 10z",
                               "width": 13.333333015441895,
                               "height": 13.333333015441895,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "join": "round",
-                                "cap": "round",
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1,
+                              "strokeLinejoin": "round",
+                              "strokeLinecap": "round"
                             },
                             {
                               "type": "path",
@@ -396,13 +324,10 @@
                               "geometry": "M3.49997 8.0002l0-7.00006m0-1.00014c0.9223 0.00001 3.5 3.5 3.5 3.5m-6.99997 0c0 0 2.57767-3.50001 3.49997-3.5",
                               "width": 4.666646957397461,
                               "height": 5.33346700668335,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "join": "round",
-                                "cap": "round",
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1,
+                              "strokeLinejoin": "round",
+                              "strokeLinecap": "round"
                             }
                           ]
                         }
@@ -417,10 +342,6 @@
                       "height": 32,
                       "fill": "#f0f2f4ff",
                       "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1
-                      },
                       "gap": 5,
                       "padding": [
                         6,
@@ -446,10 +367,6 @@
                           "name": "circle-arrow-down-02",
                           "width": 16,
                           "height": 16,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1
-                          },
                           "layout": "none",
                           "children": [
                             {
@@ -461,13 +378,10 @@
                               "geometry": "M20 10c0 5.5228-4.4772 10-10 10-5.52285 0-10-4.4772-10-10 0-5.52285 4.47715-10 10-10 5.5228 0 10 4.47715 10 10z",
                               "width": 13.333333015441895,
                               "height": 13.333333015441895,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "join": "round",
-                                "cap": "round",
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1,
+                              "strokeLinejoin": "round",
+                              "strokeLinecap": "round"
                             },
                             {
                               "type": "path",
@@ -478,13 +392,10 @@
                               "geometry": "M3.49997 0l0 7m0 1.0002c0.9223 0 3.5-3.5 3.5-3.5m-6.99997 0c0 0 2.57767 3.5 3.49997 3.5",
                               "width": 4.666646957397461,
                               "height": 5.33346700668335,
-                              "stroke": {
-                                "align": "center",
-                                "thickness": 1,
-                                "join": "round",
-                                "cap": "round",
-                                "fill": "#3c424aff"
-                              }
+                              "stroke": "#3c424aff",
+                              "strokeWidth": 1,
+                              "strokeLinejoin": "round",
+                              "strokeLinecap": "round"
                             }
                           ]
                         }
@@ -506,10 +417,6 @@
           "height": 65,
           "fill": "#e7eaeeff",
           "cornerRadius": 50,
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "gap": 8,
           "padding": [
             10,
@@ -527,10 +434,6 @@
               "height": 55,
               "fill": "#3c424aff",
               "cornerRadius": 52,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "gap": 10,
               "padding": [
                 14,
@@ -559,10 +462,6 @@
               "name": "copy",
               "width": 24,
               "height": 24,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "layout": "none",
               "children": [
                 {
@@ -574,13 +473,10 @@
                   "geometry": "M0 9l0-2c0-3.29983 0-4.94975 1.02513-5.97487 1.02512-1.02513 2.67507-1.02513 5.97487-1.02513 3.2998 0 4.9497 0 5.9749 1.02513 1.0251 1.02512 1.0251 2.67504 1.0251 5.97487l0 2c0 3.2998 0 4.9497-1.0251 5.9749-1.0252 1.0251-2.6751 1.0251-5.9749 1.0251-3.2998 0-4.94975 0-5.97487-1.0251-1.02513-1.0252-1.02513-2.6751-1.02513-5.9749z",
                   "width": 14,
                   "height": 15.999999046325684,
-                  "stroke": {
-                    "align": "center",
-                    "thickness": 2,
-                    "join": "round",
-                    "cap": "round",
-                    "fill": "#3c424aff"
-                  }
+                  "stroke": "#3c424aff",
+                  "strokeWidth": 2,
+                  "strokeLinejoin": "round",
+                  "strokeLinecap": "round"
                 },
                 {
                   "type": "path",
@@ -591,13 +487,10 @@
                   "geometry": "M0 0l0 9c0 3.2998 0 4.9497 1.02513 5.9749 1.02512 1.0251 2.67504 1.0251 5.97487 1.0251l7 0",
                   "width": 14,
                   "height": 15.999999046325684,
-                  "stroke": {
-                    "align": "center",
-                    "thickness": 2,
-                    "join": "round",
-                    "cap": "round",
-                    "fill": "#3c424aff"
-                  }
+                  "stroke": "#3c424aff",
+                  "strokeWidth": 2,
+                  "strokeLinejoin": "round",
+                  "strokeLinecap": "round"
                 }
               ]
             }
@@ -612,11 +505,9 @@
           "clip": true,
           "width": 165,
           "cornerRadius": 5,
-          "stroke": {
-            "align": "inside",
-            "thickness": 1,
-            "fill": "#9747ffff"
-          },
+          "stroke": "#9747ffff",
+          "strokeWidth": 1,
+          "strokeAlignment": "inner",
           "layout": "vertical",
           "gap": 20,
           "padding": 20,
@@ -629,10 +520,6 @@
               "name": "Property 1=Default",
               "fill": "#3c424aff",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 3
-              },
               "gap": 33,
               "padding": [
                 14,
@@ -659,10 +546,6 @@
               "name": "Property 1=secandory",
               "fill": "#f0f2f4ff",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "gap": 33,
               "padding": [
                 14,
@@ -688,11 +571,9 @@
               "id": "J6saU2",
               "name": "Property 1=outline",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 2,
-                "fill": "#3c424aff"
-              },
+              "stroke": "#3c424aff",
+              "strokeWidth": 2,
+              "strokeAlignment": "inner",
               "gap": 33,
               "padding": [
                 14,
@@ -718,10 +599,6 @@
               "id": "eP1Xz",
               "name": "Property 1=Link",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "gap": 33,
               "padding": [
                 14,
@@ -747,10 +624,6 @@
               "name": "Property 1=icon-only",
               "fill": "#3c424aff",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 3
-              },
               "gap": 33,
               "padding": 10,
               "justifyContent": "center",
@@ -762,10 +635,6 @@
                   "name": "all-bookmark",
                   "width": 14,
                   "height": 14,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 0.5833333730697632
-                  },
                   "layout": "none",
                   "children": [
                     {
@@ -777,13 +646,10 @@
                       "geometry": "M0 12.9808l0-5.2733c0-3.63334 0-5.45002 1.09835-6.57876 1.09835-1.12874 2.86612-1.12874 6.40165-1.12874 3.5355 0 5.3033 0 6.4017 1.12874 1.0983 1.12874 1.0983 2.94542 1.0983 6.57876l0 5.2733c0 2.3059 0 3.4588-0.7245 3.8715-1.4031 0.7991-4.035-1.8671-5.2849-2.6699-0.7249-0.4656-1.0873-0.6984-1.4906-0.6984-0.4033 0-0.76575 0.2328-1.49062 0.6984-1.24988 0.8028-3.88175 3.469-5.28484 2.6699-0.72454-0.4127-0.72454-1.5656-0.72454-3.8715z",
                       "width": 8.75,
                       "height": 9.916668891906738,
-                      "stroke": {
-                        "align": "center",
-                        "thickness": 0.8750000596046448,
-                        "join": "round",
-                        "cap": "round",
-                        "fill": "#ffffffff"
-                      }
+                      "stroke": "#ffffffff",
+                      "strokeWidth": 0.8750000596046448,
+                      "strokeLinejoin": "round",
+                      "strokeLinecap": "round"
                     },
                     {
                       "type": "path",
@@ -794,13 +660,10 @@
                       "geometry": "M0 0l2 0c4.714 0 7.0711 0 8.5355 1.46447 1.4645 1.46446 1.4645 3.82148 1.4645 8.53553l0 6",
                       "width": 7,
                       "height": 9.333333015441895,
-                      "stroke": {
-                        "align": "center",
-                        "thickness": 0.8750000596046448,
-                        "join": "round",
-                        "cap": "round",
-                        "fill": "#ffffffff"
-                      }
+                      "stroke": "#ffffffff",
+                      "strokeWidth": 0.8750000596046448,
+                      "strokeLinejoin": "round",
+                      "strokeLinecap": "round"
                     }
                   ]
                 }
@@ -812,10 +675,6 @@
               "name": "Property 1=icon-text",
               "fill": "#3c424aff",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 3
-              },
               "gap": 6,
               "padding": [
                 14,
@@ -830,10 +689,6 @@
                   "name": "add-circle",
                   "width": 16,
                   "height": 16,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1
-                  },
                   "layout": "none",
                   "children": [
                     {
@@ -845,13 +700,10 @@
                       "geometry": "M20 10c0-5.52285-4.4772-10-10-10-5.52285 0-10 4.47715-10 10 0 5.5228 4.47715 10 10 10 5.5228 0 10-4.4772 10-10z",
                       "width": 13.333333969116211,
                       "height": 13.333333969116211,
-                      "stroke": {
-                        "align": "center",
-                        "thickness": 1,
-                        "join": "round",
-                        "cap": "round",
-                        "fill": "#ffffffff"
-                      }
+                      "stroke": "#ffffffff",
+                      "strokeWidth": 1,
+                      "strokeLinejoin": "round",
+                      "strokeLinecap": "round"
                     },
                     {
                       "type": "path",
@@ -862,13 +714,10 @@
                       "geometry": "M4 8l0-8m-4 4l8 0",
                       "width": 5.3333330154418945,
                       "height": 5.3333330154418945,
-                      "stroke": {
-                        "align": "center",
-                        "thickness": 1,
-                        "join": "round",
-                        "cap": "round",
-                        "fill": "#ffffffff"
-                      }
+                      "stroke": "#ffffffff",
+                      "strokeWidth": 1,
+                      "strokeLinejoin": "round",
+                      "strokeLinecap": "round"
                     }
                   ]
                 },
@@ -896,10 +745,6 @@
           "height": 39,
           "fill": "#f0f2f4ff",
           "cornerRadius": 50,
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "gap": 240,
           "padding": [
             6,
@@ -926,10 +771,6 @@
               "name": "BUTTONS",
               "fill": "#3c424aff",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 3
-              },
               "gap": 33,
               "padding": 10,
               "justifyContent": "center",
@@ -942,13 +783,10 @@
                   "geometry": "M0 3.50004l7.00006 0m1.0001 0c0-0.9223-3.5-3.50004-3.5-3.50004m0 7.00004c0 0 3.5-2.5777 3.5-3.5",
                   "width": 8.00015926361084,
                   "height": 7.000040054321289,
-                  "stroke": {
-                    "align": "center",
-                    "thickness": 1.5,
-                    "join": "round",
-                    "cap": "round",
-                    "fill": "#ffffffff"
-                  }
+                  "stroke": "#ffffffff",
+                  "strokeWidth": 1.5,
+                  "strokeLinejoin": "round",
+                  "strokeLinecap": "round"
                 }
               ]
             }
@@ -959,17 +797,13 @@
     {
       "type": "frame",
       "id": "ph1Lv",
-      "x": 3436,
-      "y": 344,
+      "x": 138,
+      "y": 1091,
       "name": "iPhone 16 & 17 Pro Max - 1",
       "clip": true,
       "width": 440,
       "fill": "$--background",
       "cornerRadius": 12,
-      "stroke": {
-        "align": "inside",
-        "thickness": 1
-      },
       "layout": "vertical",
       "children": [
         {
@@ -1083,12 +917,8 @@
               "id": "Dmv0U",
               "name": "searchbar",
               "width": "fill_container",
-              "fill": "#f0f2f4ff",
+              "fill": "$--badges-bg",
               "cornerRadius": 50,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "gap": 240,
               "padding": [
                 12,
@@ -1115,10 +945,6 @@
                   "name": "BUTTONS",
                   "fill": "#3c424aff",
                   "cornerRadius": 50,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 3
-                  },
                   "gap": 33,
                   "padding": 10,
                   "justifyContent": "center",
@@ -1131,13 +957,10 @@
                       "geometry": "M0 3.50004l7.00006 0m1.0001 0c0-0.9223-3.5-3.50004-3.5-3.50004m0 7.00004c0 0 3.5-2.5777 3.5-3.5",
                       "width": 8.00015926361084,
                       "height": 7.000040054321289,
-                      "stroke": {
-                        "align": "center",
-                        "thickness": 1.5,
-                        "join": "round",
-                        "cap": "round",
-                        "fill": "#ffffffff"
-                      }
+                      "stroke": "#ffffffff",
+                      "strokeWidth": 1.5,
+                      "strokeLinejoin": "round",
+                      "strokeLinecap": "round"
                     }
                   ]
                 }
@@ -1175,11 +998,9 @@
               "name": "Sort Chip",
               "fill": "$--background",
               "cornerRadius": 999,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "$--secondary"
-              },
+              "stroke": "$--secondary",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
               "gap": 6,
               "padding": [
                 6,
@@ -1244,10 +1065,6 @@
               "name": "Filter Movies",
               "fill": "$--secondary",
               "cornerRadius": 999,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "padding": [
                 6,
                 14
@@ -1272,10 +1089,6 @@
               "name": "Filter TV",
               "fill": "$--badges-bg",
               "cornerRadius": 999,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "padding": [
                 6,
                 14
@@ -1300,10 +1113,6 @@
               "name": "Filter Music",
               "fill": "$--badges-bg",
               "cornerRadius": 999,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "padding": [
                 6,
                 14
@@ -1328,10 +1137,6 @@
               "name": "Filter Games",
               "fill": "$--badges-bg",
               "cornerRadius": 999,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "padding": [
                 6,
                 14
@@ -1356,10 +1161,6 @@
               "name": "Filter Apps",
               "fill": "$--badges-bg",
               "cornerRadius": 999,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "padding": [
                 6,
                 14
@@ -1401,10 +1202,6 @@
               "width": "fill_container",
               "fill": "$--card-bg",
               "cornerRadius": 16,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "layout": "vertical",
               "gap": 18,
               "padding": 14,
@@ -1529,10 +1326,6 @@
               "width": "fill_container",
               "fill": "$--card-bg",
               "cornerRadius": 16,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "layout": "vertical",
               "gap": 18,
               "padding": 14,
@@ -1657,10 +1450,6 @@
               "width": "fill_container",
               "fill": "$--card-bg",
               "cornerRadius": 16,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1
-              },
               "layout": "vertical",
               "gap": 18,
               "padding": 14,
@@ -1785,8 +1574,8 @@
     {
       "type": "frame",
       "id": "T2uRW",
-      "x": 2127,
-      "y": 344,
+      "x": 138,
+      "y": -88,
       "name": "Homepage",
       "clip": true,
       "width": 1280,
@@ -1974,13 +1763,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "tOQ6u",
                       "name": "Search Icon",
                       "width": 20,
                       "height": 20,
-                      "iconFontName": "search",
-                      "iconFontFamily": "lucide",
+                      "icon": "search",
+                      "library": "lucide",
                       "fill": "#FCFDFE"
                     }
                   ]
@@ -2003,10 +1792,6 @@
           "id": "etTSR",
           "name": "Forground",
           "fill": "#fcfdfeff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "layout": "vertical",
           "gap": 10,
           "padding": 50,
@@ -2040,10 +1825,6 @@
           "id": "DeTuB",
           "name": "Primary-BG",
           "fill": "#f8f9faff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "layout": "vertical",
           "gap": 10,
           "padding": 50,
@@ -2077,10 +1858,6 @@
           "id": "CAlAY",
           "name": "Secandory/Button/badges",
           "fill": "#f0f2f4ff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "layout": "vertical",
           "gap": 10,
           "padding": 50,
@@ -2114,10 +1891,6 @@
           "id": "Txpi5",
           "name": "Less Importance",
           "fill": "#79818dff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "layout": "vertical",
           "gap": 10,
           "padding": 50,
@@ -2152,10 +1925,6 @@
           "name": "Primary",
           "flipX": true,
           "fill": "#3c424aff",
-          "stroke": {
-            "align": "inside",
-            "thickness": 1
-          },
           "layout": "vertical",
           "gap": 10,
           "padding": 50,
@@ -2263,5 +2032,6 @@
         }
       ]
     }
-  }
+  },
+  "fileToken": "e00194e2-b19c-48a9-b5a1-8a44d4a0213c"
 }

@@ -60,7 +60,24 @@ export function TorrentActions({
         }),
       });
 
-      const data = (await res.json()) as Record<string, unknown>;
+      const responseText = await res.text();
+      let data: Record<string, unknown> = {};
+
+      if (responseText) {
+        try {
+          const parsed = JSON.parse(responseText) as unknown;
+          if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+            data = parsed as Record<string, unknown>;
+          }
+        } catch {
+          if (res.ok) {
+            throw new Error(
+              "TorBox returned an invalid response. Please try again.",
+            );
+          }
+        }
+      }
+
       if (!res.ok) {
         const detail =
           typeof data.detail === "string"
@@ -69,7 +86,9 @@ export function TorrentActions({
               ? data.error
               : typeof data.message === "string"
                 ? data.message
-                : "TorBox error";
+                : res.status === 504
+                  ? "TorBox took too long to respond. Please try again."
+                  : `TorBox request failed (HTTP ${res.status})`;
         const error = new Error(detail) as Error & {
           code?: string;
           status?: number;

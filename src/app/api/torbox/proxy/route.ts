@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const TORBOX_BASE = "https://api.torbox.app/v1/api";
+const TORBOX_TIMEOUT_MS = 50_000;
+
+type ProxyRequestBody = {
+  endpoint?: unknown;
+  method?: unknown;
+  body?: unknown;
+  params?: unknown;
+};
 
 function mapTorBoxErrorToStatus(errorCode: string | null): number {
   if (!errorCode) return 500;
@@ -36,8 +44,23 @@ function safeDetail(data: unknown): string {
 }
 
 export async function POST(request: NextRequest) {
+  let payload: ProxyRequestBody;
+
   try {
-    const { endpoint, method = "GET", body, params } = await request.json();
+    const parsed = (await request.json()) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      throw new SyntaxError("Request body must be a JSON object");
+    }
+    payload = parsed as ProxyRequestBody;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid or empty JSON request body" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const { endpoint, method = "GET", body, params } = payload;
     const apiKey = request.headers.get("x-torbox-api-key");
 
     if (!apiKey) {
@@ -72,8 +95,9 @@ export async function POST(request: NextRequest) {
     };
 
     const fetchOptions: RequestInit = {
-      method,
+      method: typeof method === "string" ? method : "GET",
       headers,
+      signal: AbortSignal.timeout(TORBOX_TIMEOUT_MS),
     };
 
     if (body) {
@@ -90,8 +114,27 @@ export async function POST(request: NextRequest) {
 
     // Handle non-JSON responses (e.g., file downloads)
     const contentType = response.headers.get("content-type") || "";
-    if (!contentType.includes("application/json")) {
+    const isJson =
+      contentType.includes("application/json") || contentType.includes("+json");
+    if (!isJson) {
       const arrayBuffer = await response.arrayBuffer();
+
+      if (!response.ok) {
+        const upstreamMessage = new TextDecoder()
+          .decode(arrayBuffer.slice(0, 2_048))
+          .replace(/<[^>]*>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 500);
+        return NextResponse.json(
+          {
+            error: "TorBox request failed",
+            detail: upstreamMessage || `TorBox returned HTTP ${response.status}`,
+          },
+          { status: response.status },
+        );
+      }
+
       return new NextResponse(arrayBuffer, {
         status: response.status,
         headers: {
@@ -112,6 +155,17 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error("TorBox Proxy Error:", error);
+
+    if (error instanceof Error && error.name === "TimeoutError") {
+      return NextResponse.json(
+        {
+          error: "TorBox request timed out",
+          detail: "TorBox did not respond in time. Please try again.",
+        },
+        { status: 504 },
+      );
+    }
+
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Proxy failed" },
       { status: 500 }

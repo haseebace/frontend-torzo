@@ -1,26 +1,4 @@
-Main API
 
-[Introduction](https://api-docs.torbox.app/#intro)
-
-Torrents
-
-Usenet
-
-Web Downloads/Debrid
-
-General
-
-Notifications
-
-User
-
-RSS Feeds
-
-Integrations
-
-Queued
-
-Stream
 
 # Main API
 

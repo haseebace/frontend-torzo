@@ -13,6 +13,13 @@ uv sync
 ./scripts/dev.sh
 ```
 
+Or with Docker:
+
+```bash
+docker build -t torzo .
+docker run -p 8000:8000 torzo
+```
+
 Base URL:
 
 ```text
@@ -39,7 +46,7 @@ Common integration flow:
 | Provider key | Generic search | Detail | Notes |
 | --- | --- | --- | --- |
 | `rargb` | Yes | Yes | Default generic provider. Supports paginated search and rich detail parsing. |
-| `thepiratebay` | Yes | Yes | Uses APIBay JSON APIs. `tpb` is accepted as an alias. |
+| `thepiratebay` | Yes, first upstream page only | Yes | Uses APIBay JSON APIs. `tpb` is accepted as an alias. APIBay search is not page-addressable, so this provider has no results after upstream page 1. |
 | `yts` | No | No | Use `/api/v1/yts/...` because YTS has a movie-first response shape. |
 
 Generic endpoints reject `source=yts`. This is intentional.
@@ -157,9 +164,9 @@ Use this for normalized live torrent search.
 | `category` | No | `movies`, `tv`, `games`, `music`, `anime`, `apps`, `documentaries`, `books`, `other`, `xxx` | Aliases such as `movie`, `video`, `software`, and `app` are normalized. |
 | `source` | No | `rargb`, `thepiratebay`, `tpb`, comma-separated combinations | Defaults to `rargb`. Empty comma tokens are rejected. |
 | `sort` | No | `relevance`, `seeders`, `recent` | Defaults to `relevance`; multi-source search reports `seeders` when omitted. |
-| `page` | No | integer `>= 1` | Defaults to `1`. Sent to each selected upstream provider. |
-| `page_size` | No | integer `1..100` | Slices the returned API response; it does not change upstream provider page size. |
-| `tmdb_id` | No | integer | Requires `media_type`. Used to resolve a cleaner provider query. |
+| `page` | No | integer `>= 1` | Defaults to `1`. Selects a page from the combined API result set. |
+| `page_size` | No | integer `1..100` | Defaults to `20`. The current implementation fetches every available upstream page, combines and sorts those rows, then returns the requested slice. |
+| `tmdb_id` | No | integer | Requires `media_type`. Resolved to an IMDb ID before searching providers. |
 | `imdb_id` | No | `tt` followed by digits | May be used with or without `q`. |
 | `media_type` | Required with `tmdb_id` | `movie`, `tv` | Generic search supports movie and TV TMDB IDs. |
 | `year` | No | integer | Used as a hint for metadata-assisted queries. |
@@ -184,6 +191,7 @@ GET /api/v1/search?q=avengers&imdb_id=tt4154796&year=2019
       "id": "2a59a356-9f61-5521-be06-c540cfe34c37",
       "title": "ubuntu-24.04-desktop-amd64.iso",
       "size_bytes": 5892997120,
+      "size_human": "5.49 GB",
       "uploaded_at": "2026-04-24T18:20:55Z",
       "category": "apps",
       "verified": false,
@@ -220,10 +228,10 @@ GET /api/v1/search?q=avengers&imdb_id=tt4154796&year=2019
     "page_size": 1,
     "total": 45,
     "sort": "relevance",
-    "total_pages": 1,
-    "has_next_page": false,
+    "total_pages": 45,
+    "has_next_page": true,
     "message": null,
-    "results_on_page": 45,
+    "results_on_page": 1,
     "page_size_ignored": false,
     "served_from_cache": false,
     "refresh_scheduled": false,
@@ -241,9 +249,11 @@ Developer notes:
 
 - `id` is deterministic from provider + source URL. It is useful as a stable client-side ID, but the API does not currently support lookup by ID.
 - Use `sources[].source_url` for detail lookup.
-- `total` and `results_on_page` describe the upstream page before `page_size` slicing.
-- `served_from_cache`, `refresh_scheduled`, and `cache_status` are kept for response compatibility. In the current live-only flow they are `false`, `false`, and `miss`.
-- Multi-source search requests the same `page` from each provider, combines the rows, and does not deduplicate them.
+- With `page_size`, `total`, `total_pages`, `has_next_page`, and `results_on_page` describe the API-level paginated result set.
+- **Current pagination cost:** generic `/search` does not yet retrieve only the requested upstream page. When `page_size` is supplied (including its default), it retrieves all available upstream pages before combining, sorting, and slicing the response. This gives an exact combined result count and ordering, but can make searches with many upstream pages slow.
+- RARBG supports upstream page requests. The Pirate Bay/APIBay does not; its rows are available only from the first upstream search response. In multi-provider searches, later logical pages can therefore contain only providers that support them.
+- `served_from_cache`, `refresh_scheduled`, and `cache_status` are reserved for future caching. In this live-only API they are always `false`, `false`, and `"miss"`.
+- Multi-source search combines rows across providers and does not deduplicate them.
 
 ## File Search
 
@@ -279,6 +289,8 @@ The response shape is the same as `/search`, but `meta` also includes:
 - `pages_scanned_to`
 - `has_next_batch`
 
+Unlike generic `/search`, file search intentionally works in bounded batches: one request scans at most four provider pages, then fetches details for those rows to inspect their file lists. It can therefore be substantially more expensive than a normal listing search.
+
 ## Torrent Detail
 
 ```http
@@ -311,6 +323,7 @@ GET /api/v1/torrents/detail?source=rargb&source_url=https%3A%2F%2Ftherarbg.to%2F
     "torrent_file_url": null,
     "info_hash": "0123456789abcdef0123456789abcdef01234567",
     "size_bytes": 5892997120,
+    "size_human": "5.49 GB",
     "uploaded_at": "2026-04-24T18:20:55Z",
     "category": "apps",
     "language": null,
@@ -375,7 +388,7 @@ Use this for YTS movie search. YTS returns a movie-first native JSON shape, not 
 | --- | --- | --- | --- |
 | `imdb_id` | Required unless `tmdb_id` is provided | `tt` followed by digits | Example: `tt4154796`. |
 | `tmdb_id` | Required unless `imdb_id` is provided | integer | Resolved to IMDb ID through TMDB. |
-| `media_type` | No | `movie` | Required value is `movie` when provided. Defaults to `movie` for TMDB lookup. |
+| `media_type` | No | `movie` | Used only with `tmdb_id`. It defaults to `movie`; a non-`movie` value with `tmdb_id` is rejected. |
 | `page` | No | integer `>= 1` | Defaults to `1`. |
 | `limit` | No | integer `1..50` | Defaults to `20`. |
 
@@ -472,10 +485,14 @@ There are no queue, database, cache, worker, or ingestion metrics in the lean AP
 | `invalid_imdb_id` | 400 | IMDb ID does not look like `tt1234567`. |
 | `invalid_media_type` | 400 | Missing/invalid media type for TMDB lookup, or non-movie media type on YTS. |
 | `invalid_movie_id` | 400 | YTS movie ID is lower than `1`. |
+| `rate_limit_exceeded` | 429 | Client has exceeded the per-minute request limit. |
 | `tmdb_not_configured` | 503 | TMDB lookup was requested but `APP_TMDB_READ_ACCESS_TOKEN` is missing. |
 | `tmdb_resolution_failed` | 502 | TMDB lookup failed or returned unexpected data. |
-| `upstream_search_failed` | 502 | Upstream provider search failed. |
+| `upstream_search_failed` | 502 | The YTS upstream search request failed. Generic `/search` reports an upstream listing failure in `meta.message` and may return an empty `data` array instead. |
 | `upstream_detail_failed` | 502 | Upstream provider detail fetch failed. |
+| `internal_error` | 500 | An unexpected server error occurred. |
+
+FastAPI may also return its standard `422 Unprocessable Entity` response when a typed path or query value cannot be parsed at all (for example, `page=abc` or `/api/v1/yts/movies/not-a-number`).
 
 ## Integration Tips
 
@@ -484,3 +501,4 @@ There are no queue, database, cache, worker, or ingestion metrics in the lean AP
 - Do not send YTS through generic endpoints. Use the dedicated YTS endpoints.
 - For detail lookup, keep both the provider key and source URL from the selected search result.
 - If you need repeatable client IDs, use `data[].id`; if you need fresh torrent detail, use `source_url`.
+- Treat `total` and the page navigation fields as a live snapshot. Upstream content can change between page requests.
