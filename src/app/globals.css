@@ -163,6 +163,15 @@ body {
     @apply text-foreground-strong;
     text-wrap: balance;
   }
+
+  :where(a, button):not(:disabled) {
+    transform-origin: center;
+    cursor: pointer;
+  }
+
+  :where(button:disabled) {
+    cursor: not-allowed;
+  }
 }
 
 @layer components {

@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cn } from "@/lib/utils";
 import { SiteFooter } from "@/components/site-footer";
+import { InteractiveMotion } from "@/components/interactive-motion";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "sonner";
 
@@ -117,14 +118,16 @@ export default function RootLayout({
           disableTransitionOnChange
           storageKey="torzo_theme"
         >
-          {children}
-          <SiteFooter />
-          <Toaster
-            position="bottom-right"
-            richColors
-            closeButton
-            className="toaster group"
-          />
+          <InteractiveMotion>
+            {children}
+            <SiteFooter />
+            <Toaster
+              position="bottom-right"
+              richColors
+              closeButton
+              className="toaster group"
+            />
+          </InteractiveMotion>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
