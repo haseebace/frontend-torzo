@@ -381,7 +381,7 @@ export function TorrentActions({
           onClick={handleAddToTorBox}
           disabled={isLoading || !magnetLink}
         >
-          {isLoading && <Loader2 className="size-3.5 animate-spin sm:size-4" />}
+          {isLoading && <Loader2 className="size-3.5 sm:size-4" />}
           <span className="sm:hidden">
             {status === "ready"
               ? "Added"

@@ -1,9 +1,8 @@
 "use client";
 
-import { AnimatePresence } from "framer-motion";
 import { File, FileText, Image, Video } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { useMagneticHover, MagneticHoverBackground } from "@/animations";
 import { formatBytes } from "@/lib/utils";
 
 type TorrentFile = {
@@ -40,35 +39,34 @@ function getFileSizeDisplay(file: TorrentFile): string {
 }
 
 export function TorrentFileList({ files }: { files: TorrentFile[] }) {
-  const { containerProps, setHoveredIndex, getBackgroundProps } =
-    useMagneticHover({
-      layoutId: "torrent-file-hover",
-    });
+  const reduceMotion = useReducedMotion();
 
   return (
-    <div
-      {...containerProps}
-      className="min-w-0 divide-y divide-border/70"
-    >
+    <div className="min-w-0 divide-y divide-border/70">
       {files.map((file, i) => {
         const FileIcon = getFileIcon(file.extension || "");
         const fileSize = getFileSizeDisplay(file);
-        const bgProps = getBackgroundProps(i);
 
         return (
-          <div
+          <motion.div
             key={`${file.name}-${i}`}
             className="relative"
-            onMouseEnter={() => setHoveredIndex(i)}
+            initial={
+              reduceMotion
+                ? { opacity: 0 }
+                : { opacity: 0, transform: "translateX(-12px)" }
+            }
+            animate={{ opacity: 1, transform: "translateX(0px)" }}
+            transition={
+              reduceMotion
+                ? { duration: 0.01 }
+                : {
+                    delay: i * 0.12,
+                    duration: 0.26,
+                    ease: [0.23, 1, 0.32, 1],
+                  }
+            }
           >
-            <AnimatePresence>
-              {bgProps.isActive && (
-                <MagneticHoverBackground
-                  {...bgProps}
-                  className="rounded-[18px] bg-surface-subtle"
-                />
-              )}
-            </AnimatePresence>
             <div className="relative z-10 flex min-w-0 items-center gap-3 px-2 py-3 text-xs md:text-sm">
               <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground md:size-8">
                 <FileIcon className="size-3.5 md:size-4" />
@@ -78,7 +76,7 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
               </p>
               <Badge className="ml-auto">{fileSize}</Badge>
             </div>
-          </div>
+          </motion.div>
         );
       })}
     </div>

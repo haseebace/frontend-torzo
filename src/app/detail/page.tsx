@@ -255,7 +255,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     return (
       <main className="min-h-dvh bg-background text-foreground">
         <SiteNavbar />
-        <section className="origin-center animate-page-fade-in px-4 py-20 text-center">
+        <section className="px-4 py-20 text-center">
           <p className="text-muted-foreground">No media source provided.</p>
           <Link
             href="/"
@@ -359,7 +359,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     return (
       <main className="min-h-dvh bg-background text-foreground">
         <SiteNavbar />
-        <section className="origin-center animate-page-fade-in px-4 py-20 text-center">
+        <section className="px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
             <h1 className="text-2xl font-bold text-foreground-strong">Oops!</h1>
             <p className="text-destructive font-medium">
@@ -400,7 +400,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
       <SiteNavbar />
       <VisitedTorrentsTracker id={torrent.id} />
 
-      <section className="flex w-full min-w-0 origin-center animate-page-fade-in flex-col gap-8 px-4 py-8 md:px-12">
+      <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-12">
         <div className="min-w-0 space-y-5 border-b border-border pb-7">
           <div className="space-y-3">
             <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
@@ -445,7 +445,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                       </h2>
                     </div>
                   </div>
-                  <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+                  <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
                 </div>
               </CollapsibleTrigger>
               <CollapsibleContent>

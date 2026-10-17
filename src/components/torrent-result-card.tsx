@@ -59,12 +59,12 @@ export function TorrentResultCard({
     <Link
       href={detailHref}
       className={cn(
-        "group block rounded-[22px] transition-transform duration-200 ease-out active:scale-[0.96] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus",
+        "group block rounded-[22px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus",
         className,
       )}
       onMouseEnter={handleMouseEnter}
     >
-      <Card className="rounded-[22px] border-0 bg-card px-0 py-0 shadow-none ring-0 transition-[box-shadow,transform] duration-300 ease-out group-hover:shadow-sm">
+      <Card className="rounded-[22px] border-0 bg-card px-0 py-0 shadow-none ring-0 group-hover:shadow-sm">
         <CardContent className="flex min-h-[114px] flex-col justify-between gap-4 p-4 sm:p-5 md:flex-row md:items-center md:gap-8 md:p-6">
           <div className="flex min-w-0 flex-1 flex-col justify-center gap-3 md:max-w-[624px] md:gap-4">
             <div className="flex min-w-0 flex-col items-start gap-2">

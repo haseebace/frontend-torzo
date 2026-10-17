@@ -158,7 +158,7 @@ export function LibraryView() {
               <RefreshCcw
                 className={cn(
                   "size-4",
-                  refreshing && "animate-spin",
+                  refreshing && "opacity-50",
                 )}
               />
             </Button>
@@ -181,7 +181,7 @@ export function LibraryView() {
               type="button"
               onClick={() => setFilter("")}
               aria-label="Clear filter"
-              className="absolute right-4 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-text-subtle transition-colors hover:bg-surface-subtle hover:text-foreground"
+              className="absolute right-4 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-text-subtle hover:bg-surface-subtle hover:text-foreground"
             >
               <X className="size-3.5" />
             </button>

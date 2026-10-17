@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   ChevronDown,
   Download,
@@ -15,8 +14,6 @@ import {
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useMagneticHover, MagneticHoverBackground } from "@/animations";
-import type { MagneticHoverBackgroundProps } from "@/animations";
 import { cn, formatBytes } from "@/lib/utils";
 import type { TorBoxFile, TorBoxTorrent } from "@/lib/torbox-types";
 
@@ -77,11 +74,11 @@ export function LibraryTorrentGroup({
         type="button"
         onClick={() => setOpen((current) => !current)}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors duration-200 ease-out hover:bg-surface-subtle md:px-6"
+        className="flex w-full items-center gap-3 px-5 py-4 text-left hover:bg-surface-subtle md:px-6"
       >
         <ChevronDown
           className={cn(
-            "size-4 shrink-0 text-muted-foreground transition-transform duration-200",
+            "size-4 shrink-0 text-muted-foreground",
             open && "rotate-0",
             !open && "-rotate-90",
           )}
@@ -103,20 +100,11 @@ export function LibraryTorrentGroup({
         </Badge>
       </button>
 
-      <AnimatePresence initial={false}>
-        {open && fileCount > 0 ? (
-          <motion.div
-            key="files"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-t border-border/70"
-          >
-            <LibraryFileList files={files} torrentId={torrent.id} apiKey={apiKey} />
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      {open && fileCount > 0 ? (
+        <div className="overflow-hidden border-t border-border/70">
+          <LibraryFileList files={files} torrentId={torrent.id} apiKey={apiKey} />
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -128,23 +116,14 @@ type LibraryFileListProps = {
 };
 
 function LibraryFileList({ files, torrentId, apiKey }: LibraryFileListProps) {
-  const { containerProps, setHoveredIndex, getBackgroundProps } =
-    useMagneticHover({ layoutId: `library-file-hover-${torrentId}` });
-
   return (
-    <ul
-      {...containerProps}
-      className="flex flex-col divide-y divide-border/70"
-    >
-      {files.map((file, index) => (
+    <ul className="flex flex-col divide-y divide-border/70">
+      {files.map((file) => (
         <LibraryFileRow
-          key={`${file.id}-${index}`}
+          key={file.id}
           file={file}
-          index={index}
           torrentId={torrentId}
           apiKey={apiKey}
-          setHoveredIndex={setHoveredIndex}
-          backgroundProps={getBackgroundProps(index)}
         />
       ))}
     </ul>
@@ -153,20 +132,14 @@ function LibraryFileList({ files, torrentId, apiKey }: LibraryFileListProps) {
 
 type LibraryFileRowProps = {
   file: TorBoxFile;
-  index: number;
   torrentId: number;
   apiKey: string;
-  setHoveredIndex: (index: number) => void;
-  backgroundProps: MagneticHoverBackgroundProps;
 };
 
 function LibraryFileRow({
   file,
-  index,
   torrentId,
   apiKey,
-  setHoveredIndex,
-  backgroundProps,
 }: LibraryFileRowProps) {
   const FileIcon = getFileIcon(file.name);
   const [downloading, setDownloading] = useState(false);
@@ -223,18 +196,7 @@ function LibraryFileRow({
   }
 
   return (
-    <li
-      className="relative"
-      onMouseEnter={() => setHoveredIndex(index)}
-    >
-      <AnimatePresence>
-        {backgroundProps.isActive ? (
-          <MagneticHoverBackground
-            {...backgroundProps}
-            className="rounded-[18px] bg-surface-subtle"
-          />
-        ) : null}
-      </AnimatePresence>
+    <li className="relative">
       <div className="relative z-10 flex min-w-0 items-center gap-3 px-5 py-3 text-xs md:px-6 md:gap-4 md:text-sm">
         <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
           <FileIcon className="size-4" />
@@ -260,7 +222,7 @@ function LibraryFileRow({
               aria-label={`Watch ${file.short_name || file.name}`}
             >
               {downloading ? (
-                <Loader2 className="size-3.5 animate-spin" />
+                <Loader2 className="size-3.5" />
               ) : (
                 <ExternalLink className="size-3.5" />
               )}
@@ -276,7 +238,7 @@ function LibraryFileRow({
             aria-label={`Download ${file.short_name || file.name}`}
           >
             {downloading ? (
-              <Loader2 className="size-3.5 animate-spin" />
+              <Loader2 className="size-3.5" />
             ) : (
               <Download className="size-3.5" />
             )}

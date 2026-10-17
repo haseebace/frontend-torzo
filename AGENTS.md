@@ -105,52 +105,13 @@ agent-browser skills get core
 
 ## Animation
 
-All animation logic lives in `src/animations/` — never trap animation inside UI components.
-
-### Structure
-
-- `src/animations/core/` — Pure `.ts` files with springs, easings, and transition presets.
-- `src/animations/hooks/` — Reusable hooks like `useMagneticHover`.
-- `src/animations/effects/` — Thin presentational wrappers (optional convenience).
-- `src/animations/index.ts` — Barrel export.
-
-### Philosophy
-
-- **Springs, easings, and transitions** are exported as plain objects from `.ts` files.
-- **Hooks** manage animation state and return motion props.
-- **Components** import what they need and apply it with Framer Motion primitives (`<motion.div>`, `AnimatePresence`, etc.).
-- Never create compound components just to hide animation logic.
-
-### Available Presets
-
-| Preset | Source | Use Case |
-|--------|--------|----------|
-| `standardSpring` | `core/springs` | Hover effects, micro-interactions |
-| `gentleSpring` | `core/springs` | Page transitions, large elements |
-| `bouncySpring` | `core/springs` | Playful UI |
-| `magneticSpring` | `core/springs` | Magnetic hover background |
-| `menuItemSpring` | `core/springs` | Mobile menu items, dropdowns |
-| `iconSwapSpring` | `core/springs` | Icon toggles, state changes |
-| `easeOut` | `core/easings` | Elements entering viewport |
-| `easeHomepage` | `core/easings` | Homepage entrance |
-| `fadeIn` | `core/transitions` | Standard fade |
-| `fadeInSlow` | `core/transitions` | Page-level fade |
-| `homepageEnter` | `core/transitions` | Homepage animation |
-| `magneticHover` | `core/transitions` | Magnetic hover (alias of `magneticSpring`) |
-
-
-### Example: Creating a New Animation
-
-1. Add your spring/easing/transition to the appropriate `core/` file.
-2. If it needs state, create a hook in `hooks/` that returns motion props.
-3. Optionally create a thin wrapper in `effects/`.
-4. Export from `index.ts`.
-5. Import and use in components.
-
-### Current Page-Level Animations
-
-- Homepage enter: `animate-homepage-enter` — 3s `cubic-bezier(0.56, 0.01, 0, 1.22)` (applied to header, hero, footer only on `/`)
-- Page fade: `animate-page-fade-in` — 1000ms ease-out
+The retained animations are the footer links' magnetic hover background, the home
+hero search interaction, and the detail-page files accordion. The footer hook and
+spring live in `src/animations/`; the search form uses Framer Motion for its focus
+stroke, width expansion, submit-button reveal, suggestions-panel resize, and
+suggestion-item magnetic hover. The detail files section uses Framer Motion for
+its height transition and staggered row entrance. All other page, loading, menu,
+theme, and hover-transition animations should remain removed.
 
 ## Important Notes
 
@@ -160,5 +121,3 @@ All animation logic lives in `src/animations/` — never trap animation inside U
 - `Badge` component handles `asChild` carefully (Slot.Root requires single child)
 - Search form has keyboard navigation (↑/↓/Enter/Escape) for suggestions
 - Dark mode uses `.dark` class on `<html>` with palette overrides
-
-

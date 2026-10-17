@@ -249,7 +249,7 @@ export function ManageAccountForm() {
                       setApiKey(event.target.value);
                     }}
                     placeholder="Paste your TorBox API key"
-                    className="bg-background pl-12 text-sm placeholder:text-[12px] placeholder:text-text-subtle hover:shadow-sm focus-visible:bg-background"
+                    className="bg-background pl-12 text-sm placeholder:text-[12px] placeholder:text-text-subtle focus-visible:bg-background"
                     disabled={isConnected}
                   />
                 </div>
@@ -302,7 +302,7 @@ export function ManageAccountForm() {
                     <label
                     key={provider.id}
                     className={cn(
-                      "group flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-full border-2 bg-background px-4 py-3 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground hover:bg-primary active:scale-[0.96] motion-reduce:active:scale-100",
+                      "group flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-full border-2 bg-background px-4 py-3 hover:border-foreground hover:bg-primary",
                       isChecked ? "border-foreground" : "border-border",
                     )}
                   >

@@ -4,7 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cn } from "@/lib/utils";
-import { SiteFooterWithAnimation } from "@/components/site-footer-wrapper";
+import { SiteFooter } from "@/components/site-footer";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "sonner";
 
@@ -114,11 +114,11 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
-          disableTransitionOnChange={false}
+          disableTransitionOnChange
           storageKey="torzo_theme"
         >
           {children}
-          <SiteFooterWithAnimation />
+          <SiteFooter />
           <Toaster
             position="bottom-right"
             richColors

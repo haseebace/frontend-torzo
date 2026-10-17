@@ -11,7 +11,7 @@ export default function LibraryPage() {
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
 
-      <section className="w-full animate-page-fade-in px-4 py-8 md:px-12 md:py-12">
+      <section className="w-full px-4 py-8 md:px-12 md:py-12">
         <LibraryView />
       </section>
     </main>

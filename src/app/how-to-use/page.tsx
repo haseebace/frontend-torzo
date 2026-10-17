@@ -86,7 +86,7 @@ export default function HowToUsePage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
+      <section className="mx-auto max-w-3xl px-4 py-12 md:px-12">
         <div className="text-center">
           <h1 className="text-4xl font-black tracking-tight text-foreground-strong md:text-5xl">
             How to Use Torzo

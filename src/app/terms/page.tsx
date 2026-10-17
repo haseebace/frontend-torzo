@@ -5,7 +5,7 @@ export default function TermsPage() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
-      <section className="mx-auto max-w-3xl animate-page-fade-in px-4 py-12 md:px-12">
+      <section className="mx-auto max-w-3xl px-4 py-12 md:px-12">
         <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground-strong">
           Terms of Service
         </h1>
