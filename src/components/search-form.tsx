@@ -40,6 +40,15 @@ type TmdbSuggestion = {
   overview: string;
 };
 
+type ApplySuggestionsOptions = {
+  isQueryUpdate?: boolean;
+  finishLoading?: boolean;
+};
+
+function getSuggestionKey(suggestion: TmdbSuggestion) {
+  return `${suggestion.mediaType}:${suggestion.id}`;
+}
+
 function hasMeaningfulSuggestionOverlap(
   previous: TmdbSuggestion[],
   next: TmdbSuggestion[],
@@ -47,10 +56,10 @@ function hasMeaningfulSuggestionOverlap(
   if (previous.length === 0 || next.length === 0) return false;
 
   const previousIds = new Set(
-    previous.map((suggestion) => `${suggestion.mediaType}:${suggestion.id}`),
+    previous.map(getSuggestionKey),
   );
   const sharedCount = next.filter((suggestion) =>
-    previousIds.has(`${suggestion.mediaType}:${suggestion.id}`),
+    previousIds.has(getSuggestionKey(suggestion)),
   ).length;
 
   return sharedCount > 0;
@@ -59,6 +68,11 @@ function hasMeaningfulSuggestionOverlap(
 const dropdownEase = [0.22, 1, 0.36, 1] as const;
 
 const suggestionSpring = searchInteractionSpring;
+
+const suggestionUpdateExitTransition = {
+  duration: 0.14,
+  ease: dropdownEase,
+};
 
 const suggestionEntranceSpring = {
   type: "spring" as const,
@@ -134,7 +148,7 @@ const suggestionUpdateVariants = {
     opacity: 0,
     scale: 0.98,
     filter: "blur(0px)",
-    transition: searchInteractionSpring,
+    transition: suggestionUpdateExitTransition,
   },
 };
 
@@ -214,6 +228,9 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [shouldAnimateLayout, setShouldAnimateLayout] = useState(false);
+  const [updateEnteringKeys, setUpdateEnteringKeys] = useState<string[]>([]);
+  const [isSuggestionUpdateExiting, setIsSuggestionUpdateExiting] =
+    useState(false);
   const [isSuggestionModalEntering, setIsSuggestionModalEntering] =
     useState(false);
   const [isHeroFocused, setIsHeroFocused] = useState(false);
@@ -237,15 +254,40 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     suggestionContainerProps.onMouseLeave();
     setActiveIndex(-1);
   };
-  const applySuggestions = useCallback((nextSuggestions: TmdbSuggestion[]) => {
-    setShouldAnimateLayout(
-      hasMeaningfulSuggestionOverlap(suggestionsRef.current, nextSuggestions),
-    );
-    suggestionsRef.current = nextSuggestions;
-    setSuggestions(nextSuggestions);
-    setIsSuggestionsOpen(true);
-    setActiveIndex(-1);
-  }, []);
+  const applySuggestions = useCallback(
+    (
+      nextSuggestions: TmdbSuggestion[],
+      {
+        isQueryUpdate = false,
+        finishLoading = false,
+      }: ApplySuggestionsOptions = {},
+    ) => {
+      const previousSuggestions = suggestionsRef.current;
+      const previousKeys = new Set(previousSuggestions.map(getSuggestionKey));
+
+      setShouldAnimateLayout(
+        hasMeaningfulSuggestionOverlap(previousSuggestions, nextSuggestions),
+      );
+      setUpdateEnteringKeys(
+        isQueryUpdate
+          ? nextSuggestions
+              .map(getSuggestionKey)
+              .filter((key) => !previousKeys.has(key))
+          : [],
+      );
+      setIsSuggestionUpdateExiting(
+        isQueryUpdate &&
+          previousSuggestions.length > 0 &&
+          nextSuggestions.length === 0,
+      );
+      suggestionsRef.current = nextSuggestions;
+      setSuggestions(nextSuggestions);
+      setIsSuggestionsOpen(true);
+      setActiveIndex(-1);
+      if (finishLoading) setIsLoading(false);
+    },
+    [],
+  );
   const animatedDropdownVariants = reduceMotion
     ? {
         hidden: { scale: 0.98, scaleY: 0.98 },
@@ -286,8 +328,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
 
     if (!trimmedQuery && !isHeroFocused) {
       suggestionsRef.current = [];
-      setSuggestions([]);
-      setShouldAnimateLayout(false);
       return;
     }
 
@@ -297,18 +337,21 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       const cachedDiscovery = getCachedTmdbDiscovery();
 
       if (cachedDiscovery) {
-        applySuggestions(cachedDiscovery);
-        setIsLoading(false);
+        applySuggestions(cachedDiscovery, {
+          isQueryUpdate: hasUserTypedRef.current,
+          finishLoading: true,
+        });
         return () => {
           cancelled = true;
         };
       }
 
-      setIsLoading(true);
       void prefetchTmdbDiscovery()
         .then((nextSuggestions) => {
           if (cancelled) return;
-          applySuggestions(nextSuggestions);
+          applySuggestions(nextSuggestions, {
+            isQueryUpdate: hasUserTypedRef.current,
+          });
         })
         .catch(() => {
           if (!cancelled) {
@@ -336,9 +379,12 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         if (cancelled) return;
 
         if (!response.ok) {
+          const hadSuggestions = suggestionsRef.current.length > 0;
           suggestionsRef.current = [];
           setSuggestions([]);
           setShouldAnimateLayout(false);
+          setUpdateEnteringKeys([]);
+          setIsSuggestionUpdateExiting(hadSuggestions);
           return;
         }
 
@@ -348,12 +394,15 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
 
         if (cancelled) return;
 
-        applySuggestions(data.results ?? []);
+        applySuggestions(data.results ?? [], { isQueryUpdate: true });
       } catch {
         if (!cancelled) {
+          const hadSuggestions = suggestionsRef.current.length > 0;
           suggestionsRef.current = [];
           setSuggestions([]);
           setShouldAnimateLayout(false);
+          setUpdateEnteringKeys([]);
+          setIsSuggestionUpdateExiting(hadSuggestions);
         }
       } finally {
         if (!cancelled) {
@@ -445,23 +494,30 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
   const renderSuggestionRows = (
     enableLayout: boolean,
     animateEntrance: boolean,
+    enteringKeys: string[],
   ) =>
     suggestions.map((movie, index) => {
+      const suggestionKey = getSuggestionKey(movie);
       const isHighlighted = index === activeIndex;
+      const isUpdateEntry = !animateEntrance && enteringKeys.includes(suggestionKey);
+      const useLayout = enableLayout && !reduceMotion && !isUpdateEntry;
 
       return (
         <motion.div
-          key={`${movie.mediaType}:${movie.id}`}
-          layout={enableLayout && !reduceMotion ? "position" : false}
+          key={suggestionKey}
+          layout={useLayout ? "position" : false}
           transition={
-            enableLayout
-              ? { ...suggestionSpring, layout: searchInteractionSpring }
-              : { duration: 0.16, ease: dropdownEase }
+            isUpdateEntry
+              ? undefined
+              : useLayout
+                ? { ...suggestionSpring, layout: searchInteractionSpring }
+                : { duration: 0.16, ease: dropdownEase }
           }
           className="relative isolate flex min-h-[58px] items-center gap-3 rounded-[10px] bg-bg-canvas px-3 py-2"
           custom={index}
-          initial={animateEntrance ? "hidden" : false}
+          initial={animateEntrance || isUpdateEntry ? "hidden" : false}
           animate="visible"
+          exit={animateEntrance ? undefined : "exit"}
           variants={
             animateEntrance
               ? animatedSuggestionRowVariants
@@ -532,17 +588,19 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
 
   const suggestionsPanelContent = (
     <>
-      {isLoading && suggestions.length === 0 ? (
+      {isLoading && suggestions.length === 0 && !isSuggestionUpdateExiting ? (
         <div className="px-4 py-3 text-sm text-text-muted">Searching TMDB</div>
       ) : (
         <LayoutGroup id={`${listboxId}-suggestions`}>
           <AnimatePresence
             initial={isSuggestionModalEntering}
             mode="popLayout"
+            onExitComplete={() => setIsSuggestionUpdateExiting(false)}
           >
             {renderSuggestionRows(
               shouldAnimateLayout && !isSuggestionModalEntering,
               isSuggestionModalEntering,
+              updateEnteringKeys,
             )}
           </AnimatePresence>
         </LayoutGroup>
@@ -610,14 +668,18 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             setHoveredSuggestion(null);
 
             if (!nextQuery.trim()) {
+              const hadSuggestions = suggestionsRef.current.length > 0;
               suggestionsRef.current = [];
               setSuggestions([]);
               setIsLoading(isHero);
               setIsSuggestionsOpen(isHero);
               setShouldAnimateLayout(false);
+              setUpdateEnteringKeys([]);
+              setIsSuggestionUpdateExiting(hadSuggestions);
               setIsSuggestionModalEntering(false);
             } else {
               setIsSuggestionModalEntering(false);
+              setUpdateEnteringKeys([]);
               setIsLoading(true);
               setIsSuggestionsOpen(true);
             }
@@ -625,11 +687,12 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           onFocus={() => {
             clearBlurTimer();
             if (isHero) {
+              const hasQuery = Boolean(query.trim());
               const cachedDiscovery = getCachedTmdbDiscovery();
 
-               setIsHeroFocused(true);
-               setIsSuggestionModalEntering(true);
-               if (cachedDiscovery) {
+              setIsHeroFocused(true);
+              setIsSuggestionModalEntering(!hasQuery);
+              if (!hasQuery && cachedDiscovery) {
                 applySuggestions(cachedDiscovery);
                 setIsLoading(false);
               } else {
