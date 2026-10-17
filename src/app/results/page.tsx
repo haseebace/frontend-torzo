@@ -22,6 +22,7 @@ type Props = {
   searchParams: Promise<{
     q?: string;
     tmdbId?: string;
+    mediaType?: "movie" | "tv";
     imdbId?: string;
     category?: string;
     sort?: string;
@@ -44,6 +45,7 @@ type ResultsPageProps = {
   searchParams: Promise<{
     q?: string;
     tmdbId?: string;
+    mediaType?: "movie" | "tv";
     imdbId?: string;
     category?: string;
     sort?: string;
@@ -140,7 +142,7 @@ async function getSelectedProviders() {
   return ["rarbg"];
 }
 
-async function getMovieName(tmdbId: string) {
+async function getMediaName(tmdbId: string, mediaType?: "movie" | "tv") {
   const bearerToken = process.env.APP_TMDB_READ_ACCESS_TOKEN || process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = (process.env.APP_TMDB_BASE_URL ?? "https://api.themoviedb.org/3").replace(/\/$/, "");
   
@@ -149,42 +151,38 @@ async function getMovieName(tmdbId: string) {
     return null;
   }
 
+  const endpoints = mediaType === "tv"
+    ? ["tv"]
+    : mediaType === "movie"
+      ? ["movie"]
+      : ["movie", "tv"];
+
   try {
-    const response = await fetch(`${baseUrl}/movie/${tmdbId}`, {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        Accept: "application/json",
-      },
-      next: { revalidate: 3600 }
-    });
-    
-    if (response.ok) {
-      const data = await readJsonResponse<{ title?: string; name?: string }>(response);
-      return data.title || data.name;
-    } else {
-      // Try TV if movie fails
-      const tvResponse = await fetch(`${baseUrl}/tv/${tmdbId}`, {
+    for (const endpoint of endpoints) {
+      const response = await fetch(`${baseUrl}/${endpoint}/${tmdbId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           Accept: "application/json",
         },
-        next: { revalidate: 3600 }
+        next: { revalidate: 3600 },
       });
-      if (tvResponse.ok) {
-        const data = await readJsonResponse<{ title?: string; name?: string }>(tvResponse);
-        return data.name || data.title;
+
+      if (response.ok) {
+        const data = await readJsonResponse<{ title?: string; name?: string }>(response);
+        return data.title || data.name;
       }
     }
   } catch (e) {
-    console.error("Failed to fetch movie name:", e);
+    console.error("Failed to fetch media name:", e);
   }
   return null;
 }
 
-function buildPageUrl(params: { query?: string; tmdbId?: string; imdbId?: string; category?: string; sort?: string; page: number }) {
+function buildPageUrl(params: { query?: string; tmdbId?: string; mediaType?: "movie" | "tv"; imdbId?: string; category?: string; sort?: string; page: number }) {
   const searchParams = new URLSearchParams();
   if (params.query) searchParams.append("q", params.query);
   if (params.tmdbId) searchParams.append("tmdbId", params.tmdbId);
+  if (params.mediaType) searchParams.append("mediaType", params.mediaType);
   if (params.imdbId) searchParams.append("imdbId", params.imdbId);
   if (params.category) searchParams.append("category", params.category);
   if (params.sort && params.sort !== "seeders") searchParams.append("sort", params.sort);
@@ -196,6 +194,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const params = await searchParams;
   const query = params.q?.trim();
   const tmdbId = params.tmdbId?.trim();
+  const mediaType = params.mediaType;
   const imdbId = params.imdbId?.trim();
   const category = params.category?.trim();
   const sort = params.sort || "seeders";
@@ -226,17 +225,17 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     if (query) apiParams.append("q", query);
     if (tmdbId) {
       apiParams.append("tmdb_id", tmdbId);
-      apiParams.append("media_type", "movie"); // Defaulting to movie for now
+      apiParams.append("media_type", mediaType || "movie");
     }
     if (imdbId) apiParams.append("imdb_id", imdbId);
     if (category) apiParams.append("category", category);
     if (genericSources) apiParams.append("source", genericSources);
-    apiParams.append("sort", sort);
+    apiParams.append("sort", sort === "size" ? "seeders" : sort);
     apiParams.append("page", currentPage.toString());
     // Let generic providers use their native page size. Sending a custom page
     // size makes the API crawl all upstream pages to rebuild logical pages.
-    const movieNamePromise = tmdbId && !genericSources
-      ? getMovieName(tmdbId)
+    const mediaNamePromise = tmdbId && !genericSources
+      ? getMediaName(tmdbId, mediaType)
       : Promise.resolve(null);
 
     const genericResultsPromise = (async (): Promise<GenericSearchResult> => {
@@ -274,7 +273,11 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
     const ytsResultsPromise = (async (): Promise<YtsSearchResult> => {
       // Handle YTS separately if selected and we have an ID
-      if (!selectedProviders.includes("yts") || !(tmdbId || imdbId)) {
+      if (
+        !selectedProviders.includes("yts") ||
+        !(tmdbId || imdbId) ||
+        mediaType === "tv"
+      ) {
         return { results: [], meta: null, error: null };
       }
 
@@ -343,14 +346,14 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       };
     })();
 
-    const [movieNameOutcome, genericResultsOutcome, ytsResultsOutcome] = await Promise.allSettled([
-      movieNamePromise,
+    const [mediaNameOutcome, genericResultsOutcome, ytsResultsOutcome] = await Promise.allSettled([
+      mediaNamePromise,
       genericResultsPromise,
       ytsResultsPromise,
     ]);
 
-    const movieName = movieNameOutcome.status === "fulfilled"
-      ? movieNameOutcome.value
+    const mediaName = mediaNameOutcome.status === "fulfilled"
+      ? mediaNameOutcome.value
       : null;
     const genericResults: GenericSearchResult = genericResultsOutcome.status === "fulfilled"
       ? genericResultsOutcome.value
@@ -367,7 +370,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           error: searchFailureMessage("YTS", ytsResultsOutcome.reason),
         };
 
-    displayName = movieName || genericResults.meta?.query || displayName;
+    displayName = mediaName || genericResults.meta?.query || displayName;
 
     allResults = [...genericResults.results, ...ytsResults.results];
     error = allResults.length === 0
@@ -385,6 +388,8 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         const dateB = b.uploaded_at ? new Date(b.uploaded_at).getTime() : 0;
         return dateB - dateA;
       });
+    } else if (sort === "size") {
+      allResults.sort((a, b) => b.size_bytes - a.size_bytes);
     }
   } catch (e) {
     console.error(e);
@@ -402,11 +407,12 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     <main className="min-h-dvh bg-background text-foreground">
       <SiteNavbar />
 
-      <section className="flex w-full origin-center animate-page-fade-in flex-col gap-6 px-4 py-6 md:gap-8 md:px-12 md:py-8">
+      <section className="flex w-full flex-col gap-6 px-4 py-6 md:gap-8 md:px-12 md:py-8">
         <SearchForm
           key={searchFormValue}
           id="results-search"
           defaultValue={searchFormValue}
+          variant="hero"
           className="mx-auto"
         />
 
@@ -451,7 +457,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
               <PaginationContent>
                 {currentPage > 1 && (
                   <PaginationItem>
-                    <PaginationPrevious href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage - 1 })} />
+                    <PaginationPrevious href={buildPageUrl({ query, tmdbId, mediaType, imdbId, category, sort, page: currentPage - 1 })} />
                   </PaginationItem>
                 )}
 
@@ -476,7 +482,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
                         )}
                         <PaginationItem>
                           <PaginationLink
-                            href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: pageNum })}
+                            href={buildPageUrl({ query, tmdbId, mediaType, imdbId, category, sort, page: pageNum })}
                             isActive={pageNum === currentPage}
                           >
                             {pageNum}
@@ -488,7 +494,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
                 {hasNextPage && (
                   <PaginationItem>
-                    <PaginationNext href={buildPageUrl({ query, tmdbId, imdbId, category, sort, page: currentPage + 1 })} />
+                    <PaginationNext href={buildPageUrl({ query, tmdbId, mediaType, imdbId, category, sort, page: currentPage + 1 })} />
                   </PaginationItem>
                 )}
               </PaginationContent>

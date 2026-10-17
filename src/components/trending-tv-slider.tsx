@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 type MediaItem = {
   id: number;
+  mediaType: "movie" | "tv";
   title: string;
   posterUrl: string | null;
 };
@@ -71,13 +72,11 @@ function TrendingSlider({ endpoint, title, ariaLabel }: TrendingSliderProps) {
             : items.map((item) => (
                 <Link
                   key={item.id}
-                  href={`/results?tmdbId=${item.id}`}
+                  href={`/results?tmdbId=${item.id}&mediaType=${item.mediaType}`}
                   prefetch={false}
                   className={cn(
                     "group relative h-[225px] w-[150px] shrink-0 snap-start overflow-hidden rounded-2xl",
-                    "transition-[transform,box-shadow] duration-300 ease-out",
-                    "hover:scale-[0.97] hover:shadow-sm",
-                    "active:scale-[0.95] motion-reduce:transition-none",
+                    "hover:shadow-sm",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                   )}
                 >

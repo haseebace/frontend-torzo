@@ -44,6 +44,7 @@ export async function GET(_request: NextRequest) {
     .slice(0, 20)
     .map((show) => ({
       id: show.id,
+      mediaType: "tv" as const,
       title: show.name ?? "Untitled",
       posterUrl: show.poster_path
         ? `https://image.tmdb.org/t/p/w342${show.poster_path}`
