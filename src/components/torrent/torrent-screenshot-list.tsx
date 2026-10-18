@@ -79,13 +79,12 @@ export function TorrentScreenshotList({
                   }
             }
             style={{ transformOrigin: "center center" }}
-            className="group block w-fit max-w-full overflow-hidden rounded-2xl border border-border bg-transparent leading-none transition-colors hover:border-foreground/30"
+            className="group block h-[120px] w-fit max-w-full overflow-hidden rounded-2xl border border-border bg-transparent leading-none transition-colors hover:border-foreground/30"
           >
             <img
               src={imageSrc}
               alt={`${title} screenshot ${index + 1}`}
-              loading="lazy"
-              className="block h-auto max-h-[120px] max-w-full w-auto object-contain transition-opacity group-hover:opacity-90"
+              className="block h-full max-w-full w-auto object-contain transition-opacity group-hover:opacity-90"
             />
           </motion.a>
         );
