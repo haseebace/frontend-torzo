@@ -1,15 +1,44 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Check, Copy, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
 
 const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
 const MIN_VIDEO_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
 const API_KEY_STORAGE_KEY = "torbox_api_key";
+
+const TORRENT_APP_LINKS = [
+  {
+    name: "qBittorrent",
+    platforms: "macOS / Windows",
+    href: "https://www.qbittorrent.org/download",
+  },
+  {
+    name: "Transmission",
+    platforms: "macOS",
+    href: "https://transmissionbt.com/download/",
+  },
+  {
+    name: "Deluge",
+    platforms: "macOS / Windows",
+    href: "https://deluge-torrent.org/download/",
+  },
+  {
+    name: "Plexo",
+    platforms: "macOS / Windows",
+    href: "https://github.com/anmolkapil/plexo",
+  },
+  {
+    name: "Folx",
+    platforms: "macOS",
+    href: "https://www.mac-downloader.com/",
+  },
+] as const;
 
 interface TorrentActionsProps {
   magnetLink?: string | null;
@@ -37,6 +66,21 @@ export function TorrentActions({
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isZipFallback, setIsZipFallback] = useState(false);
+  const [magnetCopied, setMagnetCopied] = useState(false);
+  const [isTorboxConnected, setIsTorboxConnected] = useState(false);
+
+  const handleCopyMagnet = async () => {
+    if (!magnetLink) return;
+
+    try {
+      await navigator.clipboard.writeText(magnetLink);
+      setMagnetCopied(true);
+      toast.success("Magnet link copied.");
+      window.setTimeout(() => setMagnetCopied(false), 1600);
+    } catch {
+      toast.error("Could not copy the magnet link.");
+    }
+  };
 
   const torboxFetch = useCallback(
     async (
@@ -328,6 +372,7 @@ export function TorrentActions({
   useEffect(() => {
     const checkInBackground = async () => {
       const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+      setIsTorboxConnected(Boolean(apiKey));
       if (!apiKey || !infoHash) return;
 
       await lookupExistingTorrent({ silent: true, hideBadge: true });
@@ -337,32 +382,47 @@ export function TorrentActions({
   }, [infoHash, lookupExistingTorrent]);
 
   return (
-    <div className="flex flex-col gap-3">
-      <div
-        className={cn(
-          "flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3",
-          className,
-        )}
-      >
+    <div className={cn("flex flex-col gap-3 md:ml-auto md:items-end", className)}>
+      <div className="flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3 md:w-[180px] md:flex-col md:items-end">
         {magnetLink && (
-          <Button
-            asChild
-            variant="default"
-            size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+          <div
+            role="group"
+            aria-label="Magnet link actions"
+            className={cn(
+              buttonVariants({ variant: "default", size: "lg" }),
+              "h-10 w-[120px] min-w-0 gap-0 p-0 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:text-sm",
+            )}
           >
-            <a href={magnetLink}>
+            <a
+              href={magnetLink}
+              aria-label="Open magnet link in your installed torrent app"
+              title="Open in your installed torrent app"
+              className="flex min-w-0 flex-1 items-center justify-center px-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/70 focus-visible:ring-inset sm:px-2.5"
+            >
               <span className="sm:hidden">Magnet</span>
               <span className="hidden sm:inline">Magnet link</span>
             </a>
-          </Button>
+            <button
+              type="button"
+              aria-label={magnetCopied ? "Magnet link copied" : "Copy magnet link"}
+              title="Copy magnet link"
+              onClick={handleCopyMagnet}
+              className="mr-1 flex size-7 shrink-0 items-center justify-center rounded-full text-primary-foreground/60 hover:bg-primary-foreground/10 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/70 sm:mr-1.5"
+            >
+              {magnetCopied ? (
+                <Check className="size-3.5" aria-hidden="true" />
+              ) : (
+                <Copy className="size-3.5" aria-hidden="true" />
+              )}
+            </button>
+          </div>
         )}
         {torrentFileUrl && (
           <Button
             asChild
-            variant="secondary"
+            variant="outline"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
           >
             <a href={torrentFileUrl}>
               <span className="sm:hidden">Torrent</span>
@@ -370,42 +430,44 @@ export function TorrentActions({
             </a>
           </Button>
         )}
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          className={cn(
-            "h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm",
-            status === "ready" && "hidden",
-          )}
-          onClick={handleAddToTorBox}
-          disabled={isLoading || !magnetLink}
-        >
-          {isLoading && <Loader2 className="size-3.5 sm:size-4" />}
-          <span className="sm:hidden">
-            {status === "ready"
-              ? "Added"
-              : status === "checking"
-                ? "Check"
-                : isLoading
-                  ? "Adding"
-                  : "TorBox"}
-          </span>
-          <span className="hidden sm:inline">
-            {status === "checking" && "Checking TorBox..."}
-            {status === "adding" && "Adding..."}
-            {status === "downloading" && "Downloading..."}
-            {status === "ready" && "Added to TorBox"}
-            {(status === "idle" || status === "error") && "Add to TorBox"}
-          </span>
-        </Button>
+        {isTorboxConnected && (
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className={cn(
+              "h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm",
+              status === "ready" && "hidden",
+            )}
+            onClick={handleAddToTorBox}
+            disabled={isLoading || !magnetLink}
+          >
+            {isLoading && <Loader2 className="size-3.5 sm:size-4" />}
+            <span className="sm:hidden">
+              {status === "ready"
+                ? "Added"
+                : status === "checking"
+                  ? "Check"
+                  : isLoading
+                    ? "Adding"
+                    : "TorBox"}
+            </span>
+            <span className="hidden sm:inline">
+              {status === "checking" && "Checking TorBox..."}
+              {status === "adding" && "Adding..."}
+              {status === "downloading" && "Downloading..."}
+              {status === "ready" && "Added to TorBox"}
+              {(status === "idle" || status === "error") && "Add to TorBox"}
+            </span>
+          </Button>
+        )}
 
         {directLink && (
           <Button
             type="button"
             variant="outline"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
             onClick={handleWatchNow}
           >
             <span className="sm:hidden">Watch</span>
@@ -418,7 +480,7 @@ export function TorrentActions({
             asChild
             variant="outline"
             size="lg"
-            className="h-[35px] w-[90px] min-w-0 rounded-full px-2 text-[10px] sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
+            className="h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
           >
             <a href={directLink} target="_blank" rel="noreferrer">
               <span className="sm:hidden">Direct</span>
@@ -429,6 +491,25 @@ export function TorrentActions({
           </Button>
         )}
       </div>
+      {magnetLink && (
+        <div className="flex w-full flex-wrap items-center gap-x-2 gap-y-1 text-xs text-foreground-muted md:justify-end md:text-right">
+          <span>Need a torrent app?</span>
+          {TORRENT_APP_LINKS.map((app, index) => (
+            <span key={app.name} className="inline-flex items-center gap-2">
+              {index > 0 && <span aria-hidden="true">·</span>}
+              <a
+                href={app.href}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-foreground underline decoration-foreground/25 underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                title={`${app.name} for ${app.platforms}`}
+              >
+                {app.name}
+              </a>
+            </span>
+          ))}
+        </div>
+      )}
       {torboxAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{torboxAccountStatus}</Badge>

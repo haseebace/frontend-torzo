@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { Badge } from "@/components/ui/badge";
 import { TorrentActions } from "@/components/torrent/torrent-actions";
 import { TorrentFileList } from "@/components/torrent/torrent-file-list";
+import { TorrentScreenshotList } from "@/components/torrent/torrent-screenshot-list";
 import { VisitedTorrentsTracker } from "@/components/torrent/visited-torrents-tracker";
 import {
   Collapsible,
@@ -12,6 +13,10 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn, formatBytes, formatDate } from "@/lib/utils";
+import {
+  getTorrentTitleTagDescription,
+  getTorrentTitleTags,
+} from "@/lib/torrent-title-parser";
 
 type DetailPageProps = {
   searchParams: Promise<{
@@ -380,16 +385,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   }
 
   const title = cleanTitle(torrent.title);
+  const titleTags = getTorrentTitleTags(torrent.title);
   const hasFiles = torrent.files.length > 0;
-  const detailStats = [
-    {
-      label: "Files",
-      value: (torrent.fileCount || torrent.files?.length || 0).toString(),
-    },
-    { label: "Size", value: torrent.sizeHuman || "Unknown" },
-    { label: "Seeders", value: formatNumber(torrent.seeders) },
-    { label: "Leechers", value: formatNumber(torrent.leechers) },
-  ];
   const sourceLink = torrent.sources[0] ?? {
     provider: torrent.source.provider,
     source_url: torrent.source.url,
@@ -401,40 +398,77 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
       <VisitedTorrentsTracker id={torrent.id} />
 
       <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-12">
-        <div className="min-w-0 space-y-5 border-b border-border pb-7">
-          <div className="space-y-3">
-            <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
-              {title}
-            </h1>
-            <Badge className="max-w-full">
-              <span className="shrink-0">Info hash:</span>
-              <p className="min-w-0 truncate">
-                {torrent.infoHash ?? "Unknown"}
-              </p>
-            </Badge>
+        <div className="flex min-w-0 flex-col gap-5 border-b border-border pb-7 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0 flex-1 space-y-3">
+              <nav
+                aria-label="Breadcrumb"
+                className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-muted-foreground"
+              >
+                <Link
+                  href="/"
+                  className="shrink-0 transition-colors hover:text-foreground"
+                >
+                  Home
+                </Link>
+                <ChevronRight className="size-3 shrink-0" aria-hidden="true" />
+                <Link
+                  href="/results"
+                  className="shrink-0 transition-colors hover:text-foreground"
+                >
+                  Results
+                </Link>
+                <ChevronRight className="size-3 shrink-0" aria-hidden="true" />
+                <span className="min-w-0 truncate text-foreground-strong">
+                  {title}
+                </span>
+              </nav>
+              {titleTags.length > 0 && (
+                <div className="flex flex-wrap gap-2" aria-label="Release details">
+                {titleTags.map((tag, index) => {
+                  const tooltipId = `release-detail-${index}`;
+
+                  return (
+                    <span key={tag} className="group relative">
+                      <Badge
+                        variant="secondary"
+                        tabIndex={0}
+                        aria-describedby={tooltipId}
+                      >
+                        {tag}
+                      </Badge>
+                      <span
+                        id={tooltipId}
+                        role="tooltip"
+                        className="pointer-events-none invisible absolute bottom-full left-0 z-[200] mb-2 w-64 -translate-y-1 whitespace-normal rounded-xl border border-border bg-surface px-3 py-2 text-left text-xs font-medium leading-5 text-foreground-strong opacity-0 shadow-sm transition-[opacity,transform] duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                      >
+                        {getTorrentTitleTagDescription(tag)}
+                      </span>
+                    </span>
+                  );
+                })}
+                </div>
+              )}
+              <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
+                {title}
+              </h1>
+              <Badge variant="secondary" className="max-w-full">
+                <span className="shrink-0">Info hash:</span>
+                <p className="min-w-0 truncate">
+                  {torrent.infoHash ?? "Unknown"}
+                </p>
+              </Badge>
           </div>
 
           <TorrentActions
             magnetLink={torrent.magnetLink}
             torrentFileUrl={torrent.torrentFileUrl}
             infoHash={torrent.infoHash}
-            className="sm:w-full"
+            className="md:w-[180px]"
           />
         </div>
 
         <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 space-y-6">
-            <div className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 border-b border-border pb-4 text-[12px] md:gap-x-6 md:gap-y-3 md:pb-5 md:text-sm">
-              {detailStats.map((stat) => (
-                <div key={stat.label} className="flex items-baseline gap-2">
-                  <span className="text-muted-foreground">{stat.label}</span>
-                  <span className="font-semibold text-foreground">
-                    {stat.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-
             <Collapsible>
               <CollapsibleTrigger>
                 <div className="flex w-full items-center justify-between">
@@ -460,48 +494,38 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             </Collapsible>
 
             {torrent.images.length > 0 && (
-              <section className="rounded-3xl border border-border bg-surface p-5">
-                <h2 className="mb-3 text-lg font-semibold tracking-tight text-foreground-strong">
-                  Screenshots
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {torrent.images.map((image, index) => {
-                    const rawHref = image.page_url || image.url;
-                    const href =
-                      rawHref && !rawHref.startsWith("http")
-                        ? `https://${rawHref}`
-                        : rawHref;
-
-                    return (
-                      <Badge
-                        key={`${image.url}-${index}`}
-                        asChild
-                        variant="outline"
-                        className="cursor-pointer hover:bg-surface-hover"
-                      >
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Screenshot {index + 1}
-                          <span className="ml-1.5 text-[10px] text-muted-foreground md:ml-2">
-                            {image.kind}
-                          </span>
-                        </a>
-                      </Badge>
-                    );
-                  })}
-                </div>
-              </section>
+              <Collapsible defaultOpen={false}>
+                <CollapsibleTrigger>
+                  <div className="flex w-full items-center justify-between">
+                    <h2 className="text-lg font-semibold tracking-tight text-foreground-strong">
+                      Screenshots
+                    </h2>
+                    <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <TorrentScreenshotList images={torrent.images} title={title} />
+                </CollapsibleContent>
+              </Collapsible>
             )}
           </div>
 
           <aside className="min-w-0 space-y-4">
             <section className="rounded-3xl bg-surface p-5">
               <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground-strong">
-                Health & Dates
+                Health & Data
               </h2>
+              <div className="mb-4 grid gap-2">
+                <Badge variant="success" className="w-full justify-center">
+                  {formatNumber(torrent.seeders)} Seeders
+                </Badge>
+                <Badge variant="destructive" className="w-full justify-center">
+                  {formatNumber(torrent.leechers)} Leechers
+                </Badge>
+                <Badge variant="secondary" className="w-full justify-center">
+                  {torrent.sizeHuman || "Unknown"}
+                </Badge>
+              </div>
               <div className="divide-y divide-border/70 text-sm">
                 {sourceLink.source_url ? (
                   <div className="flex min-w-0 items-center justify-between gap-4 py-3 first:pt-0">

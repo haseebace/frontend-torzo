@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { gunzipSync } from "node:zlib";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
-import { ResultSort } from "@/components/result-sort";
+import { SortSelect } from "./sort-select";
 import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
 import { TorboxCacheStatusProvider } from "@/components/torrent/torbox-cache-status-provider";
 import {
@@ -234,7 +234,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     apiParams.append("page", currentPage.toString());
     // Let generic providers use their native page size. Sending a custom page
     // size makes the API crawl all upstream pages to rebuild logical pages.
-    const mediaNamePromise = tmdbId && !genericSources
+    const mediaNamePromise = tmdbId
       ? getMediaName(tmdbId, mediaType)
       : Promise.resolve(null);
 
@@ -429,7 +429,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
             </h2>
           </div>
           <div className="flex shrink-0 items-center justify-end">
-            <ResultSort defaultValue={sort} />
+            <SortSelect defaultValue={sort} />
           </div>
         </div>
 

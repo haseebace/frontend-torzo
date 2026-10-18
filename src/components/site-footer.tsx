@@ -19,7 +19,7 @@ export function SiteFooter() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <footer className="flex h-[60px] min-h-[60px] items-center justify-center border-t border-border-subtle bg-bg-canvas px-4 py-0 md:px-10">
+    <footer className="flex h-[60px] min-h-[60px] items-center justify-center border-t border-border-subtle bg-bg-canvas px-1 py-0 md:px-10">
       <nav
         {...containerProps}
         className="flex flex-wrap items-center justify-center gap-1 text-center text-xs font-medium leading-6 text-text-muted md:text-sm"

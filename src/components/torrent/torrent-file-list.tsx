@@ -21,6 +21,12 @@ function getFileIcon(extension: string) {
   return File;
 }
 
+const fileItemSpring = {
+  type: "spring" as const,
+  duration: 0.9,
+  bounce: 0.5,
+};
+
 function getFileSizeDisplay(file: TorrentFile): string {
   if (file.size_human) return file.size_human;
   if (file.size && file.size !== "0 bytes") {
@@ -53,17 +59,26 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
             className="relative"
             initial={
               reduceMotion
-                ? { opacity: 0 }
-                : { opacity: 0, transform: "translateX(-12px)" }
+                ? { opacity: 0, scale: 1, filter: "blur(0px)" }
+                : { opacity: 0, scale: 0.94, filter: "blur(12px)" }
             }
-            animate={{ opacity: 1, transform: "translateX(0px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             transition={
               reduceMotion
                 ? { duration: 0.01 }
                 : {
-                    delay: i * 0.12,
-                    duration: 0.26,
-                    ease: [0.23, 1, 0.32, 1],
+                    ...fileItemSpring,
+                    delay: i * 0.14,
+                    opacity: {
+                      duration: 1.15,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: i * 0.14,
+                    },
+                    filter: {
+                      duration: 0.72,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: i * 0.14,
+                    },
                   }
             }
           >

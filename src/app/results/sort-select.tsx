@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function ResultSort({ defaultValue }: { defaultValue: string }) {
+export function SortSelect({ defaultValue }: { defaultValue: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -24,7 +24,7 @@ export function ResultSort({ defaultValue }: { defaultValue: string }) {
     <Select defaultValue={defaultValue} onValueChange={handleSortChange}>
       <SelectTrigger
         aria-label="Sort results"
-        className="h-12 w-[180px] rounded-[10px] border-selection-border bg-selection-field px-3.5 text-sm font-medium text-selection-content hover:border-selection-border hover:bg-selection-field data-[state=open]:h-10 data-[state=open]:rounded-[7px] data-[state=open]:border-transparent data-[state=open]:bg-selection-option data-[state=open]:px-2.5 data-[state=open]:font-semibold"
+        className="h-12 w-[180px] rounded-[10px] border-selection-border bg-selection-field px-3.5 text-sm font-medium text-selection-content hover:border-selection-border hover:bg-selection-field"
       >
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>

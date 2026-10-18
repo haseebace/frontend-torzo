@@ -198,9 +198,6 @@ function SearchSubmitButton({
           initial={reduceMotion ? false : { opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0 }}
-          whileHover={reduceMotion ? undefined : { scale: 0.975 }}
-          whileTap={reduceMotion ? undefined : { scale: 0.94 }}
-          data-interactive-motion="managed"
           style={{ transformOrigin: "center center" }}
            transition={reduceMotion ? { duration: 0 } : searchInteractionSpring}
           className={cn(

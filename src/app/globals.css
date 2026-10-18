@@ -39,6 +39,7 @@
   --color-text-soft: var(--content-muted);
   --color-link: var(--content-link);
   --color-success: var(--state-success);
+  --color-warning: var(--state-warning);
   --color-focus: var(--focus-ring);
   --color-selection-field: var(--surface-selection-field);
   --color-selection-option: var(--surface-selection-option);
@@ -70,6 +71,7 @@ body {
 
 :root {
   --color-success-foreground: #008a1f;
+  --color-warning-foreground: #ca8a04;
   --destructive: #d93c15;
   --font-primary: var(--font-plus-jakarta-sans);
   --font-secondary: var(--font-plus-jakarta-sans);
@@ -115,6 +117,7 @@ body {
   --button-primary-content: var(--text-button-primary);
   --state-destructive: var(--destructive);
   --state-success: var(--color-success-foreground);
+  --state-warning: var(--color-warning-foreground);
   --focus-ring: oklch(from var(--text-primary) l c h / 0.45);
   --surface-selection-field: var(--bg-card);
   --surface-selection-option: var(--bg-secondary);
@@ -124,6 +127,7 @@ body {
 
 .dark {
   --color-success-foreground: #22c55e;
+  --color-warning-foreground: #facc15;
   --destructive: #ef4444;
   --bg-card: #131416;
   --bg-search-bar: #131416;
