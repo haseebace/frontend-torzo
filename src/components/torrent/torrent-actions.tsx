@@ -12,34 +12,6 @@ const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
 const MIN_VIDEO_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
 const API_KEY_STORAGE_KEY = "torbox_api_key";
 
-const TORRENT_APP_LINKS = [
-  {
-    name: "qBittorrent",
-    platforms: "macOS / Windows",
-    href: "https://www.qbittorrent.org/download",
-  },
-  {
-    name: "Transmission",
-    platforms: "macOS",
-    href: "https://transmissionbt.com/download/",
-  },
-  {
-    name: "Deluge",
-    platforms: "macOS / Windows",
-    href: "https://deluge-torrent.org/download/",
-  },
-  {
-    name: "Plexo",
-    platforms: "macOS / Windows",
-    href: "https://github.com/anmolkapil/plexo",
-  },
-  {
-    name: "Folx",
-    platforms: "macOS",
-    href: "https://www.mac-downloader.com/",
-  },
-] as const;
-
 interface TorrentActionsProps {
   magnetLink?: string | null;
   torrentFileUrl?: string | null;
@@ -491,25 +463,6 @@ export function TorrentActions({
           </Button>
         )}
       </div>
-      {magnetLink && (
-        <div className="flex w-full flex-wrap items-center gap-x-2 gap-y-1 text-xs text-foreground-muted md:justify-end md:text-right">
-          <span>Need a torrent app?</span>
-          {TORRENT_APP_LINKS.map((app, index) => (
-            <span key={app.name} className="inline-flex items-center gap-2">
-              {index > 0 && <span aria-hidden="true">·</span>}
-              <a
-                href={app.href}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-foreground underline decoration-foreground/25 underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                title={`${app.name} for ${app.platforms}`}
-              >
-                {app.name}
-              </a>
-            </span>
-          ))}
-        </div>
-      )}
       {torboxAccountStatus && (
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{torboxAccountStatus}</Badge>
