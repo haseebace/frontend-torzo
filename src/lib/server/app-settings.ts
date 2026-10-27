@@ -1,6 +1,6 @@
 import "server-only";
 
-export const providerIds = ["rarbg", "the-pirate-bay", "yts"] as const;
+export const providerIds = ["rarbg", "the-pirate-bay", "torrent-galaxy", "yts"] as const;
 
 export type ProviderId = (typeof providerIds)[number];
 

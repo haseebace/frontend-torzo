@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 const providers = [
   { id: "rarbg", label: "RARBG" },
   { id: "the-pirate-bay", label: "Pirate Bay" },
+  { id: "torrent-galaxy", label: "TorrentGalaxy" },
   { id: "yts", label: "YTS" },
 ] as const;
 

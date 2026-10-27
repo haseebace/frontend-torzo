@@ -16,7 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { formatBytes } from "@/lib/utils";
+import { parseRawSize } from "@/lib/utils";
 
 type Props = {
   searchParams: Promise<{
@@ -56,8 +56,8 @@ type ResultsPageProps = {
 type YtsTorrent = {
   hash: string;
   quality: string;
-  size_bytes: number;
-  size_human?: string;
+  size?: string | null;
+  size_bytes?: string | number | null;
   seeds: number;
   peers: number;
 };
@@ -210,6 +210,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     .map(s => {
       if (s === "rarbg") return "rargb";
       if (s === "the-pirate-bay") return "thepiratebay";
+      if (s === "torrent-galaxy") return "torrentgalaxy";
       return s;
     })
     .join(",");
@@ -321,8 +322,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
                 info_hash: t.hash.toLowerCase(),
                 category: "movies",
                 uploaded_at: null,
-                size_bytes: t.size_bytes,
-                size_human: t.size_human || formatBytes(t.size_bytes),
+                size_bytes: t.size || t.size_bytes,
                 seeders: t.seeds,
                 leechers: t.peers,
                 sources: [{
@@ -379,18 +379,18 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     paginationMeta = genericResults.meta;
     ytsPaginationMeta = ytsResults.meta;
 
-    // Client-side sorting for combined results
-    if (sort === "seeders") {
-      allResults.sort((a, b) => b.seeders - a.seeders);
-    } else if (sort === "recent") {
-      allResults.sort((a, b) => {
+    allResults.sort((a, b) => {
+      if (sort === "recent") {
         const dateA = a.uploaded_at ? new Date(a.uploaded_at).getTime() : 0;
         const dateB = b.uploaded_at ? new Date(b.uploaded_at).getTime() : 0;
         return dateB - dateA;
-      });
-    } else if (sort === "size") {
-      allResults.sort((a, b) => b.size_bytes - a.size_bytes);
-    }
+      }
+
+      if (sort === "size") {
+        return parseRawSize(b.size_bytes) - parseRawSize(a.size_bytes);
+      }
+      return Number(b.seeders ?? 0) - Number(a.seeders ?? 0);
+    });
   } catch (e) {
     console.error(e);
     error = "A connection error occurred while searching.";

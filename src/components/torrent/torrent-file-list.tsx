@@ -7,10 +7,10 @@ import { formatBytes } from "@/lib/utils";
 
 type TorrentFile = {
   name: string;
-  size: string;
+  size: string | number | null;
   size_bytes?: number;
   size_human?: string;
-  extension: string;
+  extension?: string | null;
 };
 
 function getFileIcon(extension: string) {
@@ -29,8 +29,9 @@ const fileItemSpring = {
 
 function getFileSizeDisplay(file: TorrentFile): string {
   if (file.size_human) return file.size_human;
+  if (typeof file.size === "number") return formatBytes(file.size);
   if (file.size && file.size !== "0 bytes") {
-    const cleaned = file.size.replace(/[\[\]]/g, "").trim();
+    const cleaned = String(file.size).replace(/[\[\]]/g, "").trim();
     const isHumanReadable = /(\d+(\.\d+)?)\s*(GB|MB|KB|TB|PB)/i.test(cleaned);
     if (isHumanReadable) return cleaned;
     const bytes = parseInt(cleaned, 10);
@@ -50,7 +51,10 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
   return (
     <div className="min-w-0 divide-y divide-border/70">
       {files.map((file, i) => {
-        const FileIcon = getFileIcon(file.extension || "");
+        const extension = file.extension || (
+          file.name.includes(".") ? `.${file.name.split(".").pop()}` : ""
+        );
+        const FileIcon = getFileIcon(extension);
         const fileSize = getFileSizeDisplay(file);
 
         return (

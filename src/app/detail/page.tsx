@@ -12,7 +12,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { cn, formatBytes, formatDate } from "@/lib/utils";
+import { cn, formatBytes, formatDate, formatRawSize, parseRawSize } from "@/lib/utils";
 import {
   getTorrentTitleTagDescription,
   getTorrentTitleTags,
@@ -27,10 +27,10 @@ type DetailPageProps = {
 
 type TorrentFile = {
   name: string;
-  size: string;
+  size: string | number | null;
   size_bytes?: number;
   size_human?: string;
-  extension: string;
+  extension?: string | null;
 };
 
 type TorrentImage = {
@@ -42,9 +42,9 @@ type TorrentImage = {
 type TorrentSource = {
   provider: string;
   source_url: string;
-  seeders: number | null;
-  leechers: number | null;
-  downloaded: number | null;
+  seeders: string | number | null;
+  leechers: string | number | null;
+  downloaded: string | number | null;
   last_seen_at: string | null;
   verified: boolean | null;
 };
@@ -55,17 +55,16 @@ type TorrentDetailData = {
   magnet_link: string | null;
   torrent_file_url: string | null;
   info_hash: string | null;
-  size_bytes: number | null;
-  size_human: string | null;
+  size_bytes: string | number | null;
   uploaded_at: string | null;
   category: string | null;
   language: string | null;
   uploader: string | null;
   verified: boolean | null;
-  seeders: number | null;
-  leechers: number | null;
-  downloaded: number | null;
-  file_count: number | null;
+  seeders: string | number | null;
+  leechers: string | number | null;
+  downloaded: string | number | null;
+  file_count: string | number | null;
   primary_file_name: string | null;
   primary_file_extension: string | null;
   files: TorrentFile[];
@@ -200,6 +199,9 @@ function formatProviderLinkLabel(value: string | null | undefined) {
   if (normalized === "thepiratebay" || normalized === "the-pirate-bay") {
     return "The Pirate Bay";
   }
+  if (normalized === "torrentgalaxy" || normalized === "torrent-galaxy") {
+    return "TorrentGalaxy";
+  }
 
   return normalized
     .split("-")
@@ -221,17 +223,22 @@ function normalizeDetailResponse(
     magnetLink: data.magnet_link,
     torrentFileUrl: data.torrent_file_url,
     infoHash: data.info_hash,
-    sizeBytes: data.size_bytes ?? 0,
-    sizeHuman: data.size_human || formatBytes(data.size_bytes ?? 0),
+    sizeBytes: parseRawSize(data.size_bytes),
+    sizeHuman: formatRawSize(data.size_bytes),
     uploadedAt: data.uploaded_at,
     category: data.category ?? "unknown",
     language: data.language,
     uploader: data.uploader,
     verified: Boolean(data.verified ?? primarySource?.verified),
-    seeders: data.seeders ?? primarySource?.seeders ?? 0,
-    leechers: data.leechers ?? primarySource?.leechers ?? 0,
-    downloaded: data.downloaded ?? primarySource?.downloaded ?? null,
-    fileCount: data.file_count ?? data.files?.length ?? 0,
+    seeders: Number(data.seeders ?? primarySource?.seeders ?? 0),
+    leechers: Number(data.leechers ?? primarySource?.leechers ?? 0),
+    downloaded:
+      data.downloaded === null || data.downloaded === undefined
+        ? primarySource?.downloaded === null || primarySource?.downloaded === undefined
+          ? null
+          : Number(primarySource.downloaded)
+        : Number(data.downloaded),
+    fileCount: Number(data.file_count ?? data.files?.length ?? 0),
     primaryFileName: data.primary_file_name,
     primaryFileExtension: data.primary_file_extension,
     files: data.files ?? [],
