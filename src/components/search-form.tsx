@@ -15,6 +15,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   SearchBar,
+  searchActivationSpring,
   searchInteractionSpring,
 } from "@/components/ui/search-bar";
 import { useMagneticHover } from "@/animations";
@@ -76,9 +77,45 @@ const suggestionUpdateExitTransition = {
 
 const suggestionEntranceSpring = {
   type: "spring" as const,
-  stiffness: 210,
-  damping: 19,
-  mass: 0.9,
+  stiffness: 230,
+  damping: 21,
+  mass: 2.5,
+};
+
+const suggestionEntranceListVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      when: "beforeChildren" as const,
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const suggestionEntranceRowVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.96,
+    y: 60,
+    filter: "blur(14px)",
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      default: suggestionEntranceSpring,
+      opacity: {
+        duration: 0.7,
+        ease: dropdownEase,
+      },
+      scale: {
+        duration: 0.7,
+        ease: dropdownEase,
+      },
+    },
+  },
 };
 
 const suggestionUpdateSpring = {
@@ -106,28 +143,6 @@ const dropdownVariants = {
     opacity: 0,
     scale: 0.98,
     scaleY: 0.98,
-    transition: searchInteractionSpring,
-  },
-};
-
-const suggestionRowVariants = {
-  hidden: {
-    opacity: 0,
-    scale: 0.96,
-    filter: "blur(8px)",
-  },
-  visible: (index = 0) => ({
-    opacity: 1,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: {
-      ...suggestionEntranceSpring,
-      delay: index * 0.09,
-    },
-  }),
-  exit: {
-    opacity: 0,
-    scale: 0.96,
     transition: searchInteractionSpring,
   },
 };
@@ -195,11 +210,15 @@ function SearchSubmitButton({
           type="submit"
           aria-label={isSubmitting ? "Searching" : "Search"}
           aria-busy={isSubmitting}
-          initial={reduceMotion ? false : { opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0 }}
+          initial={reduceMotion ? false : { scale: 0 }}
+          animate={{ scale: 1 }}
+          exit={{
+            opacity: 0,
+            scale: 0,
+            transition: reduceMotion ? { duration: 0 } : searchInteractionSpring,
+          }}
           style={{ transformOrigin: "center center" }}
-           transition={reduceMotion ? { duration: 0 } : searchInteractionSpring}
+          transition={reduceMotion ? { duration: 0 } : searchActivationSpring}
           className={cn(
             buttonVariants({ variant: "torzoPill" }),
             "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center",
@@ -295,18 +314,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         exit: { scale: 1, scaleY: 1, transition: { duration: 0.01 } },
       }
     : dropdownVariants;
-  const animatedSuggestionRowVariants = reduceMotion
-    ? {
-        hidden: { opacity: 1, scale: 1, filter: "blur(0px)" },
-        visible: {
-          opacity: 1,
-          scale: 1,
-          filter: "blur(0px)",
-          transition: { duration: 0.01 },
-        },
-        exit: { opacity: 0, transition: { duration: 0.01 } },
-      }
-    : suggestionRowVariants;
   const animatedSuggestionUpdateVariants = reduceMotion
     ? {
         hidden: { opacity: 1, scale: 1 },
@@ -314,6 +321,18 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         exit: { opacity: 0, transition: { duration: 0.01 } },
       }
     : suggestionUpdateVariants;
+  const animatedSuggestionEntranceListVariants = reduceMotion
+    ? {
+        hidden: {},
+        visible: { transition: { duration: 0.01 } },
+      }
+    : suggestionEntranceListVariants;
+  const animatedSuggestionEntranceRowVariants = reduceMotion
+    ? {
+        hidden: { opacity: 1, y: 0 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.01 } },
+      }
+    : suggestionEntranceRowVariants;
 
   useEffect(() => {
     if (!hasUserTypedRef.current && !isHeroFocused) {
@@ -505,22 +524,30 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       return (
         <motion.div
           key={suggestionKey}
+          inherit={animateEntrance ? undefined : true}
           layout={useLayout ? "position" : false}
           transition={
-            isUpdateEntry
+            animateEntrance
               ? undefined
-              : useLayout
-                ? { ...suggestionSpring, layout: searchInteractionSpring }
-                : { duration: 0.16, ease: dropdownEase }
+              : isUpdateEntry
+                ? undefined
+                : useLayout
+                  ? { ...suggestionSpring, layout: searchInteractionSpring }
+                  : { duration: 0.16, ease: dropdownEase }
           }
           className="relative isolate flex min-h-[58px] items-center gap-3 rounded-[10px] bg-bg-canvas px-3 py-2"
-          custom={index}
-          initial={animateEntrance || isUpdateEntry ? "hidden" : false}
-          animate="visible"
+          initial={
+            animateEntrance
+              ? undefined
+              : isUpdateEntry
+                ? "hidden"
+                : false
+          }
+          animate={animateEntrance ? undefined : "visible"}
           exit={animateEntrance ? undefined : "exit"}
           variants={
             animateEntrance
-              ? animatedSuggestionRowVariants
+              ? animatedSuggestionEntranceRowVariants
               : animatedSuggestionUpdateVariants
           }
           onMouseEnter={() => {
@@ -586,24 +613,38 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       );
     });
 
+  const suggestionRows = (
+    <LayoutGroup id={`${listboxId}-suggestions`}>
+      <AnimatePresence
+        initial={isSuggestionModalEntering}
+        mode="popLayout"
+        onExitComplete={() => setIsSuggestionUpdateExiting(false)}
+      >
+        {renderSuggestionRows(
+          shouldAnimateLayout && !isSuggestionModalEntering,
+          isSuggestionModalEntering,
+          updateEnteringKeys,
+        )}
+      </AnimatePresence>
+    </LayoutGroup>
+  );
+
   const suggestionsPanelContent = (
     <>
       {isLoading && suggestions.length === 0 && !isSuggestionUpdateExiting ? (
         <div className="px-4 py-3 text-sm text-text-muted">Searching TMDB</div>
+      ) : isSuggestionModalEntering ? (
+        <motion.div
+          variants={animatedSuggestionEntranceListVariants}
+          initial="hidden"
+          animate="visible"
+          inherit={false}
+          className="flex flex-col gap-2.5"
+        >
+          {suggestionRows}
+        </motion.div>
       ) : (
-        <LayoutGroup id={`${listboxId}-suggestions`}>
-          <AnimatePresence
-            initial={isSuggestionModalEntering}
-            mode="popLayout"
-            onExitComplete={() => setIsSuggestionUpdateExiting(false)}
-          >
-            {renderSuggestionRows(
-              shouldAnimateLayout && !isSuggestionModalEntering,
-              isSuggestionModalEntering,
-              updateEnteringKeys,
-            )}
-          </AnimatePresence>
-        </LayoutGroup>
+        suggestionRows
       )}
     </>
   );

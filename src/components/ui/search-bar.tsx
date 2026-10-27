@@ -18,6 +18,13 @@ export const searchInteractionSpring = {
   mass: 0.8,
 };
 
+export const searchActivationSpring = {
+  type: "spring" as const,
+  stiffness: 230,
+  damping: 21,
+  mass: 2.5,
+};
+
 export function SearchBar({
   active = false,
   reduceMotion = false,
@@ -32,7 +39,7 @@ export function SearchBar({
       )}
       initial={{ maxWidth: active ? 780 : 700 }}
       animate={{ maxWidth: active ? 780 : 700 }}
-      transition={reduceMotion ? { duration: 0 } : searchInteractionSpring}
+      transition={reduceMotion ? { duration: 0 } : searchActivationSpring}
     >
       {children}
       <motion.div
@@ -44,7 +51,7 @@ export function SearchBar({
           borderWidth: active ? 4 : 1,
           boxShadow: active ? "0 6px 16px #e1e1e399" : "0 0 0 transparent",
         }}
-        transition={reduceMotion ? { duration: 0 } : searchInteractionSpring}
+        transition={reduceMotion ? { duration: 0 } : searchActivationSpring}
       />
     </motion.div>
   );
