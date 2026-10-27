@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
 
 type TorrentScreenshot = {
   url: string;
@@ -43,7 +44,14 @@ export function TorrentScreenshotList({
   title,
 }: TorrentScreenshotListProps) {
   const reduceMotion = useReducedMotion();
-  const visibleImages = images.filter((image) => !isIgnoredImage(image.url));
+  const [failedImages, setFailedImages] = useState<Set<string>>(() => new Set());
+  const visibleImages = images.filter(
+    (image) => !isIgnoredImage(image.url) && !failedImages.has(image.url),
+  );
+
+  if (visibleImages.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap gap-2 px-2 py-3">
@@ -84,6 +92,13 @@ export function TorrentScreenshotList({
             <img
               src={imageSrc}
               alt={`${title} screenshot ${index + 1}`}
+              onError={() => {
+                setFailedImages((current) => {
+                  const next = new Set(current);
+                  next.add(image.url);
+                  return next;
+                });
+              }}
               className="block h-full max-w-full w-auto object-contain transition-opacity group-hover:opacity-90"
             />
           </motion.a>
