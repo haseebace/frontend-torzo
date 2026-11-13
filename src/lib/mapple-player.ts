@@ -105,18 +105,19 @@ export function cleanTitleForTmdbSearch(title: string): string {
     .replace(/\btt\d{5,}\b/gi, " ")
     .replace(/\bS\d{1,2}E\d{1,2}\b/gi, " ")
     .replace(/\b\d{1,2}x\d{1,2}\b/gi, " ")
+    .replace(/[._]+/g, " ")
     .replace(
-      /\b(720p|1080p|2160p|4320p|4k|bluray|blu-?ray|webrip|web-?dl|hdtv|hdrip|brrip|dvdrip|x264|x265|hevc|av1|aac|dts|atmos|5\.1|7\.1|repack|proper|extended|remux|hdr|10bit)\b/gi,
+      /\b(720p|1080p|2160p|4320p|4k|uhd|bluray|blu ray|bdrip|brrip|dvdrip|webrip|web dl|webdl|web|dl|hdtv|hdrip|amzn|amazon|nf|dsnp|hmax|atvp|x264|h264|x265|h\s?265|hevc|av1|aac|ddp\s?5\s?1|ddp|dd|dts|truehd|atmos|5 1|7 1|repack|proper|extended|remux|hdr|dv|10bit|readnfo)\b/gi,
       " ",
     )
-    .replace(/[._]+/g, " ")
+    .replace(/-+\s*[a-z0-9]+$/i, " ")
     .replace(/\s+/g, " ")
     .trim();
 
   const yearMatch = normalized.match(/\b(?:19|20)\d{2}\b/);
   if (yearMatch?.index && yearMatch.index > 0) {
-    return normalized.slice(0, yearMatch.index + yearMatch[0].length).trim();
+    return normalized.slice(0, yearMatch.index).trim();
   }
 
-  return normalized.split(" ").filter(Boolean).slice(0, 6).join(" ");
+  return normalized.split(" ").filter(Boolean).slice(0, 5).join(" ");
 }

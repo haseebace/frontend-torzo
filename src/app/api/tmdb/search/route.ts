@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { cleanTitleForTmdbSearch } from "@/lib/mapple-player";
 import { getTmdbAuth } from "@/lib/tmdb-auth";
 
 type TmdbSearchResult = {
@@ -167,9 +168,11 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const search = async (mediaType: MediaType) => {
+  let upstreamStatus: number | null = null;
+
+  const search = async (mediaType: MediaType, searchQuery: string) => {
     const searchUrl = new URL(`${baseUrl.replace(/\/$/, "")}/search/${mediaType}`);
-    searchUrl.searchParams.set("query", query);
+    searchUrl.searchParams.set("query", searchQuery);
     searchUrl.searchParams.set("include_adult", "false");
     searchUrl.searchParams.set("language", language);
     searchUrl.searchParams.set("page", "1");
@@ -183,29 +186,53 @@ export async function GET(request: NextRequest) {
       next: { revalidate: 60 * 60 },
     });
 
-    if (!response.ok) return [];
+    if (!response.ok) {
+      upstreamStatus = response.status;
+      return [];
+    }
 
     const data = (await response.json()) as { results?: TmdbSearchResult[] };
     return (data.results ?? []).map((result) => ({ result, mediaType }));
   };
 
-  const [movieResults, tvResults] = await Promise.all([
-    search("movie"),
-    search("tv"),
-  ]);
+  const cleanedQuery = cleanTitleForTmdbSearch(query);
+  const searchQueries = [...new Set([cleanedQuery, query].filter((value) => value.length >= 3))];
+  let movieResults: { result: TmdbSearchResult; mediaType: MediaType }[] = [];
+  let tvResults: { result: TmdbSearchResult; mediaType: MediaType }[] = [];
+  let matchedQuery = query;
+
+  for (const searchQuery of searchQueries) {
+    const [movies, shows] = await Promise.all([
+      search("movie", searchQuery),
+      search("tv", searchQuery),
+    ]);
+    if (movies.length === 0 && shows.length === 0) continue;
+    movieResults = movies;
+    tvResults = shows;
+    matchedQuery = searchQuery;
+    break;
+  }
 
   if (movieResults.length === 0 && tvResults.length === 0) {
-    return Response.json(
-      { results: [], error: "TMDB search failed." },
-      { status: 502 }
-    );
+    if (upstreamStatus) {
+      return Response.json(
+        {
+          results: [],
+          error: `TMDB search failed with HTTP ${upstreamStatus}.`,
+          query: cleanedQuery,
+        },
+        { status: 502 },
+      );
+    }
+
+    return Response.json({ results: [], query: cleanedQuery });
   }
 
   const results = [...movieResults, ...tvResults]
     .filter(({ result }) => getTitle(result))
-    .toSorted((a, b) => scoreResult(b.result, query) - scoreResult(a.result, query))
+    .toSorted((a, b) => scoreResult(b.result, matchedQuery) - scoreResult(a.result, matchedQuery))
     .slice(0, 5)
     .map(({ result, mediaType }) => serializeResult(result, mediaType));
 
-  return Response.json({ results });
+  return Response.json({ results, query: matchedQuery });
 }
