@@ -10,7 +10,7 @@ import {
 import Form from "next/form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type ComponentProps, type ReactNode, type RefObject } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,6 +19,7 @@ import {
   searchInteractionSpring,
 } from "@/components/ui/search-bar";
 import { useMagneticHover } from "@/animations";
+import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
 import { cn } from "@/lib/utils";
 import {
   getCachedTmdbDiscovery,
@@ -120,9 +121,9 @@ const suggestionEntranceRowVariants = {
 
 const suggestionUpdateSpring = {
   type: "spring" as const,
-  stiffness: 230,
-  damping: 26,
-  mass: 0.9,
+  stiffness: 150,
+  damping: 22,
+  mass: 1.05,
 };
 
 const dropdownVariants = {
@@ -147,17 +148,25 @@ const dropdownVariants = {
   },
 };
 
+const suggestionUpdateScaleDuration = 0.476;
+
 const suggestionUpdateVariants = {
   hidden: {
     opacity: 0,
-    scale: 0.98,
-    filter: "blur(0px)",
+    scale: 0.85,
+    filter: "blur(50px)",
   },
   visible: {
     opacity: 1,
     scale: 1,
     filter: "blur(0px)",
-    transition: suggestionUpdateSpring,
+    transition: {
+      default: suggestionUpdateSpring,
+      opacity: {
+        duration: suggestionUpdateScaleDuration / 2,
+        ease: dropdownEase,
+      },
+    },
   },
   exit: {
     opacity: 0,
@@ -166,6 +175,51 @@ const suggestionUpdateVariants = {
     transition: suggestionUpdateExitTransition,
   },
 };
+
+function SmoothBox({
+  radius,
+  className,
+  style,
+  children,
+  ...props
+}: ComponentProps<typeof motion.div> & { radius: number }) {
+  const [ref, cornerStyle] = useFigmaCorner<HTMLDivElement>(radius, torzoCornerSmoothing)
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ ...cornerStyle, ...style }}
+      className={className}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function SuggestionPanel({
+  panelRef,
+  style,
+  ...props
+}: ComponentProps<typeof motion.div> & { panelRef: RefObject<HTMLDivElement | null> }) {
+  const [cornerRef, cornerStyle] = useFigmaCorner<HTMLDivElement>(24, torzoCornerSmoothing)
+  const setNode = (node: HTMLDivElement | null) => {
+    cornerRef.current = node
+    panelRef.current = node
+  }
+
+  return <motion.div ref={setNode} style={{ ...cornerStyle, ...style }} {...props} />
+}
+
+function SmoothPoster({ children }: { children: ReactNode }) {
+  const [ref, cornerStyle] = useFigmaCorner<HTMLSpanElement>(8, torzoCornerSmoothing)
+
+  return (
+    <span ref={ref} style={cornerStyle} className="block h-12 w-8 shrink-0 overflow-hidden">
+      {children}
+    </span>
+  )
+}
 
 function SearchSubmitButton({
   isSubmitting,
@@ -221,14 +275,13 @@ function SearchSubmitButton({
           transition={reduceMotion ? { duration: 0 } : searchActivationSpring}
           className={cn(
             buttonVariants({ variant: "torzoPill" }),
-            "absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center",
-            "h-12 w-12 bg-bg-black-button text-text-black-button hover:bg-bg-black-button md:right-1.5 md:h-12 md:w-12",
+            "absolute right-2.5 top-1/2 flex size-[42px] -translate-y-1/2 items-center justify-center bg-primary-action p-3 text-on-primary hover:bg-primary-action",
           )}
         >
           {isSubmitting ? (
             <Loader2 className="size-5" />
           ) : (
-            <ArrowRight className="size-5" />
+            <ArrowRight className="size-[18px]" />
           )}
         </motion.button>
       ) : null}
@@ -237,6 +290,7 @@ function SearchSubmitButton({
 }
 
 export function SearchForm({ id, defaultValue, className, variant = "default" }: SearchFormProps) {
+  const pinSuggestions = variant === "hero" && !defaultValue;
   const router = useRouter();
   const listboxId = useId();
   const [query, setQuery] = useState(defaultValue ?? "");
@@ -522,7 +576,8 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       const useLayout = enableLayout && !reduceMotion && !isUpdateEntry;
 
       return (
-        <motion.div
+        <SmoothBox
+          radius={16}
           key={suggestionKey}
           inherit={animateEntrance ? undefined : true}
           layout={useLayout ? "position" : false}
@@ -535,7 +590,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                   ? { ...suggestionSpring, layout: searchInteractionSpring }
                   : { duration: 0.16, ease: dropdownEase }
           }
-          className="relative isolate flex min-h-[58px] items-center gap-3 rounded-[10px] bg-bg-canvas px-3 py-2"
+          className="relative isolate flex items-start gap-2 overflow-hidden bg-bg-elevated p-2"
           initial={
             animateEntrance
               ? undefined
@@ -564,7 +619,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                   ? { duration: 0.01 }
                   : { duration: 0.15, ease: [0.22, 1, 0.36, 1] }
               }
-              className="pointer-events-none absolute inset-0 z-0 rounded-[10px] bg-bg-secondary"
+              className="pointer-events-none absolute inset-0 z-0 bg-bg-hover"
             />
           ) : null}
           <button
@@ -575,41 +630,40 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => handleSuggestionSelect(movie)}
             className={cn(
-              "relative z-10 flex w-full items-center gap-3 text-left focus-visible:outline-none",
+              "relative z-10 flex w-full items-start gap-2 text-left focus-visible:outline-none",
               !isHero && index === activeIndex
                 ? "bg-bg-secondary"
                 : undefined,
             )}
           >
             {movie.posterUrl ? (
-              <Image
-                src={movie.posterUrl}
-                alt=""
-                width={34}
-                height={40}
-                className="h-10 w-[34px] shrink-0 rounded-[5px] object-cover"
-              />
+              <SmoothPoster>
+                <Image
+                  src={movie.posterUrl}
+                  alt=""
+                  width={32}
+                  height={48}
+                  className="h-full w-full object-cover"
+                />
+              </SmoothPoster>
             ) : (
-              <span className="flex h-10 w-[34px] shrink-0 items-center justify-center rounded-[5px] border border-border-subtle bg-bg-secondary text-text-muted">
-                <Film className="size-4" />
-              </span>
+              <SmoothPoster>
+                <span className="flex h-full w-full items-center justify-center bg-bg-hover text-muted-text">
+                  <Film className="size-4" />
+                </span>
+              </SmoothPoster>
             )}
-            <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
-              <span
-                className={cn(
-                  "min-w-0 truncate text-sm text-text-primary",
-                  isHighlighted ? "font-semibold" : "font-medium",
-                )}
-              >
+            <span className="flex min-w-0 flex-1 flex-col gap-2 py-0.5">
+              <span className="min-w-0 truncate text-sm font-medium text-primary-text">
                 {movie.title}
               </span>
-              <span className="text-[11px] font-normal text-text-muted">
-                {movie.mediaType === "tv" ? "Series" : "Movie"}
-                {movie.releaseYear ? ` · ${movie.releaseYear}` : ""}
+              <span className="text-xs font-normal text-muted-text">
+                {movie.releaseYear ? `${movie.releaseYear} - ` : ""}
+                {movie.mediaType === "tv" ? "TV series" : "Movie"}
               </span>
             </span>
           </button>
-        </motion.div>
+        </SmoothBox>
       );
     });
 
@@ -639,7 +693,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           initial="hidden"
           animate="visible"
           inherit={false}
-          className="flex flex-col gap-2.5"
+          className="flex flex-col gap-2"
         >
           {suggestionRows}
         </motion.div>
@@ -649,11 +703,15 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     </>
   );
 
+  const suggestionPanelClassName =
+    "scrollbar-none z-50 flex max-h-[440px] flex-col gap-2 overflow-x-hidden overflow-y-auto overscroll-contain border border-border-subtle bg-bg-surface p-4";
+
   return (
+    <div className={cn("flex w-full flex-col gap-4", className)}>
     <SearchBar
       active={isHero && isHeroActive}
       reduceMotion={reduceMotion}
-      className={cn("group", className)}
+      className={cn("group w-full bg-bg-surface", isHero && "h-[62px]")}
     >
       <Form
         action="/results"
@@ -664,7 +722,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       <label className="sr-only" htmlFor={id}>
         Search media
       </label>
-      <div className="relative h-16">
+      <div className={cn("relative", isHero ? "h-[62px]" : "h-16")}>
         <Input
           id={id}
           name={!selectedMovie ? "q" : undefined}
@@ -681,12 +739,12 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           autoCapitalize="off"
           spellCheck={false}
           value={query}
-          placeholder="Search movies, shows, games, software..."
+          placeholder={isHero ? "Search anything that you like" : "Search movies, shows, games, software..."}
           variant="surface"
           className={cn(
-            "pr-16 text-text-primary placeholder:text-[12px] placeholder:text-text-muted md:placeholder:text-[14px]",
+            "bg-transparent pr-16 text-sm font-medium text-primary-text placeholder:font-medium placeholder:text-muted-text focus-visible:border-0",
             isHero
-              ? "h-16 rounded-full focus-visible:border-0"
+              ? "h-[62px] rounded-full pl-4"
               : "h-16",
           )}
           onBlur={() => {
@@ -759,13 +817,13 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           variant={variant}
         />
 
-        {isHero ? (
+        {isHero && !pinSuggestions ? (
           <AnimatePresence>
             {showSuggestions ? (
-              <motion.div
+              <SuggestionPanel
+                panelRef={listboxRef}
                 key="hero-suggestions"
                 id={listboxId}
-                ref={listboxRef}
                 role="listbox"
                 {...suggestionContainerProps}
                 onMouseLeave={handleSuggestionMouseLeave}
@@ -776,26 +834,51 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                 layout={!reduceMotion}
                 transition={{ layout: searchInteractionSpring }}
                 style={{ transformOrigin: "top left" }}
-                className="scrollbar-none absolute left-0 right-0 top-[calc(100%+0.25rem)] z-50 flex max-h-[440px] flex-col gap-2.5 overflow-hidden overflow-y-auto overscroll-contain rounded-3xl border-4 border-border-subtle bg-bg-search-bar p-5 shadow-[0_6px_16px_#e1e1e399]"
+                className={cn(suggestionPanelClassName, "absolute left-0 right-0 top-[calc(100%+16px)]")}
               >
                 {suggestionsPanelContent}
-              </motion.div>
+              </SuggestionPanel>
             ) : null}
           </AnimatePresence>
-        ) : showSuggestions ? (
-          <div
+        ) : !isHero && showSuggestions ? (
+          <SuggestionPanel
+            panelRef={listboxRef}
             id={listboxId}
-            ref={listboxRef}
             role="listbox"
             {...suggestionContainerProps}
             onMouseLeave={handleSuggestionMouseLeave}
-            className="scrollbar-none absolute left-0 right-0 top-[calc(100%+0.25rem)] z-50 flex max-h-[440px] flex-col gap-2.5 overflow-y-auto overscroll-contain rounded-3xl border-4 border-border-subtle bg-bg-search-bar p-5 shadow-[0_6px_16px_#e1e1e399]"
+            className={cn(suggestionPanelClassName, "absolute left-0 right-0 top-[calc(100%+16px)]")}
           >
             {suggestionsPanelContent}
-          </div>
+          </SuggestionPanel>
         ) : null}
       </div>
       </Form>
     </SearchBar>
+    {pinSuggestions ? (
+      <AnimatePresence>
+        {showSuggestions ? (
+          <SuggestionPanel
+            panelRef={listboxRef}
+            key="hero-suggestions"
+            id={listboxId}
+            role="listbox"
+            {...suggestionContainerProps}
+            onMouseLeave={handleSuggestionMouseLeave}
+            variants={animatedDropdownVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            layout={!reduceMotion}
+            transition={{ layout: searchInteractionSpring }}
+            style={{ transformOrigin: "top center" }}
+            className={cn(suggestionPanelClassName, "relative w-full")}
+          >
+            {suggestionsPanelContent}
+          </SuggestionPanel>
+        ) : null}
+      </AnimatePresence>
+    ) : null}
+    </div>
   );
 }

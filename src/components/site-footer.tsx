@@ -19,7 +19,7 @@ export function SiteFooter() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <footer className="flex h-[60px] min-h-[60px] items-center justify-center border-t border-border-subtle bg-bg-canvas px-1 py-0 md:px-10">
+    <footer className="flex h-[92px] min-h-[92px] items-center justify-center border-t border-light-200 bg-bg-surface px-4 md:px-[60px]">
       <nav
         {...containerProps}
         className="flex flex-wrap items-center justify-center gap-1 text-center text-xs font-medium leading-6 text-text-muted md:text-sm"
@@ -39,7 +39,7 @@ export function SiteFooter() {
                   {isActive && !reduceMotion && (
                     <motion.div
                       layoutId="footer-hover"
-                      className="absolute inset-0 rounded-xl border border-stroke-border bg-bg-card"
+                      className="absolute inset-0 rounded-xl border border-light-200 bg-bg-canvas"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.5 } }}

@@ -79,9 +79,12 @@ function CollapsibleTrigger({
 function CollapsibleContent({
   className,
   children,
+  flush = false,
   forceMount: _forceMount,
   ...props
-}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {
+}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent> & {
+  flush?: boolean
+}) {
   const { open, contentId } = React.useContext(CollapsibleMotionContext)
   const reduceMotion = useReducedMotion()
   void _forceMount
@@ -131,11 +134,15 @@ function CollapsibleContent({
             className={cn("overflow-hidden", className)}
             {...props}
           >
-            <div className="border-t border-border/70">
-              <div className="max-h-[360px] overflow-y-auto overscroll-contain px-5 py-2">
-                {children}
+            {flush ? (
+              children
+            ) : (
+              <div className="border-t border-border/70">
+                <div className="max-h-[360px] overflow-y-auto overscroll-contain px-5 py-2">
+                  {children}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </motion.div>
       ) : null}

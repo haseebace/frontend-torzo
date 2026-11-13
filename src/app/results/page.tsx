@@ -5,8 +5,8 @@ import { gunzipSync } from "node:zlib";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SearchForm } from "@/components/search-form";
 import { SortSelect } from "./sort-select";
-import { TorrentResultCard, type TorrentResult } from "@/components/torrent-result-card";
-import { TorboxCacheStatusProvider } from "@/components/torrent/torbox-cache-status-provider";
+import type { TorrentResult } from "@/components/torrent-result-card";
+import { TorrentResultsList } from "@/components/torrent-results-list";
 import {
   Pagination,
   PaginationContent,
@@ -404,7 +404,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
   const hasNextPage = activePaginationMeta?.has_next_page ?? false;
 
   return (
-    <main className="min-h-dvh bg-background text-foreground">
+    <main className="min-h-dvh bg-bg-canvas text-primary-text">
       <SiteNavbar />
 
       <section className="flex w-full flex-col gap-6 px-4 py-6 md:gap-8 md:px-12 md:py-8">
@@ -413,17 +413,17 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           id="results-search"
           defaultValue={searchFormValue}
           variant="hero"
-          className="mx-auto"
+          className="mx-auto w-full max-w-[680px]"
         />
 
-        <div className="flex items-center justify-between gap-3 border-b border-border pb-4 md:items-end md:gap-2">
+        <div className="flex items-center justify-between gap-3 border-b border-light-200 pb-4 md:items-end md:gap-2">
           <div className="min-w-0 flex-1">
-            <h2 className="font-sans text-sm font-extrabold text-foreground-strong text-wrap-balance md:text-[22px]">
+            <h2 className="text-sm font-extrabold text-primary-text text-wrap-balance md:text-[22px]">
               {error ? (
-                <span className="text-destructive">{error}</span>
+                <span className="text-leecher-text">{error}</span>
               ) : (
                 <>
-                  {totalResults} results for <span className="text-foreground">{displayName}</span>
+                  {totalResults} results for {displayName}
                 </>
               )}
             </h2>
@@ -433,19 +433,13 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 md:gap-4">
+        <div className="flex flex-col gap-4">
           {allResults.length > 0 ? (
-            <TorboxCacheStatusProvider
-              hashes={allResults.map((result) => result.info_hash)}
-            >
-              {allResults.map((result) => (
-                <TorrentResultCard key={result.id} result={result} />
-              ))}
-            </TorboxCacheStatusProvider>
+            <TorrentResultsList results={allResults} />
           ) : (
             !error && (
               <div className="py-20 text-center">
-                <p className="text-muted-foreground text-sm md:text-base">No results found. Try a different search term or check your provider settings.</p>
+                <p className="text-sm text-muted-text md:text-base">No results found. Try a different search term or check your provider settings.</p>
               </div>
             )
           )}

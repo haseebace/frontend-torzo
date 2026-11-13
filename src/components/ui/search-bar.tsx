@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
 import { cn } from "@/lib/utils";
 
 export type SearchBarProps = {
@@ -31,25 +32,29 @@ export function SearchBar({
   className,
   children,
 }: SearchBarProps) {
+  const [ref, cornerStyle] = useFigmaCorner<HTMLDivElement>(999, torzoCornerSmoothing)
+
   return (
     <motion.div
+      ref={ref}
+      style={cornerStyle}
       className={cn(
-        "relative h-16 w-full max-w-[780px] rounded-full bg-bg-search-bar",
+        "relative h-[62px] w-full max-w-[680px] bg-bg-surface",
         className,
       )}
-      initial={{ maxWidth: active ? 780 : 700 }}
-      animate={{ maxWidth: active ? 780 : 700 }}
+      initial={{ maxWidth: active ? 680 : 640 }}
+      animate={{ maxWidth: active ? 680 : 640 }}
       transition={reduceMotion ? { duration: 0 } : searchActivationSpring}
     >
       {children}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-20 rounded-full border border-border-subtle"
+        style={cornerStyle}
+        className="pointer-events-none absolute inset-0 z-20 border border-border-subtle"
         initial={false}
         animate={{
           opacity: 1,
-          borderWidth: active ? 4 : 1,
-          boxShadow: active ? "0 6px 16px #e1e1e399" : "0 0 0 transparent",
+          borderWidth: 1,
         }}
         transition={reduceMotion ? { duration: 0 } : searchActivationSpring}
       />

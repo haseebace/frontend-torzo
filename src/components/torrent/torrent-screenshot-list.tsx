@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
 
 type TorrentScreenshot = {
   url: string;
@@ -39,6 +40,50 @@ function getRandomizedDelay(value: string, index: number) {
   return 0.04 + (hash / 997) * 0.34;
 }
 
+function ScreenshotFrame({
+  href,
+  label,
+  delay,
+  reduceMotion,
+  children,
+}: {
+  href: string;
+  label: string;
+  delay: number;
+  reduceMotion: boolean | null;
+  children: ReactNode;
+}) {
+  const [ref, cornerStyle] = useFigmaCorner<HTMLAnchorElement>(24, torzoCornerSmoothing);
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      initial={
+        reduceMotion
+          ? false
+          : { opacity: 0, scale: 0.84, filter: "blur(10px)" }
+      }
+      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+      transition={
+        reduceMotion
+          ? { duration: 0.01 }
+          : {
+              ...screenshotItemSpring,
+              delay,
+            }
+      }
+      style={{ ...cornerStyle, transformOrigin: "center center" }}
+      className="block h-44 max-w-full shrink-0 overflow-hidden leading-none"
+    >
+      {children}
+    </motion.a>
+  );
+}
+
 export function TorrentScreenshotList({
   images,
   title,
@@ -54,7 +99,7 @@ export function TorrentScreenshotList({
   }
 
   return (
-    <div className="flex flex-wrap gap-2 px-2 py-3">
+    <div className="flex min-w-0 flex-wrap items-start gap-2 bg-bg-surface p-4">
       {visibleImages.map((image, index) => {
         const rawHref = image.page_url || image.url;
         const href = rawHref.startsWith("http")
@@ -66,28 +111,12 @@ export function TorrentScreenshotList({
         const delay = getRandomizedDelay(image.url, index);
 
         return (
-          <motion.a
+          <ScreenshotFrame
             key={`${image.url}-${index}`}
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open screenshot ${index + 1}`}
-            initial={
-              reduceMotion
-                ? false
-                : { opacity: 0, scale: 0.84, filter: "blur(10px)" }
-            }
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={
-              reduceMotion
-                ? { duration: 0.01 }
-                : {
-                    ...screenshotItemSpring,
-                    delay,
-                  }
-            }
-            style={{ transformOrigin: "center center" }}
-            className="group block h-[120px] w-fit max-w-full overflow-hidden rounded-2xl border border-border bg-transparent leading-none transition-colors hover:border-foreground/30"
+            label={`Open screenshot ${index + 1}`}
+            delay={delay}
+            reduceMotion={reduceMotion}
           >
             <img
               src={imageSrc}
@@ -99,9 +128,9 @@ export function TorrentScreenshotList({
                   return next;
                 });
               }}
-              className="block h-full max-w-full w-auto object-contain transition-opacity group-hover:opacity-90"
+              className="h-44 w-auto max-w-full object-cover"
             />
-          </motion.a>
+          </ScreenshotFrame>
         );
       })}
     </div>

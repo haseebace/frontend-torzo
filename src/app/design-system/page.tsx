@@ -183,14 +183,14 @@ export default function DesignSystemPage() {
                 <CardDescription>Light-mode semantic palette from the Torzo canvas.</CardDescription>
               </CardHeader>
               <CardContent className="grid grid-cols-2 gap-3 p-5 pt-2 sm:grid-cols-4">
-                <TokenSwatch name="Canvas" value="#F8F8F9" className="bg-bg-canvas" />
-                <TokenSwatch name="Card" value="#FCFCFD" className="bg-bg-card" />
-                <TokenSwatch name="Secondary" value="#F2F3F4" className="bg-bg-secondary" />
-                <TokenSwatch name="Primary text" value="#515257" className="bg-text-primary" />
-                <TokenSwatch name="Muted text" value="#898B91" className="bg-text-muted" />
-                <TokenSwatch name="Subtle border" value="#E6E7E9" className="bg-border-subtle" />
-                <TokenSwatch name="Primary button" value="#3C424A" className="bg-bg-button-primary" />
-                <TokenSwatch name="Black button" value="#515257" className="bg-bg-black-button" />
+                <TokenSwatch name="Canvas" value="#FFFFFF" className="bg-bg-canvas" />
+                <TokenSwatch name="Surface" value="#FAFAFA" className="bg-bg-surface" />
+                <TokenSwatch name="Elevated" value="#F0F0F0" className="bg-bg-elevated" />
+                <TokenSwatch name="Primary text" value="#141414" className="bg-primary-text" />
+                <TokenSwatch name="Muted text" value="#5C5C5C" className="bg-muted-text" />
+                <TokenSwatch name="Border" value="#F0F0F0" className="bg-border-subtle" />
+                <TokenSwatch name="Primary action" value="#141414" className="bg-primary-action" />
+                <TokenSwatch name="Hover" value="#DEDEDE" className="bg-bg-hover" />
               </CardContent>
             </Card>
 

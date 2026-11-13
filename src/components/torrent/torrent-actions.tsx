@@ -1,12 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Check, Copy, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
+import {
+  buildMappleWatchUrl,
+  cleanTitleForTmdbSearch,
+  inferMappleMediaType,
+  parseTvEpisodeFromTitle,
+  type MappleMediaType,
+} from "@/lib/mapple-player";
 
 const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
 const MIN_VIDEO_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
@@ -16,13 +21,30 @@ interface TorrentActionsProps {
   magnetLink?: string | null;
   torrentFileUrl?: string | null;
   infoHash?: string | null;
+  title?: string;
+  category?: string | null;
+  mappleMediaId?: string | null;
+  mediaType?: MappleMediaType;
+  season?: number;
+  episode?: number;
   className?: string;
 }
+
+type TmdbSearchHit = {
+  id: number;
+  mediaType: MappleMediaType;
+};
 
 export function TorrentActions({
   magnetLink,
   torrentFileUrl,
   infoHash,
+  title = "",
+  category,
+  mappleMediaId,
+  mediaType: mediaTypeProp,
+  season: seasonProp,
+  episode: episodeProp,
   className,
 }: TorrentActionsProps) {
   const normalizedHash = infoHash?.trim().toLowerCase();
@@ -40,6 +62,8 @@ export function TorrentActions({
   const [isZipFallback, setIsZipFallback] = useState(false);
   const [magnetCopied, setMagnetCopied] = useState(false);
   const [isTorboxConnected, setIsTorboxConnected] = useState(false);
+  const [mappleWatchUrl, setMappleWatchUrl] = useState<string | null>(null);
+  const [isResolvingMapple, setIsResolvingMapple] = useState(false);
 
   const handleCopyMagnet = async () => {
     if (!magnetLink) return;
@@ -353,129 +377,193 @@ export function TorrentActions({
     checkInBackground();
   }, [infoHash, lookupExistingTorrent]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const resolveMappleUrl = async () => {
+      const inferredType = inferMappleMediaType(category, title, mediaTypeProp);
+      const tvEpisode =
+        seasonProp && episodeProp
+          ? { season: seasonProp, episode: episodeProp }
+          : parseTvEpisodeFromTitle(title);
+
+      const buildUrl = (mediaId: string | number) =>
+        buildMappleWatchUrl({
+          mediaId,
+          mediaType: inferredType,
+          season: tvEpisode?.season,
+          episode: tvEpisode?.episode,
+        });
+
+      if (mappleMediaId) {
+        const url = buildUrl(mappleMediaId);
+        if (!cancelled) setMappleWatchUrl(url || null);
+        return;
+      }
+
+      const query = cleanTitleForTmdbSearch(title);
+      if (!query) {
+        if (!cancelled) setMappleWatchUrl(null);
+        return;
+      }
+
+      setIsResolvingMapple(true);
+      try {
+        const response = await fetch(
+          `/api/tmdb/search?query=${encodeURIComponent(query)}`,
+        );
+        if (!response.ok) throw new Error("TMDB lookup failed");
+
+        const json = (await response.json()) as { results?: TmdbSearchHit[] };
+        const results = json.results ?? [];
+
+        const match =
+          results.find((item) => item.mediaType === inferredType) ?? results[0];
+
+        if (!match) {
+          if (!cancelled) setMappleWatchUrl(null);
+          return;
+        }
+
+        const url = buildUrl(match.id);
+        if (!cancelled) setMappleWatchUrl(url || null);
+      } catch {
+        if (!cancelled) setMappleWatchUrl(null);
+      } finally {
+        if (!cancelled) setIsResolvingMapple(false);
+      }
+    };
+
+    void resolveMappleUrl();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    category,
+    episodeProp,
+    mappleMediaId,
+    mediaTypeProp,
+    seasonProp,
+    title,
+  ]);
+
+  const handleStreamNow = () => {
+    if (mappleWatchUrl) {
+      window.open(mappleWatchUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    if (directLink) {
+      handleWatchNow();
+      return;
+    }
+
+    if (isTorboxConnected && magnetLink) {
+      void handleAddToTorBox();
+      return;
+    }
+
+    window.location.href = "/manage";
+  };
+
+  const actionClass =
+    "inline-flex items-center justify-center rounded-full px-5 py-2.5 font-sans text-sm font-normal leading-normal whitespace-nowrap focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-45";
+
+  const streamLabel = isLoading
+    ? status === "checking"
+      ? "Checking..."
+      : status === "adding"
+        ? "Adding..."
+        : "Downloading..."
+    : "Stream Now";
+
+  const streamDisabled =
+    isResolvingMapple ||
+    (!mappleWatchUrl && !directLink && !(isTorboxConnected && magnetLink));
+
   return (
-    <div className={cn("flex flex-col gap-3 md:ml-auto md:items-end", className)}>
-      <div className="flex w-full flex-wrap gap-2 sm:w-[800px] sm:gap-3 md:w-[180px] md:flex-col md:items-end">
-        {magnetLink && (
-          <div
-            role="group"
-            aria-label="Magnet link actions"
-            className={cn(
-              buttonVariants({ variant: "default", size: "lg" }),
-              "h-10 w-[120px] min-w-0 gap-0 p-0 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:text-sm",
-            )}
-          >
-            <a
-              href={magnetLink}
-              aria-label="Open magnet link in your installed torrent app"
-              title="Open in your installed torrent app"
-              className="flex min-w-0 flex-1 items-center justify-center px-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/70 focus-visible:ring-inset sm:px-2.5"
-            >
-              <span className="sm:hidden">Magnet</span>
-              <span className="hidden sm:inline">Magnet link</span>
-            </a>
-            <button
-              type="button"
-              aria-label={magnetCopied ? "Magnet link copied" : "Copy magnet link"}
-              title="Copy magnet link"
-              onClick={handleCopyMagnet}
-              className="mr-1 flex size-7 shrink-0 items-center justify-center rounded-full text-primary-foreground/60 hover:bg-primary-foreground/10 hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/70 sm:mr-1.5"
-            >
-              {magnetCopied ? (
-                <Check className="size-3.5" aria-hidden="true" />
-              ) : (
-                <Copy className="size-3.5" aria-hidden="true" />
-              )}
-            </button>
-          </div>
-        )}
-        {torrentFileUrl && (
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
-          >
-            <a href={torrentFileUrl}>
-              <span className="sm:hidden">Torrent</span>
-              <span className="hidden sm:inline">Download torrent</span>
-            </a>
-          </Button>
-        )}
-        {isTorboxConnected && (
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className={cn(
-              "h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[180px] sm:flex-none sm:px-2.5 sm:text-sm",
-              status === "ready" && "hidden",
-            )}
-            onClick={handleAddToTorBox}
-            disabled={isLoading || !magnetLink}
-          >
-            {isLoading && <Loader2 className="size-3.5 sm:size-4" />}
-            <span className="sm:hidden">
-              {status === "ready"
-                ? "Added"
-                : status === "checking"
-                  ? "Check"
-                  : isLoading
-                    ? "Adding"
-                    : "TorBox"}
-            </span>
-            <span className="hidden sm:inline">
-              {status === "checking" && "Checking TorBox..."}
-              {status === "adding" && "Adding..."}
-              {status === "downloading" && "Downloading..."}
-              {status === "ready" && "Added to TorBox"}
-              {(status === "idle" || status === "error") && "Add to TorBox"}
-            </span>
-          </Button>
-        )}
-
-        {directLink && (
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className="h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
-            onClick={handleWatchNow}
-          >
-            <span className="sm:hidden">Watch</span>
-            <span className="hidden sm:inline">Watch Now</span>
-          </Button>
-        )}
-
-        {directLink && (
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="h-10 w-[120px] min-w-0 rounded-full px-4 text-xs sm:h-[45px] sm:w-[165px] sm:flex-none sm:px-2.5 sm:text-sm"
-          >
-            <a href={directLink} target="_blank" rel="noreferrer">
-              <span className="sm:hidden">Direct</span>
-              <span className="hidden sm:inline">
-                {isZipFallback ? "Download Zip" : "Direct Download"}
-              </span>
-            </a>
-          </Button>
-        )}
-      </div>
-      {torboxAccountStatus && (
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge>{torboxAccountStatus}</Badge>
-        </div>
+    <div className={cn("flex flex-col items-stretch gap-2 p-2 sm:items-end", className)}>
+      {mappleWatchUrl ? (
+        <a
+          href={mappleWatchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(actionClass, "bg-primary-action text-on-primary")}
+        >
+          Stream Now
+        </a>
+      ) : (
+        <button
+          type="button"
+          onClick={handleStreamNow}
+          disabled={streamDisabled}
+          className={cn(actionClass, "bg-primary-action text-on-primary")}
+        >
+          {isLoading || isResolvingMapple ? (
+            <Loader2 className="mr-2 size-4 animate-spin" />
+          ) : null}
+          {isLoading ? streamLabel : "Stream Now"}
+        </button>
       )}
-      {isZipFallback && (
-        <p className="text-sm font-medium text-foreground-muted">
+
+      {isTorboxConnected && !directLink && magnetLink ? (
+        <button
+          type="button"
+          onClick={() => void handleAddToTorBox()}
+          disabled={isLoading}
+          className={cn(
+            actionClass,
+            "border border-border-subtle bg-bg-canvas text-primary-text hover:bg-bg-hover",
+          )}
+        >
+          {isLoading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
+          {isLoading ? streamLabel : "Add to TorBox"}
+        </button>
+      ) : null}
+
+      {directLink ? (
+        <button
+          type="button"
+          onClick={handleWatchNow}
+          className={cn(
+            actionClass,
+            "border border-border-subtle bg-bg-canvas text-primary-text hover:bg-bg-hover",
+          )}
+        >
+          Play TorBox file
+        </button>
+      ) : null}
+
+      {magnetLink ? (
+        <button
+          type="button"
+          onClick={handleCopyMagnet}
+          className={cn(actionClass, "border border-border-subtle bg-bg-canvas text-primary-text hover:bg-bg-hover")}
+        >
+          {magnetCopied ? "Copied" : "Copy Magnet Link"}
+        </button>
+      ) : null}
+
+      {torrentFileUrl ? (
+        <a
+          href={torrentFileUrl}
+          className={cn(actionClass, "bg-secondary-action text-primary-text hover:bg-bg-hover")}
+        >
+          Download Torrent
+        </a>
+      ) : null}
+
+      {torboxAccountStatus ? (
+        <p className="text-xs font-normal text-muted-text">{torboxAccountStatus}</p>
+      ) : null}
+      {isZipFallback ? (
+        <p className="max-w-56 text-right text-sm font-normal text-muted-text">
           No video file available. This can only be downloaded.
         </p>
-      )}
-      {errorMessage && (
-        <p className="text-sm font-medium text-destructive">{errorMessage}</p>
-      )}
+      ) : null}
+      {errorMessage ? (
+        <p className="max-w-56 text-right text-sm font-normal text-leecher-text">{errorMessage}</p>
+      ) : null}
     </div>
   );
 }

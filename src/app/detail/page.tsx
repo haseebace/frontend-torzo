@@ -1,27 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronDown, ChevronRight } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { Badge } from "@/components/ui/badge";
 import { TorrentActions } from "@/components/torrent/torrent-actions";
 import { TorrentFileList } from "@/components/torrent/torrent-file-list";
+import { RelatedTorrentsList } from "@/components/torrent/related-torrents-list";
 import { TorrentScreenshotList } from "@/components/torrent/torrent-screenshot-list";
 import { VisitedTorrentsTracker } from "@/components/torrent/visited-torrents-tracker";
+import type { TorrentResult } from "@/components/torrent-result-card";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { cn, formatBytes, formatDate, formatRawSize, parseRawSize } from "@/lib/utils";
+import { FigmaCorner } from "@/components/figma-corner";
+import { formatBytes, formatRawSize, parseRawSize } from "@/lib/utils";
 import {
-  getTorrentTitleTagDescription,
-  getTorrentTitleTags,
-} from "@/lib/torrent-title-parser";
+  inferMappleMediaType,
+  parseTvEpisodeFromTitle,
+  type MappleMediaType,
+} from "@/lib/mapple-player";
 
 type DetailPageProps = {
   searchParams: Promise<{
     source?: string;
     source_url?: string;
+    tmdbId?: string;
+    imdbId?: string;
+    mediaType?: MappleMediaType;
   }>;
 };
 
@@ -185,9 +191,76 @@ function formatNumber(value: number | null | undefined) {
   return typeof value === "number" ? value.toLocaleString() : "Unknown";
 }
 
-function formatPercent(value: number | null | undefined) {
-  if (typeof value !== "number") return "Unknown";
-  return `${Math.round(value * 100)}%`;
+type RelatedTorrent = {
+  id: string;
+  title: string;
+  size: string;
+  seeders: number;
+  leechers: number;
+  href: string;
+};
+
+function relatedSearchQuery(title: string) {
+  const normalized = title.replace(/[._]+/g, " ").replace(/\s+/g, " ").trim();
+  const yearMatch = normalized.match(/\b(?:19|20)\d{2}\b/);
+
+  if (yearMatch?.index && yearMatch.index > 0) {
+    return normalized.slice(0, yearMatch.index + yearMatch[0].length).trim();
+  }
+
+  return normalized.split(" ").filter(Boolean).slice(0, 5).join(" ");
+}
+
+async function fetchRelatedTorrents(
+  title: string,
+  infoHash: string | null,
+): Promise<RelatedTorrent[]> {
+  const query = relatedSearchQuery(title);
+  if (!query) return [];
+
+  try {
+    const params = new URLSearchParams({
+      q: query,
+      source: "rargb,thepiratebay,torrentgalaxy",
+      sort: "seeders",
+      page: "1",
+    });
+    const response = await fetch(
+      `https://torzoapi.vercel.app/api/v1/search?${params.toString()}`,
+      {
+        next: { revalidate: 300 },
+        signal: AbortSignal.timeout(8_000),
+      },
+    );
+    if (!response.ok) return [];
+
+    const json = (await response.json()) as { data?: TorrentResult[] };
+    const currentHash = infoHash?.trim().toLowerCase();
+
+    return (json.data ?? [])
+      .filter((item) => {
+        const hash = item.info_hash?.trim().toLowerCase();
+        const sourceUrl = item.sources?.[0]?.source_url;
+        if (!sourceUrl) return false;
+        if (currentHash && hash === currentHash) return false;
+        return true;
+      })
+      .slice(0, 8)
+      .map((item) => {
+        const source = item.sources[0];
+        return {
+          id: item.id,
+          title: item.title,
+          size: formatRawSize(item.size_bytes),
+          seeders: Number(item.seeders ?? 0),
+          leechers: Number(item.leechers ?? 0),
+          href: `/detail?source=${encodeURIComponent(source.provider)}&source_url=${encodeURIComponent(source.source_url)}`,
+        };
+      });
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
 
 function formatProviderLinkLabel(value: string | null | undefined) {
@@ -262,13 +335,14 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   const params = await searchParams;
   const source = params.source || "rargb";
   const sourceUrl = params.source_url;
+  const mappleMediaId = params.tmdbId?.trim() || params.imdbId?.trim() || null;
 
   if (!sourceUrl) {
     return (
-      <main className="min-h-dvh bg-background text-foreground">
+      <main className="min-h-dvh bg-bg-canvas text-primary-text">
         <SiteNavbar />
         <section className="px-4 py-20 text-center">
-          <p className="text-muted-foreground">No media source provided.</p>
+          <p className="text-muted-text">No media source provided.</p>
           <Link
             href="/"
             className="text-link hover:underline mt-4 inline-block"
@@ -369,16 +443,16 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
 
   if (error || !torrent) {
     return (
-      <main className="min-h-dvh bg-background text-foreground">
+      <main className="min-h-dvh bg-bg-canvas text-primary-text">
         <SiteNavbar />
         <section className="px-4 py-20 text-center">
           <div className="mx-auto max-w-md space-y-4">
-            <h1 className="text-2xl font-bold text-foreground-strong">Oops!</h1>
-            <p className="text-destructive font-medium">
+            <h1 className="text-2xl font-bold text-primary-text">Oops!</h1>
+            <p className="font-medium text-leecher-text">
               {error || "Media details not found."}
             </p>
-            <p className="text-sm text-muted-foreground">Source: {source}</p>
-            <p className="text-xs text-text-soft break-all">URL: {sourceUrl}</p>
+            <p className="text-sm text-muted-text">Source: {source}</p>
+            <p className="break-all text-xs text-muted-text">URL: {sourceUrl}</p>
             <Link
               href="/"
               className="text-link hover:underline mt-6 inline-block"
@@ -392,211 +466,161 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
   }
 
   const title = cleanTitle(torrent.title);
-  const titleTags = getTorrentTitleTags(torrent.title);
+  const tvEpisode = parseTvEpisodeFromTitle(title);
+  const mappleMediaType = inferMappleMediaType(
+    torrent.category,
+    title,
+    params.mediaType,
+  );
   const hasFiles = torrent.files.length > 0;
   const sourceLink = torrent.sources[0] ?? {
     provider: torrent.source.provider,
     source_url: torrent.source.url,
   };
+  const related = await fetchRelatedTorrents(title, torrent.infoHash);
+  const crumbLabel = relatedSearchQuery(title) || title;
 
   return (
-    <main className="min-h-dvh overflow-x-hidden bg-background text-foreground">
+    <main className="min-h-dvh overflow-x-hidden bg-bg-canvas text-primary-text">
       <SiteNavbar />
       <VisitedTorrentsTracker id={torrent.id} />
 
-      <section className="flex w-full min-w-0 flex-col gap-8 px-4 py-8 md:px-12">
-        <div className="flex min-w-0 flex-col gap-5 border-b border-border pb-7 md:flex-row md:items-start md:justify-between">
-          <div className="min-w-0 flex-1 space-y-3">
-              <nav
-                aria-label="Breadcrumb"
-                className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-muted-foreground"
-              >
-                <Link
-                  href="/"
-                  className="shrink-0 transition-colors hover:text-foreground"
-                >
-                  Home
-                </Link>
-                <ChevronRight className="size-3 shrink-0" aria-hidden="true" />
-                <Link
-                  href="/results"
-                  className="shrink-0 transition-colors hover:text-foreground"
-                >
-                  Results
-                </Link>
-                <ChevronRight className="size-3 shrink-0" aria-hidden="true" />
-                <span className="min-w-0 truncate text-foreground-strong">
+      <section className="flex w-full min-w-0 flex-col gap-4 px-4 py-4 md:px-12">
+        <header className="flex min-w-0 flex-col gap-2 border-b border-light-200">
+          <nav aria-label="Breadcrumb" className="flex min-w-0 items-center text-xs font-semibold">
+            <Link href="/" className="shrink-0 text-primary-text">
+              Home
+            </Link>
+            <span className="text-light-400" aria-hidden="true">
+              {" > "}
+            </span>
+            <Link href="/results" className="shrink-0 text-primary-text">
+              Results
+            </Link>
+            <span className="text-light-400" aria-hidden="true">
+              {" > "}
+            </span>
+            <span className="min-w-0 truncate text-primary-text">{crumbLabel}</span>
+          </nav>
+
+          <div className="flex min-w-0 flex-col gap-4 pb-4 md:flex-row md:items-start md:justify-between">
+            <div className="flex min-w-0 flex-1 flex-col gap-4">
+              <div className="flex min-w-0 flex-col gap-2">
+                <h1 className="max-w-full break-words text-2xl font-bold leading-tight text-primary-text md:text-[28px]">
                   {title}
-                </span>
-              </nav>
-              {titleTags.length > 0 && (
-                <div className="flex flex-wrap gap-2" aria-label="Release details">
-                {titleTags.map((tag, index) => {
-                  const tooltipId = `release-detail-${index}`;
-
-                  return (
-                    <span key={tag} className="group relative">
-                      <Badge
-                        variant="secondary"
-                        tabIndex={0}
-                        aria-describedby={tooltipId}
-                      >
-                        {tag}
-                      </Badge>
-                      <span
-                        id={tooltipId}
-                        role="tooltip"
-                        className="pointer-events-none invisible absolute bottom-full left-0 z-[200] mb-2 w-64 -translate-y-1 whitespace-normal rounded-xl border border-border bg-surface px-3 py-2 text-left text-xs font-medium leading-5 text-foreground-strong opacity-0 shadow-sm transition-[opacity,transform] duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
-                      >
-                        {getTorrentTitleTagDescription(tag)}
-                      </span>
-                    </span>
-                  );
-                })}
-                </div>
-              )}
-              <h1 className="max-w-full break-words text-2xl font-semibold leading-tight tracking-tight text-foreground-strong md:text-5xl">
-                {title}
-              </h1>
-              <Badge variant="secondary" className="max-w-full">
-                <span className="shrink-0">Info hash:</span>
-                <p className="min-w-0 truncate">
-                  {torrent.infoHash ?? "Unknown"}
-                </p>
-              </Badge>
-          </div>
-
-          <TorrentActions
-            magnetLink={torrent.magnetLink}
-            torrentFileUrl={torrent.torrentFileUrl}
-            infoHash={torrent.infoHash}
-            className="md:w-[180px]"
-          />
-        </div>
-
-        <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
-          <div className="min-w-0 space-y-6">
-            <Collapsible>
-              <CollapsibleTrigger>
-                <div className="flex w-full items-center justify-between">
-                  <div className="flex min-w-0 items-center gap-4">
-                    <div>
-                      <h2 className="text-lg font-semibold tracking-tight text-foreground-strong">
-                        Files
-                      </h2>
-                    </div>
-                  </div>
-                  <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
-                </div>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                {hasFiles ? (
-                  <TorrentFileList files={torrent.files} />
-                ) : (
-                  <p className="px-2 py-3 text-sm text-muted-foreground">
-                    No file list returned for this media yet.
-                  </p>
-                )}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {torrent.images.length > 0 && (
-              <Collapsible defaultOpen={false}>
-                <CollapsibleTrigger>
-                  <div className="flex w-full items-center justify-between">
-                    <h2 className="text-lg font-semibold tracking-tight text-foreground-strong">
-                      Screenshots
-                    </h2>
-                    <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <TorrentScreenshotList images={torrent.images} title={title} />
-                </CollapsibleContent>
-              </Collapsible>
-            )}
-          </div>
-
-          <aside className="min-w-0 space-y-4">
-            <section className="rounded-3xl bg-surface p-5">
-              <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground-strong">
-                Health & Data
-              </h2>
-              <div className="mb-4 grid gap-2">
-                <Badge variant="success" className="w-full justify-center">
-                  {formatNumber(torrent.seeders)} Seeders
-                </Badge>
-                <Badge variant="destructive" className="w-full justify-center">
-                  {formatNumber(torrent.leechers)} Leechers
-                </Badge>
-                <Badge variant="secondary" className="w-full justify-center">
-                  {torrent.sizeHuman || "Unknown"}
+                </h1>
+                <Badge className="max-w-full min-w-0 border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-normal normal-case text-muted-text">
+                  <span className="shrink-0">Info hash:</span>
+                  <span className="min-w-0 truncate">{torrent.infoHash ?? "Unknown"}</span>
                 </Badge>
               </div>
-              <div className="divide-y divide-border/70 text-sm">
+              <div className="flex flex-wrap gap-2">
                 {sourceLink.source_url ? (
-                  <div className="flex min-w-0 items-center justify-between gap-4 py-3 first:pt-0">
-                    <span className="shrink-0 text-muted-foreground">
-                      Source
-                    </span>
-                    <Link
-                      href={sourceLink.source_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="min-w-0 truncate border-b border-input pb-0.5 text-right text-xs font-medium text-text-subtle hover:border-foreground hover:text-foreground md:text-sm"
-                    >
+                  <Badge
+                    asChild
+                    className="border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-bold text-primary-text underline"
+                  >
+                    <Link href={sourceLink.source_url} target="_blank" rel="noreferrer">
                       {formatProviderLinkLabel(sourceLink.provider)}
                     </Link>
-                  </div>
+                  </Badge>
                 ) : null}
-                <div className="flex items-center justify-between gap-4 py-3 first:pt-0">
-                  <span className="text-muted-foreground">Uploaded date</span>
-                  <span className="font-semibold text-foreground">
-                    {formatDate(torrent.uploadedAt)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-muted-foreground">Verified</span>
-                  <span
-                    className={cn(
-                      "font-semibold",
-                      torrent.verified ? "text-success" : "text-foreground",
-                    )}
-                  >
-                    {torrent.verified ? "Yes" : "No"}
-                  </span>
-                </div>
-                {torrent.downloaded !== undefined &&
-                  torrent.downloaded !== null && (
-                    <div className="flex items-center justify-between gap-4 py-3">
-                      <span className="text-muted-foreground">Downloads</span>
-                      <span className="font-semibold text-foreground">
-                        {formatNumber(torrent.downloaded)}
-                      </span>
-                    </div>
-                  )}
-                <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-muted-foreground">Health score</span>
-                  <span className="font-semibold text-foreground">
-                    {formatPercent(torrent.healthScore)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-muted-foreground">Trusted score</span>
-                  <span className="font-semibold text-foreground">
-                    {formatPercent(torrent.trustedScore)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-4 py-3 last:pb-0">
-                  <span className="text-muted-foreground">Last seen</span>
-                  <span className="font-semibold text-foreground">
-                    {formatDate(torrent.lastSeenAt)}
-                  </span>
-                </div>
+                <Badge className="border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-bold normal-case text-primary-text">
+                  {torrent.sizeHuman || "Unknown"}
+                </Badge>
+                <Badge className="border-0 bg-bg-seeder px-4 py-2 text-xs font-bold normal-case text-seeder-text">
+                  {formatNumber(torrent.seeders)}
+                </Badge>
+                <Badge className="border-0 bg-bg-leecher px-4 py-2 text-xs font-bold normal-case text-leecher-text">
+                  {formatNumber(torrent.leechers)}
+                </Badge>
               </div>
-            </section>
-          </aside>
-        </div>
+            </div>
+
+            <TorrentActions
+              magnetLink={torrent.magnetLink}
+              torrentFileUrl={torrent.torrentFileUrl}
+              infoHash={torrent.infoHash}
+              title={title}
+              category={torrent.category}
+              mappleMediaId={mappleMediaId}
+              mediaType={mappleMediaType}
+              season={tvEpisode?.season}
+              episode={tvEpisode?.episode}
+            />
+          </div>
+        </header>
+
+        {related.length > 0 ? (
+          <FigmaCorner radius={24} className="overflow-hidden">
+            <h2 className="bg-bg-elevated px-4 py-3.5 text-lg font-semibold leading-normal text-primary-text">
+              Related Torrents
+            </h2>
+            <RelatedTorrentsList items={related} />
+          </FigmaCorner>
+        ) : null}
+
+        <FigmaCorner radius={24} className="overflow-hidden">
+        <Collapsible defaultOpen={hasFiles} className="rounded-none border-0 bg-transparent">
+          <CollapsibleTrigger className="group bg-bg-elevated px-4 py-3.5 text-primary-text hover:bg-bg-hover">
+            <h2 className="text-lg font-semibold leading-normal">Files</h2>
+            <span className="flex size-6 items-center justify-center">
+              <img
+                src="/detail/arrow-down.svg"
+                alt=""
+                width={12}
+                height={10}
+                className="group-aria-expanded:hidden dark:invert"
+              />
+              <img
+                src="/detail/arrow-up.svg"
+                alt=""
+                width={12}
+                height={10}
+                className="hidden group-aria-expanded:block dark:invert"
+              />
+            </span>
+          </CollapsibleTrigger>
+          <CollapsibleContent flush>
+            {hasFiles ? (
+              <TorrentFileList files={torrent.files} />
+            ) : (
+              <p className="bg-bg-surface px-4 py-3 text-sm text-muted-text">
+                No file list returned for this media yet.
+              </p>
+            )}
+          </CollapsibleContent>
+        </Collapsible>
+        </FigmaCorner>
+
+        {torrent.images.length > 0 ? (
+          <FigmaCorner radius={24} className="overflow-hidden">
+          <Collapsible defaultOpen className="rounded-none border-0 bg-transparent">
+            <CollapsibleTrigger className="group bg-bg-elevated px-4 py-3.5 text-primary-text hover:bg-bg-hover">
+              <h2 className="text-lg font-semibold leading-normal">Images</h2>
+              <span className="flex size-6 items-center justify-center">
+                <img
+                  src="/detail/arrow-down.svg"
+                  alt=""
+                  width={12}
+                  height={10}
+                  className="group-aria-expanded:hidden dark:invert"
+                />
+                <img
+                  src="/detail/arrow-up.svg"
+                  alt=""
+                  width={12}
+                  height={10}
+                  className="hidden group-aria-expanded:block dark:invert"
+                />
+              </span>
+            </CollapsibleTrigger>
+            <CollapsibleContent flush>
+              <TorrentScreenshotList images={torrent.images} title={title} />
+            </CollapsibleContent>
+          </Collapsible>
+          </FigmaCorner>
+        ) : null}
       </section>
     </main>
   );
