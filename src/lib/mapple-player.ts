@@ -4,6 +4,23 @@ export const MAPPLE_PLAYER_ORIGIN = "https://mapple.fun";
 
 export type MappleMediaType = "movie" | "tv";
 
+export type MappleWatchDebug = {
+  title: string;
+  category: string | null;
+  tmdbId: string | null;
+  imdbId: string | null;
+  titleImdbId: string | null;
+  mediaType: MappleMediaType;
+  season: number | null;
+  episode: number | null;
+  searchQuery: string | null;
+  mediaId: string | null;
+  source: "tmdb-id" | "imdb-id" | "title-imdb" | "tmdb-search" | "none";
+  tmdbConfigured: boolean;
+  watchUrl: string | null;
+  failure: string | null;
+};
+
 export type BuildMappleWatchUrlInput = {
   mediaId: string | number;
   mediaType: MappleMediaType;
@@ -76,17 +93,30 @@ export function inferMappleMediaType(
   return "movie";
 }
 
+export function extractImdbId(title: string): string | null {
+  const match = title.match(/\b(tt\d{5,})\b/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
 export function cleanTitleForTmdbSearch(title: string): string {
-  return title
+  const normalized = title
     .replace(/\[[^\]]*\]/g, " ")
     .replace(/\([^)]*\)/g, " ")
+    .replace(/\btt\d{5,}\b/gi, " ")
     .replace(/\bS\d{1,2}E\d{1,2}\b/gi, " ")
     .replace(/\b\d{1,2}x\d{1,2}\b/gi, " ")
     .replace(
-      /\b(720p|1080p|2160p|4320p|4k|bluray|blu-?ray|webrip|web-?dl|hdtv|x264|x265|hevc|av1|aac|dts|atmos|5\.1|7\.1)\b/gi,
+      /\b(720p|1080p|2160p|4320p|4k|bluray|blu-?ray|webrip|web-?dl|hdtv|hdrip|brrip|dvdrip|x264|x265|hevc|av1|aac|dts|atmos|5\.1|7\.1|repack|proper|extended|remux|hdr|10bit)\b/gi,
       " ",
     )
     .replace(/[._]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
+  const yearMatch = normalized.match(/\b(?:19|20)\d{2}\b/);
+  if (yearMatch?.index && yearMatch.index > 0) {
+    return normalized.slice(0, yearMatch.index + yearMatch[0].length).trim();
+  }
+
+  return normalized.split(" ").filter(Boolean).slice(0, 6).join(" ");
 }

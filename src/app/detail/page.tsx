@@ -20,6 +20,7 @@ import {
   parseTvEpisodeFromTitle,
   type MappleMediaType,
 } from "@/lib/mapple-player";
+import { resolveMappleWatchUrl } from "@/lib/server/resolve-mapple-watch";
 
 type DetailPageProps = {
   searchParams: Promise<{
@@ -200,6 +201,21 @@ type RelatedTorrent = {
   href: string;
 };
 
+function buildDetailHref(
+  provider: string,
+  sourceUrl: string,
+  media?: { tmdbId?: string; imdbId?: string; mediaType?: string },
+) {
+  const searchParams = new URLSearchParams({
+    source: provider,
+    source_url: sourceUrl,
+  });
+  if (media?.tmdbId) searchParams.set("tmdbId", media.tmdbId);
+  if (media?.imdbId) searchParams.set("imdbId", media.imdbId);
+  if (media?.mediaType) searchParams.set("mediaType", media.mediaType);
+  return `/detail?${searchParams.toString()}`;
+}
+
 function relatedSearchQuery(title: string) {
   const normalized = title.replace(/[._]+/g, " ").replace(/\s+/g, " ").trim();
   const yearMatch = normalized.match(/\b(?:19|20)\d{2}\b/);
@@ -214,6 +230,7 @@ function relatedSearchQuery(title: string) {
 async function fetchRelatedTorrents(
   title: string,
   infoHash: string | null,
+  media?: { tmdbId?: string; imdbId?: string; mediaType?: string },
 ): Promise<RelatedTorrent[]> {
   const query = relatedSearchQuery(title);
   if (!query) return [];
@@ -254,7 +271,7 @@ async function fetchRelatedTorrents(
           size: formatRawSize(item.size_bytes),
           seeders: Number(item.seeders ?? 0),
           leechers: Number(item.leechers ?? 0),
-          href: `/detail?source=${encodeURIComponent(source.provider)}&source_url=${encodeURIComponent(source.source_url)}`,
+          href: buildDetailHref(source.provider, source.source_url, media),
         };
       });
   } catch (error) {
@@ -477,7 +494,20 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
     provider: torrent.source.provider,
     source_url: torrent.source.url,
   };
-  const related = await fetchRelatedTorrents(title, torrent.infoHash);
+  const related = await fetchRelatedTorrents(title, torrent.infoHash, {
+    tmdbId: params.tmdbId,
+    imdbId: params.imdbId,
+    mediaType: params.mediaType,
+  });
+  const mappleWatch = await resolveMappleWatchUrl({
+    title,
+    category: torrent.category,
+    tmdbId: params.tmdbId,
+    imdbId: params.imdbId,
+    mediaType: mappleMediaType,
+    season: tvEpisode?.season,
+    episode: tvEpisode?.episode,
+  });
   const crumbLabel = relatedSearchQuery(title) || title;
 
   return (
@@ -544,6 +574,8 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               title={title}
               category={torrent.category}
               mappleMediaId={mappleMediaId}
+              mappleWatchUrl={mappleWatch.url}
+              mappleDebug={mappleWatch.debug}
               mediaType={mappleMediaType}
               season={tvEpisode?.season}
               episode={tvEpisode?.episode}

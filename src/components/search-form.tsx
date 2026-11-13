@@ -742,7 +742,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           placeholder={isHero ? "Search anything that you like" : "Search movies, shows, games, software..."}
           variant="surface"
           className={cn(
-            "bg-transparent pr-16 text-sm font-medium text-primary-text placeholder:font-medium placeholder:text-muted-text focus-visible:border-0",
+            "bg-transparent pr-16 text-[16px] font-medium text-primary-text placeholder:font-medium placeholder:text-muted-text focus-visible:border-0 md:text-sm",
             isHero
               ? "h-[62px] rounded-full pl-4"
               : "h-16",

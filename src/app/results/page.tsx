@@ -435,7 +435,12 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
         <div className="flex flex-col gap-4">
           {allResults.length > 0 ? (
-            <TorrentResultsList results={allResults} />
+            <TorrentResultsList
+              results={allResults}
+              tmdbId={tmdbId}
+              imdbId={imdbId}
+              mediaType={mediaType}
+            />
           ) : (
             !error && (
               <div className="py-20 text-center">

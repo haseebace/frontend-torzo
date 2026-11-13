@@ -11,6 +11,7 @@ import {
   inferMappleMediaType,
   parseTvEpisodeFromTitle,
   type MappleMediaType,
+  type MappleWatchDebug,
 } from "@/lib/mapple-player";
 
 const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov", ".webm"];
@@ -24,6 +25,8 @@ interface TorrentActionsProps {
   title?: string;
   category?: string | null;
   mappleMediaId?: string | null;
+  mappleWatchUrl?: string | null;
+  mappleDebug?: MappleWatchDebug | null;
   mediaType?: MappleMediaType;
   season?: number;
   episode?: number;
@@ -42,6 +45,8 @@ export function TorrentActions({
   title = "",
   category,
   mappleMediaId,
+  mappleWatchUrl: mappleWatchUrlProp,
+  mappleDebug,
   mediaType: mediaTypeProp,
   season: seasonProp,
   episode: episodeProp,
@@ -62,7 +67,24 @@ export function TorrentActions({
   const [isZipFallback, setIsZipFallback] = useState(false);
   const [magnetCopied, setMagnetCopied] = useState(false);
   const [isTorboxConnected, setIsTorboxConnected] = useState(false);
-  const [mappleWatchUrl, setMappleWatchUrl] = useState<string | null>(null);
+  const [mappleWatchUrl, setMappleWatchUrl] = useState<string | null>(() => {
+    if (mappleWatchUrlProp) return mappleWatchUrlProp;
+    if (!mappleMediaId) return null;
+
+    const inferredType = inferMappleMediaType(category, title, mediaTypeProp);
+    const tvEpisode =
+      seasonProp && episodeProp
+        ? { season: seasonProp, episode: episodeProp }
+        : parseTvEpisodeFromTitle(title);
+    return (
+      buildMappleWatchUrl({
+        mediaId: mappleMediaId,
+        mediaType: inferredType,
+        season: tvEpisode?.season,
+        episode: tvEpisode?.episode,
+      }) || null
+    );
+  });
   const [isResolvingMapple, setIsResolvingMapple] = useState(false);
 
   const handleCopyMagnet = async () => {
@@ -395,24 +417,44 @@ export function TorrentActions({
           episode: tvEpisode?.episode,
         });
 
+      if (mappleWatchUrlProp) {
+        console.info("[Stream Now] using server watch URL", mappleWatchUrlProp);
+        if (!cancelled) setMappleWatchUrl(mappleWatchUrlProp);
+        return;
+      }
+
       if (mappleMediaId) {
         const url = buildUrl(mappleMediaId);
+        console.info("[Stream Now] built watch URL from media id", {
+          mappleMediaId,
+          mediaType: inferredType,
+          season: tvEpisode?.season ?? null,
+          episode: tvEpisode?.episode ?? null,
+          watchUrl: url || null,
+        });
         if (!cancelled) setMappleWatchUrl(url || null);
         return;
       }
 
       const query = cleanTitleForTmdbSearch(title);
       if (!query) {
+        console.info("[Stream Now] no TMDB query could be built", { title });
         if (!cancelled) setMappleWatchUrl(null);
         return;
       }
 
       setIsResolvingMapple(true);
+      console.info("[Stream Now] searching TMDB in the browser", {
+        query,
+        mediaType: inferredType,
+      });
       try {
         const response = await fetch(
           `/api/tmdb/search?query=${encodeURIComponent(query)}`,
         );
-        if (!response.ok) throw new Error("TMDB lookup failed");
+        if (!response.ok) {
+          throw new Error(`TMDB lookup failed with HTTP ${response.status}`);
+        }
 
         const json = (await response.json()) as { results?: TmdbSearchHit[] };
         const results = json.results ?? [];
@@ -421,13 +463,24 @@ export function TorrentActions({
           results.find((item) => item.mediaType === inferredType) ?? results[0];
 
         if (!match) {
+          console.info("[Stream Now] TMDB search returned no match", {
+            query,
+            resultCount: results.length,
+          });
           if (!cancelled) setMappleWatchUrl(null);
           return;
         }
 
         const url = buildUrl(match.id);
+        console.info("[Stream Now] TMDB search matched", {
+          query,
+          mediaId: match.id,
+          mediaType: match.mediaType,
+          watchUrl: url || null,
+        });
         if (!cancelled) setMappleWatchUrl(url || null);
-      } catch {
+      } catch (error) {
+        console.info("[Stream Now] TMDB search failed", error);
         if (!cancelled) setMappleWatchUrl(null);
       } finally {
         if (!cancelled) setIsResolvingMapple(false);
@@ -442,6 +495,7 @@ export function TorrentActions({
     category,
     episodeProp,
     mappleMediaId,
+    mappleWatchUrlProp,
     mediaTypeProp,
     seasonProp,
     title,
@@ -449,20 +503,24 @@ export function TorrentActions({
 
   const handleStreamNow = () => {
     if (mappleWatchUrl) {
+      console.info("[Stream Now] click opens Mapple", mappleWatchUrl);
       window.open(mappleWatchUrl, "_blank", "noopener,noreferrer");
       return;
     }
 
     if (directLink) {
+      console.info("[Stream Now] click plays the TorBox file");
       handleWatchNow();
       return;
     }
 
     if (isTorboxConnected && magnetLink) {
+      console.info("[Stream Now] click adds the torrent to TorBox");
       void handleAddToTorBox();
       return;
     }
 
+    console.info("[Stream Now] click sends the user to /manage");
     window.location.href = "/manage";
   };
 
@@ -477,9 +535,30 @@ export function TorrentActions({
         : "Downloading..."
     : "Stream Now";
 
-  const streamDisabled =
-    isResolvingMapple ||
-    (!mappleWatchUrl && !directLink && !(isTorboxConnected && magnetLink));
+  const streamDisabled = isResolvingMapple || isLoading;
+
+  useEffect(() => {
+    console.info("[Stream Now]", {
+      server: mappleDebug ?? null,
+      watchUrl: mappleWatchUrl,
+      renderedAs: mappleWatchUrl ? "link" : "button",
+      disabled: streamDisabled,
+      resolving: isResolvingMapple,
+      torboxStatus: status,
+      torboxConnected: isTorboxConnected,
+      hasMagnet: Boolean(magnetLink),
+      hasDirectLink: Boolean(directLink),
+    });
+  }, [
+    directLink,
+    isResolvingMapple,
+    isTorboxConnected,
+    magnetLink,
+    mappleDebug,
+    mappleWatchUrl,
+    status,
+    streamDisabled,
+  ]);
 
   return (
     <div className={cn("flex flex-col items-stretch gap-2 p-2 sm:items-end", className)}>

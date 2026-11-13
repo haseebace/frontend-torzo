@@ -35,6 +35,9 @@ type TorrentResultCardProps = {
   isMagneticActive?: boolean;
   onMagneticEnter?: () => void;
   onMagneticFocus?: () => void;
+  tmdbId?: string;
+  imdbId?: string;
+  mediaType?: "movie" | "tv";
 };
 
 const metaBadgeClassName =
@@ -81,6 +84,9 @@ export function TorrentResultCard({
   isMagneticActive = false,
   onMagneticEnter,
   onMagneticFocus,
+  tmdbId,
+  imdbId,
+  mediaType,
 }: TorrentResultCardProps) {
   const isStacked = variant === "stacked";
   const reduceMotion = useReducedMotion();
@@ -97,7 +103,14 @@ export function TorrentResultCard({
   const provider = primarySource?.provider || "unknown";
   const sourceUrl = primarySource?.source_url || "";
 
-  const detailHref = `/detail?source=${provider}&source_url=${encodeURIComponent(sourceUrl)}`;
+  const detailParams = new URLSearchParams({
+    source: provider,
+    source_url: sourceUrl,
+  });
+  if (tmdbId) detailParams.set("tmdbId", tmdbId);
+  if (imdbId) detailParams.set("imdbId", imdbId);
+  if (mediaType) detailParams.set("mediaType", mediaType);
+  const detailHref = `/detail?${detailParams.toString()}`;
 
   const handleMouseEnter = useCallback(() => {
     router.prefetch(detailHref);

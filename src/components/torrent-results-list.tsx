@@ -11,6 +11,9 @@ import {
 
 type TorrentResultsListProps = {
   results: TorrentResult[];
+  tmdbId?: string;
+  imdbId?: string;
+  mediaType?: "movie" | "tv";
 };
 
 type OverlayRect = {
@@ -20,7 +23,12 @@ type OverlayRect = {
   height: number;
 };
 
-export function TorrentResultsList({ results }: TorrentResultsListProps) {
+export function TorrentResultsList({
+  results,
+  tmdbId,
+  imdbId,
+  mediaType,
+}: TorrentResultsListProps) {
   const reduceMotion = useReducedMotion();
   const listRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -112,6 +120,9 @@ export function TorrentResultsList({ results }: TorrentResultsListProps) {
                 magneticOverlay
                 isMagneticActive={isActive}
                 onMagneticFocus={() => setHoveredIndex(index)}
+                tmdbId={tmdbId}
+                imdbId={imdbId}
+                mediaType={mediaType}
               />
             </div>
           );
