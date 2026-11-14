@@ -64,7 +64,8 @@ agent-browser skills get core
 
 **Custom Reusable Components:**
 
-- `src/animations/hooks/useMagneticHover.ts` — Magnetic hover effect hook using Framer Motion layoutId
+- `src/animations/magnetic-hover-list.tsx` — Magnetic hover list (`MagneticHoverList` / `MagneticHoverItem`): surface z-0 → fixed pill z-[1] → content z-[2]
+- `src/animations/hooks/useMagneticHoverList.ts` — Hover index + measured pill rect for `MagneticHoverList`
 
 ## Styling Conventions
 

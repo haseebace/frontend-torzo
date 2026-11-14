@@ -11,6 +11,28 @@ const collapsibleSpring = {
   bounce: 0.52,
 }
 
+/** Detail Files/Images: height only — no bounce or opacity on close (avoids end jitter). */
+const flushCollapseEase = [0.4, 0, 0.2, 1] as const
+
+const flushOpenTransition = {
+  height: { duration: 0.32, ease: flushCollapseEase },
+}
+
+const flushContentFadeIn = {
+  duration: 0.28,
+  ease: flushCollapseEase,
+  delay: 0.06,
+}
+
+const flushContentFadeOut = {
+  duration: 0.14,
+  ease: flushCollapseEase,
+}
+
+const flushCloseTransition = {
+  height: { duration: 0.26, ease: flushCollapseEase },
+}
+
 const CollapsibleMotionContext = React.createContext({
   open: false,
   contentId: undefined as string | undefined,
@@ -67,8 +89,9 @@ function CollapsibleTrigger({
       data-slot="collapsible-trigger"
       aria-controls={contentId}
       aria-expanded={open}
+      data-state={open ? "open" : "closed"}
       className={cn(
-        "flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-surface-subtle",
+        "flex w-full shrink-0 items-center justify-between gap-4 px-5 py-4 text-left hover:bg-surface-subtle",
         className,
       )}
       {...props}
@@ -87,6 +110,7 @@ function CollapsibleContent({
 }) {
   const { open, contentId } = React.useContext(CollapsibleMotionContext)
   const reduceMotion = useReducedMotion()
+  const useHeightOnlyMotion = flush || reduceMotion
   void _forceMount
 
   return (
@@ -95,18 +119,21 @@ function CollapsibleContent({
         <motion.div
           key="collapsible-content"
           initial={
-            reduceMotion
-              ? { height: 0, opacity: 0 }
+            useHeightOnlyMotion
+              ? { height: 0 }
               : { height: 0, opacity: 0, scaleY: 0.72 }
           }
           animate={
-            reduceMotion
-              ? { height: "auto", opacity: 1 }
+            useHeightOnlyMotion
+              ? { height: "auto" }
               : { height: "auto", opacity: 1, scaleY: 1 }
           }
           exit={
-            reduceMotion
-              ? { height: 0, opacity: 0 }
+            useHeightOnlyMotion
+              ? {
+                  height: 0,
+                  transition: flushCloseTransition,
+                }
               : {
                   height: 0,
                   opacity: [1, 1, 0.92, 0],
@@ -122,7 +149,9 @@ function CollapsibleContent({
           transition={
             reduceMotion
               ? { duration: 0.01 }
-              : collapsibleSpring
+              : useHeightOnlyMotion
+                ? flushOpenTransition
+                : collapsibleSpring
           }
           style={{ transformOrigin: "top center" }}
           className="overflow-hidden"
@@ -135,7 +164,25 @@ function CollapsibleContent({
             {...props}
           >
             {flush ? (
-              children
+              <motion.div
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        opacity: 0,
+                        transition: flushContentFadeOut,
+                      }
+                }
+                transition={
+                  reduceMotion
+                    ? { duration: 0.01 }
+                    : { opacity: flushContentFadeIn }
+                }
+              >
+                {children}
+              </motion.div>
             ) : (
               <div className="border-t border-border/70">
                 <div className="max-h-[360px] overflow-y-auto overscroll-contain px-5 py-2">

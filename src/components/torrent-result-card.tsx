@@ -122,16 +122,18 @@ export function TorrentResultCard({
       : result.category?.trim();
   const providerLabel = formatProviderLabel(provider);
 
+  const usesLayeredMagnetic = magneticOverlay && !isStacked;
+
   return (
     <div
-      className={cn("relative", !isStacked && "rounded-3xl")}
+      className={cn("relative", !isStacked && !usesLayeredMagnetic && "rounded-3xl")}
       onMouseEnter={onMagneticEnter}
       onFocus={onMagneticFocus}
     >
       <Link
         href={detailHref}
         className={cn(
-          "relative z-10 block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-text/15",
+          "relative block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-text/15",
           isStacked ? "rounded-none" : "rounded-3xl",
           className,
         )}
@@ -149,12 +151,12 @@ export function TorrentResultCard({
                     : "bg-transparent",
                 )
               : cn(
-                  "rounded-3xl transition-colors duration-200 ease-out",
-                  isMagneticActive && magneticOverlay && !reduceMotion
+                  "rounded-3xl",
+                  usesLayeredMagnetic
                     ? "bg-transparent"
-                    : isMagneticActive
-                      ? "bg-light-100"
-                      : "bg-bg-surface",
+                    : "transition-colors duration-200 ease-out",
+                  !usesLayeredMagnetic &&
+                    (isMagneticActive ? "bg-light-100" : "bg-bg-surface"),
                 ),
           )}
         >

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { useLayoutEffect, useState, type ReactNode } from "react";
 import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
 import { cn } from "@/lib/utils";
@@ -14,12 +13,6 @@ type TorrentScreenshot = {
 type TorrentScreenshotListProps = {
   images: TorrentScreenshot[];
   title: string;
-};
-
-const screenshotItemSpring = {
-  type: "spring" as const,
-  duration: 0.68,
-  bounce: 0.45,
 };
 
 const IGNORED_IMAGE_EXTENSIONS = [".gif"];
@@ -47,29 +40,15 @@ function isIgnoredImage(url: string) {
   );
 }
 
-function getRandomizedDelay(value: string, index: number) {
-  let hash = index + 17;
-
-  for (let characterIndex = 0; characterIndex < value.length; characterIndex += 1) {
-    hash = (hash * 31 + value.charCodeAt(characterIndex)) % 997;
-  }
-
-  return 0.04 + (hash / 997) * 0.34;
-}
-
 function ScreenshotFrame({
   href,
   label,
-  delay,
   orientation,
-  reduceMotion,
   children,
 }: {
   href: string;
   label: string;
-  delay: number;
   orientation: ScreenshotOrientation;
-  reduceMotion: boolean | null;
   children: ReactNode;
 }) {
   const desktop = useDesktopScreenshotSize();
@@ -79,27 +58,13 @@ function ScreenshotFrame({
   );
 
   return (
-    <motion.a
+    <a
       ref={ref}
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      initial={
-        reduceMotion
-          ? false
-          : { opacity: 0, scale: 0.84, filter: "blur(10px)" }
-      }
-      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      transition={
-        reduceMotion
-          ? { duration: 0.01 }
-          : {
-              ...screenshotItemSpring,
-              delay,
-            }
-      }
-      style={{ ...cornerStyle, transformOrigin: "center center" }}
+      style={cornerStyle}
       className={cn(
         "relative block shrink-0 overflow-hidden border-[1.5px] border-[var(--light-0)] leading-none shadow-[2px_4px_8px_1px_rgba(85,85,85,0.25)]",
         orientation === "portrait" ? "h-20 w-[53px]" : "h-[78px] w-[130px]",
@@ -107,7 +72,7 @@ function ScreenshotFrame({
       )}
     >
       {children}
-    </motion.a>
+    </a>
   );
 }
 
@@ -115,7 +80,6 @@ export function TorrentScreenshotList({
   images,
   title,
 }: TorrentScreenshotListProps) {
-  const reduceMotion = useReducedMotion();
   const [failedImages, setFailedImages] = useState<Set<string>>(() => new Set());
   const [orientations, setOrientations] = useState<Record<string, ScreenshotOrientation>>({});
   const visibleImages = images.filter(
@@ -136,16 +100,12 @@ export function TorrentScreenshotList({
         const imageSrc = image.url.startsWith("http")
           ? image.url
           : `https://${image.url}`;
-        const delay = getRandomizedDelay(image.url, index);
-
         return (
           <ScreenshotFrame
             key={`${image.url}-${index}`}
             href={href}
             label={`Open screenshot ${index + 1}`}
-            delay={delay}
             orientation={orientations[image.url] ?? "landscape"}
-            reduceMotion={reduceMotion}
           >
             <img
               src={imageSrc}

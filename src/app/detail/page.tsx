@@ -585,17 +585,17 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         </header>
 
         {related.length > 0 ? (
-          <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle md:border-0">
-            <h2 className="bg-bg-elevated p-4 text-base font-semibold leading-normal text-primary-text md:px-4 md:py-3.5 md:text-lg">
+          <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle">
+            <h2 className="bg-bg-elevated p-4 text-base font-semibold leading-normal text-primary-text md:px-4 md:py-6 md:text-lg">
               Related Torrents
             </h2>
             <RelatedTorrentsList items={related} />
           </FigmaCorner>
         ) : null}
 
-        <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle md:border-0">
+        <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle">
         <Collapsible defaultOpen={hasFiles} className="rounded-none border-0 bg-transparent">
-          <CollapsibleTrigger className="group bg-bg-elevated p-4 text-primary-text hover:bg-bg-hover md:px-4 md:py-3.5">
+          <CollapsibleTrigger className="group rounded-none bg-bg-elevated p-4 text-primary-text hover:bg-bg-hover md:px-4 md:py-6">
             <h2 className="text-base font-semibold leading-normal md:text-lg">Files</h2>
             <span className="flex size-6 items-center justify-center">
               <img
@@ -614,7 +614,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               />
             </span>
           </CollapsibleTrigger>
-          <CollapsibleContent flush>
+          <CollapsibleContent flush className="rounded-none">
             {hasFiles ? (
               <TorrentFileList files={torrent.files} />
             ) : (
@@ -627,9 +627,9 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         </FigmaCorner>
 
         {torrent.images.length > 0 ? (
-          <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle md:border-0">
+          <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle">
           <Collapsible defaultOpen className="rounded-none border-0 bg-transparent">
-            <CollapsibleTrigger className="group bg-bg-elevated p-4 text-primary-text hover:bg-bg-hover md:px-4 md:py-3.5">
+            <CollapsibleTrigger className="group rounded-none bg-bg-elevated p-4 text-primary-text hover:bg-bg-hover md:px-4 md:py-6">
               <h2 className="text-base font-semibold leading-normal md:text-lg">Images</h2>
               <span className="flex size-6 items-center justify-center">
                 <img
@@ -648,7 +648,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 />
               </span>
             </CollapsibleTrigger>
-            <CollapsibleContent flush>
+            <CollapsibleContent flush className="rounded-none">
               <TorrentScreenshotList images={torrent.images} title={title} />
             </CollapsibleContent>
           </Collapsible>
