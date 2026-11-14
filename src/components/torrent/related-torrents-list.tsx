@@ -61,7 +61,7 @@ function RelatedTorrentRow({
             {item.title}
           </span>
         </span>
-        <span className="grid min-w-0 flex-1 grid-cols-3 gap-1 md:w-auto md:shrink-0 md:grid-cols-[5.5rem_4.75rem_4.75rem] md:gap-2">
+        <span className="grid min-w-0 flex-1 grid-cols-3 gap-1 md:ml-auto md:w-auto md:flex-none md:shrink-0 md:grid-cols-[5.5rem_4.75rem_4.75rem] md:gap-2">
           <Badge className="w-full min-w-0 justify-center border-0 bg-bg-secondary-badge px-2 py-1 text-[10px] font-bold normal-case text-primary-text md:px-4 md:py-2 md:text-xs">
             {item.size}
           </Badge>

@@ -1,5 +1,6 @@
 /** Magnetic hover: see `MagneticHoverList` / `MagneticHoverItem`. */
-export { magneticSpring } from "./core/springs";
+export { hoverShrinkSpring, magneticSpring } from "./core/springs";
+export { useHoverShrink } from "./hooks/useHoverShrink";
 export { useMagneticHover } from "./hooks/useMagneticHover";
 export { useMagneticHoverList } from "./hooks/useMagneticHoverList";
 export type { MagneticHoverOverlayRect } from "./hooks/useMagneticHoverList";

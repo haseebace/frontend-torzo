@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { useHoverShrink } from "@/animations";
 import { AnimatedMenuToggle } from "@/components/animated-menu-toggle";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function SiteNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const hoverShrink = useHoverShrink();
   const toggleMenu = () => {
     setIsOpen((current) => !current);
   };
@@ -30,12 +33,14 @@ export function SiteNavbar() {
               size="icon-sm"
               className="hidden size-10 rounded-full border border-border-subtle bg-bg-canvas p-3 text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:inline-flex [&_svg]:size-3.5"
             />
-            <Button
-              asChild
-              className="h-auto min-h-0 w-fit rounded-full border border-border-subtle bg-bg-canvas px-6 py-4 font-sans text-xs font-normal leading-normal text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:text-base md:leading-none"
-            >
-              <Link href="/manage">Manage</Link>
-            </Button>
+            <motion.div className="inline-flex" {...hoverShrink}>
+              <Button
+                asChild
+                className="h-auto min-h-0 w-fit rounded-full border border-border-subtle bg-bg-canvas px-6 py-4 font-sans text-xs font-normal leading-normal text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:text-base md:leading-none"
+              >
+                <Link href="/manage">Manage</Link>
+              </Button>
+            </motion.div>
           </div>
         </nav>
       </header>
@@ -78,9 +83,11 @@ export function SiteNavbar() {
                 />
               </div>
               <div>
-                <Button asChild className="h-[50px] px-8 font-sans">
-                  <Link href="/manage">Manage</Link>
-                </Button>
+                <motion.div className="inline-flex" {...hoverShrink}>
+                  <Button asChild className="h-[50px] px-8 font-sans">
+                    <Link href="/manage">Manage</Link>
+                  </Button>
+                </motion.div>
               </div>
             </div>
         </div>

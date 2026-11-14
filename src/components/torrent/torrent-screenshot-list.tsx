@@ -1,6 +1,8 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useLayoutEffect, useState, type ReactNode } from "react";
+import { useHoverShrink } from "@/animations";
 import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
 import { cn } from "@/lib/utils";
 
@@ -16,8 +18,6 @@ type TorrentScreenshotListProps = {
 };
 
 const IGNORED_IMAGE_EXTENSIONS = [".gif"];
-
-type ScreenshotOrientation = "portrait" | "landscape";
 
 function useDesktopScreenshotSize() {
   const [desktop, setDesktop] = useState(false);
@@ -43,36 +43,35 @@ function isIgnoredImage(url: string) {
 function ScreenshotFrame({
   href,
   label,
-  orientation,
   children,
 }: {
   href: string;
   label: string;
-  orientation: ScreenshotOrientation;
   children: ReactNode;
 }) {
   const desktop = useDesktopScreenshotSize();
+  const hoverShrink = useHoverShrink();
   const [ref, cornerStyle] = useFigmaCorner<HTMLAnchorElement>(
-    desktop ? 24 : 8,
+    desktop ? 24 : 16,
     torzoCornerSmoothing,
   );
 
   return (
-    <a
+    <motion.a
       ref={ref}
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      style={cornerStyle}
+      {...hoverShrink}
+      style={{ ...cornerStyle, ...hoverShrink.style }}
       className={cn(
-        "relative block shrink-0 overflow-hidden border-[1.5px] border-[var(--light-0)] leading-none shadow-[2px_4px_8px_1px_rgba(85,85,85,0.25)]",
-        orientation === "portrait" ? "h-20 w-[53px]" : "h-[78px] w-[130px]",
-        "md:h-44 md:w-auto md:max-w-full md:border-0 md:shadow-none",
+        "relative block aspect-video w-full min-w-0 overflow-hidden border-[1.5px] border-[var(--light-0)] leading-none shadow-[2px_4px_8px_1px_rgba(85,85,85,0.25)]",
+        "md:max-w-none md:border-0 md:shadow-none",
       )}
     >
       {children}
-    </a>
+    </motion.a>
   );
 }
 
@@ -81,7 +80,6 @@ export function TorrentScreenshotList({
   title,
 }: TorrentScreenshotListProps) {
   const [failedImages, setFailedImages] = useState<Set<string>>(() => new Set());
-  const [orientations, setOrientations] = useState<Record<string, ScreenshotOrientation>>({});
   const visibleImages = images.filter(
     (image) => !isIgnoredImage(image.url) && !failedImages.has(image.url),
   );
@@ -91,7 +89,7 @@ export function TorrentScreenshotList({
   }
 
   return (
-    <div className="flex min-w-0 flex-wrap items-start gap-2 bg-bg-surface p-4">
+    <div className="grid min-w-0 grid-cols-3 gap-2 bg-bg-surface p-4 md:grid-cols-4">
       {visibleImages.map((image, index) => {
         const rawHref = image.page_url || image.url;
         const href = rawHref.startsWith("http")
@@ -105,19 +103,10 @@ export function TorrentScreenshotList({
             key={`${image.url}-${index}`}
             href={href}
             label={`Open screenshot ${index + 1}`}
-            orientation={orientations[image.url] ?? "landscape"}
           >
             <img
               src={imageSrc}
               alt={`${title} screenshot ${index + 1}`}
-              onLoad={(event) => {
-                const { naturalWidth, naturalHeight } = event.currentTarget;
-                const next: ScreenshotOrientation =
-                  naturalHeight > naturalWidth ? "portrait" : "landscape";
-                setOrientations((current) =>
-                  current[image.url] === next ? current : { ...current, [image.url]: next },
-                );
-              }}
               onError={() => {
                 setFailedImages((current) => {
                   const next = new Set(current);
@@ -125,7 +114,7 @@ export function TorrentScreenshotList({
                   return next;
                 });
               }}
-              className="absolute inset-0 size-full object-cover md:static md:h-44 md:w-auto md:max-w-full"
+              className="absolute inset-0 size-full object-cover"
             />
           </ScreenshotFrame>
         );

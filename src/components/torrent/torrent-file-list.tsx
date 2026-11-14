@@ -31,14 +31,14 @@ function getFileSizeDisplay(file: TorrentFile): string {
 
 export function TorrentFileList({ files }: { files: TorrentFile[] }) {
   return (
-    <div className="min-w-0">
+    <div className="max-h-[280px] min-w-0 overflow-y-auto overscroll-y-contain md:max-h-[300px]">
       {files.map((file, i) => {
         const fileSize = getFileSizeDisplay(file);
 
         return (
           <div
             key={`${file.name}-${i}`}
-            className="flex min-w-0 items-center justify-between gap-2 border-b border-light-200 bg-bg-surface p-4 last:border-b-0 md:gap-3 md:px-4 md:py-3"
+            className="flex h-14 min-w-0 items-center justify-between gap-2 border-b border-light-200 bg-bg-surface px-4 last:border-b-0 md:h-[60px] md:gap-3 md:px-4"
           >
             <div className="flex min-w-0 items-center gap-2">
               <img
