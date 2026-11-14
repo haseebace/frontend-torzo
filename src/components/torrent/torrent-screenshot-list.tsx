@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useState, type ReactNode } from "react";
+import { useLayoutEffect, useState, type ReactNode } from "react";
 import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
+import { cn } from "@/lib/utils";
 
 type TorrentScreenshot = {
   url: string;
@@ -22,6 +23,22 @@ const screenshotItemSpring = {
 };
 
 const IGNORED_IMAGE_EXTENSIONS = [".gif"];
+
+type ScreenshotOrientation = "portrait" | "landscape";
+
+function useDesktopScreenshotSize() {
+  const [desktop, setDesktop] = useState(false);
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia("(min-width: 768px)");
+    const update = () => setDesktop(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return desktop;
+}
 
 function isIgnoredImage(url: string) {
   const pathname = url.split(/[?#]/, 1)[0].toLowerCase();
@@ -44,16 +61,22 @@ function ScreenshotFrame({
   href,
   label,
   delay,
+  orientation,
   reduceMotion,
   children,
 }: {
   href: string;
   label: string;
   delay: number;
+  orientation: ScreenshotOrientation;
   reduceMotion: boolean | null;
   children: ReactNode;
 }) {
-  const [ref, cornerStyle] = useFigmaCorner<HTMLAnchorElement>(24, torzoCornerSmoothing);
+  const desktop = useDesktopScreenshotSize();
+  const [ref, cornerStyle] = useFigmaCorner<HTMLAnchorElement>(
+    desktop ? 24 : 8,
+    torzoCornerSmoothing,
+  );
 
   return (
     <motion.a
@@ -77,7 +100,11 @@ function ScreenshotFrame({
             }
       }
       style={{ ...cornerStyle, transformOrigin: "center center" }}
-      className="block h-44 max-w-full shrink-0 overflow-hidden leading-none"
+      className={cn(
+        "relative block shrink-0 overflow-hidden border-[1.5px] border-[var(--light-0)] leading-none shadow-[2px_4px_8px_1px_rgba(85,85,85,0.25)]",
+        orientation === "portrait" ? "h-20 w-[53px]" : "h-[78px] w-[130px]",
+        "md:h-44 md:w-auto md:max-w-full md:border-0 md:shadow-none",
+      )}
     >
       {children}
     </motion.a>
@@ -90,6 +117,7 @@ export function TorrentScreenshotList({
 }: TorrentScreenshotListProps) {
   const reduceMotion = useReducedMotion();
   const [failedImages, setFailedImages] = useState<Set<string>>(() => new Set());
+  const [orientations, setOrientations] = useState<Record<string, ScreenshotOrientation>>({});
   const visibleImages = images.filter(
     (image) => !isIgnoredImage(image.url) && !failedImages.has(image.url),
   );
@@ -116,11 +144,20 @@ export function TorrentScreenshotList({
             href={href}
             label={`Open screenshot ${index + 1}`}
             delay={delay}
+            orientation={orientations[image.url] ?? "landscape"}
             reduceMotion={reduceMotion}
           >
             <img
               src={imageSrc}
               alt={`${title} screenshot ${index + 1}`}
+              onLoad={(event) => {
+                const { naturalWidth, naturalHeight } = event.currentTarget;
+                const next: ScreenshotOrientation =
+                  naturalHeight > naturalWidth ? "portrait" : "landscape";
+                setOrientations((current) =>
+                  current[image.url] === next ? current : { ...current, [image.url]: next },
+                );
+              }}
               onError={() => {
                 setFailedImages((current) => {
                   const next = new Set(current);
@@ -128,7 +165,7 @@ export function TorrentScreenshotList({
                   return next;
                 });
               }}
-              className="h-44 w-auto max-w-full object-cover"
+              className="absolute inset-0 size-full object-cover md:static md:h-44 md:w-auto md:max-w-full"
             />
           </ScreenshotFrame>
         );

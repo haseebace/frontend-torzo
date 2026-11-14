@@ -533,18 +533,18 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <span className="min-w-0 truncate text-primary-text">{crumbLabel}</span>
           </nav>
 
-          <div className="flex min-w-0 flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-4">
-            <div className="flex min-w-0 flex-1 flex-col gap-4">
-              <div className="flex min-w-0 flex-col gap-2">
-                <h1 className="max-w-full break-words text-xl font-bold leading-normal text-primary-text md:text-[28px] md:leading-tight">
-                  {title}
-                </h1>
+          <div className="flex min-w-0 flex-col gap-4">
+            <h1 className="w-full min-w-0 break-words text-xl font-bold leading-normal text-primary-text md:text-[28px] md:leading-tight">
+              {title}
+            </h1>
+
+            <div className="flex min-w-0 flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-4">
+              <div className="flex min-w-0 flex-1 flex-col gap-4">
                 <Badge className="max-w-full min-w-0 border-0 bg-bg-secondary-badge px-4 py-2 text-[10px] font-medium normal-case text-muted-text md:text-xs md:font-normal">
                   <span className="shrink-0">Info hash:</span>
                   <span className="min-w-0 truncate">{torrent.infoHash ?? "Unknown"}</span>
                 </Badge>
-              </div>
-              <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                 {sourceLink.source_url ? (
                   <Badge
                     asChild
@@ -564,22 +564,23 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 <Badge className="border-0 bg-bg-leecher px-4 py-2 text-xs font-semibold normal-case text-leecher-text md:font-bold">
                   {formatNumber(torrent.leechers)}
                 </Badge>
+                </div>
               </div>
-            </div>
 
-            <TorrentActions
-              magnetLink={torrent.magnetLink}
-              torrentFileUrl={torrent.torrentFileUrl}
-              infoHash={torrent.infoHash}
-              title={title}
-              category={torrent.category}
-              mappleMediaId={mappleMediaId}
-              mappleWatchUrl={mappleWatch.url}
-              mappleDebug={mappleWatch.debug}
-              mediaType={mappleMediaType}
-              season={tvEpisode?.season}
-              episode={tvEpisode?.episode}
-            />
+              <TorrentActions
+                magnetLink={torrent.magnetLink}
+                torrentFileUrl={torrent.torrentFileUrl}
+                infoHash={torrent.infoHash}
+                title={title}
+                category={torrent.category}
+                mappleMediaId={mappleMediaId}
+                mappleWatchUrl={mappleWatch.url}
+                mappleDebug={mappleWatch.debug}
+                mediaType={mappleMediaType}
+                season={tvEpisode?.season}
+                episode={tvEpisode?.episode}
+              />
+            </div>
           </div>
         </header>
 
