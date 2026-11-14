@@ -268,3 +268,12 @@ body {
 .dark [data-sonner-toast] {
   box-shadow: 0 4px 12px color-mix(in srgb, #000 40%, transparent);
 }
+
+/* Phones ignore corner smoothing. The inline radius can be doubled for desktop squircles. */
+@media (max-width: 767px) {
+  [data-figma-corner] {
+    border-radius: var(--figma-radius) !important;
+    corner-shape: unset !important;
+  }
+}
+}

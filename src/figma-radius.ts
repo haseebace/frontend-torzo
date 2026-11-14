@@ -66,6 +66,7 @@ export function useFigmaCorner<T extends HTMLElement>(
   useLayoutEffect(() => {
     const element = ref.current
     if (!element) return
+    element.setAttribute("data-figma-corner", "")
     const measure = () => {
       const width = element.offsetWidth
       const height = element.offsetHeight
@@ -79,5 +80,12 @@ export function useFigmaCorner<T extends HTMLElement>(
 
   const smoothing = useDesktopSmoothing() ? cornerSmoothing : 0
   const corner = cssCorner(figmaRadius, smoothing, box.width, box.height)
-  return [ref, cornerStyle(figmaRadius, smoothing, box.width, box.height), corner.squircle]
+  return [
+    ref,
+    {
+      ...cornerStyle(figmaRadius, smoothing, box.width, box.height),
+      "--figma-radius": `${figmaRadius}px`,
+    },
+    corner.squircle,
+  ]
 }
