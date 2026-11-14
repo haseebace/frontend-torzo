@@ -85,7 +85,7 @@ export function useFigmaCorner<T extends HTMLElement>(
     {
       ...cornerStyle(figmaRadius, smoothing, box.width, box.height),
       "--figma-radius": `${figmaRadius}px`,
-    },
+    } as CSSProperties,
     corner.squircle,
   ]
 }
