@@ -7,3 +7,11 @@ export const magneticSpring: Transition = {
   stiffness: 350,
   damping: 30,
 };
+
+/** Shrink-on-hover spring used by screenshots, detail actions, and Manage. */
+export const hoverShrinkSpring: Transition = {
+  type: "spring",
+  stiffness: 420,
+  damping: 22,
+  mass: 0.55,
+};

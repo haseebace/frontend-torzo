@@ -18,7 +18,6 @@ import {
   searchActivationSpring,
   searchInteractionSpring,
 } from "@/components/ui/search-bar";
-import { useMagneticHover } from "@/animations";
 import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
 import { cn } from "@/lib/utils";
 import {
@@ -316,15 +315,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
   const reduceMotion = useReducedMotion();
   const isHero = variant === "hero";
   const isHeroActive = isHero && (isHeroFocused || isSubmitting);
-  const {
-    containerProps: suggestionContainerProps,
-    hoveredIndex: hoveredSuggestionIndex,
-    setHoveredIndex: setHoveredSuggestion,
-  } = useMagneticHover({
-    layoutId: `${listboxId}-suggestion-hover`,
-  });
   const handleSuggestionMouseLeave = () => {
-    suggestionContainerProps.onMouseLeave();
     setActiveIndex(-1);
   };
   const applySuggestions = useCallback(
@@ -518,8 +509,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     setShouldAnimateLayout(false);
     setIsSuggestionModalEntering(false);
     setActiveIndex(-1);
-    setHoveredSuggestion(null);
-    
+
     // Automatically navigate using only tmdbId
     router.push(`/results?tmdbId=${movie.id}&mediaType=${movie.mediaType}`);
   };
@@ -533,7 +523,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         {
           const nextIndex = activeIndex < suggestions.length - 1 ? activeIndex + 1 : 0;
           setActiveIndex(nextIndex);
-          if (isHero) setHoveredSuggestion(nextIndex);
         }
         break;
       case "ArrowUp":
@@ -541,7 +530,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         {
           const nextIndex = activeIndex > 0 ? activeIndex - 1 : suggestions.length - 1;
           setActiveIndex(nextIndex);
-          if (isHero) setHoveredSuggestion(nextIndex);
         }
         break;
       case "Enter":
@@ -553,7 +541,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       case "Escape":
         setIsSuggestionsOpen(false);
         setActiveIndex(-1);
-        setHoveredSuggestion(null);
         break;
     }
   };
@@ -590,7 +577,14 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                   ? { ...suggestionSpring, layout: searchInteractionSpring }
                   : { duration: 0.16, ease: dropdownEase }
           }
-          className="relative isolate flex items-start gap-2 overflow-hidden bg-bg-elevated p-2"
+          className={cn(
+            "relative isolate flex items-start gap-2 overflow-hidden p-2",
+            isHero
+              ? isHighlighted
+                ? "bg-bg-hover"
+                : "bg-bg-elevated"
+              : "bg-bg-elevated",
+          )}
           initial={
             animateEntrance
               ? undefined
@@ -607,21 +601,8 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           }
           onMouseEnter={() => {
             setActiveIndex(index);
-            if (isHero) setHoveredSuggestion(index);
           }}
         >
-          {isHero && (hoveredSuggestionIndex === index || isHighlighted) ? (
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={
-                reduceMotion
-                  ? { duration: 0.01 }
-                  : { duration: 0.15, ease: [0.22, 1, 0.36, 1] }
-              }
-              className="pointer-events-none absolute inset-0 z-0 bg-bg-hover"
-            />
-          ) : null}
           <button
             id={`${listboxId}-option-${index}`}
             type="button"
@@ -631,9 +612,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             onClick={() => handleSuggestionSelect(movie)}
             className={cn(
               "relative z-10 flex w-full items-start gap-2 text-left focus-visible:outline-none",
-              !isHero && index === activeIndex
-                ? "bg-bg-secondary"
-                : undefined,
+              !isHero && index === activeIndex ? "bg-bg-secondary" : undefined,
             )}
           >
             {movie.posterUrl ? (
@@ -654,10 +633,15 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
               </SmoothPoster>
             )}
             <span className="flex min-w-0 flex-1 flex-col gap-2 py-0.5">
-              <span className="min-w-0 truncate text-sm font-medium text-primary-text">
+              <span
+                className={cn(
+                  "min-w-0 truncate font-medium text-primary-text md:text-sm",
+                  isHighlighted ? "text-[13px]" : "text-xs",
+                )}
+              >
                 {movie.title}
               </span>
-              <span className="text-xs font-normal text-muted-text">
+              <span className="text-[10px] font-normal text-muted-text md:text-xs">
                 {movie.releaseYear ? `${movie.releaseYear} - ` : ""}
                 {movie.mediaType === "tv" ? "TV series" : "Movie"}
               </span>
@@ -667,6 +651,12 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       );
     });
 
+  const suggestionRowNodes = renderSuggestionRows(
+    shouldAnimateLayout && !isSuggestionModalEntering,
+    isSuggestionModalEntering,
+    updateEnteringKeys,
+  );
+
   const suggestionRows = (
     <LayoutGroup id={`${listboxId}-suggestions`}>
       <AnimatePresence
@@ -674,11 +664,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
         mode="popLayout"
         onExitComplete={() => setIsSuggestionUpdateExiting(false)}
       >
-        {renderSuggestionRows(
-          shouldAnimateLayout && !isSuggestionModalEntering,
-          isSuggestionModalEntering,
-          updateEnteringKeys,
-        )}
+        {suggestionRowNodes}
       </AnimatePresence>
     </LayoutGroup>
   );
@@ -711,7 +697,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
     <SearchBar
       active={isHero && isHeroActive}
       reduceMotion={reduceMotion}
-      className={cn("group w-full bg-bg-surface", isHero && "h-[62px]")}
+      className={cn("group w-full bg-bg-surface", isHero && "h-[58px] md:h-[62px]")}
     >
       <Form
         action="/results"
@@ -722,7 +708,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
       <label className="sr-only" htmlFor={id}>
         Search media
       </label>
-      <div className={cn("relative", isHero ? "h-[62px]" : "h-16")}>
+      <div className={cn("relative", isHero ? "h-[58px] md:h-[62px]" : "h-16")}>
         <Input
           id={id}
           name={!selectedMovie ? "q" : undefined}
@@ -742,17 +728,16 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           placeholder={isHero ? "Search anything that you like" : "Search movies, shows, games, software..."}
           variant="surface"
           className={cn(
-            "bg-transparent pr-16 text-[16px] font-medium text-primary-text placeholder:font-medium placeholder:text-muted-text focus-visible:border-0 md:text-sm",
+            "bg-transparent pr-16 text-base font-medium text-primary-text placeholder:text-xs placeholder:font-normal placeholder:text-muted-text focus-visible:border-0 md:text-sm md:placeholder:text-sm md:placeholder:font-medium",
             isHero
-              ? "h-[62px] rounded-full pl-4"
+              ? "h-[58px] rounded-full pl-4 md:h-[62px]"
               : "h-16",
           )}
           onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
               setIsSuggestionsOpen(false);
               setActiveIndex(-1);
-               setHoveredSuggestion(null);
-               setIsHeroFocused(false);
+              setIsHeroFocused(false);
                setIsSuggestionModalEntering(false);
              }, 120);
           }}
@@ -764,7 +749,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             setQuery(nextQuery);
             setSelectedMovie(null);
             setActiveIndex(-1);
-            setHoveredSuggestion(null);
 
             if (!nextQuery.trim()) {
               const hadSuggestions = suggestionsRef.current.length > 0;
@@ -825,7 +809,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
                 key="hero-suggestions"
                 id={listboxId}
                 role="listbox"
-                {...suggestionContainerProps}
                 onMouseLeave={handleSuggestionMouseLeave}
                 variants={animatedDropdownVariants}
                 initial="hidden"
@@ -845,7 +828,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             panelRef={listboxRef}
             id={listboxId}
             role="listbox"
-            {...suggestionContainerProps}
             onMouseLeave={handleSuggestionMouseLeave}
             className={cn(suggestionPanelClassName, "absolute left-0 right-0 top-[calc(100%+16px)]")}
           >
@@ -863,7 +845,6 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
             key="hero-suggestions"
             id={listboxId}
             role="listbox"
-            {...suggestionContainerProps}
             onMouseLeave={handleSuggestionMouseLeave}
             variants={animatedDropdownVariants}
             initial="hidden"

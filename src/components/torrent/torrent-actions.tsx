@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import { useHoverShrink } from "@/animations";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { TorBoxResponse, TorBoxTorrent } from "@/lib/torbox-types";
@@ -525,7 +527,7 @@ export function TorrentActions({
   };
 
   const actionClass =
-    "inline-flex items-center justify-center rounded-full px-5 py-2.5 font-sans text-sm font-normal leading-normal whitespace-nowrap focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-45";
+    "inline-flex w-full items-center justify-center rounded-full px-6 py-4 font-sans text-sm font-normal leading-normal whitespace-nowrap focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-45 md:w-auto md:px-5 md:py-2.5";
 
   const streamLabel = isLoading
     ? status === "checking"
@@ -536,6 +538,9 @@ export function TorrentActions({
     : "Stream Now";
 
   const streamDisabled = isResolvingMapple || isLoading;
+  const hoverShrink = useHoverShrink();
+  const streamHover = useHoverShrink(!streamDisabled);
+  const torboxHover = useHoverShrink(!isLoading);
 
   useEffect(() => {
     console.info("[Stream Now]", {
@@ -561,35 +566,38 @@ export function TorrentActions({
   ]);
 
   return (
-    <div className={cn("flex flex-col items-stretch gap-2 p-2 sm:items-end", className)}>
+    <div className={cn("flex w-full flex-col items-stretch gap-2 md:w-auto md:items-end md:p-2", className)}>
       {mappleWatchUrl ? (
-        <a
+        <motion.a
           href={mappleWatchUrl}
           target="_blank"
           rel="noopener noreferrer"
+          {...hoverShrink}
           className={cn(actionClass, "bg-primary-action text-on-primary")}
         >
           Stream Now
-        </a>
+        </motion.a>
       ) : (
-        <button
+        <motion.button
           type="button"
           onClick={handleStreamNow}
           disabled={streamDisabled}
+          {...streamHover}
           className={cn(actionClass, "bg-primary-action text-on-primary")}
         >
           {isLoading || isResolvingMapple ? (
             <Loader2 className="mr-2 size-4 animate-spin" />
           ) : null}
           {isLoading ? streamLabel : "Stream Now"}
-        </button>
+        </motion.button>
       )}
 
       {isTorboxConnected && !directLink && magnetLink ? (
-        <button
+        <motion.button
           type="button"
           onClick={() => void handleAddToTorBox()}
           disabled={isLoading}
+          {...torboxHover}
           className={cn(
             actionClass,
             "border border-border-subtle bg-bg-canvas text-primary-text hover:bg-bg-hover",
@@ -597,51 +605,54 @@ export function TorrentActions({
         >
           {isLoading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
           {isLoading ? streamLabel : "Add to TorBox"}
-        </button>
+        </motion.button>
       ) : null}
 
       {directLink ? (
-        <button
+        <motion.button
           type="button"
           onClick={handleWatchNow}
+          {...hoverShrink}
           className={cn(
             actionClass,
             "border border-border-subtle bg-bg-canvas text-primary-text hover:bg-bg-hover",
           )}
         >
           Play TorBox file
-        </button>
+        </motion.button>
       ) : null}
 
       {magnetLink ? (
-        <button
+        <motion.button
           type="button"
           onClick={handleCopyMagnet}
+          {...hoverShrink}
           className={cn(actionClass, "border border-border-subtle bg-bg-canvas text-primary-text hover:bg-bg-hover")}
         >
           {magnetCopied ? "Copied" : "Copy Magnet Link"}
-        </button>
+        </motion.button>
       ) : null}
 
       {torrentFileUrl ? (
-        <a
+        <motion.a
           href={torrentFileUrl}
+          {...hoverShrink}
           className={cn(actionClass, "bg-secondary-action text-primary-text hover:bg-bg-hover")}
         >
           Download Torrent
-        </a>
+        </motion.a>
       ) : null}
 
       {torboxAccountStatus ? (
         <p className="text-xs font-normal text-muted-text">{torboxAccountStatus}</p>
       ) : null}
       {isZipFallback ? (
-        <p className="max-w-56 text-right text-sm font-normal text-muted-text">
+        <p className="text-sm font-normal text-muted-text md:max-w-56 md:text-right">
           No video file available. This can only be downloaded.
         </p>
       ) : null}
       {errorMessage ? (
-        <p className="max-w-56 text-right text-sm font-normal text-leecher-text">{errorMessage}</p>
+        <p className="text-sm font-normal text-leecher-text md:max-w-56 md:text-right">{errorMessage}</p>
       ) : null}
     </div>
   );

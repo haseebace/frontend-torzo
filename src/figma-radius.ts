@@ -5,6 +5,23 @@ const squircle = { cornerShape: "squircle" } as CSSProperties
 /** Torzo v10 frames set Figma corner smoothing to 100%. */
 export const torzoCornerSmoothing = 1
 
+/** Phones keep the Figma radius. Smoothing stays on desktop. */
+const desktopSmoothingQuery = "(min-width: 768px)"
+
+function useDesktopSmoothing() {
+  const [desktop, setDesktop] = useState(false)
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia(desktopSmoothingQuery)
+    const update = () => setDesktop(media.matches)
+    update()
+    media.addEventListener("change", update)
+    return () => media.removeEventListener("change", update)
+  }, [])
+
+  return desktop
+}
+
 /** Figma radius plus smoothing, turned into the CSS border box. */
 export function cssCorner(figmaRadius: number, cornerSmoothing: number, width: number, height: number) {
   const smoothing = Math.min(Math.max(cornerSmoothing, 0), 1)
@@ -49,6 +66,7 @@ export function useFigmaCorner<T extends HTMLElement>(
   useLayoutEffect(() => {
     const element = ref.current
     if (!element) return
+    element.setAttribute("data-figma-corner", "")
     const measure = () => {
       const width = element.offsetWidth
       const height = element.offsetHeight
@@ -60,6 +78,14 @@ export function useFigmaCorner<T extends HTMLElement>(
     return () => observer.disconnect()
   }, [])
 
-  const corner = cssCorner(figmaRadius, cornerSmoothing, box.width, box.height)
-  return [ref, cornerStyle(figmaRadius, cornerSmoothing, box.width, box.height), corner.squircle]
+  const smoothing = useDesktopSmoothing() ? cornerSmoothing : 0
+  const corner = cssCorner(figmaRadius, smoothing, box.width, box.height)
+  return [
+    ref,
+    {
+      ...cornerStyle(figmaRadius, smoothing, box.width, box.height),
+      "--figma-radius": `${figmaRadius}px`,
+    } as CSSProperties,
+    corner.squircle,
+  ]
 }

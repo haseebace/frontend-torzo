@@ -516,7 +516,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
       <VisitedTorrentsTracker id={torrent.id} />
 
       <section className="flex w-full min-w-0 flex-col gap-4 px-4 py-4 md:px-12">
-        <header className="flex min-w-0 flex-col gap-2 border-b border-light-200">
+        <header className="flex min-w-0 flex-col gap-2 border-b border-light-200 pb-4">
           <nav aria-label="Breadcrumb" className="flex min-w-0 items-center text-xs font-semibold">
             <Link href="/" className="shrink-0 text-primary-text">
               Home
@@ -533,69 +533,70 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
             <span className="min-w-0 truncate text-primary-text">{crumbLabel}</span>
           </nav>
 
-          <div className="flex min-w-0 flex-col gap-4 pb-4 md:flex-row md:items-start md:justify-between">
-            <div className="flex min-w-0 flex-1 flex-col gap-4">
-              <div className="flex min-w-0 flex-col gap-2">
-                <h1 className="max-w-full break-words text-2xl font-bold leading-tight text-primary-text md:text-[28px]">
-                  {title}
-                </h1>
-                <Badge className="max-w-full min-w-0 border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-normal normal-case text-muted-text">
+          <div className="flex min-w-0 flex-col gap-4">
+            <h1 className="w-full min-w-0 break-words text-xl font-bold leading-normal text-primary-text md:text-[28px] md:leading-tight">
+              {title}
+            </h1>
+
+            <div className="flex min-w-0 flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-4">
+              <div className="flex min-w-0 flex-1 flex-col gap-4">
+                <Badge className="max-w-full min-w-0 border-0 bg-bg-secondary-badge px-4 py-2 text-[10px] font-medium normal-case text-muted-text md:text-xs md:font-normal">
                   <span className="shrink-0">Info hash:</span>
                   <span className="min-w-0 truncate">{torrent.infoHash ?? "Unknown"}</span>
                 </Badge>
-              </div>
-              <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                 {sourceLink.source_url ? (
                   <Badge
                     asChild
-                    className="border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-bold text-primary-text underline"
+                    className="border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-semibold text-primary-text underline md:font-bold"
                   >
                     <Link href={sourceLink.source_url} target="_blank" rel="noreferrer">
                       {formatProviderLinkLabel(sourceLink.provider)}
                     </Link>
                   </Badge>
                 ) : null}
-                <Badge className="border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-bold normal-case text-primary-text">
+                <Badge className="border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-semibold normal-case text-primary-text md:font-bold">
                   {torrent.sizeHuman || "Unknown"}
                 </Badge>
-                <Badge className="border-0 bg-bg-seeder px-4 py-2 text-xs font-bold normal-case text-seeder-text">
+                <Badge className="border-0 bg-bg-seeder px-4 py-2 text-xs font-semibold normal-case text-seeder-text md:font-bold">
                   {formatNumber(torrent.seeders)}
                 </Badge>
-                <Badge className="border-0 bg-bg-leecher px-4 py-2 text-xs font-bold normal-case text-leecher-text">
+                <Badge className="border-0 bg-bg-leecher px-4 py-2 text-xs font-semibold normal-case text-leecher-text md:font-bold">
                   {formatNumber(torrent.leechers)}
                 </Badge>
+                </div>
               </div>
-            </div>
 
-            <TorrentActions
-              magnetLink={torrent.magnetLink}
-              torrentFileUrl={torrent.torrentFileUrl}
-              infoHash={torrent.infoHash}
-              title={title}
-              category={torrent.category}
-              mappleMediaId={mappleMediaId}
-              mappleWatchUrl={mappleWatch.url}
-              mappleDebug={mappleWatch.debug}
-              mediaType={mappleMediaType}
-              season={tvEpisode?.season}
-              episode={tvEpisode?.episode}
-            />
+              <TorrentActions
+                magnetLink={torrent.magnetLink}
+                torrentFileUrl={torrent.torrentFileUrl}
+                infoHash={torrent.infoHash}
+                title={title}
+                category={torrent.category}
+                mappleMediaId={mappleMediaId}
+                mappleWatchUrl={mappleWatch.url}
+                mappleDebug={mappleWatch.debug}
+                mediaType={mappleMediaType}
+                season={tvEpisode?.season}
+                episode={tvEpisode?.episode}
+              />
+            </div>
           </div>
         </header>
 
         {related.length > 0 ? (
-          <FigmaCorner radius={24} className="overflow-hidden">
-            <h2 className="bg-bg-elevated px-4 py-3.5 text-lg font-semibold leading-normal text-primary-text">
+          <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle">
+            <h2 className="bg-bg-elevated p-4 text-base font-semibold leading-normal text-primary-text md:px-4 md:py-6 md:text-lg">
               Related Torrents
             </h2>
             <RelatedTorrentsList items={related} />
           </FigmaCorner>
         ) : null}
 
-        <FigmaCorner radius={24} className="overflow-hidden">
+        <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle">
         <Collapsible defaultOpen={hasFiles} className="rounded-none border-0 bg-transparent">
-          <CollapsibleTrigger className="group bg-bg-elevated px-4 py-3.5 text-primary-text hover:bg-bg-hover">
-            <h2 className="text-lg font-semibold leading-normal">Files</h2>
+          <CollapsibleTrigger className="group rounded-none bg-bg-elevated p-4 text-primary-text hover:bg-bg-hover md:px-4 md:py-6">
+            <h2 className="text-base font-semibold leading-normal md:text-lg">Files</h2>
             <span className="flex size-6 items-center justify-center">
               <img
                 src="/detail/arrow-down.svg"
@@ -613,11 +614,11 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
               />
             </span>
           </CollapsibleTrigger>
-          <CollapsibleContent flush>
+          <CollapsibleContent flush className="rounded-none">
             {hasFiles ? (
               <TorrentFileList files={torrent.files} />
             ) : (
-              <p className="bg-bg-surface px-4 py-3 text-sm text-muted-text">
+              <p className="bg-bg-surface p-4 text-xs text-muted-text md:px-4 md:py-3 md:text-sm">
                 No file list returned for this media yet.
               </p>
             )}
@@ -626,10 +627,10 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
         </FigmaCorner>
 
         {torrent.images.length > 0 ? (
-          <FigmaCorner radius={24} className="overflow-hidden">
+          <FigmaCorner radius={24} className="overflow-hidden border-2 border-border-subtle">
           <Collapsible defaultOpen className="rounded-none border-0 bg-transparent">
-            <CollapsibleTrigger className="group bg-bg-elevated px-4 py-3.5 text-primary-text hover:bg-bg-hover">
-              <h2 className="text-lg font-semibold leading-normal">Images</h2>
+            <CollapsibleTrigger className="group rounded-none bg-bg-elevated p-4 text-primary-text hover:bg-bg-hover md:px-4 md:py-6">
+              <h2 className="text-base font-semibold leading-normal md:text-lg">Images</h2>
               <span className="flex size-6 items-center justify-center">
                 <img
                   src="/detail/arrow-down.svg"
@@ -647,7 +648,7 @@ export default async function DetailPage({ searchParams }: DetailPageProps) {
                 />
               </span>
             </CollapsibleTrigger>
-            <CollapsibleContent flush>
+            <CollapsibleContent flush className="rounded-none">
               <TorrentScreenshotList images={torrent.images} title={title} />
             </CollapsibleContent>
           </Collapsible>

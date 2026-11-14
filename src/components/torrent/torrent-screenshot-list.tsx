@@ -1,8 +1,10 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { useState, type ReactNode } from "react";
+import { motion } from "framer-motion";
+import { useLayoutEffect, useState, type ReactNode } from "react";
+import { useHoverShrink } from "@/animations";
 import { torzoCornerSmoothing, useFigmaCorner } from "@/figma-radius";
+import { cn } from "@/lib/utils";
 
 type TorrentScreenshot = {
   url: string;
@@ -15,13 +17,21 @@ type TorrentScreenshotListProps = {
   title: string;
 };
 
-const screenshotItemSpring = {
-  type: "spring" as const,
-  duration: 0.68,
-  bounce: 0.45,
-};
-
 const IGNORED_IMAGE_EXTENSIONS = [".gif"];
+
+function useDesktopScreenshotSize() {
+  const [desktop, setDesktop] = useState(false);
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia("(min-width: 768px)");
+    const update = () => setDesktop(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return desktop;
+}
 
 function isIgnoredImage(url: string) {
   const pathname = url.split(/[?#]/, 1)[0].toLowerCase();
@@ -30,30 +40,21 @@ function isIgnoredImage(url: string) {
   );
 }
 
-function getRandomizedDelay(value: string, index: number) {
-  let hash = index + 17;
-
-  for (let characterIndex = 0; characterIndex < value.length; characterIndex += 1) {
-    hash = (hash * 31 + value.charCodeAt(characterIndex)) % 997;
-  }
-
-  return 0.04 + (hash / 997) * 0.34;
-}
-
 function ScreenshotFrame({
   href,
   label,
-  delay,
-  reduceMotion,
   children,
 }: {
   href: string;
   label: string;
-  delay: number;
-  reduceMotion: boolean | null;
   children: ReactNode;
 }) {
-  const [ref, cornerStyle] = useFigmaCorner<HTMLAnchorElement>(24, torzoCornerSmoothing);
+  const desktop = useDesktopScreenshotSize();
+  const hoverShrink = useHoverShrink();
+  const [ref, cornerStyle] = useFigmaCorner<HTMLAnchorElement>(
+    desktop ? 24 : 16,
+    torzoCornerSmoothing,
+  );
 
   return (
     <motion.a
@@ -62,22 +63,12 @@ function ScreenshotFrame({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      initial={
-        reduceMotion
-          ? false
-          : { opacity: 0, scale: 0.84, filter: "blur(10px)" }
-      }
-      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      transition={
-        reduceMotion
-          ? { duration: 0.01 }
-          : {
-              ...screenshotItemSpring,
-              delay,
-            }
-      }
-      style={{ ...cornerStyle, transformOrigin: "center center" }}
-      className="block h-44 max-w-full shrink-0 overflow-hidden leading-none"
+      {...hoverShrink}
+      style={{ ...cornerStyle, ...hoverShrink.style }}
+      className={cn(
+        "relative block aspect-video w-full min-w-0 overflow-hidden border-[1.5px] border-[var(--light-0)] leading-none shadow-[2px_4px_8px_1px_rgba(85,85,85,0.25)]",
+        "md:max-w-none md:border-0 md:shadow-none",
+      )}
     >
       {children}
     </motion.a>
@@ -88,7 +79,6 @@ export function TorrentScreenshotList({
   images,
   title,
 }: TorrentScreenshotListProps) {
-  const reduceMotion = useReducedMotion();
   const [failedImages, setFailedImages] = useState<Set<string>>(() => new Set());
   const visibleImages = images.filter(
     (image) => !isIgnoredImage(image.url) && !failedImages.has(image.url),
@@ -99,7 +89,7 @@ export function TorrentScreenshotList({
   }
 
   return (
-    <div className="flex min-w-0 flex-wrap items-start gap-2 bg-bg-surface p-4">
+    <div className="grid min-w-0 grid-cols-3 gap-2 bg-bg-surface p-4 md:grid-cols-4">
       {visibleImages.map((image, index) => {
         const rawHref = image.page_url || image.url;
         const href = rawHref.startsWith("http")
@@ -108,15 +98,11 @@ export function TorrentScreenshotList({
         const imageSrc = image.url.startsWith("http")
           ? image.url
           : `https://${image.url}`;
-        const delay = getRandomizedDelay(image.url, index);
-
         return (
           <ScreenshotFrame
             key={`${image.url}-${index}`}
             href={href}
             label={`Open screenshot ${index + 1}`}
-            delay={delay}
-            reduceMotion={reduceMotion}
           >
             <img
               src={imageSrc}
@@ -128,7 +114,7 @@ export function TorrentScreenshotList({
                   return next;
                 });
               }}
-              className="h-44 w-auto max-w-full object-cover"
+              className="absolute inset-0 size-full object-cover"
             />
           </ScreenshotFrame>
         );
