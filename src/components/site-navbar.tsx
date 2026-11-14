@@ -14,7 +14,7 @@ export function SiteNavbar() {
 
   return (
     <>
-      <header className="relative z-[110] flex w-full items-center border-b border-light-200 bg-bg-canvas px-4 py-4 md:bg-bg-surface md:px-[60px] md:py-2">
+      <header className="relative z-[110] flex w-full items-center border-b border-border-subtle bg-bg-canvas px-4 py-2 md:border-light-200 md:bg-bg-surface md:px-[60px] md:py-2">
         <nav className="relative flex w-full items-center justify-between">
           <Link
             href="/"
@@ -32,7 +32,7 @@ export function SiteNavbar() {
             />
             <Button
               asChild
-              className="h-auto min-h-0 w-fit rounded-full border border-border-subtle bg-bg-canvas px-2 py-2 font-sans text-xs font-normal leading-none text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:px-[24px] md:py-[16px] md:text-[16px]"
+              className="h-auto min-h-0 w-fit rounded-full border border-border-subtle bg-bg-canvas px-6 py-4 font-sans text-xs font-normal leading-normal text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:text-base md:leading-none"
             >
               <Link href="/manage">Manage</Link>
             </Button>

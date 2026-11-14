@@ -525,7 +525,7 @@ export function TorrentActions({
   };
 
   const actionClass =
-    "inline-flex items-center justify-center rounded-full px-5 py-2.5 font-sans text-sm font-normal leading-normal whitespace-nowrap focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-45";
+    "inline-flex w-full items-center justify-center rounded-full px-6 py-4 font-sans text-sm font-normal leading-normal whitespace-nowrap focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-45 md:w-auto md:px-5 md:py-2.5";
 
   const streamLabel = isLoading
     ? status === "checking"
@@ -561,7 +561,7 @@ export function TorrentActions({
   ]);
 
   return (
-    <div className={cn("flex flex-col items-stretch gap-2 p-2 sm:items-end", className)}>
+    <div className={cn("flex w-full flex-col items-stretch gap-2 md:w-auto md:items-end md:p-2", className)}>
       {mappleWatchUrl ? (
         <a
           href={mappleWatchUrl}
@@ -636,12 +636,12 @@ export function TorrentActions({
         <p className="text-xs font-normal text-muted-text">{torboxAccountStatus}</p>
       ) : null}
       {isZipFallback ? (
-        <p className="max-w-56 text-right text-sm font-normal text-muted-text">
+        <p className="text-sm font-normal text-muted-text md:max-w-56 md:text-right">
           No video file available. This can only be downloaded.
         </p>
       ) : null}
       {errorMessage ? (
-        <p className="max-w-56 text-right text-sm font-normal text-leecher-text">{errorMessage}</p>
+        <p className="text-sm font-normal text-leecher-text md:max-w-56 md:text-right">{errorMessage}</p>
       ) : null}
     </div>
   );

@@ -55,33 +55,33 @@ export function RelatedTorrentsList({ items }: RelatedTorrentsListProps) {
                 <Link
                   href={item.href}
                   className={cn(
-                    "relative z-10 flex min-w-0 flex-wrap items-center justify-between gap-3 px-4 py-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-text/15",
+                    "relative z-10 flex min-w-0 items-center justify-between gap-2 p-4 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-text/15 md:flex-wrap md:gap-3 md:px-4 md:py-3",
                     isActive && reduceMotion
                       ? "bg-bg-hover"
                       : "bg-transparent",
                   )}
                   onFocus={() => setHoveredIndex(index)}
                 >
-                  <span className="flex min-w-0 items-center gap-2">
+                  <span className="flex min-w-0 flex-1 items-center gap-2">
                     <img
                       src="/detail/file-video.svg"
                       alt=""
-                      width={36.0375}
-                      height={34.85}
-                      className="shrink-0 dark:invert"
+                      width={24}
+                      height={23}
+                      className="h-[23px] w-6 shrink-0 dark:invert md:h-[35px] md:w-9"
                     />
-                    <span className="min-w-0 truncate text-sm font-normal text-primary-text">
+                    <span className="min-w-0 truncate text-xs font-normal text-primary-text md:text-sm">
                       {item.title}
                     </span>
                   </span>
-                  <span className="grid shrink-0 grid-cols-[5.5rem_4.75rem_4.75rem] gap-2">
-                    <Badge className="w-full justify-center border-0 bg-bg-secondary-badge px-4 py-2 text-xs font-bold normal-case text-primary-text">
+                  <span className="flex shrink-0 items-center gap-1 md:grid md:grid-cols-[5.5rem_4.75rem_4.75rem] md:gap-2">
+                    <Badge className="justify-center border-0 bg-bg-secondary-badge px-2 py-1 text-[10px] font-bold normal-case text-primary-text md:w-full md:px-4 md:py-2 md:text-xs">
                       {item.size}
                     </Badge>
-                    <Badge className="w-full justify-center border-0 bg-bg-seeder px-4 py-2 text-xs font-bold normal-case text-seeder-text">
+                    <Badge className="justify-center border-0 bg-bg-seeder px-2 py-1 text-[10px] font-bold normal-case text-seeder-text md:w-full md:px-4 md:py-2 md:text-xs">
                       {formatCount(item.seeders)}
                     </Badge>
-                    <Badge className="w-full justify-center border-0 bg-bg-leecher px-4 py-2 text-xs font-bold normal-case text-leecher-text">
+                    <Badge className="justify-center border-0 bg-bg-leecher px-2 py-1 text-[10px] font-bold normal-case text-leecher-text md:w-full md:px-4 md:py-2 md:text-xs">
                       {formatCount(item.leechers)}
                     </Badge>
                   </span>

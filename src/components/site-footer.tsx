@@ -19,10 +19,10 @@ export function SiteFooter() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <footer className="flex h-[71px] min-h-[71px] items-center justify-center border-t border-light-200 bg-bg-canvas px-4 md:h-[92px] md:min-h-[92px] md:bg-bg-surface md:px-[60px]">
+    <footer className="flex items-center justify-center border-t border-border-subtle bg-bg-canvas p-4 md:h-[92px] md:min-h-[92px] md:border-light-200 md:bg-bg-surface md:px-[60px] md:py-0">
       <nav
         {...containerProps}
-        className="flex flex-wrap items-center justify-center gap-4 text-center text-[10px] font-normal leading-normal text-primary-text md:gap-1 md:text-sm md:font-medium md:leading-6 md:text-text-muted"
+        className="flex flex-wrap items-center justify-center gap-4 text-center text-xs font-normal leading-normal text-primary-text md:gap-1 md:text-sm md:font-medium md:leading-6 md:text-text-muted"
       >
         {footerLinks.map((link, i) => {
           const isActive = hoveredIndex === i;
@@ -39,7 +39,7 @@ export function SiteFooter() {
                   {isActive && !reduceMotion && (
                     <motion.div
                       layoutId="footer-hover"
-                      className="absolute inset-0 rounded-xl border border-light-200 bg-bg-canvas"
+                      className="absolute inset-0 rounded-lg border-[1.5px] border-border-subtle bg-bg-surface md:rounded-xl md:border md:border-light-200 md:bg-bg-canvas"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, transition: { duration: 0.5 } }}
@@ -49,7 +49,7 @@ export function SiteFooter() {
                 </AnimatePresence>
                 <Link
                   href={link.href}
-                  className="relative z-10 block px-0 py-1 md:px-3"
+                  className="relative z-10 block px-2 py-1 md:px-3"
                 >
                   <span className="relative inline-grid">
                     <motion.span

@@ -47,7 +47,7 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
         return (
           <motion.div
             key={`${file.name}-${i}`}
-            className="flex min-w-0 items-center justify-between gap-3 border-b border-light-200 bg-bg-surface px-4 py-3 last:border-b-0"
+            className="flex min-w-0 items-center justify-between gap-2 border-b border-light-200 bg-bg-surface p-4 last:border-b-0 md:gap-3 md:px-4 md:py-3"
             initial={
               reduceMotion
                 ? { opacity: 0, scale: 1, filter: "blur(0px)" }
@@ -77,15 +77,15 @@ export function TorrentFileList({ files }: { files: TorrentFile[] }) {
               <img
                 src="/detail/file-video.svg"
                 alt=""
-                width={36.0375}
-                height={34.85}
-                className="shrink-0 dark:invert"
+                width={24}
+                height={23}
+                className="h-[23px] w-6 shrink-0 dark:invert md:h-[35px] md:w-9"
               />
-              <p className="min-w-0 truncate text-sm font-normal text-primary-text">
+              <p className="min-w-0 truncate text-xs font-normal text-primary-text md:text-sm">
                 {file.name}
               </p>
             </div>
-            <Badge className="bg-bg-primary-badge px-4 py-2 text-xs font-semibold text-on-primary">
+            <Badge className="bg-bg-primary-badge px-2 py-1 text-[10px] font-bold text-on-primary md:px-4 md:py-2 md:text-xs md:font-semibold">
               {fileSize}
             </Badge>
           </motion.div>

@@ -654,7 +654,12 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
               </SmoothPoster>
             )}
             <span className="flex min-w-0 flex-1 flex-col gap-2 py-0.5">
-              <span className="min-w-0 truncate text-[13px] font-medium text-primary-text md:text-sm">
+              <span
+                className={cn(
+                  "min-w-0 truncate font-medium text-primary-text md:text-sm",
+                  isHighlighted ? "text-[13px]" : "text-xs",
+                )}
+              >
                 {movie.title}
               </span>
               <span className="text-[10px] font-normal text-muted-text md:text-xs">
@@ -742,7 +747,7 @@ export function SearchForm({ id, defaultValue, className, variant = "default" }:
           placeholder={isHero ? "Search anything that you like" : "Search movies, shows, games, software..."}
           variant="surface"
           className={cn(
-            "bg-transparent pr-16 text-base font-medium text-primary-text placeholder:text-xs placeholder:font-medium placeholder:text-muted-text focus-visible:border-0 md:text-sm md:placeholder:text-sm",
+            "bg-transparent pr-16 text-base font-medium text-primary-text placeholder:text-xs placeholder:font-normal placeholder:text-muted-text focus-visible:border-0 md:text-sm md:placeholder:text-sm md:placeholder:font-medium",
             isHero
               ? "h-[58px] rounded-full pl-4 md:h-[62px]"
               : "h-16",
