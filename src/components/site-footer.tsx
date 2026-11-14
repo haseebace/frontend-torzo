@@ -19,10 +19,10 @@ export function SiteFooter() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <footer className="flex h-[92px] min-h-[92px] items-center justify-center border-t border-light-200 bg-bg-surface px-4 md:px-[60px]">
+    <footer className="flex h-[71px] min-h-[71px] items-center justify-center border-t border-light-200 bg-bg-canvas px-4 md:h-[92px] md:min-h-[92px] md:bg-bg-surface md:px-[60px]">
       <nav
         {...containerProps}
-        className="flex flex-wrap items-center justify-center gap-1 text-center text-xs font-medium leading-6 text-text-muted md:text-sm"
+        className="flex flex-wrap items-center justify-center gap-4 text-center text-[10px] font-normal leading-normal text-primary-text md:gap-1 md:text-sm md:font-medium md:leading-6 md:text-text-muted"
       >
         {footerLinks.map((link, i) => {
           const isActive = hoveredIndex === i;
@@ -49,11 +49,11 @@ export function SiteFooter() {
                 </AnimatePresence>
                 <Link
                   href={link.href}
-                  className="relative z-10 block px-3 py-1"
+                  className="relative z-10 block px-0 py-1 md:px-3"
                 >
                   <span className="relative inline-grid">
                     <motion.span
-                      className="col-start-1 row-start-1 text-text-muted"
+                      className="col-start-1 row-start-1 text-primary-text md:text-text-muted"
                       animate={{ opacity: isActive ? 0 : 1 }}
                       transition={reduceMotion ? { duration: 0 } : magneticSpring}
                     >
@@ -71,7 +71,7 @@ export function SiteFooter() {
                 </Link>
               </div>
               {!isLast && (
-                <span aria-hidden="true" className="mx-1 select-none text-border-subtle">|</span>
+                <span aria-hidden="true" className="mx-1 hidden select-none text-border-subtle md:inline">|</span>
               )}
             </div>
           );

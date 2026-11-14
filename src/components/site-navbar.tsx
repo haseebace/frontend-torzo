@@ -14,26 +14,25 @@ export function SiteNavbar() {
 
   return (
     <>
-      <header className="relative z-[110] flex w-full items-center border-b border-light-200 bg-bg-surface px-4 py-2 md:px-[60px]">
+      <header className="relative z-[110] flex w-full items-center border-b border-light-200 bg-bg-canvas px-4 py-4 md:bg-bg-surface md:px-[60px] md:py-2">
         <nav className="relative flex w-full items-center justify-between">
           <Link
             href="/"
-            className="font-sans text-[34px] font-extrabold leading-none text-primary-text"
+            className="font-sans text-[26px] font-extrabold leading-none text-primary-text md:text-[34px]"
           >
-            <span className="md:hidden">T.</span>
-            <span className="hidden md:inline">Torzo</span>
+            Torzo
           </Link>
 
-          <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} />
+          <AnimatedMenuToggle isOpen={isOpen} toggleMenu={toggleMenu} className="hidden" />
 
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="flex items-center gap-3">
             <ThemeToggle
               size="icon-sm"
-              className="size-10 rounded-full border border-border-subtle bg-bg-canvas p-3 text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text [&_svg]:size-3.5"
+              className="hidden size-10 rounded-full border border-border-subtle bg-bg-canvas p-3 text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:inline-flex [&_svg]:size-3.5"
             />
             <Button
               asChild
-              className="h-auto min-h-0 w-fit rounded-full border border-border-subtle bg-bg-canvas px-[24px] py-[16px] font-sans text-[16px] font-normal leading-none text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text"
+              className="h-auto min-h-0 w-fit rounded-full border border-border-subtle bg-bg-canvas px-2 py-2 font-sans text-xs font-normal leading-none text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:px-[24px] md:py-[16px] md:text-[16px]"
             >
               <Link href="/manage">Manage</Link>
             </Button>
