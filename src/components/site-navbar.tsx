@@ -31,7 +31,7 @@ export function SiteNavbar() {
           <div className="flex items-center gap-3">
             <ThemeToggle
               size="icon-sm"
-              className="hidden size-10 rounded-full border border-border-subtle bg-bg-canvas p-3 text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text md:inline-flex [&_svg]:size-3.5"
+              className="inline-flex size-10 rounded-full border border-border-subtle bg-bg-canvas p-3 text-primary-text hover:border-border-subtle hover:bg-bg-canvas hover:text-primary-text [&_svg]:size-3.5"
             />
             <motion.div className="inline-flex" {...hoverShrink}>
               <Button
